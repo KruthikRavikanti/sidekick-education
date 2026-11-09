@@ -220,6 +220,43 @@ def test_live_provider_request_and_schema_validation(client, monkeypatch, math_p
     assert "2/5" not in caplog.text
 
 
+@pytest.mark.parametrize("unreadable_field", ["final_answer", "selected_choice"])
+def test_provider_unreadable_answer_normalizes_status_and_preserves_work(
+    client, monkeypatch, math_payload, image_bytes, unreadable_field,
+):
+    work = math_payload["problems"][2]["student_work"]
+    work["status"] = "answered"
+    work["steps"] = [{"text": "3/ [unreadable]", "uncertain": True}]
+    work["final_answer"] = {"text": None, "uncertain": False}
+    work["selected_choice"] = {"text": None, "uncertain": False}
+    work[unreadable_field]["uncertain"] = True
+    expected_work = {**copy.deepcopy(work), "status": "unclear"}
+    configure_mock_provider(monkeypatch, lambda request: httpx.Response(200, json=provider_result(math_payload)))
+
+    response = upload(client, image_bytes)
+
+    assert response.status_code == 200
+    problems = response.json()["problems"]
+    assert problems[2]["student_work"] == expected_work
+    assert problems[1]["student_work"]["status"] == "blank"
+
+
+def test_provider_legible_final_answer_stays_answered_with_uncertain_earlier_step(
+    client, monkeypatch, math_payload, image_bytes,
+):
+    work = math_payload["problems"][0]["student_work"]
+    work["steps"][0] = {"text": "1 + [unreadable] = 2", "uncertain": True}
+    expected_work = copy.deepcopy(work)
+    configure_mock_provider(monkeypatch, lambda request: httpx.Response(200, json=provider_result(math_payload)))
+
+    response = upload(client, image_bytes)
+
+    assert response.status_code == 200
+    assert response.json()["problems"][0]["student_work"] == expected_work
+    assert expected_work["status"] == "answered"
+    assert expected_work["final_answer"]["text"] == "2/5"
+
+
 @pytest.mark.parametrize("response_body", [
     {"malformed": "secret student text"},
     provider_result({"invalid": "secret student text"}),

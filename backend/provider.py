@@ -60,9 +60,13 @@ Each text field has text and uncertain. Preserve every legible fragment, put [un
 in place of an unreadable span within text, and set uncertain=true for that field only.
 Use text=null when the whole field cannot be determined. Missing optional printed text
 (such as no title/grade) is text=null, uncertain=false. Never guess unreadable content.
-For student work, answered means visible identifiable work/answer, even if wrong or partial;
+For student work, answered means visible identifiable work/answer, even if wrong or partial,
+when its final answer or selected choice is not unresolved by unreadability;
 blank means the response area is visibly empty; unclear means marks are present but cannot
 be identified confidently or the response area is too obscured to distinguish marks from blank.
+If a written final answer or selected choice is wholly unreadable, mark its text=null and
+uncertain=true and set status=unclear, even when some earlier steps are readable.
+An uncertain earlier step alone does not make an otherwise legible final answer unclear.
 A visibly blank response has steps=[], final_answer={text:null,uncertain:false}, and
 selected_choice={text:null,uncertain:false}. An unreadable response is unclear, with uncertain=true
 on its affected fields. Do not mistake a blank response for unreadable handwriting.

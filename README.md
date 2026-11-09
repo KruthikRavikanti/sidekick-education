@@ -45,7 +45,7 @@ When starting the interface separately, Next.js reads `BACKEND_URL` from `.env.l
 npm run dev:all
 ```
 
-The provider must accept `messages` with an `image_url` data URL and `response_format: {type: "json_schema", json_schema: {strict: true, ...}}`, following the official OpenAI documentation for [image inputs](https://developers.openai.com/api/docs/guides/images-vision) and [structured outputs](https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=chat). The adapter validates the complete response with Pydantic and rejects refusals, truncated output, malformed JSON, invalid references, inconsistent statuses, and pages with no extractable problems. It does not fall back to unvalidated text or fixtures. A compatible provider and model are required; live compatibility has not been verified without credentials.
+The provider must accept `messages` with an `image_url` data URL and `response_format: {type: "json_schema", json_schema: {strict: true, ...}}`, following the official OpenAI documentation for [image inputs](https://developers.openai.com/api/docs/guides/images-vision) and [structured outputs](https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=chat). The adapter validates the complete response with Pydantic and rejects refusals, truncated output, malformed JSON, invalid references, inconsistent statuses, and pages with no extractable problems. It does not fall back to unvalidated text or fixtures. Live extraction has been verified with the configured provider on the two synthetic worksheets; other providers and models still require compatibility checks.
 
 ## API and extraction contract
 
@@ -61,7 +61,7 @@ The response includes `worksheet`, `problems`, and `source` (`live` or `fixture`
 - Every transcribed text field is `{ "text": "visible text or null", "uncertain": false }`. Actual missing values use JSON `null`, not the string `"null"`. Partial text is kept with `uncertain: true`; a fully unreadable field is `text: null, uncertain: true`. Absent optional printed fields are `text: null, uncertain: false`.
 - `worksheet` contains title, inferred subject (`math`, `ela`, `unknown`), subject uncertainty, explicitly printed grade, directions, and shared context. Contexts have IDs and a type (`passage`, `table`, `diagram`, `other`); tables and diagram labels are transcribed into their text content.
 - `problems` contains each printed problem or subpart in page order, its printed label, question, answer choices, context references, and `student_work`. Subparts such as `4(a)` get their own card.
-- `student_work` contains steps in visible order, written final answer, selected choice, and status (`answered`, `blank`, `unclear`). Incorrect work is preserved verbatim. Blank work is distinct from obscured or unreadable work.
+- `student_work` contains steps in visible order, written final answer, selected choice, and status (`answered`, `blank`, `unclear`). Incorrect work is preserved verbatim. Blank work is distinct from obscured or unreadable work. If a final answer or selected choice is wholly unreadable (`text: null, uncertain: true`), the API normalizes an `answered` status to `unclear` without changing any transcribed fields. An uncertain earlier step can still accompany an `answered` status when the final answer is legible.
 
 Errors use `{ "error": { "code": "...", "message": "..." } }` with appropriate 400/413/415/422/502/503/504 statuses. Failed reads retain the photo for retry, retake, or replacement. `GET /api/health` reports the active mode without exposing configuration or credentials.
 
@@ -83,4 +83,8 @@ The synthetic fractions worksheet includes the incorrect answer **`2/5`**, all t
 
 Browser checks cover both sample images through the real multipart endpoint, question order, blank versus unclear states, verbatim incorrect work, JSON download, invalid file/size handling, visible reading state, and failure followed by retry. Backend checks cover image integrity, MIME mismatch, request/file limits, provider failures, schema validation, and metadata removal.
 
-**Live vision extraction remains unverified: no provider credentials were available during implementation.** Fixture tests verify the complete interface/API flow and contract, not model transcription accuracy. Real phone camera capture has not been physically tested.
+The automated suite includes **39 backend tests and 5 Playwright browser tests**. The backend regressions cover an unreadable final answer or selected choice incorrectly labeled `answered`, and a legible final answer with an uncertain earlier step. These tests verify that status handling preserves all transcribed text and keeps blanks distinct.
+
+**Live vision extraction was verified through the browser with both synthetic worksheets.** Both returned `source: "live"` and rendered four problem cards. The ELA response preserved the incorrect winter answer and detected the blank response. A follow-up Math check confirmed the incorrect `2/5` answer, the blank response, and the `unclear` status for unreadable writing after the status fix. Credentials stay in the local, Git-ignored `backend/.env` file.
+
+Fixture tests verify the complete interface/API flow and contract; the live checks are a small synthetic smoke test, not a broad evaluation of transcription accuracy. Real phone camera capture has not been physically tested.

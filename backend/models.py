@@ -43,6 +43,13 @@ class StudentWork(StrictModel):
 
     @model_validator(mode="after")
     def status_matches_visible_work(self):
+        # Readable steps do not resolve a wholly unreadable answer or selection.
+        # Keep the transcription untouched and expose that uncertainty in the status.
+        if self.status == "answered" and any(
+            field.text is None and field.uncertain
+            for field in [self.final_answer, self.selected_choice]
+        ):
+            self.status = "unclear"
         has_work = bool(self.steps) or self.final_answer.text is not None or self.selected_choice.text is not None
         if self.status == "blank" and (has_work or self.final_answer.uncertain or self.selected_choice.uncertain):
             raise ValueError("A blank response cannot contain visible or uncertain work")
