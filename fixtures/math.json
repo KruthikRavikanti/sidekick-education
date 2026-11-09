@@ -1,0 +1,192 @@
+{
+  "worksheet": {
+    "title": {
+      "text": "Fraction practice",
+      "uncertain": false
+    },
+    "subject": "math",
+    "subject_uncertain": false,
+    "printed_grade": {
+      "text": "Grade 4",
+      "uncertain": false
+    },
+    "directions": [
+      {
+        "text": "Solve each problem. Show your work. Use the table for 4(a).",
+        "uncertain": false
+      }
+    ],
+    "shared_context": [
+      {
+        "id": "recipe-table",
+        "type": "table",
+        "title": {
+          "text": "Recipe table",
+          "uncertain": false
+        },
+        "content": {
+          "text": "Ingredient | Amount\nFlour | 3/4 cup\nSugar | 1/4 cup",
+          "uncertain": false
+        }
+      }
+    ]
+  },
+  "problems": [
+    {
+      "id": "math-1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "1/2 + 1/3 =",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [
+          {
+            "text": "1 + 1 = 2",
+            "uncertain": false
+          },
+          {
+            "text": "2 + 3 = 5",
+            "uncertain": false
+          },
+          {
+            "text": "1/2 + 1/3 = 2/5",
+            "uncertain": false
+          }
+        ],
+        "final_answer": {
+          "text": "2/5",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    {
+      "id": "math-2",
+      "label": {
+        "text": "2",
+        "uncertain": false
+      },
+      "question": {
+        "text": "2/5 + 1/5 =",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": null,
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "blank"
+      }
+    },
+    {
+      "id": "math-3",
+      "label": {
+        "text": "3",
+        "uncertain": false
+      },
+      "question": {
+        "text": "3/4 - 1/4 =",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [
+          {
+            "text": "3/",
+            "uncertain": true
+          }
+        ],
+        "final_answer": {
+          "text": null,
+          "uncertain": true
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "unclear"
+      }
+    },
+    {
+      "id": "math-4a",
+      "label": {
+        "text": "4(a)",
+        "uncertain": false
+      },
+      "question": {
+        "text": "How much more flour than sugar is in the recipe?",
+        "uncertain": false
+      },
+      "answer_choices": [
+        {
+          "label": {
+            "text": "A",
+            "uncertain": false
+          },
+          "text": {
+            "text": "1/4 cup",
+            "uncertain": false
+          }
+        },
+        {
+          "label": {
+            "text": "B",
+            "uncertain": false
+          },
+          "text": {
+            "text": "1/2 cup",
+            "uncertain": false
+          }
+        },
+        {
+          "label": {
+            "text": "C",
+            "uncertain": false
+          },
+          "text": {
+            "text": "1 cup",
+            "uncertain": false
+          }
+        }
+      ],
+      "context_refs": [
+        "recipe-table"
+      ],
+      "student_work": {
+        "steps": [
+          {
+            "text": "3/4 - 1/4 = 2/4 = 1/2",
+            "uncertain": false
+          }
+        ],
+        "final_answer": {
+          "text": null,
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": "B",
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    }
+  ]
+}

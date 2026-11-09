@@ -1,0 +1,180 @@
+{
+  "worksheet": {
+    "title": {
+      "text": "A seed for tomorrow",
+      "uncertain": false
+    },
+    "subject": "ela",
+    "subject_uncertain": false,
+    "printed_grade": {
+      "text": "Grade 3",
+      "uncertain": false
+    },
+    "directions": [
+      {
+        "text": "Read the passage. Answer the questions using details from the text.",
+        "uncertain": false
+      }
+    ],
+    "shared_context": [
+      {
+        "id": "seed-passage",
+        "type": "passage",
+        "title": {
+          "text": "A seed for tomorrow",
+          "uncertain": false
+        },
+        "content": {
+          "text": "It was the first warm morning of spring. Maya carried a small pot\nto the school garden. The soil was dry, so she filled a watering can.\nAfter she watered the seed, Maya set the pot in a sunny spot.\n\"I will check on you tomorrow,\" she whispered. As she walked\nback to class, she was already imagining a bright yellow flower.",
+          "uncertain": false
+        }
+      }
+    ]
+  },
+  "problems": [
+    {
+      "id": "ela-1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "What season is it in the story?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [
+        "seed-passage"
+      ],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "The story happens in winter.",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    {
+      "id": "ela-2",
+      "label": {
+        "text": "2",
+        "uncertain": false
+      },
+      "question": {
+        "text": "Why does Maya fill a watering can?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [
+        "seed-passage"
+      ],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": null,
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "blank"
+      }
+    },
+    {
+      "id": "ela-3",
+      "label": {
+        "text": "3",
+        "uncertain": false
+      },
+      "question": {
+        "text": "Why does … at the end?",
+        "uncertain": true
+      },
+      "answer_choices": [],
+      "context_refs": [
+        "seed-passage"
+      ],
+      "student_work": {
+        "steps": [
+          {
+            "text": "because she",
+            "uncertain": true
+          }
+        ],
+        "final_answer": {
+          "text": null,
+          "uncertain": true
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "unclear"
+      }
+    },
+    {
+      "id": "ela-4a",
+      "label": {
+        "text": "4(a)",
+        "uncertain": false
+      },
+      "question": {
+        "text": "What does Maya imagine?",
+        "uncertain": false
+      },
+      "answer_choices": [
+        {
+          "label": {
+            "text": "A",
+            "uncertain": false
+          },
+          "text": {
+            "text": "A red apple",
+            "uncertain": false
+          }
+        },
+        {
+          "label": {
+            "text": "B",
+            "uncertain": false
+          },
+          "text": {
+            "text": "A bright yellow flower",
+            "uncertain": false
+          }
+        },
+        {
+          "label": {
+            "text": "C",
+            "uncertain": false
+          },
+          "text": {
+            "text": "A rainy afternoon",
+            "uncertain": false
+          }
+        }
+      ],
+      "context_refs": [
+        "seed-passage"
+      ],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": null,
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": "B",
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    }
+  ]
+}

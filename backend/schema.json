@@ -1,0 +1,224 @@
+{
+  "$defs": {
+    "AnswerChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "$ref": "#/$defs/TranscribedField"
+        },
+        "text": {
+          "$ref": "#/$defs/TranscribedField"
+        }
+      },
+      "required": [
+        "label",
+        "text"
+      ],
+      "title": "AnswerChoice",
+      "type": "object"
+    },
+    "Problem": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "$ref": "#/$defs/TranscribedField"
+        },
+        "question": {
+          "$ref": "#/$defs/TranscribedField"
+        },
+        "answer_choices": {
+          "items": {
+            "$ref": "#/$defs/AnswerChoice"
+          },
+          "title": "Answer Choices",
+          "type": "array"
+        },
+        "context_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Context Refs",
+          "type": "array"
+        },
+        "student_work": {
+          "$ref": "#/$defs/StudentWork"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "question",
+        "answer_choices",
+        "context_refs",
+        "student_work"
+      ],
+      "title": "Problem",
+      "type": "object"
+    },
+    "SharedContext": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "passage",
+            "table",
+            "diagram",
+            "other"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "title": {
+          "$ref": "#/$defs/TranscribedField"
+        },
+        "content": {
+          "$ref": "#/$defs/TranscribedField"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "title",
+        "content"
+      ],
+      "title": "SharedContext",
+      "type": "object"
+    },
+    "StudentWork": {
+      "additionalProperties": false,
+      "properties": {
+        "steps": {
+          "items": {
+            "$ref": "#/$defs/TranscribedField"
+          },
+          "title": "Steps",
+          "type": "array"
+        },
+        "final_answer": {
+          "$ref": "#/$defs/TranscribedField"
+        },
+        "selected_choice": {
+          "$ref": "#/$defs/TranscribedField"
+        },
+        "status": {
+          "enum": [
+            "answered",
+            "blank",
+            "unclear"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "steps",
+        "final_answer",
+        "selected_choice",
+        "status"
+      ],
+      "title": "StudentWork",
+      "type": "object"
+    },
+    "TranscribedField": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Text"
+        },
+        "uncertain": {
+          "title": "Uncertain",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "text",
+        "uncertain"
+      ],
+      "title": "TranscribedField",
+      "type": "object"
+    },
+    "Worksheet": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "$ref": "#/$defs/TranscribedField"
+        },
+        "subject": {
+          "enum": [
+            "math",
+            "ela",
+            "unknown"
+          ],
+          "title": "Subject",
+          "type": "string"
+        },
+        "subject_uncertain": {
+          "title": "Subject Uncertain",
+          "type": "boolean"
+        },
+        "printed_grade": {
+          "$ref": "#/$defs/TranscribedField"
+        },
+        "directions": {
+          "items": {
+            "$ref": "#/$defs/TranscribedField"
+          },
+          "title": "Directions",
+          "type": "array"
+        },
+        "shared_context": {
+          "items": {
+            "$ref": "#/$defs/SharedContext"
+          },
+          "title": "Shared Context",
+          "type": "array"
+        }
+      },
+      "required": [
+        "title",
+        "subject",
+        "subject_uncertain",
+        "printed_grade",
+        "directions",
+        "shared_context"
+      ],
+      "title": "Worksheet",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "worksheet": {
+      "$ref": "#/$defs/Worksheet"
+    },
+    "problems": {
+      "items": {
+        "$ref": "#/$defs/Problem"
+      },
+      "title": "Problems",
+      "type": "array"
+    }
+  },
+  "required": [
+    "worksheet",
+    "problems"
+  ],
+  "title": "Extraction",
+  "type": "object"
+}
