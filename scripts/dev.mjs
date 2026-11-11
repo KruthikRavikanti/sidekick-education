@@ -85,8 +85,24 @@ async function main() {
   if (args.some(arg => arg !== "--fixtures")) throw new Error("Unknown option. Use npm run dev:demo or npm run dev:all.");
   try { await access(next); } catch { throw new Error("Next.js dependencies are missing. Run npm ci from the repository root first."); }
   try { await access(python); } catch { throw new Error("The backend virtual environment is missing. Run python3 -m venv backend/.venv, then backend/.venv/bin/python -m pip install -r backend/requirements.txt (see README.md for setup)."); }
-  const check = spawnSync(python, ["-c", "import fastapi, uvicorn, PIL, pydantic, httpx, multipart, dotenv"], { cwd: root, stdio: "ignore" });
+  const check = spawnSync(python, ["-c", "import fastapi, uvicorn, PIL, pydantic, httpx, multipart, dotenv, argon2, email_validator"], { cwd: root, stdio: "ignore" });
   if (check.status !== 0) throw new Error("Backend dependencies are missing. Run backend/.venv/bin/python -m pip install -r backend/requirements.txt.");
+  const accountCheck = spawnSync(python, ["-c", `
+from pathlib import Path
+from dotenv import load_dotenv
+import sys
+load_dotenv(Path('backend/.env'))
+try:
+    from backend.accounts import SecurityContext
+    security = SecurityContext.from_env()
+    if security.settings.app_env not in {'development', 'test'}:
+        raise ValueError('Set APP_ENV=development in backend/.env for this local launcher; use the documented HTTPS configuration for other environments.')
+    security.db.assert_migrated()
+except Exception as error:
+    print(getattr(error, 'message', str(error)), file=sys.stderr)
+    sys.exit(1)
+`], { cwd: root, stdio: "inherit" });
+  if (accountCheck.status !== 0) throw new Error("Account setup is incomplete. See backend/.env.example and run npm run db:migrate before starting Sidekick.");
   await Promise.all([checkPort(3000), checkPort(8000)]);
 
   process.once("SIGINT", () => shutdown());

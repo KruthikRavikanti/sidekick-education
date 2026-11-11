@@ -1,3 +1,4 @@
+import asyncio
 import copy
 import io
 import json
@@ -6,12 +7,12 @@ from unittest.mock import AsyncMock
 
 import httpx
 import pytest
-from fastapi.testclient import TestClient
 from PIL import Image
 from pydantic import ValidationError
 
 from backend import main, provider
 from backend.models import Extraction
+from backend.tests.account_helpers import picker
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -23,8 +24,8 @@ def clean_env(monkeypatch):
 
 
 @pytest.fixture
-def client():
-    return TestClient(main.app)
+def client(kid_client):
+    return kid_client
 
 
 @pytest.fixture
@@ -100,6 +101,25 @@ def test_live_adapter_receives_normalized_png(client, monkeypatch, math_payload,
     normalized = Image.open(io.BytesIO(reader.await_args.args[0]))
     assert normalized.format == "PNG" and normalized.mode == "RGB"
     assert not normalized.getexif()
+
+
+def test_inflight_read_cannot_return_previous_profile_work_after_switch(
+    client, client_factory, monkeypatch, math_payload, image_bytes,
+):
+    other_tab = client_factory()
+    other_tab.cookies.update(client.cookies)
+
+    async def read_while_profile_changes(_image):
+        response = await asyncio.to_thread(picker, other_tab)
+        assert response.status_code == 200
+        return Extraction.model_validate(math_payload)
+
+    monkeypatch.setattr(main, "extract_with_vision", read_while_profile_changes)
+    response = upload(client, image_bytes)
+    assert response.status_code == 403
+    assert set(response.json()) == {"error"}
+    assert "worksheet" not in response.json()
+    assert client.get("/api/auth/session").json()["mode"] == "picker"
 
 
 @pytest.mark.parametrize("data,mime,code,status", [

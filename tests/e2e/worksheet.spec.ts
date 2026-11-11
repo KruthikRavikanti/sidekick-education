@@ -1,15 +1,17 @@
 import { test, expect, type Page } from "@playwright/test";
 import { mkdir, readFile } from "node:fs/promises";
 import path from "node:path";
+import { createFamily } from "./helpers";
 
 const root = process.cwd();
 const screenshots = "/tmp/sidekick-screens";
 let browserErrors: string[];
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page, context }) => {
   browserErrors = [];
   page.on("pageerror", (error) => browserErrors.push(error.message));
-  await page.goto("/");
+  await createFamily(context);
+  await page.goto("/kid/homework");
   await expect(page.getByText("Sample mode", { exact: true })).toBeVisible();
 });
 
@@ -52,6 +54,15 @@ test("fractions flow preserves mistakes, step order, blanks, uncertainty, and JS
     path: `${screenshots}/mobile-preview.png`,
     fullPage: true,
   });
+  // Returning from the native camera/file picker must preserve the chosen photo.
+  const sessionCheck = page.waitForResponse((response) =>
+    response.url().endsWith("/api/auth/session"),
+  );
+  await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+  await sessionCheck;
+  await expect(
+    page.getByRole("img", { name: "Preview of your selected worksheet" }),
+  ).toBeVisible();
 
   // Observe the real multipart request; delay only its departure to exercise reading UI.
   await page.route("**/api/extract", async (route) => {

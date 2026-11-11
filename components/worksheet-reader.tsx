@@ -17,12 +17,15 @@ import {
 } from "lucide-react";
 import type { Extraction } from "@/lib/extraction";
 import { ExtractionResults } from "./extraction-results";
+import { apiFetch } from "@/lib/account-api";
+import { useAccountSession } from "./account-session";
 
 const MAX_BYTES = 10 * 1024 * 1024;
 const ACCEPT = "image/jpeg,image/png,image/webp";
 type Phase = "upload" | "reading" | "results";
 
 export function WorksheetReader() {
+  const { refresh } = useAccountSession();
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [phase, setPhase] = useState<Phase>("upload");
@@ -129,7 +132,7 @@ export function WorksheetReader() {
     try {
       const body = new FormData();
       body.append("file", file);
-      const response = await fetch("/api/extract", {
+      const response = await apiFetch("/api/extract", {
         method: "POST",
         body,
         signal: controller.signal,
@@ -137,6 +140,14 @@ export function WorksheetReader() {
       const data = await response.json().catch(() => null);
       if (controller.signal.aborted || controllerRef.current !== controller)
         return;
+      if (
+        response.status === 401 ||
+        response.status === 403 ||
+        (response.status === 409 && data?.error?.code === "profile_changed")
+      ) {
+        await refresh(false);
+        return;
+      }
       if (!response.ok)
         throw new Error(
           data?.error?.message ||

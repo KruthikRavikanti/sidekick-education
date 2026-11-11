@@ -6,6 +6,8 @@
     "dev": "next dev --hostname 0.0.0.0",
     "dev:demo": "node scripts/dev.mjs --fixtures",
     "dev:all": "node scripts/dev.mjs",
+    "db:migrate": "backend/.venv/bin/python -m backend.accounts migrate",
+    "db:seed": "backend/.venv/bin/python -m backend.accounts seed",
     "build": "next build",
     "start": "next start --hostname 0.0.0.0",
     "typecheck": "next typegen && tsc --noEmit",
