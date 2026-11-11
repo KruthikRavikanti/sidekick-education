@@ -1,16 +1,11 @@
 "use client";
 import { useState } from "react";
-import { api, errorMessage } from "@/lib/account-api";
 import type { LearningSkill } from "@/lib/learning-types";
-import { FormError } from "./account-ui";
 
 export const learningLabels = {
-  unassessed: "Unassessed",
+  unassessed: "Not enough evidence",
   on_track: "On track",
-  checking: "Checking",
-  gap: "Gap",
-  practicing: "Practicing",
-  mastered: "Mastered",
+  needs_support: "Needs support",
 };
 function detail(value: unknown): string {
   if (typeof value === "string") return value;
@@ -31,51 +26,22 @@ function detail(value: unknown): string {
   }
   return String(value ?? "");
 }
-export function GapInsights({
-  skills,
-  kidId,
-}: {
-  skills: LearningSkill[];
-  kidId: string;
-}) {
+export function GapInsights({ skills }: { skills: LearningSkill[] }) {
   const [filter, setFilter] = useState("");
   const [all, setAll] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState<string | null>(null);
   const filtered = skills.filter((skill) =>
     `${skill.name} ${skill.commonCoreCode}`
       .toLowerCase()
       .includes(filter.toLowerCase()),
   );
-  async function send(skill: LearningSkill) {
-    setBusy(skill.id);
-    setError(null);
-    setMessage(null);
-    try {
-      const result = await api<{ state: string }>(
-        `/api/learning/parent/${kidId}/extra-practice`,
-        { method: "POST", body: { subskillId: skill.subskillId || skill.id } },
-      );
-      setMessage(
-        result.state === "awaiting_items"
-          ? "This practice is waiting for suitable, verified questions. You can retry preparing it later."
-          : "Practice is ready, or already waiting, in your child’s practice area.",
-      );
-    } catch (caught) {
-      setError(errorMessage(caught));
-    } finally {
-      setBusy(null);
-    }
-  }
   return (
     <section className="dashboard-section">
       <div className="section-heading">
         <div>
           <h2>Where a little support can help.</h2>
           <p>
-            Based on eligible homework and practice. Gray means there’s no
-            assessment yet.
+            Homework observations show where support may help. Gray means there
+            isn’t enough reliable evidence yet.
           </p>
         </div>
       </div>
@@ -95,12 +61,6 @@ export function GapInsights({
           placeholder="Skill name or Common Core code"
         />
       </label>
-      <FormError message={error} />
-      {message && (
-        <p className="account-success" role="status">
-          {message}
-        </p>
-      )}
       {(["math", "ela"] as const).map((subject) => {
         const subset = filtered.filter((skill) => skill.subject === subject);
         return (
@@ -117,12 +77,15 @@ export function GapInsights({
                   </span>
                   <h4>{skill.name}</h4>
                   <code>{skill.commonCoreCode}</code>
-                  {["checking", "gap", "practicing"].includes(skill.status) && (
+                  {(skill.status !== "unassessed" ||
+                    Boolean(skill.evidence?.length)) && (
                     <details className="gap-details">
-                      <summary>See the learning story</summary>
+                      <summary>See homework observations</summary>
                       <p>
                         {skill.parentExplanation ||
-                          "A little focused practice can help build this skill."}
+                          (skill.status === "needs_support"
+                            ? "Homework suggests this skill could use support."
+                            : "These observations come from the child’s homework.")}
                       </p>
                       {skill.observedPattern && (
                         <p>
@@ -140,44 +103,11 @@ export function GapInsights({
                           ))}
                         </details>
                       )}
-                      {skill.traceback && skill.traceback.length > 0 && (
-                        <div>
-                          <strong>Steps checked</strong>
-                          <ol>
-                            {skill.traceback.map((step, i) => (
-                              <li key={i}>{detail(step)}</li>
-                            ))}
-                          </ol>
-                        </div>
-                      )}
-                      {Boolean(skill.currentPracticeTarget) && (
-                        <p>
-                          <strong>Practicing now:</strong>{" "}
-                          {skills.find(
-                            (target) =>
-                              target.id === skill.currentPracticeTarget,
-                          )?.name || detail(skill.currentPracticeTarget)}
-                        </p>
-                      )}
                       {skill.homeTip && (
                         <p>
                           <strong>Try at home:</strong> {skill.homeTip}
                         </p>
                       )}
-                      {skill.teacherSuggestion && (
-                        <p className="teacher-suggestion">
-                          {skill.teacherSuggestion}
-                        </p>
-                      )}
-                      <button
-                        className="text-button"
-                        disabled={busy !== null}
-                        onClick={() => void send(skill)}
-                      >
-                        {busy === skill.id
-                          ? "Preparing…"
-                          : "Send extra practice"}
-                      </button>
                     </details>
                   )}
                 </article>

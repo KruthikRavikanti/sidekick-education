@@ -1,10 +1,4 @@
-export type LearningStatus =
-  | "unassessed"
-  | "on_track"
-  | "checking"
-  | "gap"
-  | "practicing"
-  | "mastered";
+export type LearningStatus = "unassessed" | "on_track" | "needs_support";
 export interface LearningSkill {
   id: string;
   name: string;
@@ -16,25 +10,6 @@ export interface LearningSkill {
   observedPattern?: string;
   homeTip?: string;
   evidence?: unknown[];
-  traceback?: unknown[];
-  currentPracticeTarget?: unknown;
-  teacherSuggestion?: string | null;
-}
-export interface PracticeItem {
-  assignmentId: string;
-  assignmentItemId: string;
-  itemId: string;
-  purpose: "check" | "practice" | "recheck";
-  question: string;
-  context: Record<string, unknown> | string;
-  responseSpec: Record<string, unknown>;
-  readAloud: string | null;
-}
-export interface PracticeSession {
-  sessionId: string | null;
-  items: PracticeItem[];
-  pendingCount: number;
-  message: string;
 }
 export interface UploadRecord {
   id: string;

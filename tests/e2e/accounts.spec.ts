@@ -72,17 +72,18 @@ test("parent signs up, sets a PIN, adds two children, and explores real learning
     page.getByText("Learning activity", { exact: true }),
   ).toBeVisible();
   await expect(page.locator(".skill-card").first()).toBeVisible();
-  await expect(page.locator(".skill-card:not(.skill-card-unassessed)")).toHaveCount(0);
-  await expect(page.getByLabel("Skill status legend").getByText("Unassessed", { exact: true })).toBeVisible();
+  await expect(
+    page.locator(".skill-card:not(.skill-card-unassessed)"),
+  ).toHaveCount(0);
+  await expect(
+    page
+      .getByLabel("Skill status legend")
+      .getByText("Not enough evidence", { exact: true }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Analytics", exact: true }).click();
-  for (const label of [
-    "Sessions this week",
-    "Time spent",
-    "Problems attempted",
-    "Problems correct",
-  ])
+  for (const label of ["Questions read", "Correct answers", "Not graded yet"])
     await expect(page.getByText(label, { exact: true })).toBeVisible();
-  await expect(page.locator(".metric-card strong")).toHaveText(["0", "0 min", "0", "0", "0"]);
+  await expect(page.locator(".metric-card strong")).toHaveText(["0", "0", "0"]);
   await page
     .getByRole("button", { name: "Conversations", exact: true })
     .click();

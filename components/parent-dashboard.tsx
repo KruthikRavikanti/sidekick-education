@@ -5,7 +5,6 @@ import {
   Check,
   ChevronLeft,
   Clock3,
-  Flame,
   KeyRound,
   MessageCircle,
   Pencil,
@@ -27,7 +26,6 @@ import type {
 import { RequireMode, useAccountSession } from "./account-session";
 import { GapInsights } from "./gap-insights";
 import { HomeworkUploads } from "./homework-uploads";
-import { AdultPractice } from "./adult-practice";
 import {
   AccountShell,
   AVATARS,
@@ -42,14 +40,12 @@ type Tab =
   | "conversations"
   | "profiles"
   | "settings"
-  | "homework"
-  | "together";
+  | "homework";
 const tabs: { key: Tab; label: string }[] = [
   { key: "skills", label: "Skills" },
   { key: "analytics", label: "Analytics" },
   { key: "conversations", label: "Conversations" },
   { key: "homework", label: "Homework" },
-  { key: "together", label: "Try this together" },
   { key: "profiles", label: "Children" },
   { key: "settings", label: "Settings" },
 ];
@@ -466,32 +462,21 @@ function LearningViews({ data, tab }: { data: DashboardData; tab: Tab }) {
       if (!controller.signal.aborted) setLoading(false);
     }
   }
-  if (tab === "skills")
-    return <GapInsights skills={data.skills} kidId={data.profile.id} />;
+  if (tab === "skills") return <GapInsights skills={data.skills} />;
   if (tab === "analytics") {
     const metrics = [
       {
-        title: "Sessions this week",
-        value: data.analytics.sessionsThisWeek,
-        icon: <Flame size={20} />,
-      },
-      {
-        title: "Time spent",
-        value: `${data.analytics.timeSpentMinutes} min`,
-        icon: <Clock3 size={20} />,
-      },
-      {
-        title: "Problems attempted",
+        title: "Questions read",
         value: data.analytics.problemsAttempted,
         icon: <Target size={20} />,
       },
       {
-        title: "Problems correct",
+        title: "Correct answers",
         value: data.analytics.problemsCorrect,
         icon: <Check size={20} />,
       },
       {
-        title: "Problems ungraded",
+        title: "Not graded yet",
         value: data.analytics.problemsUngraded ?? 0,
         icon: <Clock3 size={20} />,
       },
@@ -500,10 +485,10 @@ function LearningViews({ data, tab }: { data: DashboardData; tab: Tab }) {
       <section className="dashboard-section">
         <div className="section-heading">
           <div>
-            <h2>A little progress adds up.</h2>
+            <h2>Your homework picture.</h2>
             <p>
-              {data.profile.firstName}’s sessions and active time this week.
-              Problem totals cover all recorded practice, checks, and rechecks.
+              {data.profile.firstName}’s uploaded homework, with each distinct
+              question counted once. Blank or unclear responses stay ungraded.
             </p>
           </div>
         </div>
@@ -526,8 +511,8 @@ function LearningViews({ data, tab }: { data: DashboardData; tab: Tab }) {
           <div>
             <h2>Homework conversations</h2>
             <p>
-              Homework uploads and practice don’t create tutoring chat.
-              Conversations will appear when that milestone is available.
+              Homework uploads don’t create tutoring chat. Conversations will
+              appear when that milestone is available.
             </p>
           </div>
         </div>
@@ -729,17 +714,13 @@ function ParentContent() {
           selected ? (
             <HomeworkUploads key={selected} kidId={selected} />
           ) : null
-        ) : effectiveTab === "together" ? (
-          selected ? (
-            <AdultPractice key={selected} kidId={selected} />
-          ) : null
         ) : (
           <>
             <div className="sample-insights-label">
               <span>Learning activity</span>
               <p>
-                Based on recorded homework and practice. Skills without enough
-                eligible evidence remain unassessed.
+                Based on recorded homework. Skills without enough reliable
+                evidence are marked “Not enough evidence.”
               </p>
             </div>
             {data ? (
