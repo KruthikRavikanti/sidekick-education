@@ -23,6 +23,9 @@ from .provider import ExtractionError, extract_with_vision
 
 ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(ROOT / "backend" / ".env")
+
+from .accounts.api import router as accounts_router, SessionSecurityMiddleware
+from .accounts.security import AccountError, require_kid_context, assert_kid_context
 MAX_IMAGE_BYTES = 10 * 1024 * 1024
 MAX_BODY_BYTES = MAX_IMAGE_BYTES + 64 * 1024
 MAX_PIXELS = 24_000_000
@@ -76,11 +79,20 @@ class BoundedBodyMiddleware:
         await self.app(scope, bounded_receive, send)
 
 
-app = FastAPI(title="Sidekick Worksheet Extraction", version="0.1.0")
+app = FastAPI(title="Sidekick", version="0.2.0", docs_url=None, redoc_url=None, openapi_url=None)
+app.include_router(accounts_router)
 app.add_middleware(BoundedBodyMiddleware)
+app.add_middleware(SessionSecurityMiddleware)
 app.add_middleware(CORSMiddleware,
                    allow_origins=[os.getenv("FRONTEND_ORIGIN", "http://localhost:3000")],
-                   allow_methods=["GET", "POST"], allow_headers=["Content-Type"])
+                   allow_credentials=True,
+                   allow_methods=["GET", "POST", "PATCH", "DELETE"],
+                   allow_headers=["Content-Type", "X-CSRF-Token"])
+
+
+@app.exception_handler(AccountError)
+async def account_error_handler(_request, exc):
+    return error_response(exc.code, exc.message, exc.status)
 
 
 @app.exception_handler(ExtractionError)
@@ -89,13 +101,18 @@ async def extraction_error_handler(_request, exc):
 
 
 @app.exception_handler(RequestValidationError)
-async def validation_error_handler(_request, _exc):
-    return error_response("invalid_upload", "Choose one worksheet image and try again.", 400)
+async def validation_error_handler(request, _exc):
+    if request.url.path == "/api/extract":
+        return error_response("invalid_upload", "Choose one worksheet image and try again.", 400)
+    return error_response("invalid_request", "Check the information and try again.", 400)
 
 
 @app.exception_handler(StarletteHTTPException)
-async def http_error_handler(_request, exc):
-    return error_response("invalid_upload", "Choose one worksheet image and try again.", exc.status_code)
+async def http_error_handler(request, exc):
+    if request.url.path == "/api/extract":
+        return error_response("invalid_upload", "Choose one worksheet image and try again.", exc.status_code)
+    return error_response("not_found" if exc.status_code == 404 else "invalid_request",
+                          "This page could not be found." if exc.status_code == 404 else "The request could not be completed.", exc.status_code)
 
 
 def prepare_image(data: bytes, mime: str) -> bytes:
@@ -145,6 +162,7 @@ async def health():
 
 @app.post("/api/extract", response_model=ExtractionResponse)
 async def extract(request: Request):
+    kid_id, session_version = require_kid_context(request)
     if not request.headers.get("content-type", "").lower().startswith("multipart/form-data"):
         raise ExtractionError("invalid_upload", "Choose one worksheet image and try again.", 400)
     async with request.form(max_files=1, max_fields=0, max_part_size=MAX_IMAGE_BYTES) as form:
@@ -162,4 +180,5 @@ async def extract(request: Request):
         if not result.problems:
             raise ExtractionError("unreadable_page", "We couldn't find readable problems. Retake the photo with the whole worksheet in focus.", 422)
         response = ExtractionResponse(**result.model_dump(), source=source)
+        assert_kid_context(request, kid_id, session_version)
         return JSONResponse(response.model_dump(), headers={"Cache-Control": "no-store"})

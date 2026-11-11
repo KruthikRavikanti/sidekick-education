@@ -14,3 +14,9 @@ test-results/
 .DS_Store
 *.tsbuildinfo
 next-env.d.ts
+backend/data/
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal

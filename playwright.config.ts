@@ -1,4 +1,8 @@
 import { defineConfig } from "@playwright/test";
+import os from "node:os";
+import path from "node:path";
+
+process.env.SIDEKICK_E2E_DATABASE_URL ||= `sqlite:///${path.join(os.tmpdir(), `sidekick-e2e-${process.pid}-${Date.now()}.sqlite3`)}`;
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -19,9 +23,16 @@ export default defineConfig({
   webServer: [
     {
       command:
-        "backend/.venv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --no-access-log",
+        "backend/.venv/bin/python -m backend.accounts migrate && backend/.venv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --no-access-log",
       url: "http://127.0.0.1:8000/api/health",
-      env: { SIDEKICK_FIXTURE_MODE: "true" },
+      env: {
+        SIDEKICK_FIXTURE_MODE: "true",
+        DATABASE_URL: process.env.SIDEKICK_E2E_DATABASE_URL,
+        APP_ENV: "test",
+        PASSWORD_POLICY: "dev",
+        COOKIE_SECURE: "false",
+        TRUSTED_ORIGINS: "http://localhost:3000",
+      },
       reuseExistingServer: false,
       timeout: 30_000,
     },
