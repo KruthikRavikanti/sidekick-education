@@ -36,11 +36,11 @@ def record(security, child, index, correctness='incorrect', *, eligible=True, co
         correctness, eligible, confidence, question=question or f'Distinct homework question {index}', fingerprint=fingerprint)
 
 
-def test_two_distinct_errors_are_observations_without_diagnostic_actions():
+def test_one_eligible_error_suggests_support_without_diagnostic_actions():
     first, actions = reduce_state(None, [event(1)])
-    assert first['status'] == 'unassessed' and not actions
+    assert first['status'] == 'needs_support' and first['incorrect_count'] == 1 and not actions
     repeated, actions = reduce_state(first, [event(2, source_ref='p1')])
-    assert repeated['incorrect_count'] == 1 and not actions
+    assert repeated['status'] == 'needs_support' and repeated['incorrect_count'] == 1 and not actions
     supported, actions = reduce_state(repeated, [event(3)])
     assert supported['status'] == 'needs_support' and supported['incorrect_count'] == 2 and not actions
     assert not any(key in supported for key in ('streak', 'streak_dates', 'next_recheck_date', 'episode'))
@@ -58,19 +58,24 @@ def test_only_usable_homework_contributes_and_correct_is_not_mastery():
               event(3, correctness='correct'), event(4, correctness='incorrect', eligible=False)]
     state, actions = reduce_state(None, events)
     assert state['status'] == 'on_track' and state['correct_count'] == 1
-    state, _ = reduce_state(state, [event(5), event(6)])
-    assert state['status'] == 'needs_support'
-    state, _ = reduce_state(state, [event(7, correctness='correct')])
+    state, _ = reduce_state(state, [event(5)])
+    assert state['status'] == 'needs_support' and state['incorrect_count'] == 1
+    state, _ = reduce_state(state, [event(6, correctness='correct')])
     assert state['status'] == 'needs_support' and not actions
 
 
 def test_evidence_retries_duplicates_and_low_confidence_do_not_schedule_work(security_context, family):
     child, _ = family
+    for index, kwargs in [(-1, {'eligible': False}), (-2, {'confidence': .59}),
+                          (-3, {'correctness': 'ungraded'})]:
+        excluded = record(security_context, child, index, **kwargs)
+        assert excluded['state']['status'] == 'unassessed' and not excluded['eligible']
     first = record(security_context, child, 1, fingerprint='same-question')
     same = record(security_context, child, 1, fingerprint='same-question')
     duplicate = record(security_context, child, 2, fingerprint='same-question')
     record(security_context, child, 3, confidence=.59)
     record(security_context, child, 4, correctness='ungraded')
+    assert first['state']['status'] == 'needs_support'
     assert first['evidenceId'] == same['evidenceId'] and not duplicate['eligible']
     assert record(security_context, child, 5)['state']['status'] == 'needs_support'
     with security_context.db.transaction() as conn:
@@ -88,18 +93,21 @@ def test_delete_homework_recomputes_observations_without_discarding_other_histor
         conn.execute("INSERT INTO learning_evidence(kid_id,subskill_id,source,source_ref,correctness,eligible,created_at) VALUES(?,?,'practice','historical','correct',1,?)", (child['id'], SUBSKILL, security_context.clock.now()))
     service.remove_homework_evidence(security_context, child['id'], ['p1'], expected_session=active)
     with security_context.db.transaction() as conn:
-        assert service._state(conn, child['id'], SUBSKILL)['status'] == 'unassessed'
+        assert service._state(conn, child['id'], SUBSKILL)['status'] == 'needs_support'
         assert conn.execute("SELECT 1 FROM learning_evidence WHERE source='practice'").fetchone()
     service.remove_homework_evidence(security_context, child['id'], ['p2'], expected_session=active)
     with security_context.db.transaction() as conn:
-        assert service._state(conn, child['id'], SUBSKILL)['observations'] == {}
+        state = service._state(conn, child['id'], SUBSKILL)
+        assert state['status'] == 'unassessed' and state['observations'] == {}
 
 
 def test_parent_dashboard_is_read_only_and_homework_only(security_context, family, monkeypatch):
     child, active = family
     record(security_context, child, 1)
-    record(security_context, child, 2)
     with security_context.db.transaction() as conn:
+        # An existing cache from the former two-error threshold must not conceal
+        # the single retained incorrect observation or require a new upload.
+        service._save_state(conn, child['id'], SUBSKILL, initial_state(), security_context.clock.now())
         conn.execute("INSERT INTO learning_evidence(kid_id,subskill_id,source,source_ref,correctness,eligible,created_at) VALUES(?,?,'practice','old-mastered','correct',1,?)", (child['id'], '3.OA.A.2-1', security_context.clock.now()))
     original_connect = security_context.db.connect
     statements = []
@@ -112,6 +120,7 @@ def test_parent_dashboard_is_read_only_and_homework_only(security_context, famil
     assert not any(statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE', 'CREATE', 'ALTER', 'DROP')) for statement in statements)
     with security_context.db.transaction() as conn:
         assert not conn.execute('SELECT 1 FROM practice_assignments').fetchone()
+        assert service._state(conn, child['id'], SUBSKILL)['status'] == 'unassessed'
     by_id = {skill['id']: skill for skill in data['skills']}
     assert by_id[SUBSKILL]['status'] == 'needs_support'
     assert by_id['3.OA.A.2-1']['status'] == 'unassessed'

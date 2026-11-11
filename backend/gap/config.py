@@ -9,7 +9,7 @@ from zoneinfo import ZoneInfo
 @dataclass(frozen=True)
 class LearningConfig:
     timezone: str = 'America/New_York'
-    homework_errors_for_support: int = 2
+    homework_errors_for_support: int = 1
     mapping_confidence: float = .6
 
     def date(self, timestamp: float) -> str:

@@ -35,7 +35,7 @@ async function enterParent(page: Page) {
   await expect(page).toHaveURL(/\/parent\/dashboard$/);
 }
 
-test("student work observations show support needs without assigning a diagnostic or practice", async ({
+test("one incorrect student work response suggests support without assigning a diagnostic or practice", async ({
   page,
   context,
 }) => {
@@ -57,7 +57,7 @@ test("student work observations show support needs without assigning a diagnosti
   await expect(card.getByText("Needs support", { exact: true })).toBeVisible();
   await card.getByText("See work observations", { exact: true }).click();
   await expect(
-    card.getByText("Uploaded evidence (2)", { exact: true }),
+    card.getByText("Uploaded evidence (1)", { exact: true }),
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Send extra practice", exact: true }),

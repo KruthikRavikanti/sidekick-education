@@ -29,10 +29,9 @@ def main():
             raise RuntimeError('The seeded catalog does not include the expected student work skill.')
         subskill_id = target['id']
         raw = json.loads(target['raw_json'])
-    for index in range(2):
-        service.record_homework_evidence(security, kid_id, f'e2e:{kid_id}:problem:{index}', subskill_id, 'incorrect', True, .99,
-            {'status': 'other', 'explanation': 'Two distinct synthetic reading responses show where support may help.'},
-            fingerprint=f'e2e:{kid_id}:question:{index}', question=f'Synthetic visible word task {index + 1}')
+    service.record_homework_evidence(security, kid_id, f'e2e:{kid_id}:problem:0', subskill_id, 'incorrect', True, .99,
+        {'status': 'other', 'explanation': 'One synthetic reading response shows where support may help.'},
+        fingerprint=f'e2e:{kid_id}:question:0', question='Synthetic visible word task 1')
     with security.db.transaction() as conn:
         assignments = conn.execute('SELECT COUNT(*) FROM practice_assignments WHERE kid_id=?', (kid_id,)).fetchone()[0]
         chains = conn.execute('SELECT COUNT(*) FROM gap_chains WHERE kid_id=?', (kid_id,)).fetchone()[0]

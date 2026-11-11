@@ -13,8 +13,8 @@ def reduce_state(current, events, completed_assignments=None,
                  config: LearningConfig = CONFIG, now: float = 0):
     """Accumulate distinct eligible homework observations without scheduling work.
 
-    A correct observation supports on_track. Repeated distinct incorrect homework
-    observations suggest needs_support; this is not a diagnostic confirmation or
+    A correct observation supports on_track. Eligible incorrect work at the
+    configured threshold suggests needs_support; this is not a diagnostic confirmation or
     a mastery judgment. Historical check/practice/recheck events are ignored.
     The application supplies the full retained homework history when recomputing.
     """

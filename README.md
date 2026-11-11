@@ -75,8 +75,8 @@ The parent Skills view summarizes eligible student work evidence:
 | Status | Meaning |
 | --- | --- |
 | `unassessed` | There is not enough reliable student work evidence to summarize the skill. |
-| `on_track` | At least one eligible correct response supports progress, without repeated incorrect observations. |
-| `needs_support` | Two distinct eligible incorrect student work responses show where support may help. This is a student work observation, not a confirmed diagnostic result. |
+| `on_track` | At least one eligible correct response supports progress, with no eligible incorrect responses. |
+| `needs_support` | One confidently graded, eligible incorrect response shows where support may help. This is a student work observation, not a confirmed diagnostic result. |
 
 `backend/gap/config.json` contains the application timezone, mapping confidence threshold, and number of distinct incorrect student work responses needed for a support observation.
 
