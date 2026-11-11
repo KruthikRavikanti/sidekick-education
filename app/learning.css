@@ -1,0 +1,126 @@
+.learning-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: 800;
+  margin: 15px 0;
+  max-width: 470px;
+  font-size: 12px;
+}
+.learning-filter input {
+  font: inherit;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cdd5c7;
+  border-radius: 12px;
+  background: white;
+  color: var(--forest);
+}
+.gap-details {
+  margin-top: 16px;
+  font-size: 12px;
+  font-family: Nunito, sans-serif;
+  font-weight: 400;
+}
+.gap-details summary {
+  font-weight: 800;
+  cursor: pointer;
+  line-height: 1.7;
+}
+.gap-details p {
+  margin: 13px 0;
+  line-height: 1.7;
+}
+.skill-status.skill-on_track {
+  background: #e7f1e5;
+  color: #1d6335;
+}
+.skill-card-on_track {
+  border-bottom: 4px solid #7da97e;
+}
+.teacher-suggestion {
+  background: #f5ead6;
+  border-radius: 10px;
+  padding: 12px;
+}
+.upload-file-label {
+  position: relative;
+  width: max-content;
+  margin: 18px 0;
+  cursor: pointer;
+}
+.upload-file-label:focus-within {
+  outline: 3px solid #b7ce63;
+  outline-offset: 4px;
+}
+.homework-history {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 20px 0;
+}
+.homework-history > article {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  flex-wrap: wrap;
+}
+.homework-history > article > div {
+  flex: 1;
+  min-width: 170px;
+}
+.homework-history p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.homework-details {
+  margin-top: 30px;
+}
+.homework-details > .results {
+  margin-top: 24px;
+}
+.homework-observation {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 14px;
+  border-radius: 12px;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.homework-observation p {
+  line-height: 1.7;
+  margin-top: 7px;
+}
+.pdf-preview {
+  min-height: 240px;
+  display: grid;
+  place-content: center;
+  background: #f5f6ed;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  text-align: center;
+}
+.pdf-preview strong {
+  font:
+    500 35px Fredoka,
+    sans-serif;
+}
+.pdf-preview p {
+  font-size: 13px;
+  line-height: 1.8;
+  margin-top: 12px;
+}
+@media (max-width: 700px) {
+  .homework-history > article {
+    padding: 14px;
+  }
+  .homework-history .text-button {
+    font-size: 11px;
+  }
+}

@@ -40,7 +40,9 @@ class Database:
         try:
             connection = self.connect()
             try:
-                ready = connection.execute("SELECT 1 FROM schema_migrations WHERE version='001_accounts.sql'").fetchone()
+                applied = {row[0] for row in connection.execute("SELECT version FROM schema_migrations")}
+                required = {path.name for path in (ROOT / "backend" / "migrations").glob("*.sql")}
+                ready = required.issubset(applied)
             finally:
                 connection.close()
             if not ready:

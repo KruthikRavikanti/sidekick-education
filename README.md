@@ -1,8 +1,8 @@
 # Sidekick
 
-Sidekick is a local K–5 family prototype. A parent owns an email/password account, creates up to six child profiles, and enters a PIN-protected parent dashboard. Children choose their profile to open homework help or the practice placeholder. Homework help retains the photo → preview → **Read worksheet** → extraction results flow; it does not grade, correct, or solve answers.
+Sidekick is a local K–5 family prototype built with Next.js/TypeScript, FastAPI/Pydantic, and SQLite. Parents create profiles, unlock a PIN-protected dashboard, and review uploaded student work. Children upload a photo or PDF of a worksheet, quiz, test, or other Math/ELA work and review the verbatim extraction. Skill-building activities are a future milestone; the standalone Practice section and diagnostic quizzes have been removed. The existing [Sidekick design kit](https://preview--sidekick-colorway-studio.lovable.app/?__lovable_receipt=mat_6nx4bc71428r69zqdx974t1cnk), colors, components, and locally hosted fonts are retained.
 
-The interface uses Next.js and TypeScript; the API uses FastAPI and Pydantic. The empty starting workspace had no components to reuse, so the app reuses the original Sidekick kit’s logo vectors, palette, Fredoka headings, and Nunito body font. Fonts are served locally with their OFL licenses. Design reference: [Sidekick colorway studio](https://preview--sidekick-colorway-studio.lovable.app/?__lovable_receipt=mat_6nx4bc71428r69zqdx974t1cnk).
+The gap engine extends the parent-account implementation. Its branch, `feature/gap-engine`, is stacked on `feature/parent-accounts-dashboard` ([PR #1](https://github.com/KruthikRavikanti/sidekick-education/pull/1)); review the gap changes against that parent branch while it remains unmerged.
 
 ## Local setup
 
@@ -14,153 +14,143 @@ python3 -m venv backend/.venv
 backend/.venv/bin/python -m pip install -r backend/requirements.txt
 cp -n .env.example .env.local
 cp -n backend/.env.example backend/.env
-```
-
-For existing checkouts, retain your vision credentials and add the account settings from `backend/.env.example` to `backend/.env`. The explicit localhost configuration is `APP_ENV=development`, `PASSWORD_POLICY=dev`, `COOKIE_SECURE=false`, and `TRUSTED_ORIGINS=http://localhost:3000`.
-
-### One-time database migration
-
-```sh
 npm run db:migrate
-```
-
-This applies the versioned SQL migrations in `backend/migrations/` to `DATABASE_URL` (default `sqlite:///backend/data/sidekick.db`). Relative SQLite paths resolve from the repository root. Run the command again after pulling new migrations; already-applied migrations are skipped. Account sessions, PIN lockouts, and profile records persist across backend restarts. SQLite databases and credentials are Git-ignored. No migration touches worksheet images or retains extraction results.
-
-Optional, explicit development-only seed:
-
-```sh
-APP_ENV=development PASSWORD_POLICY=dev COOKIE_SECURE=false npm run db:seed
-```
-
-The demo parent is **`parent@example.com`**, password **`password`**, with **Alex** (grade 3) and **Maya** (grade 1). The PIN starts unset. Running the seed again preserves the existing account, password, PIN, and profiles. It is rejected outside development/test or without the development password policy.
-
-For an offline walkthrough, start both servers from the repository root with one command:
-
-```sh
-npm run dev:demo
-```
-
-Keep that terminal open while using Sidekick. Wait for **Sidekick is ready: http://localhost:3000**, then open that address. Ctrl+C stops both servers. The launcher checks dependencies and ports 3000/8000 and reports an actionable error if either server cannot start; it never silently switches ports. `npm run dev` remains available for starting only the Next.js interface when you already run FastAPI separately.
-
-Open **http://localhost:3000** and sign up or log in with the demo parent. On **Who’s learning today?**, choose **Parent**, verify the account password to set a 4–6 digit PIN twice, then enter that PIN to unlock parent mode. Add or edit children from the dashboard. **Switch profile** returns to the picker and locks parent mode. Choose a child → **Get help with my homework** → **Fractions** or **Reading**, inspect the photo, then tap **Read worksheet**.
-
-You can also upload the exact PNGs in `public/samples/`. Sample mode is visibly labeled, returns `source: "fixture"`, and accepts only those images by SHA-256. Arbitrary uploads never receive fabricated sample results. Camera controls use the phone’s file/camera picker; the browser decides which picker it presents. Camera access on a phone generally requires HTTPS or localhost.
-
-### Accounts, PINs, and access
-
-| Backend variable  | Local example                        | Behavior                                                                                                           |
-| ----------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| `DATABASE_URL`    | `sqlite:///backend/data/sidekick.db` | SQLite prototype database; migrate before first use.                                                               |
-| `APP_ENV`         | `development`                        | Defaults to `production`. Only `development`/`test` permit relaxed passwords and HTTP cookies.                     |
-| `PASSWORD_POLICY` | `dev`                                | `strict` by default; explicitly select `dev` for local passwords such as `password`.                               |
-| `COOKIE_SECURE`   | `false`                              | Local HTTP only. Defaults to `true` outside development/test; use HTTPS and secure cookies for other environments. |
-| `TRUSTED_ORIGINS` | `http://localhost:3000`              | Exact comma-separated allowed origins. HTTPS required outside development/test.                                    |
-
-**TODO: Turn on strict password rules before pilot.** Use `PASSWORD_POLICY=strict`, secure HTTPS cookies, and your exact HTTPS origin before any pilot; the development seed is not a production bootstrap.
-
-Passwords and parent PINs use salted Argon2id through `argon2-cffi`, following [OWASP password storage guidance](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html). Emails are normalized before a unique database constraint. Account sessions use opaque tokens whose digests are stored server-side, with a 30-day expiry. Cookies are HttpOnly, have explicit SameSite, and use `__Host-` names in secure mode. No password, PIN, hash, or session token is returned in screen data or logged.
-
-Parent unlock belongs to one account session. Parent data is checked by FastAPI on every request; kid endpoints also require the currently selected, owned child. Five wrong PIN attempts lock the account’s PIN gate for five minutes, including across browser sessions and backend restarts. Parent mode expires after 30 idle minutes using server time. Dashboard reads and background checks do not extend it; genuine parent interactions call the activity endpoint. Reloading or going back conservatively locks parent mode before protected UI is shown. Profile switching aborts requests, clears previous-profile UI, and synchronizes tabs sharing the session.
-
-Changing/resetting the PIN clears existing parent unlocks and requires the new PIN. Password changes require the current password, revoke all old account sessions, and issue a fresh picker session. Logout revokes its server session and expires its cookie. Forgot password is an informational placeholder for future email recovery; Forgot PIN uses the account password and a confirmed replacement PIN.
-
-The dashboard’s skill heat map, analytics, and conversation transcripts are explicitly **sample learning data**. Typed data-access functions accept account and child IDs and check ownership. They are independent of worksheet extraction. Common Core labels reference [Math standards](https://www.thecorestandards.org/Math/) and [ELA standards](https://www.thecorestandards.org/ELA-Literacy/); sample statuses are not an assessment of a child.
-
-## Live extraction configuration
-
-Set these in `backend/.env`, then start both servers in live mode with `npm run dev:all`:
-
-| Variable                 | Required  | Purpose                                                                                                                                          |
-| ------------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `VISION_API_KEY`         | Live mode | Server-side provider credential.                                                                                                                 |
-| `VISION_MODEL`           | Live mode | Vision-capable model ID supporting strict structured output. No model is silently selected.                                                      |
-| `VISION_BASE_URL`        | Optional  | OpenAI-compatible API root; defaults to `https://api.openai.com/v1`. The adapter appends `/chat/completions`. HTTPS required except on loopback. |
-| `VISION_TIMEOUT_SECONDS` | Optional  | Provider request timeout; defaults to `60` (range 1–180). The interface stops waiting after 90 seconds.                                          |
-| `SIDEKICK_FIXTURE_MODE`  | Optional  | Defaults to `false`. Set `true` only for the explicitly labeled, deterministic sample walkthrough.                                               |
-| `FRONTEND_ORIGIN`        | Optional  | Direct API CORS origin; defaults to `http://localhost:3000`. The normal interface uses a same-origin Next.js rewrite.                            |
-
-When starting the interface separately, Next.js reads `BACKEND_URL` from `.env.local` (default `http://127.0.0.1:8000`) to forward `/api/*` to FastAPI. Restart Next.js after changing it. The combined launchers explicitly use the local API at `http://127.0.0.1:8000`. No provider credentials are sent to the browser.
-
-```sh
+npm run catalog:seed
 npm run dev:all
 ```
 
-The provider must accept `messages` with an `image_url` data URL and `response_format: {type: "json_schema", json_schema: {strict: true, ...}}`, following the official OpenAI documentation for [image inputs](https://developers.openai.com/api/docs/guides/images-vision) and [structured outputs](https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=chat). The adapter validates the complete response with Pydantic and rejects refusals, truncated output, malformed JSON, invalid references, inconsistent statuses, and pages with no extractable problems. It does not fall back to unvalidated text or fixtures. Live extraction has been verified with the configured provider on the two synthetic worksheets; other providers and models still require compatibility checks.
+Open **http://localhost:3000** after the launcher prints that Sidekick is ready. Keep the terminal open; Ctrl+C stops both servers. The launcher checks ports 3000/8000 and dependencies without switching ports. `npm run dev` starts only Next.js. To start FastAPI separately:
+
+```sh
+backend/.venv/bin/uvicorn backend.main:app --host 127.0.0.1 --port 8000 --no-access-log
+```
+
+Retain existing credentials when pulling updates. Add new settings from `backend/.env.example` instead of overwriting `backend/.env`. FastAPI reads that file; Next.js uses `.env.local` only for its server-side `BACKEND_URL` proxy. Restart servers after changing configuration. Never put credentials in `NEXT_PUBLIC_*` variables.
+
+Set **`VISION_API_KEY`** and **`VISION_MODEL`** in `backend/.env` to enable live extraction, skill mapping, supported language grading, and error-pattern observations through the shared adapter. The provider must support image input and strict JSON Schema on an OpenAI-compatible `/chat/completions` endpoint. `VISION_BASE_URL` defaults to `https://api.openai.com/v1`; `VISION_TIMEOUT_SECONDS` defaults to 60 (1–180). HTTPS is required except on loopback. No provider/model is silently selected.
+
+For an offline extraction walkthrough:
+
+```sh
+APP_ENV=development PASSWORD_POLICY=dev COOKIE_SECURE=false npm run db:seed
+npm run dev:demo
+```
+
+The optional seed creates `parent@example.com` / `password`, Alex (grade 3), and Maya (grade 1). The PIN starts unset; repeated seeding preserves existing credentials and profiles. Sign in, choose Parent, verify the account password to set a 4–6 digit PIN, and unlock the dashboard. Switch profile to choose a child and tap **Upload work**.
+
+Demo mode accepts only the two exact images under `public/samples/` and labels extraction `source: "fixture"`. It creates no fabricated learning evidence. Automated tests inject explicit model stubs when testing student work analysis.
+
+## Migrations and catalog seeding
+
+Run these after pulling migrations or catalog/compiler changes:
+
+```sh
+npm run db:migrate
+npm run catalog:seed
+# Optional: save the import report, or import a reviewed catalog revision.
+npm run catalog:seed -- --report /tmp/sidekick-catalog-report.json
+npm run catalog:seed -- --path /path/to/reviewed-catalog.json
+```
+
+Migrations `001`–`004` add accounts, the catalog, learning records, and private student work storage. Migration `005` retires the former check/practice workflow, archives its skill-state snapshot privately, and closes pending assignments, sessions, and chains without deleting historical attempts or evidence. Already-applied migrations are skipped. `DATABASE_URL` defaults to `sqlite:///backend/data/sidekick.db`; relative SQLite paths resolve from the repository root. Back up the database and private uploads together before moving this local prototype.
+
+`data/sidekick_skill_map_v2.json` is the supplied, unchanged draft. Its SHA-256 is `7c7b3a98cdf51bb48b53bcef4c4d5e2c0015fc0845e40f6345a4962eeab1be23`. It contains **779 skills, 1,533 subskills, and 3,066 populated seed pairs**: 867 Math, 666 Reading/ELA, and 795 K–5 subskills. K–8 grades have explicit ordering; high-school math courses and ELA bands retain their separate string labels. Profiles remain K–5.
+
+The importer validates before a transaction, upserts stable IDs, preserves every raw source field, and derives subskill order from the numeric suffix. Seed slots have stable logical IDs (`subskill:p1` / `subskill:p2`) and immutable content versions. Reseeding replaces current relationships and retires removed records; attempts and assignment references keep their exact historical item versions. Repeating an unchanged import does not duplicate items.
+
+The checked-in [import report](data/catalog_import_report.json) records all counts and 37 graph warnings: 28 Low-confidence roots, five upward prerequisite directions, and four cycle edges across root/skill graphs. This includes the High-confidence `A-SSE.B.3-1` ↔ `A-REI.B.4-3` cycle and Algebra 1 → Algebra 2 links. Raw links remain stored and unsafe links are marked unusable. The current student work flow does not initiate prerequisite traversal or checks.
+
+The retained catalog compiler records **101 ready, verified item specifications**, **1,941 adult-required specifications**, and **1,024 missing-context specifications**. All 3,066 seed pairs and their immutable versions remain available as curriculum data for future activity development. The current app does not serve these as quizzes or standalone practice. Missing passages, choices, plots, and dependencies are not invented.
+
+## Student work observations and future activities
+
+Upload a JPG, PNG, WebP, or bounded PDF from the active child's **Upload work** action. Parents may also upload from the dashboard with a selected child. Preview, tap **Read my work**, and review problems in page order. Extraction preserves written mistakes, step order, fractions, shared context, and field-level uncertainty. Blank and unreadable responses remain distinct. Grading and mapping are separate stages; unsupported, blank, ambiguous, or unreadable work stays ungraded and cannot create incorrect skill evidence.
+
+Candidate retrieval uses the same subject and grades up to one above the child's grade, with at most ten candidates. High-school labels stay outside the K–5 retrieval window. Mapping below 0.6 abstains. A confidently mapped incorrect answer can separately receive a visible-work error-pattern observation. Teacher marks are observations; conflicts with grading are flagged for review. Scores are initial routing estimates, not calibrated assessment probabilities.
+
+Persistent uploads checkpoint extraction, grading, mapping, signatures, and evidence. Request keys, child-scoped file hashes, and problem fingerprints suppress recognized retries and duplicates. A stopped process can resume through **Retry** after its processing lease expires; this prototype uses in-process background tasks rather than a durable job worker. Authorization is rechecked after provider work and before returning profile-scoped results.
+
+The parent Skills view summarizes eligible student work evidence:
+
+| Status | Meaning |
+| --- | --- |
+| `unassessed` | There is not enough reliable student work evidence to summarize the skill. |
+| `on_track` | At least one eligible correct response supports progress, with no eligible incorrect responses. |
+| `needs_support` | One confidently graded, eligible incorrect response shows where support may help. This is a student work observation, not a confirmed diagnostic result. |
+
+`backend/gap/config.json` contains the application timezone, mapping confidence threshold, and number of distinct incorrect student work responses needed for a support observation.
+
+A repeated upload of the same question does not create a second observation. Ungraded or unmapped outcomes remain available for review without affecting skill states. The dashboard includes the source student work and any observed error pattern, parent explanation, and home tip. It does not initiate diagnostic checks, prerequisite quizzes, practice sessions, or scheduled rechecks. Student work alone does not award mastery.
+
+Activities are the intended future way to help children improve these skills. Activity creation, delivery, and activity-based progress rules are **not implemented in this revision**. There is no replacement quiz hidden behind an Activities label. Existing catalog content, item versions, and historical learning records are retained for that future work.
+
+The parent Analytics view currently shows **Questions read**, **Correct answers**, and **Not graded yet** from stored student work problems. Questions are deduplicated by child-scoped problem fingerprint. Each distinct question uses its first usable correct/incorrect grade in chronological order; if it has no usable grade, it stays ungraded. Mapping eligibility determines skill observations separately, so an unmapped but confidently graded problem can still count as a correct answer. Session counts, time spent, and practice totals are not presented as activity progress. Server timestamps are retained, along with the configured application timezone, **`America/New_York`**, for future activity work. Conversation history remains empty until a future chat milestone.
+
+The former Practice URL redirects to the child's home. Authenticated calls to retired check/practice/adult-review endpoints return `410 feature_removed` after the existing mode, ownership, and CSRF checks. Old pending work is retired by migration; historical records are retained privately and cannot continue generating evidence through those endpoints.
+
+## Privacy, storage, and configuration
+
+Account sessions, parent PINs, ownership checks, sibling isolation, profile switching, CSRF, and route protection remain in force. State-changing API requests require an exact trusted `Origin` and a session-bound `X-CSRF-Token` obtained from `GET /api/auth/csrf`. Parent mode expires after 30 idle minutes; five wrong PINs lock the account gate for five minutes. Passwords and PINs use Argon2id. Keep `PASSWORD_POLICY=strict`, HTTPS, and secure cookies before a pilot; local development explicitly uses `APP_ENV=development`, `PASSWORD_POLICY=dev`, `COOKIE_SECURE=false`, and `TRUSTED_ORIGINS=http://localhost:3000`.
+
+Original uploads and rendered pages are retained privately under the database directory's `uploads/` by default (`backend/data/uploads/`). Opaque filenames, mode 0600 files, and a mode 0700 directory are used. This location is Git-ignored and outside public assets. Override `SIDEKICK_PRIVATE_UPLOAD_DIR` only with another private, ignored directory, preferably outside the repository. Files are retrieved through authorized routes, never public URLs.
+
+Parent deletion removes an upload's original/pages, problems, and linked student work evidence, then recomputes affected states. Historical diagnostic/practice records are retained privately; the retired workflow cannot resume them. Deleting a child cascades its learning records and cleans its private files. There is no automatic retention deadline; parents delete retained uploads explicitly. Backups need the same privacy controls.
+
+Before model image calls, EXIF metadata is stripped and the top 6% of each page is masked by default. Known names/account identifiers and obvious email addresses are redacted from text model payloads. **This is not complete image de-identification:** names elsewhere in an image can reach the configured provider, and masking can hide a title or question. Model prompts treat uploaded work/catalog content as data. Private audits store internal references, task/model/prompt/catalog versions, outcome/confidence, and short redacted explanations. Ordinary errors/logs exclude uploaded page content, provider bodies, credentials, and filenames.
+
+| Backend setting | Default | Supported range / effect |
+| --- | --- | --- |
+| `SIDEKICK_PRIVATE_UPLOAD_DIR` | Database sibling `uploads/` | Private storage, outside `public/` |
+| `SIDEKICK_MAX_UPLOAD_MB` | `10` | 1–30 MiB for the learning upload API |
+| `SIDEKICK_MAX_PDF_PAGES` | `6` | 1–12 pages |
+| `SIDEKICK_MAX_PAGE_PIXELS` | `24000000` | 4,096–24,000,000 rendered pixels/page |
+| `SIDEKICK_MAX_TOTAL_PIXELS` | `72000000` | 4,096–144,000,000 rendered pixels/PDF |
+| `SIDEKICK_PDF_TIMEOUT_SECONDS` | `20` | 2–60 seconds, isolated renderer CPU/wall deadline |
+| `SIDEKICK_PDF_MEMORY_MB` | `1024` | 256–2,048 MiB process memory ceiling where supported |
+| `SIDEKICK_HEADER_REDACTION_FRACTION` | `0.06` | 0–0.2 of page height; zero disables masking |
+
+The PDF renderer rejects encrypted/invalid/oversized files and caps rendered output at 128 MiB. Photos also pass the reader's JPEG/PNG/WebP integrity, single-frame, minimum 64-pixel dimension, and 24-megapixel checks. Both upload APIs use the configured size bound. Limits apply before provider calls. The renderer is a bounded local process, not a hardened isolation service.
 
 ## API and extraction contract
 
-`POST /api/extract` requires an authenticated account in kid mode with an active child owned by that account. It accepts the same single multipart field named `file`; its extraction response schema is unchanged. JPG, PNG, and WebP only; maximum file size 10 MiB, minimum dimension 64 pixels, maximum 24 megapixels, single-frame images only. Both declared MIME and decoded content are checked. The complete request body is bounded before multipart parsing, including requests without a Content-Length header. The active child/session revision is checked again before returning results, so a profile switch or deletion cannot expose an in-flight result to the next profile.
+The product calls uploads **Student work** and explicitly welcomes worksheets, quizzes, tests, and other schoolwork. Existing internal `homework` identifiers, database tables, `/kid/homework` links, and the extraction contract’s `worksheet` field stay unchanged for compatibility. This wording change does not alter stored records or interpretation of printed source text.
 
-All state-changing API calls, including signup/login, PIN operations, profile selection, logout, and multipart extraction, require a valid `X-CSRF-Token` and an exact trusted `Origin`. Obtain a token through `GET /api/auth/csrf` using the same cookie jar, then send it in the request header. The server validates a session-bound, server-stored token, following [OWASP CSRF guidance](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html). Refresh the token after authentication/session changes. The interface handles this automatically.
+`POST /api/extract` retains the authenticated multipart `file` extraction response: `worksheet`, `problems`, and `source`. [Pydantic models](backend/models.py), [JSON Schema](backend/schema.json), [TypeScript types](lib/extraction.ts), and [fixtures](fixtures/README.md) document the contract. Every transcribed field is `{ "text": "legible text or null", "uncertain": false }`; partial text is retained with `uncertain: true`. Completely unreadable final/selected answers normalize answered status to unclear. Extraction never replaces a student's incorrect work with a solution.
 
-Authenticated upload example (run with a fresh development seed and both servers running; substitute your credentials and PIN if you changed them):
+The learning API adds:
 
-```sh
-backend/.venv/bin/python - <<'PY'
-import httpx
+| Route under `/api/learning` | Purpose |
+| --- | --- |
+| `POST /kid/uploads` | Store/process active child's multipart `file`; optional `Idempotency-Key` |
+| `GET /kid/uploads`, `GET /kid/uploads/{id}` | Resume list and processing/extraction results |
+| `POST /kid/uploads/{id}/retry`, `GET /kid/uploads/{id}/file` | Resume processing or authorized original retrieval |
+| `/parent/{kidId}/uploads` and `/{id}` variants | Equivalent explicitly selected-child parent operations; `DELETE .../{id}` deletes |
+| `GET /parent/{kidId}/dashboard` | Skill observations and analytics from uploaded student work |
+| Former `/kid/next`, `/kid/submit`, `/kid/session/{id}/activity`, and parent adult/extra-practice routes | Retired; authorized requests return `410 feature_removed` |
 
-with httpx.Client(base_url="http://localhost:3000", headers={"Origin": "http://localhost:3000"}, timeout=90) as client:
-    def headers():
-        response = client.get("/api/auth/csrf")
-        response.raise_for_status()
-        return {"X-CSRF-Token": response.json()["csrfToken"]}
-    def post(path, data):
-        response = client.post(path, json=data, headers=headers())
-        response.raise_for_status()
-        return response.json()
-    post("/api/auth/login", {"email": "parent@example.com", "password": "password"})
-    if client.get("/api/parent/gate").json()["pinSetupRequired"]:
-        post("/api/parent/pin/setup", {"password": "password", "pin": "0123", "confirmPin": "0123"})
-    post("/api/parent/pin/verify", {"pin": "0123"})
-    profiles = client.get("/api/parent/profiles").json()["profiles"]
-    post("/api/session/kid", {"profileId": profiles[0]["id"]})
-    with open("public/samples/math-worksheet.png", "rb") as image:
-        response = client.post("/api/extract", files={"file": ("sample.png", image, "image/png")}, headers=headers())
-    response.raise_for_status()
-    print(response.json()["source"])
-PY
-```
+Kid responses contain extraction; detailed mapping, grading, signatures, and learning states belong to authorized parent routes. API errors retain `{ "error": { "code": "...", "message": "..." } }`, use safe messages, and responses are `Cache-Control: no-store`.
 
-The response includes `worksheet`, `problems`, and `source` (`live` or `fixture`). The authoritative models are in `backend/models.py`; the vision JSON Schema is checked in as `backend/schema.json`. Matching interface types are in `lib/extraction.ts`. Full examples are in `fixtures/math.json` and `fixtures/ela.json`.
-
-- Every transcribed text field is `{ "text": "visible text or null", "uncertain": false }`. Actual missing values use JSON `null`, not the string `"null"`. Partial text is kept with `uncertain: true`; a fully unreadable field is `text: null, uncertain: true`. Absent optional printed fields are `text: null, uncertain: false`.
-- `worksheet` contains title, inferred subject (`math`, `ela`, `unknown`), subject uncertainty, explicitly printed grade, directions, and shared context. Contexts have IDs and a type (`passage`, `table`, `diagram`, `other`); tables and diagram labels are transcribed into their text content.
-- `problems` contains each printed problem or subpart in page order, its printed label, question, answer choices, context references, and `student_work`. Subparts such as `4(a)` get their own card.
-- `student_work` contains steps in visible order, written final answer, selected choice, and status (`answered`, `blank`, `unclear`). Incorrect work is preserved verbatim. Blank work is distinct from obscured or unreadable work. If a final answer or selected choice is wholly unreadable (`text: null, uncertain: true`), the API normalizes an `answered` status to `unclear` without changing any transcribed fields. An uncertain earlier step can still accompany an `answered` status when the final answer is legible.
-
-Errors use `{ "error": { "code": "...", "message": "..." } }` with appropriate 400/413/415/422/502/503/504 statuses. Failed reads retain the photo for retry, retake, or replacement. `GET /api/health` reports the active mode without exposing configuration or credentials.
-
-Images are processed temporarily. Multipart temporary files are closed after the request; Sidekick has no upload database or retained worksheet storage. Live images are EXIF-oriented and re-encoded without metadata before sending to the configured provider. The app does not log filenames, worksheet content, provider payloads, or raw validation errors. API responses use `Cache-Control: no-store`. Run Uvicorn without access logs as shown above. The configured vision provider’s own data handling policies still apply.
-
-## Verification
+## Verification and evaluation
 
 ```sh
+npm run test:backend
 npm run typecheck
 npm run build
-npm run test:backend
 npx playwright install chromium
 npm run test:e2e
+npm run gap:evaluate
+# Explicit provider calls using the same retrieval/grading/mapping/signature pipeline:
+npm run gap:evaluate:live
+# Include synthetic case IDs and expected/actual decisions, without uploaded page text:
+npm run gap:evaluate:live -- --details
 ```
 
-Playwright starts Next.js and FastAPI in explicit fixture mode. Stop servers using ports 3000 and 8000 before running it. The backend suite uses an in-process API client and mocked HTTP provider responses; it needs no credentials.
+Stop servers on ports 3000/8000 before Playwright; its configuration starts isolated servers. Unit/integration tests stub model calls and use temporary databases. Coverage includes authentication/PIN/CSRF, extraction preservation, invalid images/PDFs, provider failure and retry, child/account isolation and profile changes, catalog reseeding/history, distinct student work observations, retired-workflow enforcement, historical-data preservation, and real dashboard data. Browser journeys verify that the old Practice URL redirects, retired APIs cannot start questions, and private student work upload/retrieval/deletion still works.
 
-The synthetic fractions worksheet includes the incorrect answer **`2/5`**, all three written steps in order, a visibly blank response, unreadable writing with the legible fragment **`3/`**, a shared recipe table, and multiple-choice subpart **`4(a)`**. The ELA worksheet includes a shared reading passage, the incorrect response **`The story happens in winter.`**, a blank response, partially unreadable question and work, and a selected multiple-choice response. See `fixtures/README.md` for the exact assertions. Regenerate images and JSON with `backend/.venv/bin/python scripts/generate_fixtures.py`.
+`data/evaluation_homework.json` contains 27 synthetic Math/ELA examples with expected mapping or abstention, correctness, and signature labels, including mistakes/slips, equivalent fractions, blanks, unreadable responses, shared context, missing context, and ambiguous multi-skill work. The offline command validates cases and catalog IDs; it does **not** measure model accuracy. The live command creates a temporary database/catalog and reports mapping coverage, accuracy among accepted mappings, grading accuracy, eligible incorrect signature accuracy, and provider failures. Missing credentials exit with setup instructions. No real student data is used.
 
-Browser checks cover both sample images through the real multipart endpoint, question order, blank versus unclear states, verbatim incorrect work, JSON download, invalid file/size handling, visible reading state, and failure followed by retry. Backend checks cover image integrity, MIME mismatch, request/file limits, provider failures, schema validation, and metadata removal.
+Verification for the removal revision passed **175 backend tests, 15 browser tests, TypeScript, and the production build**. Candidate retrieval finds the expected ID within ten candidates for all 22 labeled cases. The [live evaluation report](data/evaluation_report.json) records zero provider failures, 22/27 accepted mappings (all 22 correct), 27/27 grading matches, and 5/7 signature matches. The other five examples correctly abstained from mapping. The two signature disagreements concern an arithmetic slip and a reading-evidence pattern; these observations never override correctness.
 
-The automated suites include **93 backend tests and 12 browser tests**. They cover the complete parent/child journey, account and session persistence, password policy and rate limits, PIN setup/reset/lockout, a controllable clock for idle expiry and lock recovery, ownership and sibling isolation, CSRF and origin checks, concurrent profile limits, profile deletion cleanup, credential changes, and the authenticated extraction flow. Extraction regressions preserve incorrect work, blanks, unreadable fields, and a legible final answer with an uncertain earlier step.
+This is an initial smoke evaluation: the 27 answer/status variants use only 12 unique question texts, with seven positive stems largely taken from the catalog. It measures decisions after transcription, not OCR accuracy or general classroom performance, and does not calibrate confidence scores. The historical [separate live smoke report](data/live_smoke_report.json) covers synthetic Math/ELA photos and the now-retired generation workflow: three addition items passed deterministic checking, independent solving, and alignment; three fraction items were aligned but correctly retained for adult adjudication. A follow-up Math photo retained the incorrect fraction after an initial exact-string comparison did not match; transcription can vary. Both subjects distinguished blank and unreadable responses. The generation results are retained as historical validation, not an active product feature. Broader transcription accuracy remains unmeasured. Missing contexts, unsupported interactions, unsafe source links, and lexical retrieval remain draft-data limitations.
 
-An additional browser smoke check exercised the real configured vision provider through signup, parent PIN setup, child creation/selection, and authenticated multipart upload: HTTP 200, `source: "live"`, and four rendered problems. Mobile and desktop screens were visually checked with no horizontal page overflow or uncaught browser errors. The development seed’s PIN remains unset for first-time setup.
-
-**Live vision extraction was verified through the browser with both synthetic worksheets.** Both returned `source: "live"` and rendered four problem cards. The ELA response preserved the incorrect winter answer and detected the blank response. A follow-up Math check confirmed the incorrect `2/5` answer, the blank response, and the `unclear` status for unreadable writing after the status fix. Credentials stay in the local, Git-ignored `backend/.env` file.
-
-Fixture tests verify the complete interface/API flow and contract; the live checks are a small synthetic smoke test, not a broad evaluation of transcription accuracy. Real phone camera capture has not been physically tested.
-
-## Remaining integration TODOs
-
-- AI homework chat and persisted real conversations (the chat placeholder does not send messages).
-- Generated practice (practice cards are explicit placeholders).
-- Real skill mapping, longitudinal records, and analytics (dashboard data is labeled sample).
-- Payments/subscriptions.
-- Email delivery, email verification, and account-password recovery.
-- Turn on strict password rules before pilot; this repository remains a local prototype.
+Skill-building activities, games, tutoring chat, payments, email delivery/recovery, expanded grade profiles, and a visual redesign remain separate milestones.

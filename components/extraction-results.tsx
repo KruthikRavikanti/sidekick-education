@@ -203,17 +203,16 @@ export function ExtractionResults({
         </div>
         <p className="eyebrow">ONE PAGE, A LITTLE CLEARER</p>
         <h1 tabIndex={-1} id="results-title">
-          Here’s your worksheet.
+          Here’s your work.
         </h1>
         <p>Questions and your work, just as they appear on the page.</p>
       </div>
       {result.source === "fixture" && (
         <p className="demo-notice">
-          Sample results · This is a pre-written extraction of the sample
-          worksheet.
+          Sample results · This is a pre-written extraction of the sample page.
         </p>
       )}
-      <section className="worksheet-summary" aria-label="Worksheet details">
+      <section className="worksheet-summary" aria-label="Work details">
         <div className="worksheet-tags">
           <span className="subject-tag">
             {subject}
@@ -234,10 +233,7 @@ export function ExtractionResults({
           )}
         </div>
         <h2>
-          <Transcription
-            value={worksheet.title}
-            fallback="Untitled worksheet"
-          />
+          <Transcription value={worksheet.title} fallback="Untitled work" />
         </h2>
         <p className="problem-count">
           {result.problems.length} problems
@@ -274,7 +270,7 @@ export function ExtractionResults({
       <div className="results-actions">
         <button className="button primary" onClick={onReset}>
           <RotateCcw size={18} aria-hidden="true" />
-          Read another worksheet
+          Read more work
         </button>
         <button className="text-button" onClick={() => downloadJSON(result)}>
           <ArrowDownToLine size={17} aria-hidden="true" />

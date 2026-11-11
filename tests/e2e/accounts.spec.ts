@@ -26,7 +26,7 @@ async function addChild(
   await expect(page.getByRole("heading", { name, exact: true })).toBeVisible();
 }
 
-test("parent signs up, sets a PIN, adds two children, and explores sample dashboard", async ({
+test("parent signs up, sets a PIN, adds two children, and explores real learning dashboard", async ({
   page,
 }) => {
   const email = `journey-${Date.now()}@example.com`;
@@ -69,24 +69,26 @@ test("parent signs up, sets a PIN, adds two children, and explores sample dashbo
     .getByRole("combobox", { name: "Choose child", exact: true })
     .selectOption({ label: "Alex" });
   await expect(
-    page.getByText("Sample learning data", { exact: true }),
+    page.getByText("Learning activity", { exact: true }),
   ).toBeVisible();
-  await expect(page.getByText("3.NF.A.1", { exact: true })).toBeVisible();
-  await expect(page.getByText("Unassessed", { exact: true })).toHaveCount(2);
+  await expect(page.locator(".skill-card").first()).toBeVisible();
+  await expect(
+    page.locator(".skill-card:not(.skill-card-unassessed)"),
+  ).toHaveCount(0);
+  await expect(
+    page
+      .getByLabel("Skill status legend")
+      .getByText("Not enough evidence", { exact: true }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Analytics", exact: true }).click();
-  for (const label of [
-    "Sessions this week",
-    "Time spent",
-    "Problems attempted",
-    "Problems correct",
-  ])
+  for (const label of ["Questions read", "Correct answers", "Not graded yet"])
     await expect(page.getByText(label, { exact: true })).toBeVisible();
+  await expect(page.locator(".metric-card strong")).toHaveText(["0", "0", "0"]);
   await page
     .getByRole("button", { name: "Conversations", exact: true })
     .click();
-  await page.getByRole("button", { name: /View transcript/ }).click();
   await expect(
-    page.getByText("I’m not sure where to start with this problem.", {
+    page.getByText("No learning conversations yet.", {
       exact: true,
     }),
   ).toBeVisible();
@@ -99,7 +101,7 @@ test("parent signs up, sets a PIN, adds two children, and explores sample dashbo
   await page.getByRole("button", { name: /Alex.*Let’s learn/ }).click();
   await expect(page).toHaveURL(/\/kid$/);
   await expect(
-    page.getByRole("link", { name: /Get help with my homework/ }),
+    page.getByRole("link", { name: /Upload work/ }),
   ).toBeVisible();
   await expect(page.getByText("Parent mode", { exact: true })).toHaveCount(0);
   expect((await page.request.get("/api/parent/settings")).status()).toBe(403);
@@ -397,11 +399,11 @@ test("switching children in another tab clears the old photo and delayed results
   });
   await page.getByRole("button", { name: "Fractions", exact: true }).click();
   await page
-    .getByRole("button", { name: "Read worksheet", exact: true })
+    .getByRole("button", { name: "Read my work", exact: true })
     .click();
   await responseReady;
   await expect(
-    page.getByRole("heading", { name: "Reading your worksheet…" }),
+    page.getByRole("heading", { name: "Reading your work…" }),
   ).toBeVisible();
   await other
     .getByRole("button", { name: "Switch profile", exact: true })
@@ -419,10 +421,10 @@ test("switching children in another tab clears the old photo and delayed results
   release();
   await responseFinished;
   await expect(
-    page.getByRole("heading", { name: "Here’s your worksheet." }),
+    page.getByRole("heading", { name: "Here’s your work." }),
   ).toHaveCount(0);
   await expect(
-    page.getByRole("img", { name: "Preview of your selected worksheet" }),
+    page.getByRole("img", { name: "Preview of your selected work" }),
   ).toHaveCount(0);
   await other.close();
 });

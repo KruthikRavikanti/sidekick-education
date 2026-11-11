@@ -1,0 +1,63 @@
+{
+  "runAt": "2026-11-11T02:08:18.521262+00:00",
+  "model": "gpt-6.1-terra",
+  "scope": "Synthetic photo transcription and narrow generation/independent-verification smoke checks; no student records.",
+  "photos": {
+    "mathFollowup": {
+      "subject": "math",
+      "inferredSubject": "math",
+      "problemCount": 4,
+      "incorrectFractionInFinal": true,
+      "incorrectFractionInWork": true,
+      "hasBlank": true,
+      "hasUnclear": true
+    },
+    "ela": {
+      "subject": "ela",
+      "inferredSubject": "ela",
+      "problemCount": 4,
+      "incorrectAnswerPreserved": true,
+      "hasBlank": true,
+      "hasUnclear": true,
+      "sharedContextCount": 3
+    },
+    "mathInitialExactFinalAnswerStringMatched": false,
+    "note": "An initial exact-string assertion on the Math final answer did not match; that response was not retained for diagnosis. A follow-up retained the incorrect fraction in both final answer and steps. Transcription formatting and confidence can vary."
+  },
+  "generation": [
+    {
+      "subskillId": "1.OA.C.6-1",
+      "requestedItems": 3,
+      "generatedItems": 3,
+      "verifiedSoloItems": 3,
+      "alignedItems": 3,
+      "verificationMethods": [
+        "deterministic_math_and_independent_solver",
+        "deterministic_math_and_independent_solver",
+        "deterministic_math_and_independent_solver"
+      ],
+      "readinessBeforeVerification": [
+        "pending",
+        "pending",
+        "pending"
+      ]
+    },
+    {
+      "subskillId": "5.NF.A.1-2",
+      "requestedItems": 3,
+      "generatedItems": 3,
+      "verifiedSoloItems": 0,
+      "alignedItems": 3,
+      "verificationMethods": [
+        "adult_alignment_only",
+        "adult_alignment_only",
+        "adult_alignment_only"
+      ],
+      "readinessBeforeVerification": [
+        "adult_required",
+        "adult_required",
+        "adult_required"
+      ]
+    }
+  ]
+}

@@ -45,6 +45,9 @@ def security_context(database_path, clock, monkeypatch):
     context = SecurityContext(settings=settings, clock=clock)
     context.db.migrate()
     monkeypatch.setitem(main.app.state._state, "security", context)
+    # Existing extraction tests stub transcription only; dedicated gap tests
+    # inject their own task adapters instead of making additional model calls.
+    monkeypatch.setitem(main.app.state._state, "gap_adapter", False)
     return context
 
 

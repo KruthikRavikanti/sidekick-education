@@ -2,11 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  BookOpen,
   Check,
   ChevronLeft,
   Clock3,
-  Flame,
   KeyRound,
   MessageCircle,
   Pencil,
@@ -26,6 +24,8 @@ import type {
   SessionView,
 } from "@/lib/account-types";
 import { RequireMode, useAccountSession } from "./account-session";
+import { GapInsights } from "./gap-insights";
+import { HomeworkUploads } from "./homework-uploads";
 import {
   AccountShell,
   AVATARS,
@@ -34,20 +34,21 @@ import {
   LogoutButton,
 } from "./account-ui";
 
-type Tab = "skills" | "analytics" | "conversations" | "profiles" | "settings";
+type Tab =
+  | "skills"
+  | "analytics"
+  | "conversations"
+  | "profiles"
+  | "settings"
+  | "homework";
 const tabs: { key: Tab; label: string }[] = [
   { key: "skills", label: "Skills" },
   { key: "analytics", label: "Analytics" },
   { key: "conversations", label: "Conversations" },
+  { key: "homework", label: "Student work" },
   { key: "profiles", label: "Children" },
   { key: "settings", label: "Settings" },
 ];
-const skillLabels = {
-  gap: "Gap",
-  practicing: "Practicing",
-  mastered: "Mastered",
-  unassessed: "Unassessed",
-};
 
 function ChildEditor({
   profile,
@@ -461,35 +462,34 @@ function LearningViews({ data, tab }: { data: DashboardData; tab: Tab }) {
       if (!controller.signal.aborted) setLoading(false);
     }
   }
+  if (tab === "skills") return <GapInsights skills={data.skills} />;
   if (tab === "analytics") {
     const metrics = [
       {
-        title: "Sessions this week",
-        value: data.analytics.sessionsThisWeek,
-        icon: <Flame size={20} />,
-      },
-      {
-        title: "Time spent",
-        value: `${data.analytics.timeSpentMinutes} min`,
-        icon: <Clock3 size={20} />,
-      },
-      {
-        title: "Problems attempted",
+        title: "Questions read",
         value: data.analytics.problemsAttempted,
         icon: <Target size={20} />,
       },
       {
-        title: "Problems correct",
+        title: "Correct answers",
         value: data.analytics.problemsCorrect,
         icon: <Check size={20} />,
+      },
+      {
+        title: "Not graded yet",
+        value: data.analytics.problemsUngraded ?? 0,
+        icon: <Clock3 size={20} />,
       },
     ];
     return (
       <section className="dashboard-section">
         <div className="section-heading">
           <div>
-            <h2>A little progress adds up.</h2>
-            <p>{data.profile.firstName}’s sample activity for this week.</p>
+            <h2>Your uploaded work.</h2>
+            <p>
+              {data.profile.firstName}’s uploaded work, with each distinct
+              question counted once. Blank or unclear responses stay ungraded.
+            </p>
           </div>
         </div>
         <div className="analytics-grid">
@@ -509,13 +509,16 @@ function LearningViews({ data, tab }: { data: DashboardData; tab: Tab }) {
       <section className="dashboard-section">
         <div className="section-heading">
           <div>
-            <h2>Homework conversations</h2>
+            <h2>Learning conversations</h2>
             <p>
-              Read-only sample conversations. Worksheet uploads don’t create
-              chat history yet.
+              Uploads don’t create tutoring chat. Conversations will appear when
+              that milestone is available.
             </p>
           </div>
         </div>
+        {data.conversations.length === 0 && (
+          <p>No learning conversations yet.</p>
+        )}
         <FormError message={error} />
         {transcript ? (
           <div className="transcript">
@@ -579,50 +582,7 @@ function LearningViews({ data, tab }: { data: DashboardData; tab: Tab }) {
         )}
       </section>
     );
-  return (
-    <section className="dashboard-section">
-      <div className="section-heading">
-        <div>
-          <h2>Where a little support can help.</h2>
-          <p>
-            Sample skills for {data.profile.firstName}. Gray means there’s no
-            assessment yet.
-          </p>
-        </div>
-      </div>
-      <div className="skill-legend" aria-label="Skill status legend">
-        {Object.entries(skillLabels).map(([key, label]) => (
-          <span className={`skill-status skill-${key}`} key={key}>
-            {label}
-          </span>
-        ))}
-      </div>
-      {(["math", "ela"] as const).map((subject) => (
-        <section className="subject-skills" key={subject}>
-          <h3>
-            <BookOpen size={18} aria-hidden="true" />
-            {subject === "math" ? "Math" : "ELA"}
-          </h3>
-          <div className="skill-grid">
-            {data.skills
-              .filter((skill) => skill.subject === subject)
-              .map((skill) => (
-                <article
-                  className={`skill-card skill-card-${skill.status}`}
-                  key={skill.id}
-                >
-                  <span className={`skill-status skill-${skill.status}`}>
-                    {skillLabels[skill.status]}
-                  </span>
-                  <h4>{skill.name}</h4>
-                  <code>{skill.commonCoreCode}</code>
-                </article>
-              ))}
-          </div>
-        </section>
-      ))}
-    </section>
-  );
+  return null;
 }
 
 function ParentContent() {
@@ -750,13 +710,17 @@ function ParentContent() {
           />
         ) : effectiveTab === "settings" ? (
           <ParentSettings />
+        ) : effectiveTab === "homework" ? (
+          selected ? (
+            <HomeworkUploads key={selected} kidId={selected} />
+          ) : null
         ) : (
           <>
             <div className="sample-insights-label">
-              <span>Sample learning data</span>
+              <span>Learning activity</span>
               <p>
-                For exploring the dashboard. These insights are independent of
-                worksheet extraction.
+                Based on uploaded work. Skills without enough reliable evidence
+                are marked “Not enough evidence.”
               </p>
             </div>
             {data ? (

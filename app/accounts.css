@@ -140,6 +140,13 @@ html[data-session-paused="true"] body {
   border: 1.5px solid #d2d9c8;
   border-radius: 11px;
 }
+.account-shell input.visually-hidden {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  clip-path: inset(50%);
+}
 .account-shell input:focus,
 .account-shell select:focus {
   outline: 3px solid #b7ce634d;
@@ -503,17 +510,9 @@ html[data-session-paused="true"] body {
   font-weight: 900;
   border-radius: 20px;
 }
-.skill-gap {
+.skill-needs_support {
   background: #ffeadb;
   color: #8c421b;
-}
-.skill-practicing {
-  background: #ece1f0;
-  color: #75517b;
-}
-.skill-mastered {
-  background: #e3edc7;
-  color: var(--forest);
 }
 .skill-unassessed {
   background: #e8e9e7;
@@ -543,14 +542,8 @@ html[data-session-paused="true"] body {
   padding: 21px;
   min-width: 0;
 }
-.skill-card-gap {
+.skill-card-needs_support {
   border-bottom: 5px solid #f5c29d;
-}
-.skill-card-practicing {
-  border-bottom: 5px solid #cdaed2;
-}
-.skill-card-mastered {
-  border-bottom: 5px solid var(--lime);
 }
 .skill-card-unassessed {
   border-bottom: 5px solid #cbd0c8;
@@ -578,7 +571,7 @@ html[data-session-paused="true"] body {
 }
 .analytics-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 15px;
 }
 .metric-card {
@@ -863,9 +856,9 @@ html[data-session-paused="true"] body {
 }
 .kid-actions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 24px;
-  max-width: 900px;
+  max-width: 650px;
   margin: auto;
 }
 .kid-action-card {
@@ -892,9 +885,6 @@ html[data-session-paused="true"] body {
   border-radius: 18px;
   margin-bottom: 24px;
 }
-.practice-action .kid-action-icon {
-  background: #f9c9ac;
-}
 .kid-action-card h2 {
   font-size: 28px;
   max-width: 280px;
@@ -912,18 +902,8 @@ html[data-session-paused="true"] body {
   right: 30px;
   font-size: 28px;
 }
-.coming-soon {
-  display: inline-block;
-  padding: 4px 10px;
-  color: var(--muted);
-  background: #edf0e6;
-  border-radius: 14px;
-  font-size: 10px;
-  font-weight: 900;
-  margin-top: 17px;
-}
 .kid-chat-placeholder {
-  max-width: 900px;
+  max-width: 650px;
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
@@ -948,32 +928,6 @@ html[data-session-paused="true"] body {
 }
 .kid-chat-placeholder input {
   margin-top: 5px;
-}
-.todo-note {
-  font-size: 10px;
-  color: var(--muted);
-  line-height: 1.8;
-}
-.kid-chat-placeholder > .todo-note {
-  width: 100%;
-}
-.practice-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  max-width: 900px;
-  margin: auto;
-}
-.practice-card h2 {
-  font-size: 26px;
-  margin-top: 23px;
-}
-.practice-card > p {
-  font-size: 13px !important;
-}
-.practice-grid + .todo-note {
-  text-align: center;
-  margin-top: 28px;
 }
 .shell-kid .account-main > .account-button-link {
   display: flex;
@@ -1378,8 +1332,7 @@ html[data-session-paused="true"] body {
   .kid-welcome > p:last-child {
     font-size: 14px;
   }
-  .kid-actions,
-  .practice-grid {
+  .kid-actions {
     grid-template-columns: 1fr;
     gap: 21px;
   }
@@ -1422,12 +1375,6 @@ html[data-session-paused="true"] body {
   }
   .kid-reader-toolbar .text-button {
     padding-right: 0;
-  }
-  .practice-card {
-    padding: 26px;
-  }
-  .practice-card h2 {
-    font-size: 25px;
   }
 }
 @media (max-width: 370px) {
