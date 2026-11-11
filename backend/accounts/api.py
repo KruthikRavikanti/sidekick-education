@@ -10,6 +10,8 @@ from .models import (
     Pin, ProfilesView, SessionView, SettingsView, SetupPin,
 )
 from .samples import get_conversation, get_dashboard
+from backend.gap.models import ParentDashboardView
+from backend.gap.service import parent_dashboard
 from .security import AccountError, digest, get_security, kid_view, require_kid, require_parent, require_session
 
 router = APIRouter(prefix='/api')
@@ -36,7 +38,7 @@ class SessionSecurityMiddleware:
             if scope['path'] not in PUBLIC and scope['method'] != 'OPTIONS':
                 require_session(request)
             # Bound JSON/auth input separately from the existing multipart image cap.
-            if scope['method'] in {'POST', 'PUT', 'PATCH', 'DELETE'} and scope['path'] != '/api/extract':
+            if scope['method'] in {'POST', 'PUT', 'PATCH', 'DELETE'} and scope['path'] != '/api/extract' and not scope['path'].endswith('/uploads'):
                 body = bytearray()
                 while True:
                     message = await receive()
@@ -355,16 +357,20 @@ def delete_profile(profile_id: str, request: Request):
     with security.db.transaction() as connection:
         security.assert_active(connection, active, 'parent')
         security.owned_kid(connection, active.account_id, profile_id)
+        from backend.gap.storage import private_refs_for_child
+        file_refs = private_refs_for_child(connection, profile_id)
         connection.execute("UPDATE sessions SET mode='picker',active_kid_profile_id=NULL,parent_last_activity_at=NULL,parent_expires_at=NULL,version=version+1 WHERE active_kid_profile_id=?", (profile_id,))
         connection.execute('DELETE FROM kid_profiles WHERE id=? AND account_id=?', (profile_id, active.account_id))
+    from backend.gap.storage import cleanup_references
+    cleanup_references(security, file_refs)
     return OkView()
 
 
-@router.get('/parent/dashboard/{profile_id}', response_model=DashboardView)
+@router.get('/parent/dashboard/{profile_id}', response_model=ParentDashboardView)
 def dashboard(profile_id: str, request: Request):
     security = get_security(request)
     active = require_parent(request)
-    return get_dashboard(security, active.account_id, profile_id, expected_session=active)
+    return parent_dashboard(security, active.account_id, profile_id, expected_session=active)
 
 
 @router.get('/parent/conversations/{profile_id}/{conversation_id}', response_model=ConversationView)

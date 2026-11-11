@@ -250,7 +250,7 @@ test("invalid, oversized, and empty files are rejected before upload", async ({
     mimeType: "text/plain",
     buffer: Buffer.from("not an image"),
   });
-  await expect(alert).toContainText("Choose a JPG, PNG, or WebP image.");
+  await expect(alert).toContainText("Choose a JPG, PNG, or WebP image, or a PDF.");
   await expect(
     page.getByRole("button", { name: "Read worksheet", exact: true }),
   ).toHaveCount(0);
@@ -259,7 +259,7 @@ test("invalid, oversized, and empty files are rejected before upload", async ({
     mimeType: "image/png",
     buffer: Buffer.alloc(10 * 1024 * 1024 + 1),
   });
-  await expect(alert).toContainText("That image is too large.");
+  await expect(alert).toContainText("That file is too large.");
   await input.setInputFiles({
     name: "empty.png",
     mimeType: "image/png",

@@ -11,6 +11,7 @@ import {
 import { AccountShell, Avatar } from "./account-ui";
 import { RequireMode, useAccountSession } from "./account-session";
 import { WorksheetReader } from "./worksheet-reader";
+import { LearningPractice } from "./learning-practice";
 
 function KidContent({ practice = false }: { practice?: boolean }) {
   const { session } = useAccountSession();
@@ -85,8 +86,7 @@ function KidContent({ practice = false }: { practice?: boolean }) {
                 <Sparkles size={29} aria-hidden="true" />
               </span>
               <h2>Practice my skills</h2>
-              <p>A little more practice is coming soon.</p>
-              <span className="coming-soon">Coming soon</span>
+              <p>Pick up your next little practice steps.</p>
             </Link>
           </div>
           <section className="kid-chat-placeholder">
@@ -108,6 +108,7 @@ function KidContent({ practice = false }: { practice?: boolean }) {
   );
 }
 export function KidHome({ practice = false }: { practice?: boolean }) {
+  if (practice) return <LearningPractice />;
   return (
     <RequireMode mode="kid">
       <KidContent practice={practice} />

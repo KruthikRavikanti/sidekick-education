@@ -1,0 +1,17 @@
+{
+  "timezone": "America/New_York",
+  "homework_errors_for_check": 2,
+  "check_items": 5,
+  "check_fail_misses": 2,
+  "mastery_streak": 3,
+  "mastery_dates": 2,
+  "recheck_days": 21,
+  "recheck_items": 2,
+  "mapping_confidence": 0.6,
+  "max_chain_depth": 8,
+  "session_min_items": 5,
+  "session_max_items": 8,
+  "practice_round_items": 5,
+  "generation_retries": 2,
+  "generation_concurrency": 2
+}

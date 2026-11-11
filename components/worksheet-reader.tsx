@@ -19,9 +19,10 @@ import type { Extraction } from "@/lib/extraction";
 import { ExtractionResults } from "./extraction-results";
 import { apiFetch } from "@/lib/account-api";
 import { useAccountSession } from "./account-session";
+import type { UploadRecord } from "@/lib/learning-types";
 
 const MAX_BYTES = 10 * 1024 * 1024;
-const ACCEPT = "image/jpeg,image/png,image/webp";
+const ACCEPT = "image/jpeg,image/png,image/webp,application/pdf";
 type Phase = "upload" | "reading" | "results";
 
 export function WorksheetReader() {
@@ -31,8 +32,10 @@ export function WorksheetReader() {
   const [phase, setPhase] = useState<Phase>("upload");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<Extraction | null>(null);
+  const [uploadId, setUploadId] = useState<string | null>(null);
   const [fixtureMode, setFixtureMode] = useState(false);
   const [sampleLoading, setSampleLoading] = useState(false);
+  const [limits, setLimits] = useState({ maxBytes: MAX_BYTES, maxPages: 6 });
   const uploadRef = useRef<HTMLInputElement>(null);
   const cameraRef = useRef<HTMLInputElement>(null);
   const controllerRef = useRef<AbortController | null>(null);
@@ -44,6 +47,12 @@ export function WorksheetReader() {
     fetch("/api/health", { signal: controller.signal, cache: "no-store" })
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => setFixtureMode(data?.mode === "fixture"))
+      .catch(() => {});
+    apiFetch("/api/learning/upload-limits", { signal: controller.signal })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => {
+        if (data?.maxBytes && data?.maxPages) setLimits(data);
+      })
       .catch(() => {});
     return () => {
       controller.abort();
@@ -70,16 +79,19 @@ export function WorksheetReader() {
     controllerRef.current?.abort();
     setError(null);
     setResult(null);
+    setUploadId(null);
     setPhase("upload");
-    if (next.size > MAX_BYTES) {
+    if (next.size > limits.maxBytes) {
       setFile(null);
-      setError("That image is too large. Choose a photo smaller than 10 MB.");
+      setError(
+        `That file is too large. Choose a file smaller than ${limits.maxBytes / 1024 / 1024} MB.`,
+      );
       return;
     }
     if (next.type && !ACCEPT.split(",").includes(next.type)) {
       setFile(null);
       setError(
-        "Choose a JPG, PNG, or WebP image. Other file types can’t be read yet.",
+        "Choose a JPG, PNG, or WebP image, or a PDF. Other file types can’t be read yet.",
       );
       return;
     }
@@ -97,6 +109,7 @@ export function WorksheetReader() {
     setPhase("upload");
     setFile(null);
     setResult(null);
+    setUploadId(null);
     setError(null);
     if (uploadRef.current) uploadRef.current.value = "";
     if (cameraRef.current) cameraRef.current.value = "";
@@ -128,16 +141,62 @@ export function WorksheetReader() {
     controllerRef.current = controller;
     setPhase("reading");
     setError(null);
-    const timeout = setTimeout(() => controller.abort("timeout"), 90000);
+    const isPDF = file.type === "application/pdf";
+    const timeout = setTimeout(
+      () => controller.abort("timeout"),
+      isPDF ? 600000 : 90000,
+    );
     try {
       const body = new FormData();
       body.append("file", file);
-      const response = await apiFetch("/api/extract", {
-        method: "POST",
-        body,
-        signal: controller.signal,
-      });
-      const data = await response.json().catch(() => null);
+      let response = await apiFetch(
+        isPDF ? "/api/learning/kid/uploads" : "/api/extract",
+        {
+          method: "POST",
+          body,
+          signal: controller.signal,
+        },
+      );
+      let data = await response.json().catch(() => null);
+      let savedId = response.headers.get("X-Sidekick-Upload-Id");
+      if (isPDF && response.ok && data?.id) {
+        savedId = data.id;
+        while (
+          !data.extraction &&
+          ["pending", "processing"].includes(data.state)
+        ) {
+          await new Promise<void>((resolve, reject) => {
+            const abort = () => {
+              clearTimeout(timer);
+              reject(new DOMException("Aborted", "AbortError"));
+            };
+            const timer = setTimeout(() => {
+              controller.signal.removeEventListener("abort", abort);
+              resolve();
+            }, 1500);
+            if (controller.signal.aborted) abort();
+            else
+              controller.signal.addEventListener("abort", abort, {
+                once: true,
+              });
+          });
+          response = await apiFetch(`/api/learning/kid/uploads/${savedId}`, {
+            signal: controller.signal,
+          });
+          data = await response.json().catch(() => null);
+          if (!response.ok) break;
+        }
+        if (response.ok) {
+          const record = data as UploadRecord;
+          if (!record.extraction)
+            throw new Error(
+              typeof record.error === "object"
+                ? record.error?.message
+                : "The worksheet couldn’t be read. Please retry.",
+            );
+          data = record.extraction;
+        }
+      }
       if (controller.signal.aborted || controllerRef.current !== controller)
         return;
       if (
@@ -162,6 +221,7 @@ export function WorksheetReader() {
           "No problems could be read. Try a clearer photo with the whole page in view.",
         );
       setResult(data as Extraction);
+      setUploadId(savedId);
       setPhase("results");
       window.scrollTo({ top: 0, behavior: "instant" });
     } catch (caught) {
@@ -202,7 +262,15 @@ export function WorksheetReader() {
       </header>
       <main className={phase === "results" ? "main-results" : "main-upload"}>
         {phase === "results" && result ? (
-          <ExtractionResults result={result} onReset={reset} />
+          <div>
+            <ExtractionResults result={result} onReset={reset} />
+            {uploadId && (
+              <p className="results-footnote">
+                Your worksheet is saved privately for your family. A parent can
+                review or delete it from Homework.
+              </p>
+            )}
+          </div>
         ) : (
           <>
             <div className="upload-intro">
@@ -240,12 +308,12 @@ export function WorksheetReader() {
                       ? "Looking good?"
                       : "Start with your worksheet"}
                 </span>
-                <span className="page-label">ONE PAGE</span>
+                <span className="page-label">PHOTO OR PDF</span>
               </div>
               {phase === "reading" ? (
                 <div className="reading-state" role="status" aria-live="polite">
                   <div className="reading-picture">
-                    {preview && (
+                    {preview && file?.type !== "application/pdf" && (
                       <img src={preview} alt="Worksheet being read" />
                     )}
                     <div className="scan-beam" />
@@ -284,7 +352,9 @@ export function WorksheetReader() {
                       <div className="preview-toolbar">
                         <span>
                           <Check size={15} aria-hidden="true" />
-                          Photo ready
+                          {file.type === "application/pdf"
+                            ? "PDF ready"
+                            : "Photo ready"}
                         </span>
                         <button
                           className="icon-button"
@@ -294,17 +364,29 @@ export function WorksheetReader() {
                           <X size={18} />
                         </button>
                       </div>
-                      <img
-                        className="worksheet-preview"
-                        src={preview}
-                        alt="Preview of your selected worksheet"
-                        onError={() => {
-                          setFile(null);
-                          setError(
-                            "That image couldn’t be opened. Choose another photo.",
-                          );
-                        }}
-                      />
+                      {file.type === "application/pdf" ? (
+                        <div className="pdf-preview">
+                          <strong>PDF</strong>
+                          <p>
+                            {file.name}
+                            <br />
+                            Up to {limits.maxPages} pages. Questions will stay
+                            in page order.
+                          </p>
+                        </div>
+                      ) : (
+                        <img
+                          className="worksheet-preview"
+                          src={preview}
+                          alt="Preview of your selected worksheet"
+                          onError={() => {
+                            setFile(null);
+                            setError(
+                              "That image couldn’t be opened. Choose another photo.",
+                            );
+                          }}
+                        />
+                      )}
                       <p className="file-caption">
                         {file.name} · {(file.size / 1024 / 1024).toFixed(1)} MB
                       </p>
@@ -403,7 +485,8 @@ export function WorksheetReader() {
                           Take a photo
                         </button>
                         <p className="file-types">
-                          JPG, PNG, or WebP · Up to 10 MB
+                          JPG, PNG, WebP, or PDF · Up to{" "}
+                          {limits.maxBytes / 1024 / 1024} MB
                         </p>
                       </>
                     )}
@@ -427,7 +510,7 @@ export function WorksheetReader() {
                 ref={cameraRef}
                 className="visually-hidden"
                 type="file"
-                accept={ACCEPT}
+                accept="image/jpeg,image/png,image/webp"
                 capture="environment"
                 tabIndex={-1}
                 disabled={phase === "reading" || sampleLoading}
@@ -441,7 +524,7 @@ export function WorksheetReader() {
             <div className="below-card">
               <p className="privacy-note">
                 <ShieldCheck size={16} aria-hidden="true" />
-                Sidekick processes your photo temporarily.
+                Stored privately. A parent can delete uploads.
               </p>
               {phase !== "reading" && !file && (
                 <div className="sample-section">

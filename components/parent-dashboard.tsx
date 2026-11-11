@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  BookOpen,
   Check,
   ChevronLeft,
   Clock3,
@@ -26,6 +25,9 @@ import type {
   SessionView,
 } from "@/lib/account-types";
 import { RequireMode, useAccountSession } from "./account-session";
+import { GapInsights } from "./gap-insights";
+import { HomeworkUploads } from "./homework-uploads";
+import { AdultPractice } from "./adult-practice";
 import {
   AccountShell,
   AVATARS,
@@ -34,20 +36,23 @@ import {
   LogoutButton,
 } from "./account-ui";
 
-type Tab = "skills" | "analytics" | "conversations" | "profiles" | "settings";
+type Tab =
+  | "skills"
+  | "analytics"
+  | "conversations"
+  | "profiles"
+  | "settings"
+  | "homework"
+  | "together";
 const tabs: { key: Tab; label: string }[] = [
   { key: "skills", label: "Skills" },
   { key: "analytics", label: "Analytics" },
   { key: "conversations", label: "Conversations" },
+  { key: "homework", label: "Homework" },
+  { key: "together", label: "Try this together" },
   { key: "profiles", label: "Children" },
   { key: "settings", label: "Settings" },
 ];
-const skillLabels = {
-  gap: "Gap",
-  practicing: "Practicing",
-  mastered: "Mastered",
-  unassessed: "Unassessed",
-};
 
 function ChildEditor({
   profile,
@@ -461,6 +466,8 @@ function LearningViews({ data, tab }: { data: DashboardData; tab: Tab }) {
       if (!controller.signal.aborted) setLoading(false);
     }
   }
+  if (tab === "skills")
+    return <GapInsights skills={data.skills} kidId={data.profile.id} />;
   if (tab === "analytics") {
     const metrics = [
       {
@@ -483,13 +490,21 @@ function LearningViews({ data, tab }: { data: DashboardData; tab: Tab }) {
         value: data.analytics.problemsCorrect,
         icon: <Check size={20} />,
       },
+      {
+        title: "Problems ungraded",
+        value: data.analytics.problemsUngraded ?? 0,
+        icon: <Clock3 size={20} />,
+      },
     ];
     return (
       <section className="dashboard-section">
         <div className="section-heading">
           <div>
             <h2>A little progress adds up.</h2>
-            <p>{data.profile.firstName}’s sample activity for this week.</p>
+            <p>
+              {data.profile.firstName}’s sessions and active time this week.
+              Problem totals cover all recorded practice, checks, and rechecks.
+            </p>
           </div>
         </div>
         <div className="analytics-grid">
@@ -511,11 +526,14 @@ function LearningViews({ data, tab }: { data: DashboardData; tab: Tab }) {
           <div>
             <h2>Homework conversations</h2>
             <p>
-              Read-only sample conversations. Worksheet uploads don’t create
-              chat history yet.
+              Homework uploads and practice don’t create tutoring chat.
+              Conversations will appear when that milestone is available.
             </p>
           </div>
         </div>
+        {data.conversations.length === 0 && (
+          <p>No homework-help conversations yet.</p>
+        )}
         <FormError message={error} />
         {transcript ? (
           <div className="transcript">
@@ -579,50 +597,7 @@ function LearningViews({ data, tab }: { data: DashboardData; tab: Tab }) {
         )}
       </section>
     );
-  return (
-    <section className="dashboard-section">
-      <div className="section-heading">
-        <div>
-          <h2>Where a little support can help.</h2>
-          <p>
-            Sample skills for {data.profile.firstName}. Gray means there’s no
-            assessment yet.
-          </p>
-        </div>
-      </div>
-      <div className="skill-legend" aria-label="Skill status legend">
-        {Object.entries(skillLabels).map(([key, label]) => (
-          <span className={`skill-status skill-${key}`} key={key}>
-            {label}
-          </span>
-        ))}
-      </div>
-      {(["math", "ela"] as const).map((subject) => (
-        <section className="subject-skills" key={subject}>
-          <h3>
-            <BookOpen size={18} aria-hidden="true" />
-            {subject === "math" ? "Math" : "ELA"}
-          </h3>
-          <div className="skill-grid">
-            {data.skills
-              .filter((skill) => skill.subject === subject)
-              .map((skill) => (
-                <article
-                  className={`skill-card skill-card-${skill.status}`}
-                  key={skill.id}
-                >
-                  <span className={`skill-status skill-${skill.status}`}>
-                    {skillLabels[skill.status]}
-                  </span>
-                  <h4>{skill.name}</h4>
-                  <code>{skill.commonCoreCode}</code>
-                </article>
-              ))}
-          </div>
-        </section>
-      ))}
-    </section>
-  );
+  return null;
 }
 
 function ParentContent() {
@@ -750,13 +725,21 @@ function ParentContent() {
           />
         ) : effectiveTab === "settings" ? (
           <ParentSettings />
+        ) : effectiveTab === "homework" ? (
+          selected ? (
+            <HomeworkUploads key={selected} kidId={selected} />
+          ) : null
+        ) : effectiveTab === "together" ? (
+          selected ? (
+            <AdultPractice key={selected} kidId={selected} />
+          ) : null
         ) : (
           <>
             <div className="sample-insights-label">
-              <span>Sample learning data</span>
+              <span>Learning activity</span>
               <p>
-                For exploring the dashboard. These insights are independent of
-                worksheet extraction.
+                Based on recorded homework and practice. Skills without enough
+                eligible evidence remain unassessed.
               </p>
             </div>
             {data ? (

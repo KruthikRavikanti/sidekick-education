@@ -78,44 +78,8 @@ Return only the structured JSON object matching the schema, with all required ke
 
 
 async def extract_with_vision(image: bytes) -> Extraction:
-    settings = VisionSettings.from_env()
-    encoded_image = base64.b64encode(image).decode("ascii")
-    payload = {
-        "model": settings.model,
-        "messages": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": [
-                {"type": "text", "text": "Transcribe this worksheet and all visible student work."},
-                {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{encoded_image}", "detail": "high"}},
-            ]},
-        ],
-        "response_format": {"type": "json_schema", "json_schema": {
-            "name": "worksheet_extraction", "strict": True, "schema": Extraction.model_json_schema(),
-        }},
-    }
-    try:
-        async with httpx.AsyncClient(timeout=settings.timeout, follow_redirects=False) as client:
-            async with client.stream("POST", f"{settings.base_url}/chat/completions", json=payload,
-                                     headers={"Authorization": f"Bearer {settings.api_key}"}) as response:
-                if response.status_code >= 400:
-                    raise ExtractionError("provider_unavailable", "Sidekick couldn't read the page right now. Please retry.", 503 if response.status_code == 429 or response.status_code >= 500 else 502)
-                # Bound provider output as well as incoming uploads.
-                chunks = bytearray()
-                async for chunk in response.aiter_bytes():
-                    chunks.extend(chunk)
-                    if len(chunks) > 2 * 1024 * 1024:
-                        raise ExtractionError("invalid_extraction", "The reading was incomplete. Please retry or take a clearer photo.")
-    except httpx.TimeoutException:
-        raise ExtractionError("provider_timeout", "Reading took too long. Please retry.", 504) from None
-    except httpx.RequestError:
-        raise ExtractionError("provider_unavailable", "Sidekick couldn't connect to the reader. Please retry.", 503) from None
-    try:
-        body = json.loads(chunks)
-        choice = body["choices"][0]
-        message = choice["message"]
-        if choice.get("finish_reason") != "stop" or message.get("refusal"):
-            raise ValueError
-        return Extraction.model_validate_json(message["content"])
-    except (ValueError, KeyError, IndexError, TypeError, ValidationError):
-        # Never surface provider bodies or Pydantic errors: both may contain student content.
-        raise ExtractionError("invalid_extraction", "The reading was incomplete. Please retry or take a clearer photo.") from None
+    from .gap.vision import structured_call
+    return await structured_call(
+        Extraction, task="worksheet_extraction", system=SYSTEM_PROMPT,
+        user="Transcribe this worksheet and all visible student work.", images=[image],
+    )

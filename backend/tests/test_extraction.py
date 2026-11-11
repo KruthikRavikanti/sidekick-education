@@ -123,7 +123,8 @@ def test_inflight_read_cannot_return_previous_profile_work_after_switch(
 
 
 @pytest.mark.parametrize("data,mime,code,status", [
-    (b"pdf text", "application/pdf", "unsupported_file", 415),
+    (b"zip text", "application/zip", "unsupported_file", 415),
+    (b"pdf text", "application/pdf", "invalid_pdf", 400),
     (b"secret worksheet text", "image/png", "invalid_image", 400),
     (b"", "image/png", "empty_file", 400),
     (b"x" * (10 * 1024 * 1024 + 1), "image/png", "file_too_large", 413),

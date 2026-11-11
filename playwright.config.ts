@@ -23,7 +23,7 @@ export default defineConfig({
   webServer: [
     {
       command:
-        "backend/.venv/bin/python -m backend.accounts migrate && backend/.venv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --no-access-log",
+        "backend/.venv/bin/python -m backend.accounts migrate && backend/.venv/bin/python -m backend.gap seed-catalog && backend/.venv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --no-access-log",
       url: "http://127.0.0.1:8000/api/health",
       env: {
         SIDEKICK_FIXTURE_MODE: "true",

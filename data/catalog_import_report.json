@@ -1,0 +1,262 @@
+{
+  "skills": 779,
+  "subskills": 1533,
+  "seedPairs": 3066,
+  "subjects": {
+    "Math": 867,
+    "Reading/ELA": 666
+  },
+  "grades": {
+    "K": 126,
+    "1": 133,
+    "2": 128,
+    "3": 146,
+    "4": 137,
+    "5": 125,
+    "6": 139,
+    "7": 116,
+    "8": 122,
+    "Algebra 1": 85,
+    "Geometry": 73,
+    "Algebra 2": 49,
+    "Precalculus / advanced (+)": 52,
+    "9-10": 52,
+    "11-12": 50
+  },
+  "rootEdges": 2442,
+  "usableRootEdges": 2410,
+  "prerequisiteEdges": 1451,
+  "warnings": [
+    {
+      "code": "low_confidence",
+      "source": "K.CC.C.6-3",
+      "target": "K.CC.B.5-3",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "K.OA.A.1-1",
+      "target": "K.CC.B.5-1",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "K.MD.A.2-1",
+      "target": "K.MD.A.1-1",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "GA-K-NR.1.4-1",
+      "target": "K.CC.B.5-1",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "GA-K-NR.1.4-2",
+      "target": "K.CC.B.5-1",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "GA-K-MDR.7.3-1",
+      "target": "K.MD.B.3-1",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "1.G.A.3-2",
+      "target": "1.G.A.2-1",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "1.G.A.3-3",
+      "target": "1.G.A.2-1",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "2.OA.C.3-2",
+      "target": "1.OA.D.7-3",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "2.MD.B.6-1",
+      "target": "2.MD.A.1-2",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "2.MD.C.8-1",
+      "target": "2.NBT.A.2-2",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "2.MD.C.8-3",
+      "target": "2.NBT.A.2-2",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "2.MD.D.10-2",
+      "target": "1.MD.C.4-3",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "2.G.A.2-1",
+      "target": "2.OA.C.4-2",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "3.MD.A.2-2",
+      "target": "2.MD.A.3-2",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "3.MD.C.5-1",
+      "target": "2.MD.A.1-1",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "3.MD.C.5-2",
+      "target": "1.G.A.2-1",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "5.MD.C.3-2",
+      "target": "3.MD.C.5-1",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "6.EE.B.5-1",
+      "target": "6.EE.A.2-4",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "8.F.A.1-1",
+      "target": "7.RP.A.2-4",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "8.F.A.2-2",
+      "target": "8.F.A.1-2",
+      "rank": 1
+    },
+    {
+      "code": "unsafe_cycle",
+      "source": "A-SSE.B.3-1",
+      "target": "A-REI.B.4-3",
+      "rank": 1
+    },
+    {
+      "code": "prerequisite_above_target",
+      "source": "A-SSE.B.3-3",
+      "target": "N-RN.A.2-2",
+      "rank": 2
+    },
+    {
+      "code": "prerequisite_above_target",
+      "source": "A-SSE.B.3-3",
+      "target": "N-RN.A.2-1",
+      "rank": 3
+    },
+    {
+      "code": "unsafe_cycle",
+      "source": "A-REI.B.4-3",
+      "target": "A-SSE.B.3-1",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "S-CP.B.7-1",
+      "target": "S-CP.A.1-1",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "N-CN.A.1-1",
+      "target": "N-RN.B.3-3",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "S-MD.B.5-2",
+      "target": "S-MD.A.2-1",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "RL.K.1-2",
+      "target": "RF.K.4-1",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "RI.2.6-1",
+      "target": "RI.1.6-1",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "RL.3.4-2",
+      "target": "L.3.4-2",
+      "rank": 1
+    },
+    {
+      "code": "low_confidence",
+      "source": "L.9-10.3-1",
+      "target": "L.8.3-1",
+      "rank": 1
+    },
+    {
+      "code": "prerequisite_above_target",
+      "source": "A-SSE.B.3",
+      "target": "N-RN.A.2",
+      "rank": 4
+    },
+    {
+      "code": "unsafe_cycle",
+      "source": "A-SSE.B.3",
+      "target": "A-REI.B.4",
+      "rank": 5
+    },
+    {
+      "code": "prerequisite_above_target",
+      "source": "A-CED.A.1",
+      "target": "F-LE.A.4",
+      "rank": 1
+    },
+    {
+      "code": "unsafe_cycle",
+      "source": "A-REI.B.4",
+      "target": "A-SSE.B.3",
+      "rank": 3
+    },
+    {
+      "code": "prerequisite_above_target",
+      "source": "F-IF.C.8",
+      "target": "N-RN.A.2",
+      "rank": 2
+    }
+  ],
+  "errors": [],
+  "revision": "7c7b3a98cdf51bb48b53bcef4c4d5e2c0015fc0845e40f6345a4962eeab1be23",
+  "readiness": {
+    "adult_required": 1941,
+    "ready": 101,
+    "missing_context": 1024
+  },
+  "verifiedItems": 101,
+  "unchanged": false
+}

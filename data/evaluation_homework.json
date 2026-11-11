@@ -1,0 +1,1121 @@
+[
+  {
+    "id": "fraction_add_correct",
+    "subject": "math",
+    "grade": "5",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "2/3 + 1/4 = ?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "11/12",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "fractions"
+    ],
+    "expected": {
+      "subskill_id": "5.NF.A.1-2",
+      "correctness": "correct",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "fraction_add_equivalent",
+    "subject": "math",
+    "grade": "5",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "2/3 + 1/4 = ?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "22/24",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "equivalent-fractions"
+    ],
+    "expected": {
+      "subskill_id": "5.NF.A.1-2",
+      "correctness": "correct",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "fraction_add_denominators",
+    "subject": "math",
+    "grade": "5",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "2/3 + 1/4 = ?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [
+          {
+            "text": "2 + 1 = 3",
+            "uncertain": false
+          },
+          {
+            "text": "3 + 4 = 7",
+            "uncertain": false
+          }
+        ],
+        "final_answer": {
+          "text": "3/7",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "misconception",
+      "verbatim-error"
+    ],
+    "expected": {
+      "subskill_id": "5.NF.A.1-2",
+      "correctness": "incorrect",
+      "signature": "matched"
+    }
+  },
+  {
+    "id": "fraction_add_slip",
+    "subject": "math",
+    "grade": "5",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "2/3 + 1/4 = ?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [
+          {
+            "text": "2/3 = 8/12",
+            "uncertain": false
+          },
+          {
+            "text": "1/4 = 3/12",
+            "uncertain": false
+          },
+          {
+            "text": "8 + 3 = 10",
+            "uncertain": false
+          }
+        ],
+        "final_answer": {
+          "text": "10/12",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "slip"
+    ],
+    "expected": {
+      "subskill_id": "5.NF.A.1-2",
+      "correctness": "incorrect",
+      "signature": "possible_slip"
+    }
+  },
+  {
+    "id": "fraction_blank",
+    "subject": "math",
+    "grade": "5",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "2/3 + 1/4 = ?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": null,
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "blank"
+      }
+    },
+    "context": [],
+    "tags": [
+      "blank"
+    ],
+    "expected": {
+      "subskill_id": "5.NF.A.1-2",
+      "correctness": "ungraded",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "fraction_unreadable",
+    "subject": "math",
+    "grade": "5",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "2/3 + 1/4 = ?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": null,
+          "uncertain": true
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "unclear"
+      }
+    },
+    "context": [],
+    "tags": [
+      "unreadable"
+    ],
+    "expected": {
+      "subskill_id": "5.NF.A.1-2",
+      "correctness": "ungraded",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "question_unreadable",
+    "subject": "math",
+    "grade": "5",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "2/[unreadable] + 1/4 = ?",
+        "uncertain": true
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "3/7",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "field-uncertainty"
+    ],
+    "expected": {
+      "subskill_id": null,
+      "correctness": "ungraded",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "addition_correct",
+    "subject": "math",
+    "grade": "1",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "6 + 3 = ?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "9",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [],
+    "expected": {
+      "subskill_id": "1.OA.C.6-1",
+      "correctness": "correct",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "addition_slip",
+    "subject": "math",
+    "grade": "1",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "6 + 3 = ?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [
+          {
+            "text": "6 + 2 = 8",
+            "uncertain": false
+          },
+          {
+            "text": "forgot last one",
+            "uncertain": false
+          }
+        ],
+        "final_answer": {
+          "text": "8",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "slip"
+    ],
+    "expected": {
+      "subskill_id": "1.OA.C.6-1",
+      "correctness": "incorrect",
+      "signature": "possible_slip"
+    }
+  },
+  {
+    "id": "addition_incomplete",
+    "subject": "math",
+    "grade": "1",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "6 + 3 = ?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [
+          {
+            "text": "6 + 2 = 8",
+            "uncertain": false
+          }
+        ],
+        "final_answer": {
+          "text": null,
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "incomplete"
+    ],
+    "expected": {
+      "subskill_id": "1.OA.C.6-1",
+      "correctness": "ungraded",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "unsupported_word_problem",
+    "subject": "math",
+    "grade": "2",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "A shop had 45 apples. It sold some and has 27 left. How many did it sell?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [
+          {
+            "text": "45 + 27 = 72",
+            "uncertain": false
+          }
+        ],
+        "final_answer": {
+          "text": "72",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "unsupported-deterministic-word-problem"
+    ],
+    "expected": {
+      "subskill_id": "2.OA.A.1-1",
+      "correctness": "ungraded",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "ambiguous_multiple_skills",
+    "subject": "math",
+    "grade": "5",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "Add the fractions, compare decimals, explain the story theme, and graph the result.",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "7",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "ambiguous-multiskill"
+    ],
+    "expected": {
+      "subskill_id": null,
+      "correctness": "ungraded",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "outside_catalog",
+    "subject": "unknown",
+    "grade": "3",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "What color is this dinosaur?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "purple",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "unknown-subject"
+    ],
+    "expected": {
+      "subskill_id": null,
+      "correctness": "ungraded",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "unsupported_units",
+    "subject": "math",
+    "grade": "1",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "6 + 3 = ?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "9 miles",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "ambiguous-unit"
+    ],
+    "expected": {
+      "subskill_id": "1.OA.C.6-1",
+      "correctness": "ungraded",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "grammar_plural_correct",
+    "subject": "ela",
+    "grade": "3",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "One mouse, two ___. One leaf, two ___. One story, two ___.",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "mice; leaves; stories",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [],
+    "expected": {
+      "subskill_id": "L.3.1-2",
+      "correctness": "correct",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "grammar_plural_pattern",
+    "subject": "ela",
+    "grade": "3",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "One mouse, two ___. One leaf, two ___. One story, two ___.",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "mouses; leafs; stories",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "misconception"
+    ],
+    "expected": {
+      "subskill_id": "L.3.1-2",
+      "correctness": "incorrect",
+      "signature": "matched"
+    }
+  },
+  {
+    "id": "grammar_agreement_correct",
+    "subject": "ela",
+    "grade": "3",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "The dogs ___ fast. (run or runs)",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "run",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [],
+    "expected": {
+      "subskill_id": "L.3.1-4",
+      "correctness": "correct",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "grammar_agreement_pattern",
+    "subject": "ela",
+    "grade": "3",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "The dogs ___ fast. (run or runs)",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "runs",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "misconception"
+    ],
+    "expected": {
+      "subskill_id": "L.3.1-4",
+      "correctness": "incorrect",
+      "signature": "matched"
+    }
+  },
+  {
+    "id": "grammar_blank",
+    "subject": "ela",
+    "grade": "3",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "The dogs ___ fast. (run or runs)",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": null,
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "blank"
+      }
+    },
+    "context": [],
+    "tags": [
+      "blank"
+    ],
+    "expected": {
+      "subskill_id": "L.3.1-4",
+      "correctness": "ungraded",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "grammar_unreadable",
+    "subject": "ela",
+    "grade": "3",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "The dogs ___ fast. (run or runs)",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": null,
+          "uncertain": true
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "unclear"
+      }
+    },
+    "context": [],
+    "tags": [
+      "unreadable"
+    ],
+    "expected": {
+      "subskill_id": "L.3.1-4",
+      "correctness": "ungraded",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "reading_evidence_correct",
+    "subject": "ela",
+    "grade": "3",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "Why was the character upset? Find the sentence that shows it.",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [
+        "story"
+      ],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "The model broke. \"My model broke,\" the child said sadly.",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [
+      {
+        "id": "story",
+        "type": "passage",
+        "title": {
+          "text": "The broken model",
+          "uncertain": false
+        },
+        "content": {
+          "text": "The child was upset because the model broke. \"My model broke,\" the child said sadly. Then the child asked a friend for help.",
+          "uncertain": false
+        }
+      }
+    ],
+    "tags": [
+      "shared-context",
+      "text-evidence"
+    ],
+    "expected": {
+      "subskill_id": "RL.3.1-1",
+      "correctness": "correct",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "reading_evidence_incorrect",
+    "subject": "ela",
+    "grade": "3",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "Why was the character upset? Find the sentence that shows it.",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [
+        "story"
+      ],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "Because it was raining. The passage says it was raining.",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [
+      {
+        "id": "story",
+        "type": "passage",
+        "title": {
+          "text": "The broken model",
+          "uncertain": false
+        },
+        "content": {
+          "text": "The child was upset because the model broke. \"My model broke,\" the child said sadly. Then the child asked a friend for help.",
+          "uncertain": false
+        }
+      }
+    ],
+    "tags": [
+      "shared-context",
+      "unsupported-claim"
+    ],
+    "expected": {
+      "subskill_id": "RL.3.1-1",
+      "correctness": "incorrect",
+      "signature": "other"
+    }
+  },
+  {
+    "id": "reading_missing_passage",
+    "subject": "ela",
+    "grade": "3",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "Why was the character upset? Find the sentence that shows it.",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "Because the model broke.",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "missing-context"
+    ],
+    "expected": {
+      "subskill_id": "RL.3.1-1",
+      "correctness": "ungraded",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "reading_subjective_writing",
+    "subject": "ela",
+    "grade": "3",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "Write a story about your best day.",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "I had fun at the park.",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "human-judgment"
+    ],
+    "expected": {
+      "subskill_id": null,
+      "correctness": "ungraded",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "reading_multiskill",
+    "subject": "ela",
+    "grade": "3",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "Name every noun, summarize the story, compare its theme, and explain the diagram.",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "dog",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "ambiguous-multiskill"
+    ],
+    "expected": {
+      "subskill_id": null,
+      "correctness": "ungraded",
+      "signature": "uncertain"
+    }
+  },
+  {
+    "id": "grammar_comparison_pattern",
+    "subject": "ela",
+    "grade": "3",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "tall, ___, ___ (comparing forms)",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "more taller; most tallest",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [
+      "misconception"
+    ],
+    "expected": {
+      "subskill_id": "L.3.1-5",
+      "correctness": "incorrect",
+      "signature": "matched"
+    }
+  },
+  {
+    "id": "grammar_comparison_correct",
+    "subject": "ela",
+    "grade": "3",
+    "problem": {
+      "id": "1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "tall, ___, ___ (comparing forms)",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "taller; tallest",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    },
+    "context": [],
+    "tags": [],
+    "expected": {
+      "subskill_id": "L.3.1-5",
+      "correctness": "correct",
+      "signature": "uncertain"
+    }
+  }
+]

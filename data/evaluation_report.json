@@ -1,0 +1,425 @@
+{
+  "runAt": "2026-11-11T02:04:44.094544+00:00",
+  "model": "gpt-6.1-terra",
+  "catalogRevision": "7c7b3a98cdf51bb48b53bcef4c4d5e2c0015fc0845e40f6345a4962eeab1be23",
+  "command": "npm run gap:evaluate:live -- --details",
+  "scope": "Synthetic structured homework decisions after transcription; 27 variants across 12 unique question texts. Not a general accuracy benchmark.",
+  "examples": 27,
+  "providerFailures": 0,
+  "mappingCoverage": 0.8148,
+  "acceptedMappingAccuracy": 1.0,
+  "gradingAccuracy": 1.0,
+  "signatureEligibleIncorrectCount": 7,
+  "signatureAccuracy": 0.7143,
+  "candidateRecall": 1.0,
+  "candidateExpectedCount": 22,
+  "candidateRetrievedCount": 22,
+  "uniqueQuestionCount": 12,
+  "cases": [
+    {
+      "id": "fraction_add_correct",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "5.NF.A.1-2",
+        "correctness": "correct",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": "5.NF.A.1-2",
+        "correctness": "correct",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "fraction_add_equivalent",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "5.NF.A.1-2",
+        "correctness": "correct",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": "5.NF.A.1-2",
+        "correctness": "correct",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "fraction_add_denominators",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "5.NF.A.1-2",
+        "correctness": "incorrect",
+        "signature": "matched"
+      },
+      "actual": {
+        "subskillId": "5.NF.A.1-2",
+        "correctness": "incorrect",
+        "signature": "matched"
+      },
+      "failure": null
+    },
+    {
+      "id": "fraction_add_slip",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "5.NF.A.1-2",
+        "correctness": "incorrect",
+        "signature": "possible_slip"
+      },
+      "actual": {
+        "subskillId": "5.NF.A.1-2",
+        "correctness": "incorrect",
+        "signature": "possible_slip"
+      },
+      "failure": null
+    },
+    {
+      "id": "fraction_blank",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "5.NF.A.1-2",
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": "5.NF.A.1-2",
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "fraction_unreadable",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "5.NF.A.1-2",
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": "5.NF.A.1-2",
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "question_unreadable",
+      "candidateRank": null,
+      "expected": {
+        "subskillId": null,
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": null,
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "addition_correct",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "1.OA.C.6-1",
+        "correctness": "correct",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": "1.OA.C.6-1",
+        "correctness": "correct",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "addition_slip",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "1.OA.C.6-1",
+        "correctness": "incorrect",
+        "signature": "possible_slip"
+      },
+      "actual": {
+        "subskillId": "1.OA.C.6-1",
+        "correctness": "incorrect",
+        "signature": "other"
+      },
+      "failure": null
+    },
+    {
+      "id": "addition_incomplete",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "1.OA.C.6-1",
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": "1.OA.C.6-1",
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "unsupported_word_problem",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "2.OA.A.1-1",
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": "2.OA.A.1-1",
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "ambiguous_multiple_skills",
+      "candidateRank": null,
+      "expected": {
+        "subskillId": null,
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": null,
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "outside_catalog",
+      "candidateRank": null,
+      "expected": {
+        "subskillId": null,
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": null,
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "unsupported_units",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "1.OA.C.6-1",
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": "1.OA.C.6-1",
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "grammar_plural_correct",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "L.3.1-2",
+        "correctness": "correct",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": "L.3.1-2",
+        "correctness": "correct",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "grammar_plural_pattern",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "L.3.1-2",
+        "correctness": "incorrect",
+        "signature": "matched"
+      },
+      "actual": {
+        "subskillId": "L.3.1-2",
+        "correctness": "incorrect",
+        "signature": "matched"
+      },
+      "failure": null
+    },
+    {
+      "id": "grammar_agreement_correct",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "L.3.1-4",
+        "correctness": "correct",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": "L.3.1-4",
+        "correctness": "correct",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "grammar_agreement_pattern",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "L.3.1-4",
+        "correctness": "incorrect",
+        "signature": "matched"
+      },
+      "actual": {
+        "subskillId": "L.3.1-4",
+        "correctness": "incorrect",
+        "signature": "matched"
+      },
+      "failure": null
+    },
+    {
+      "id": "grammar_blank",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "L.3.1-4",
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": "L.3.1-4",
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "grammar_unreadable",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "L.3.1-4",
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": "L.3.1-4",
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "reading_evidence_correct",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "RL.3.1-1",
+        "correctness": "correct",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": "RL.3.1-1",
+        "correctness": "correct",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "reading_evidence_incorrect",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "RL.3.1-1",
+        "correctness": "incorrect",
+        "signature": "other"
+      },
+      "actual": {
+        "subskillId": "RL.3.1-1",
+        "correctness": "incorrect",
+        "signature": "matched"
+      },
+      "failure": null
+    },
+    {
+      "id": "reading_missing_passage",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "RL.3.1-1",
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": "RL.3.1-1",
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "reading_subjective_writing",
+      "candidateRank": null,
+      "expected": {
+        "subskillId": null,
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": null,
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "reading_multiskill",
+      "candidateRank": null,
+      "expected": {
+        "subskillId": null,
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": null,
+        "correctness": "ungraded",
+        "signature": "uncertain"
+      },
+      "failure": null
+    },
+    {
+      "id": "grammar_comparison_pattern",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "L.3.1-5",
+        "correctness": "incorrect",
+        "signature": "matched"
+      },
+      "actual": {
+        "subskillId": "L.3.1-5",
+        "correctness": "incorrect",
+        "signature": "matched"
+      },
+      "failure": null
+    },
+    {
+      "id": "grammar_comparison_correct",
+      "candidateRank": 1,
+      "expected": {
+        "subskillId": "L.3.1-5",
+        "correctness": "correct",
+        "signature": "uncertain"
+      },
+      "actual": {
+        "subskillId": "L.3.1-5",
+        "correctness": "correct",
+        "signature": "uncertain"
+      },
+      "failure": null
+    }
+  ]
+}

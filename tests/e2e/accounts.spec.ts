@@ -26,7 +26,7 @@ async function addChild(
   await expect(page.getByRole("heading", { name, exact: true })).toBeVisible();
 }
 
-test("parent signs up, sets a PIN, adds two children, and explores sample dashboard", async ({
+test("parent signs up, sets a PIN, adds two children, and explores real learning dashboard", async ({
   page,
 }) => {
   const email = `journey-${Date.now()}@example.com`;
@@ -69,10 +69,11 @@ test("parent signs up, sets a PIN, adds two children, and explores sample dashbo
     .getByRole("combobox", { name: "Choose child", exact: true })
     .selectOption({ label: "Alex" });
   await expect(
-    page.getByText("Sample learning data", { exact: true }),
+    page.getByText("Learning activity", { exact: true }),
   ).toBeVisible();
-  await expect(page.getByText("3.NF.A.1", { exact: true })).toBeVisible();
-  await expect(page.getByText("Unassessed", { exact: true })).toHaveCount(2);
+  await expect(page.locator(".skill-card").first()).toBeVisible();
+  await expect(page.locator(".skill-card:not(.skill-card-unassessed)")).toHaveCount(0);
+  await expect(page.getByLabel("Skill status legend").getByText("Unassessed", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Analytics", exact: true }).click();
   for (const label of [
     "Sessions this week",
@@ -81,12 +82,12 @@ test("parent signs up, sets a PIN, adds two children, and explores sample dashbo
     "Problems correct",
   ])
     await expect(page.getByText(label, { exact: true })).toBeVisible();
+  await expect(page.locator(".metric-card strong")).toHaveText(["0", "0 min", "0", "0", "0"]);
   await page
     .getByRole("button", { name: "Conversations", exact: true })
     .click();
-  await page.getByRole("button", { name: /View transcript/ }).click();
   await expect(
-    page.getByText("I’m not sure where to start with this problem.", {
+    page.getByText("No homework-help conversations yet.", {
       exact: true,
     }),
   ).toBeVisible();

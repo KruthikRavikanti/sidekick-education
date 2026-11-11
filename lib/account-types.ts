@@ -24,7 +24,15 @@ export interface Skill {
   name: string;
   subject: "math" | "ela";
   commonCoreCode: string;
-  status: "gap" | "practicing" | "mastered" | "unassessed";
+  status: "gap" | "practicing" | "mastered" | "unassessed" | "on_track" | "checking";
+  subskillId?: string;
+  parentExplanation?: string;
+  observedPattern?: string;
+  homeTip?: string;
+  evidence?: unknown[];
+  traceback?: unknown[];
+  currentPracticeTarget?: unknown;
+  teacherSuggestion?: string | null;
 }
 export interface ConversationSummary {
   id: string;
@@ -34,13 +42,14 @@ export interface ConversationSummary {
 }
 export interface DashboardData {
   profile: KidProfile;
-  sample: true;
+  sample: boolean;
   skills: Skill[];
   analytics: {
     sessionsThisWeek: number;
     timeSpentMinutes: number;
     problemsAttempted: number;
     problemsCorrect: number;
+    problemsUngraded?: number;
   };
   conversations: ConversationSummary[];
 }

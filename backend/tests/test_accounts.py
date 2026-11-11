@@ -477,21 +477,24 @@ def test_session_and_pin_lockout_survive_security_context_restart(parent_client,
     assert unlock(parent_client).status_code == 200
 
 
-def test_sample_data_has_both_subjects_codes_statuses_and_owned_transcript(parent_client):
+def test_real_data_starts_unassessed_with_both_subjects_and_owned_transcript(parent_client, security_context):
+    from backend.gap.catalog import seed_catalog
+    seed_catalog(security_context.db, now=security_context.clock.now())
     profile = child(parent_client)
     response = parent_client.get(f"/api/parent/dashboard/{profile['id']}")
     assert response.status_code == 200
     data = response.json()
-    assert data["sample"] is True
+    assert data["sample"] is False
     assert data["profile"]["id"] == profile["id"]
-    assert data["skills"] and data["analytics"] and data["conversations"]
+    assert data["skills"] and data["analytics"]
+    assert data["conversations"] == []
     assert {skill["subject"] for skill in data["skills"]} == {"math", "ela"}
-    assert {skill["status"] for skill in data["skills"]} == {"gap", "practicing", "mastered", "unassessed"}
+    assert {skill["status"] for skill in data["skills"]} == {"unassessed"}
     assert all(skill["name"] and skill["commonCoreCode"] for skill in data["skills"])
-    assert set(data["analytics"]) == {"sessionsThisWeek", "timeSpentMinutes", "problemsAttempted", "problemsCorrect"}
+    assert set(data["analytics"]) == {"sessionsThisWeek", "timeSpentMinutes", "problemsAttempted", "problemsCorrect", "problemsUngraded"}
+    assert all(value == 0 for value in data["analytics"].values())
     assert "password" not in response.text.lower() and "hash" not in response.text.lower()
-    conversation = data["conversations"][0]
-    transcript = parent_client.get(f"/api/parent/conversations/{profile['id']}/{conversation['id']}")
+    transcript = parent_client.get(f"/api/parent/conversations/{profile['id']}/{profile['id']}-sample-1")
     assert transcript.status_code == 200
     assert transcript.json()["sample"] is True
     assert transcript.headers["cache-control"] == "no-store"
