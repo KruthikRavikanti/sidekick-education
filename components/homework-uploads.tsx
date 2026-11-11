@@ -78,7 +78,7 @@ export function HomeworkUploads({ kidId }: { kidId: string }) {
       const data = await response.json();
       if (!response.ok)
         throw new Error(
-          data.error?.message || "The worksheet couldn’t be processed.",
+          data.error?.message || "The uploaded work couldn’t be processed.",
         );
       setSelected(data);
       await load();
@@ -128,15 +128,15 @@ export function HomeworkUploads({ kidId }: { kidId: string }) {
     <section className="dashboard-section">
       <div className="section-heading">
         <div>
-          <h2>Homework, in order.</h2>
+          <h2>Uploaded work, in order.</h2>
           <p>
-            Upload a photo or bounded PDF for this child. Original writing stays
-            separate from grading and skill observations.
+            Add a worksheet, quiz, test, or other schoolwork as a photo or PDF.
+            Original writing stays separate from grading and skill observations.
           </p>
         </div>
       </div>
       <label className="button secondary upload-file-label">
-        {busy ? "Saving worksheet…" : "Upload homework"}
+        {busy ? "Saving work…" : "Upload work"}
         <input
           className="visually-hidden"
           type="file"
@@ -156,14 +156,14 @@ export function HomeworkUploads({ kidId }: { kidId: string }) {
               <strong>
                 {item.createdAt
                   ? new Date(item.createdAt * 1000).toLocaleString()
-                  : "Worksheet"}
+                  : "Uploaded work"}
               </strong>
               <p>
                 {item.pageCount ?? item.pages ?? 0} pages · {item.state}
               </p>
             </div>
             <button className="text-button" onClick={() => void show(item.id)}>
-              View worksheet
+              View work
             </button>
             <button
               className="text-button"
@@ -175,17 +175,17 @@ export function HomeworkUploads({ kidId }: { kidId: string }) {
         ))}
       </div>
       {uploads.length === 0 && !busy && (
-        <p>No homework has been uploaded for this child yet.</p>
+        <p>No work has been uploaded for this child yet.</p>
       )}
       {deleting && (
         <div
           className="delete-confirmation"
           role="alertdialog"
-          aria-label="Delete homework upload"
+          aria-label="Delete uploaded work"
         >
           <h3>Delete this upload?</h3>
           <p>
-            The private file and its linked homework records will be removed.
+            The private file and its linked work records will be removed.
             Learning states will be recalculated from remaining evidence.
           </p>
           <button
@@ -202,7 +202,7 @@ export function HomeworkUploads({ kidId }: { kidId: string }) {
       )}
       {selected && (
         <section className="homework-details">
-          <h3>Worksheet processing</h3>
+          <h3>Work processing</h3>
           <p role="status" aria-live="polite">
             {selected.state} · {selected.stage}
             {processing ? " · Reading continues in the background…" : ""}

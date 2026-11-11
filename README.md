@@ -1,6 +1,6 @@
 # Sidekick
 
-Sidekick is a local K–5 family prototype built with Next.js/TypeScript, FastAPI/Pydantic, and SQLite. Parents create profiles, unlock a PIN-protected dashboard, and review worksheet evidence. Children upload a photo or PDF and review the verbatim extraction. Skill-building activities are a future milestone; the standalone Practice section and diagnostic quizzes have been removed. The existing [Sidekick design kit](https://preview--sidekick-colorway-studio.lovable.app/?__lovable_receipt=mat_6nx4bc71428r69zqdx974t1cnk), colors, components, and locally hosted fonts are retained.
+Sidekick is a local K–5 family prototype built with Next.js/TypeScript, FastAPI/Pydantic, and SQLite. Parents create profiles, unlock a PIN-protected dashboard, and review uploaded student work. Children upload a photo or PDF of a worksheet, quiz, test, or other Math/ELA work and review the verbatim extraction. Skill-building activities are a future milestone; the standalone Practice section and diagnostic quizzes have been removed. The existing [Sidekick design kit](https://preview--sidekick-colorway-studio.lovable.app/?__lovable_receipt=mat_6nx4bc71428r69zqdx974t1cnk), colors, components, and locally hosted fonts are retained.
 
 The gap engine extends the parent-account implementation. Its branch, `feature/gap-engine`, is stacked on `feature/parent-accounts-dashboard` ([PR #1](https://github.com/KruthikRavikanti/sidekick-education/pull/1)); review the gap changes against that parent branch while it remains unmerged.
 
@@ -36,9 +36,9 @@ APP_ENV=development PASSWORD_POLICY=dev COOKIE_SECURE=false npm run db:seed
 npm run dev:demo
 ```
 
-The optional seed creates `parent@example.com` / `password`, Alex (grade 3), and Maya (grade 1). The PIN starts unset; repeated seeding preserves existing credentials and profiles. Sign in, choose Parent, verify the account password to set a 4–6 digit PIN, and unlock the dashboard. Switch profile to choose a child and open Homework.
+The optional seed creates `parent@example.com` / `password`, Alex (grade 3), and Maya (grade 1). The PIN starts unset; repeated seeding preserves existing credentials and profiles. Sign in, choose Parent, verify the account password to set a 4–6 digit PIN, and unlock the dashboard. Switch profile to choose a child and tap **Upload work**.
 
-Demo mode accepts only the two exact images under `public/samples/` and labels extraction `source: "fixture"`. It creates no fabricated learning evidence. Automated tests inject explicit model stubs when testing homework analysis.
+Demo mode accepts only the two exact images under `public/samples/` and labels extraction `source: "fixture"`. It creates no fabricated learning evidence. Automated tests inject explicit model stubs when testing student work analysis.
 
 ## Migrations and catalog seeding
 
@@ -52,39 +52,39 @@ npm run catalog:seed -- --report /tmp/sidekick-catalog-report.json
 npm run catalog:seed -- --path /path/to/reviewed-catalog.json
 ```
 
-Migrations `001`–`004` add accounts, the catalog, learning records, and private homework storage. Migration `005` retires the former check/practice workflow, archives its skill-state snapshot privately, and closes pending assignments, sessions, and chains without deleting historical attempts or evidence. Already-applied migrations are skipped. `DATABASE_URL` defaults to `sqlite:///backend/data/sidekick.db`; relative SQLite paths resolve from the repository root. Back up the database and private uploads together before moving this local prototype.
+Migrations `001`–`004` add accounts, the catalog, learning records, and private student work storage. Migration `005` retires the former check/practice workflow, archives its skill-state snapshot privately, and closes pending assignments, sessions, and chains without deleting historical attempts or evidence. Already-applied migrations are skipped. `DATABASE_URL` defaults to `sqlite:///backend/data/sidekick.db`; relative SQLite paths resolve from the repository root. Back up the database and private uploads together before moving this local prototype.
 
 `data/sidekick_skill_map_v2.json` is the supplied, unchanged draft. Its SHA-256 is `7c7b3a98cdf51bb48b53bcef4c4d5e2c0015fc0845e40f6345a4962eeab1be23`. It contains **779 skills, 1,533 subskills, and 3,066 populated seed pairs**: 867 Math, 666 Reading/ELA, and 795 K–5 subskills. K–8 grades have explicit ordering; high-school math courses and ELA bands retain their separate string labels. Profiles remain K–5.
 
 The importer validates before a transaction, upserts stable IDs, preserves every raw source field, and derives subskill order from the numeric suffix. Seed slots have stable logical IDs (`subskill:p1` / `subskill:p2`) and immutable content versions. Reseeding replaces current relationships and retires removed records; attempts and assignment references keep their exact historical item versions. Repeating an unchanged import does not duplicate items.
 
-The checked-in [import report](data/catalog_import_report.json) records all counts and 37 graph warnings: 28 Low-confidence roots, five upward prerequisite directions, and four cycle edges across root/skill graphs. This includes the High-confidence `A-SSE.B.3-1` ↔ `A-REI.B.4-3` cycle and Algebra 1 → Algebra 2 links. Raw links remain stored and unsafe links are marked unusable. The current homework flow does not initiate prerequisite traversal or checks.
+The checked-in [import report](data/catalog_import_report.json) records all counts and 37 graph warnings: 28 Low-confidence roots, five upward prerequisite directions, and four cycle edges across root/skill graphs. This includes the High-confidence `A-SSE.B.3-1` ↔ `A-REI.B.4-3` cycle and Algebra 1 → Algebra 2 links. Raw links remain stored and unsafe links are marked unusable. The current student work flow does not initiate prerequisite traversal or checks.
 
 The retained catalog compiler records **101 ready, verified item specifications**, **1,941 adult-required specifications**, and **1,024 missing-context specifications**. All 3,066 seed pairs and their immutable versions remain available as curriculum data for future activity development. The current app does not serve these as quizzes or standalone practice. Missing passages, choices, plots, and dependencies are not invented.
 
-## Homework observations and future activities
+## Student work observations and future activities
 
-Upload a JPG, PNG, WebP, or bounded PDF from the active child's Homework area. Parents may also upload from the dashboard with a selected child. Preview, tap **Read worksheet**, and review problems in page order. Extraction preserves written mistakes, step order, fractions, shared context, and field-level uncertainty. Blank and unreadable responses remain distinct. Grading and mapping are separate stages; unsupported, blank, ambiguous, or unreadable work stays ungraded and cannot create incorrect skill evidence.
+Upload a JPG, PNG, WebP, or bounded PDF from the active child's **Upload work** action. Parents may also upload from the dashboard with a selected child. Preview, tap **Read my work**, and review problems in page order. Extraction preserves written mistakes, step order, fractions, shared context, and field-level uncertainty. Blank and unreadable responses remain distinct. Grading and mapping are separate stages; unsupported, blank, ambiguous, or unreadable work stays ungraded and cannot create incorrect skill evidence.
 
 Candidate retrieval uses the same subject and grades up to one above the child's grade, with at most ten candidates. High-school labels stay outside the K–5 retrieval window. Mapping below 0.6 abstains. A confidently mapped incorrect answer can separately receive a visible-work error-pattern observation. Teacher marks are observations; conflicts with grading are flagged for review. Scores are initial routing estimates, not calibrated assessment probabilities.
 
 Persistent uploads checkpoint extraction, grading, mapping, signatures, and evidence. Request keys, child-scoped file hashes, and problem fingerprints suppress recognized retries and duplicates. A stopped process can resume through **Retry** after its processing lease expires; this prototype uses in-process background tasks rather than a durable job worker. Authorization is rechecked after provider work and before returning profile-scoped results.
 
-The parent Skills view summarizes eligible homework evidence:
+The parent Skills view summarizes eligible student work evidence:
 
 | Status | Meaning |
 | --- | --- |
-| `unassessed` | There is not enough reliable homework evidence to summarize the skill. |
+| `unassessed` | There is not enough reliable student work evidence to summarize the skill. |
 | `on_track` | At least one eligible correct response supports progress, without repeated incorrect observations. |
-| `needs_support` | Two distinct eligible incorrect homework responses show where support may help. This is a homework observation, not a confirmed diagnostic result. |
+| `needs_support` | Two distinct eligible incorrect student work responses show where support may help. This is a student work observation, not a confirmed diagnostic result. |
 
-`backend/gap/config.json` contains the application timezone, mapping confidence threshold, and number of distinct incorrect homework responses needed for a support observation.
+`backend/gap/config.json` contains the application timezone, mapping confidence threshold, and number of distinct incorrect student work responses needed for a support observation.
 
-A repeated upload of the same question does not create a second observation. Ungraded or unmapped outcomes remain available for review without affecting skill states. The dashboard includes the source homework and any observed error pattern, parent explanation, and home tip. It does not initiate diagnostic checks, prerequisite quizzes, practice sessions, or scheduled rechecks. Homework alone does not award mastery.
+A repeated upload of the same question does not create a second observation. Ungraded or unmapped outcomes remain available for review without affecting skill states. The dashboard includes the source student work and any observed error pattern, parent explanation, and home tip. It does not initiate diagnostic checks, prerequisite quizzes, practice sessions, or scheduled rechecks. Student work alone does not award mastery.
 
 Activities are the intended future way to help children improve these skills. Activity creation, delivery, and activity-based progress rules are **not implemented in this revision**. There is no replacement quiz hidden behind an Activities label. Existing catalog content, item versions, and historical learning records are retained for that future work.
 
-The parent Analytics view currently shows **Questions read**, **Correct answers**, and **Not graded yet** from stored homework problems. Questions are deduplicated by child-scoped problem fingerprint. Each distinct question uses its first usable correct/incorrect grade in chronological order; if it has no usable grade, it stays ungraded. Mapping eligibility determines skill observations separately, so an unmapped but confidently graded problem can still count as a correct answer. Session counts, time spent, and practice totals are not presented as activity progress. Server timestamps are retained, along with the configured application timezone, **`America/New_York`**, for future activity work. Conversation history remains empty until a future chat milestone.
+The parent Analytics view currently shows **Questions read**, **Correct answers**, and **Not graded yet** from stored student work problems. Questions are deduplicated by child-scoped problem fingerprint. Each distinct question uses its first usable correct/incorrect grade in chronological order; if it has no usable grade, it stays ungraded. Mapping eligibility determines skill observations separately, so an unmapped but confidently graded problem can still count as a correct answer. Session counts, time spent, and practice totals are not presented as activity progress. Server timestamps are retained, along with the configured application timezone, **`America/New_York`**, for future activity work. Conversation history remains empty until a future chat milestone.
 
 The former Practice URL redirects to the child's home. Authenticated calls to retired check/practice/adult-review endpoints return `410 feature_removed` after the existing mode, ownership, and CSRF checks. Old pending work is retired by migration; historical records are retained privately and cannot continue generating evidence through those endpoints.
 
@@ -94,9 +94,9 @@ Account sessions, parent PINs, ownership checks, sibling isolation, profile swit
 
 Original uploads and rendered pages are retained privately under the database directory's `uploads/` by default (`backend/data/uploads/`). Opaque filenames, mode 0600 files, and a mode 0700 directory are used. This location is Git-ignored and outside public assets. Override `SIDEKICK_PRIVATE_UPLOAD_DIR` only with another private, ignored directory, preferably outside the repository. Files are retrieved through authorized routes, never public URLs.
 
-Parent deletion removes an upload's original/pages, problems, and linked homework evidence, then recomputes affected states. Historical diagnostic/practice records are retained privately; the retired workflow cannot resume them. Deleting a child cascades its learning records and cleans its private files. There is no automatic retention deadline; parents delete retained uploads explicitly. Backups need the same privacy controls.
+Parent deletion removes an upload's original/pages, problems, and linked student work evidence, then recomputes affected states. Historical diagnostic/practice records are retained privately; the retired workflow cannot resume them. Deleting a child cascades its learning records and cleans its private files. There is no automatic retention deadline; parents delete retained uploads explicitly. Backups need the same privacy controls.
 
-Before model image calls, EXIF metadata is stripped and the top 6% of each page is masked by default. Known names/account identifiers and obvious email addresses are redacted from text model payloads. **This is not complete image de-identification:** names elsewhere in an image can reach the configured provider, and masking can hide a title or question. Model prompts treat worksheet/catalog content as data. Private audits store internal references, task/model/prompt/catalog versions, outcome/confidence, and short redacted explanations. Ordinary errors/logs exclude worksheet content, provider bodies, credentials, and filenames.
+Before model image calls, EXIF metadata is stripped and the top 6% of each page is masked by default. Known names/account identifiers and obvious email addresses are redacted from text model payloads. **This is not complete image de-identification:** names elsewhere in an image can reach the configured provider, and masking can hide a title or question. Model prompts treat uploaded work/catalog content as data. Private audits store internal references, task/model/prompt/catalog versions, outcome/confidence, and short redacted explanations. Ordinary errors/logs exclude uploaded page content, provider bodies, credentials, and filenames.
 
 | Backend setting | Default | Supported range / effect |
 | --- | --- | --- |
@@ -113,6 +113,8 @@ The PDF renderer rejects encrypted/invalid/oversized files and caps rendered out
 
 ## API and extraction contract
 
+The product calls uploads **Student work** and explicitly welcomes worksheets, quizzes, tests, and other schoolwork. Existing internal `homework` identifiers, database tables, `/kid/homework` links, and the extraction contract’s `worksheet` field stay unchanged for compatibility. This wording change does not alter stored records or interpretation of printed source text.
+
 `POST /api/extract` retains the authenticated multipart `file` extraction response: `worksheet`, `problems`, and `source`. [Pydantic models](backend/models.py), [JSON Schema](backend/schema.json), [TypeScript types](lib/extraction.ts), and [fixtures](fixtures/README.md) document the contract. Every transcribed field is `{ "text": "legible text or null", "uncertain": false }`; partial text is retained with `uncertain: true`. Completely unreadable final/selected answers normalize answered status to unclear. Extraction never replaces a student's incorrect work with a solution.
 
 The learning API adds:
@@ -123,7 +125,7 @@ The learning API adds:
 | `GET /kid/uploads`, `GET /kid/uploads/{id}` | Resume list and processing/extraction results |
 | `POST /kid/uploads/{id}/retry`, `GET /kid/uploads/{id}/file` | Resume processing or authorized original retrieval |
 | `/parent/{kidId}/uploads` and `/{id}` variants | Equivalent explicitly selected-child parent operations; `DELETE .../{id}` deletes |
-| `GET /parent/{kidId}/dashboard` | Homework-based skill observations and analytics |
+| `GET /parent/{kidId}/dashboard` | Skill observations and analytics from uploaded student work |
 | Former `/kid/next`, `/kid/submit`, `/kid/session/{id}/activity`, and parent adult/extra-practice routes | Retired; authorized requests return `410 feature_removed` |
 
 Kid responses contain extraction; detailed mapping, grading, signatures, and learning states belong to authorized parent routes. API errors retain `{ "error": { "code": "...", "message": "..." } }`, use safe messages, and responses are `Cache-Control: no-store`.
@@ -139,11 +141,11 @@ npm run test:e2e
 npm run gap:evaluate
 # Explicit provider calls using the same retrieval/grading/mapping/signature pipeline:
 npm run gap:evaluate:live
-# Include synthetic case IDs and expected/actual decisions, without worksheet text:
+# Include synthetic case IDs and expected/actual decisions, without uploaded page text:
 npm run gap:evaluate:live -- --details
 ```
 
-Stop servers on ports 3000/8000 before Playwright; its configuration starts isolated servers. Unit/integration tests stub model calls and use temporary databases. Coverage includes authentication/PIN/CSRF, extraction preservation, invalid images/PDFs, provider failure and retry, child/account isolation and profile changes, catalog reseeding/history, distinct homework observations, retired-workflow enforcement, historical-data preservation, and real dashboard data. Browser journeys verify that the old Practice URL redirects, retired APIs cannot start questions, and private homework upload/retrieval/deletion still works.
+Stop servers on ports 3000/8000 before Playwright; its configuration starts isolated servers. Unit/integration tests stub model calls and use temporary databases. Coverage includes authentication/PIN/CSRF, extraction preservation, invalid images/PDFs, provider failure and retry, child/account isolation and profile changes, catalog reseeding/history, distinct student work observations, retired-workflow enforcement, historical-data preservation, and real dashboard data. Browser journeys verify that the old Practice URL redirects, retired APIs cannot start questions, and private student work upload/retrieval/deletion still works.
 
 `data/evaluation_homework.json` contains 27 synthetic Math/ELA examples with expected mapping or abstention, correctness, and signature labels, including mistakes/slips, equivalent fractions, blanks, unreadable responses, shared context, missing context, and ambiguous multi-skill work. The offline command validates cases and catalog IDs; it does **not** measure model accuracy. The live command creates a temporary database/catalog and reports mapping coverage, accuracy among accepted mappings, grading accuracy, eligible incorrect signature accuracy, and provider failures. Missing credentials exit with setup instructions. No real student data is used.
 

@@ -1,7 +1,7 @@
-"""Synthetic homework facts for Playwright's isolated SQLite database only.
+"""Synthetic student work facts for Playwright's isolated SQLite database only.
 
 Accounts, PINs, sessions and authorization are created through the real API.
-This script adds homework observations without model calls or active assignments.
+This script adds upload observations without model calls or active assignments.
 """
 import json
 import sys
@@ -26,7 +26,7 @@ def main():
             raise RuntimeError('Create the test child through the authenticated API first.')
         target = conn.execute("SELECT * FROM catalog_subskills WHERE grade=? AND subject='Reading/ELA' AND active=1 ORDER BY id LIMIT 1", (kid['grade'],)).fetchone()
         if not target:
-            raise RuntimeError('The seeded catalog does not include the expected homework skill.')
+            raise RuntimeError('The seeded catalog does not include the expected student work skill.')
         subskill_id = target['id']
         raw = json.loads(target['raw_json'])
     for index in range(2):

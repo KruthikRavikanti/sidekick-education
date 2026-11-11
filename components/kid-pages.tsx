@@ -15,7 +15,7 @@ function KidContent() {
         <Avatar avatar={child.avatarKey} size="large" />
         <p className="account-eyebrow">YOUR NEXT LITTLE STEP</p>
         <h1>Hey, {child.firstName}!</h1>
-        <p>Let’s take a look at your homework.</p>
+        <p>Let’s take a look at your work.</p>
       </section>
       <div className="kid-actions">
         <Link
@@ -26,8 +26,8 @@ function KidContent() {
           <span className="kid-action-icon">
             <BookOpen size={29} aria-hidden="true" />
           </span>
-          <h2>Get help with my homework</h2>
-          <p>Take a photo. Let’s read your worksheet.</p>
+          <h2>Upload work</h2>
+          <p>Add a worksheet, quiz, test, or other Math or ELA work.</p>
           <span className="kid-action-arrow" aria-hidden="true">
             ↗
           </span>
@@ -36,11 +36,11 @@ function KidContent() {
       <section className="kid-chat-placeholder">
         <MessageCircle size={20} aria-hidden="true" />
         <div>
-          <h2>Your homework chat is on its way.</h2>
-          <p>For now, start by reading your worksheet.</p>
+          <h2>Your learning chat is on its way.</h2>
+          <p>For now, start by uploading your work.</p>
         </div>
         <input
-          aria-label="Homework chat coming soon"
+          aria-label="Learning chat coming soon"
           disabled
           placeholder="Chat is coming soon"
         />
@@ -60,7 +60,7 @@ function HomeworkContent() {
   const { session, toPicker } = useAccountSession();
   return (
     <>
-      <nav className="kid-reader-toolbar" aria-label="Homework navigation">
+      <nav className="kid-reader-toolbar" aria-label="Student work navigation">
         <Link href="/kid" prefetch={false}>
           <ChevronLeft size={16} aria-hidden="true" />
           {session!.activeKid!.firstName}’s home

@@ -35,7 +35,7 @@ async function enterParent(page: Page) {
   await expect(page).toHaveURL(/\/parent\/dashboard$/);
 }
 
-test("homework observations show support needs without assigning a diagnostic or practice", async ({
+test("student work observations show support needs without assigning a diagnostic or practice", async ({
   page,
   context,
 }) => {
@@ -55,9 +55,9 @@ test("homework observations show support needs without assigning a diagnostic or
     })
     .first();
   await expect(card.getByText("Needs support", { exact: true })).toBeVisible();
-  await card.getByText("See homework observations", { exact: true }).click();
+  await card.getByText("See work observations", { exact: true }).click();
   await expect(
-    card.getByText("Homework evidence (2)", { exact: true }),
+    card.getByText("Uploaded evidence (2)", { exact: true }),
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Send extra practice", exact: true }),
@@ -108,7 +108,7 @@ test("homework observations show support needs without assigning a diagnostic or
   ).toBe(true);
 });
 
-test("child homework remains available while the old practice URL and APIs cannot start questions", async ({
+test("child uploads remain available while the old practice URL and APIs cannot start questions", async ({
   page,
   context,
 }) => {
@@ -120,7 +120,12 @@ test("child homework remains available while the old practice URL and APIs canno
   });
   await page.goto("/kid");
   await expect(
-    page.getByRole("link", { name: /Get help with my homework/ }),
+    page.getByRole("link", { name: /Upload work/ }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Add a worksheet, quiz, test, or other Math or ELA work.", {
+      exact: true,
+    }),
   ).toBeVisible();
   await expect(page.locator('a[href="/kid/practice"]')).toHaveCount(0);
   await expect(
@@ -129,7 +134,7 @@ test("child homework remains available while the old practice URL and APIs canno
   await page.goto("/kid/practice");
   await expect(page).toHaveURL(/\/kid$/);
   await expect(
-    page.getByRole("link", { name: /Get help with my homework/ }),
+    page.getByRole("link", { name: /Upload work/ }),
   ).toBeVisible();
   await expect(page.locator(".learning-item")).toHaveCount(0);
   expect(legacyRequests).toEqual([]);
@@ -149,21 +154,21 @@ test("child homework remains available while the old practice URL and APIs canno
   ).toBe(true);
 });
 
-test("parent homework shows saved processing progress, authorizes the private original, and deletes it", async ({
+test("parent uploads show saved processing progress, authorize the private original, and support deletion", async ({
   page,
   context,
 }) => {
   const family = await createFamily(context);
   await mutate(context.request, "/api/session/picker");
   await enterParent(page);
-  await page.getByRole("button", { name: "Homework", exact: true }).click();
+  await page.getByRole("button", { name: "Student work", exact: true }).click();
   const base = `/api/learning/parent/${family.kid.id}/uploads`;
   const saved = page.waitForResponse(
     (response) =>
       response.url().endsWith(base) && response.request().method() === "POST",
   );
   await page
-    .getByLabel("Upload homework", { exact: true })
+    .getByLabel("Upload work", { exact: true })
     .setInputFiles(
       path.join(process.cwd(), "public/samples/math-worksheet.png"),
     );
@@ -172,10 +177,10 @@ test("parent homework shows saved processing progress, authorizes the private or
   const upload = await savedResponse.json();
   expect(["pending", "processing", "completed"]).toContain(upload.state);
   await expect(
-    page.getByRole("heading", { name: "Worksheet processing", exact: true }),
+    page.getByRole("heading", { name: "Work processing", exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "Here’s your worksheet.", exact: true }),
+    page.getByRole("heading", { name: "Here’s your work.", exact: true }),
   ).toBeVisible();
   const privateFile = `${base}/${upload.id}/file`;
   await expect(
@@ -187,7 +192,7 @@ test("parent homework shows saved processing progress, authorizes the private or
   expect(original.headers()["content-type"]).toContain("image/png");
   await page.getByRole("button", { name: "Analytics", exact: true }).click();
   await expect(page.locator(".metric-card strong")).toHaveText(["4", "0", "4"]);
-  await page.getByRole("button", { name: "Homework", exact: true }).click();
+  await page.getByRole("button", { name: "Student work", exact: true }).click();
   await expect(
     page.getByRole("button", { name: "Delete upload", exact: true }),
   ).toBeVisible();
@@ -221,13 +226,13 @@ test("parent homework shows saved processing progress, authorizes the private or
     .getByRole("button", { name: "Delete upload", exact: true })
     .click();
   await expect(
-    page.getByRole("alertdialog", { name: "Delete homework upload" }),
+    page.getByRole("alertdialog", { name: "Delete uploaded work" }),
   ).toBeVisible();
   await page
     .getByRole("button", { name: "Confirm delete upload", exact: true })
     .click();
   await expect(
-    page.getByText("No homework has been uploaded for this child yet.", {
+    page.getByText("No work has been uploaded for this child yet.", {
       exact: true,
     }),
   ).toBeVisible();

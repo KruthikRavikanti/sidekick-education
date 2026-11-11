@@ -192,7 +192,7 @@ export function WorksheetReader() {
             throw new Error(
               typeof record.error === "object"
                 ? record.error?.message
-                : "The worksheet couldn’t be read. Please retry.",
+                : "The page couldn’t be read. Please retry.",
             );
           data = record.extraction;
         }
@@ -210,7 +210,7 @@ export function WorksheetReader() {
       if (!response.ok)
         throw new Error(
           data?.error?.message ||
-            "We couldn’t read that worksheet. Please try again or take a clearer photo.",
+            "We couldn’t read that page. Please try again or take a clearer photo.",
         );
       if (
         !data?.worksheet ||
@@ -266,8 +266,8 @@ export function WorksheetReader() {
             <ExtractionResults result={result} onReset={reset} />
             {uploadId && (
               <p className="results-footnote">
-                Your worksheet is saved privately for your family. A parent can
-                review or delete it from Homework.
+                Your work is saved privately for your family. A parent can
+                review or delete it from Student work.
               </p>
             )}
           </div>
@@ -278,12 +278,12 @@ export function WorksheetReader() {
                 <span className="tiny-spark">✳</span>LET’S MAKE SENSE OF IT
               </div>
               <h1 ref={headingRef} tabIndex={-1}>
-                Big worksheet.
+                Big page.
                 <br />
                 <span>Little first step.</span>
               </h1>
               <p>
-                Snap your Math or ELA worksheet.
+                Upload your Math or ELA work—a worksheet, quiz, or test.
                 <br />
                 We’ll read the questions and the work you’ve done.
               </p>
@@ -297,7 +297,7 @@ export function WorksheetReader() {
             </div>
             <section
               className={`upload-card ${file ? "has-photo" : ""}`}
-              aria-label="Upload a worksheet"
+              aria-label="Upload work"
             >
               <div className="card-topline">
                 <span className="step-dot">1</span>
@@ -306,7 +306,7 @@ export function WorksheetReader() {
                     ? "A little reading magic"
                     : file
                       ? "Looking good?"
-                      : "Start with your worksheet"}
+                      : "Start with your work"}
                 </span>
                 <span className="page-label">PHOTO OR PDF</span>
               </div>
@@ -314,14 +314,14 @@ export function WorksheetReader() {
                 <div className="reading-state" role="status" aria-live="polite">
                   <div className="reading-picture">
                     {preview && file?.type !== "application/pdf" && (
-                      <img src={preview} alt="Worksheet being read" />
+                      <img src={preview} alt="Work being read" />
                     )}
                     <div className="scan-beam" />
                     <div className="reading-icon">
                       <ScanLine size={29} aria-hidden="true" />
                     </div>
                   </div>
-                  <h2>Reading your worksheet…</h2>
+                  <h2>Reading your work…</h2>
                   <p>
                     Finding the questions, answers,
                     <br />
@@ -378,7 +378,7 @@ export function WorksheetReader() {
                         <img
                           className="worksheet-preview"
                           src={preview}
-                          alt="Preview of your selected worksheet"
+                          alt="Preview of your selected work"
                           onError={() => {
                             setFile(null);
                             setError(
@@ -445,7 +445,7 @@ export function WorksheetReader() {
                           onClick={readWorksheet}
                           disabled={sampleLoading}
                         >
-                          Read worksheet
+                          Read my work
                           <ArrowRight size={20} aria-hidden="true" />
                         </button>
                         <div className="secondary-actions">
@@ -500,7 +500,7 @@ export function WorksheetReader() {
                 accept={ACCEPT}
                 tabIndex={-1}
                 disabled={phase === "reading" || sampleLoading}
-                aria-label="Choose worksheet image"
+                aria-label="Choose work image"
                 onChange={(event) => {
                   selectFile(event.target.files?.[0]);
                   event.target.value = "";
@@ -514,7 +514,7 @@ export function WorksheetReader() {
                 capture="environment"
                 tabIndex={-1}
                 disabled={phase === "reading" || sampleLoading}
-                aria-label="Take worksheet photo"
+                aria-label="Take work photo"
                 onChange={(event) => {
                   selectFile(event.target.files?.[0]);
                   event.target.value = "";

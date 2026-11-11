@@ -9,7 +9,7 @@ router = APIRouter(prefix='/api/learning')
 
 
 def removed():
-    raise AccountError('feature_removed', 'Standalone checks and practice have been removed. Your homework observations remain available.', 410)
+    raise AccountError('feature_removed', 'Standalone checks and practice have been removed. Observations from uploaded work remain available.', 410)
 
 
 def retired_kid_context(request):

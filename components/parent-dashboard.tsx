@@ -45,7 +45,7 @@ const tabs: { key: Tab; label: string }[] = [
   { key: "skills", label: "Skills" },
   { key: "analytics", label: "Analytics" },
   { key: "conversations", label: "Conversations" },
-  { key: "homework", label: "Homework" },
+  { key: "homework", label: "Student work" },
   { key: "profiles", label: "Children" },
   { key: "settings", label: "Settings" },
 ];
@@ -485,9 +485,9 @@ function LearningViews({ data, tab }: { data: DashboardData; tab: Tab }) {
       <section className="dashboard-section">
         <div className="section-heading">
           <div>
-            <h2>Your homework picture.</h2>
+            <h2>Your uploaded work.</h2>
             <p>
-              {data.profile.firstName}’s uploaded homework, with each distinct
+              {data.profile.firstName}’s uploaded work, with each distinct
               question counted once. Blank or unclear responses stay ungraded.
             </p>
           </div>
@@ -509,15 +509,15 @@ function LearningViews({ data, tab }: { data: DashboardData; tab: Tab }) {
       <section className="dashboard-section">
         <div className="section-heading">
           <div>
-            <h2>Homework conversations</h2>
+            <h2>Learning conversations</h2>
             <p>
-              Homework uploads don’t create tutoring chat. Conversations will
-              appear when that milestone is available.
+              Uploads don’t create tutoring chat. Conversations will appear when
+              that milestone is available.
             </p>
           </div>
         </div>
         {data.conversations.length === 0 && (
-          <p>No homework-help conversations yet.</p>
+          <p>No learning conversations yet.</p>
         )}
         <FormError message={error} />
         {transcript ? (
@@ -719,8 +719,8 @@ function ParentContent() {
             <div className="sample-insights-label">
               <span>Learning activity</span>
               <p>
-                Based on recorded homework. Skills without enough reliable
-                evidence are marked “Not enough evidence.”
+                Based on uploaded work. Skills without enough reliable evidence
+                are marked “Not enough evidence.”
               </p>
             </div>
             {data ? (

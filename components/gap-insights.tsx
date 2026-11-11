@@ -40,8 +40,8 @@ export function GapInsights({ skills }: { skills: LearningSkill[] }) {
         <div>
           <h2>Where a little support can help.</h2>
           <p>
-            Homework observations show where support may help. Gray means there
-            isn’t enough reliable evidence yet.
+            Uploaded work shows where support may help. Gray means there isn’t
+            enough reliable evidence yet.
           </p>
         </div>
       </div>
@@ -80,12 +80,12 @@ export function GapInsights({ skills }: { skills: LearningSkill[] }) {
                   {(skill.status !== "unassessed" ||
                     Boolean(skill.evidence?.length)) && (
                     <details className="gap-details">
-                      <summary>See homework observations</summary>
+                      <summary>See work observations</summary>
                       <p>
                         {skill.parentExplanation ||
                           (skill.status === "needs_support"
-                            ? "Homework suggests this skill could use support."
-                            : "These observations come from the child’s homework.")}
+                            ? "Uploaded work suggests this skill could use support."
+                            : "These observations come from the child’s uploaded work.")}
                       </p>
                       {skill.observedPattern && (
                         <p>
@@ -96,7 +96,7 @@ export function GapInsights({ skills }: { skills: LearningSkill[] }) {
                       {skill.evidence && skill.evidence.length > 0 && (
                         <details>
                           <summary>
-                            Homework evidence ({skill.evidence.length})
+                            Uploaded evidence ({skill.evidence.length})
                           </summary>
                           {skill.evidence.map((event, i) => (
                             <p key={i}>{detail(event)}</p>

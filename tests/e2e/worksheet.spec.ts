@@ -48,7 +48,7 @@ test("fractions flow preserves mistakes, step order, blanks, uncertainty, and JS
   });
   await page.getByRole("button", { name: "Fractions", exact: true }).click();
   await expect(
-    page.getByRole("img", { name: "Preview of your selected worksheet" }),
+    page.getByRole("img", { name: "Preview of your selected work" }),
   ).toBeVisible();
   await page.screenshot({
     path: `${screenshots}/mobile-preview.png`,
@@ -61,7 +61,7 @@ test("fractions flow preserves mistakes, step order, blanks, uncertainty, and JS
   await page.evaluate(() => window.dispatchEvent(new Event("focus")));
   await sessionCheck;
   await expect(
-    page.getByRole("img", { name: "Preview of your selected worksheet" }),
+    page.getByRole("img", { name: "Preview of your selected work" }),
   ).toBeVisible();
 
   // Observe the real multipart request; delay only its departure to exercise reading UI.
@@ -73,10 +73,10 @@ test("fractions flow preserves mistakes, step order, blanks, uncertainty, and JS
     request.url().endsWith("/api/extract"),
   );
   await page
-    .getByRole("button", { name: "Read worksheet", exact: true })
+    .getByRole("button", { name: "Read my work", exact: true })
     .click();
   await expect(
-    page.getByRole("heading", { name: "Reading your worksheet…" }),
+    page.getByRole("heading", { name: "Reading your work…" }),
   ).toBeVisible();
   const request = await pendingRequest;
   expect(request.method()).toBe("POST");
@@ -84,7 +84,7 @@ test("fractions flow preserves mistakes, step order, blanks, uncertainty, and JS
     "multipart/form-data; boundary=",
   );
   await expect(
-    page.getByRole("heading", { name: "Here’s your worksheet." }),
+    page.getByRole("heading", { name: "Here’s your work." }),
   ).toBeVisible();
   await expect(
     page.getByText("Math · detected", { exact: true }),
@@ -101,7 +101,7 @@ test("fractions flow preserves mistakes, step order, blanks, uncertainty, and JS
   ).toBeVisible();
   await expect(
     page.getByText(
-      "Sample results · This is a pre-written extraction of the sample worksheet.",
+      "Sample results · This is a pre-written extraction of the sample page.",
       { exact: true },
     ),
   ).toBeVisible();
@@ -161,31 +161,31 @@ test("fractions flow preserves mistakes, step order, blanks, uncertainty, and JS
     text: null,
     uncertain: true,
   });
-  await page.getByRole("button", { name: "Read another worksheet" }).click();
+  await page.getByRole("button", { name: "Read more work" }).click();
   await expect(
-    page.getByRole("heading", { name: "Big worksheet. Little first step." }),
+    page.getByRole("heading", { name: "Big page. Little first step." }),
   ).toBeVisible();
   await expect(
-    page.getByRole("img", { name: "Preview of your selected worksheet" }),
+    page.getByRole("img", { name: "Preview of your selected work" }),
   ).toHaveCount(0);
 });
 
 test("camera input reads ELA with passage, partial question, and selected answer", async ({
   page,
 }) => {
-  const camera = page.getByLabel("Take worksheet photo", { exact: true });
+  const camera = page.getByLabel("Take work photo", { exact: true });
   await expect(camera).toHaveAttribute("capture", "environment");
   await camera.setInputFiles(
     path.join(root, "public/samples/ela-worksheet.png"),
   );
   await expect(
-    page.getByRole("img", { name: "Preview of your selected worksheet" }),
+    page.getByRole("img", { name: "Preview of your selected work" }),
   ).toBeVisible();
   await page
-    .getByRole("button", { name: "Read worksheet", exact: true })
+    .getByRole("button", { name: "Read my work", exact: true })
     .click();
   await expect(
-    page.getByRole("heading", { name: "Here’s your worksheet." }),
+    page.getByRole("heading", { name: "Here’s your work." }),
   ).toBeVisible();
   await expect(page.getByText("ELA · detected", { exact: true })).toBeVisible();
   await expect(page.getByText("Grade 3", { exact: true })).toBeVisible();
@@ -241,9 +241,9 @@ test("invalid, oversized, and empty files are rejected before upload", async ({
   page.on("request", (request) => {
     if (request.url().endsWith("/api/extract")) requests.push(request.method());
   });
-  const input = page.getByLabel("Choose worksheet image", { exact: true });
+  const input = page.getByLabel("Choose work image", { exact: true });
   const alert = page
-    .getByRole("region", { name: "Upload a worksheet" })
+    .getByRole("region", { name: "Upload work" })
     .getByRole("alert");
   await input.setInputFiles({
     name: "worksheet.txt",
@@ -252,7 +252,7 @@ test("invalid, oversized, and empty files are rejected before upload", async ({
   });
   await expect(alert).toContainText("Choose a JPG, PNG, or WebP image, or a PDF.");
   await expect(
-    page.getByRole("button", { name: "Read worksheet", exact: true }),
+    page.getByRole("button", { name: "Read my work", exact: true }),
   ).toHaveCount(0);
   await input.setInputFiles({
     name: "large.png",
@@ -283,7 +283,7 @@ test("provider failure keeps the photo and retry reaches the real backend", asyn
           error: {
             code: "provider_unavailable",
             message:
-              "The worksheet reader is unavailable. Please retry in a moment.",
+              "The work reader is unavailable. Please retry in a moment.",
           },
         }),
       });
@@ -297,24 +297,24 @@ test("provider failure keeps the photo and retry reaches the real backend", asyn
   });
   await page.getByRole("button", { name: "Reading", exact: true }).click();
   await page
-    .getByRole("button", { name: "Read worksheet", exact: true })
+    .getByRole("button", { name: "Read my work", exact: true })
     .click();
   await expect(
-    page.getByRole("region", { name: "Upload a worksheet" }).getByRole("alert"),
+    page.getByRole("region", { name: "Upload work" }).getByRole("alert"),
   ).toContainText(
-    "The worksheet reader is unavailable. Please retry in a moment.",
+    "The work reader is unavailable. Please retry in a moment.",
   );
   await expect(
-    page.getByRole("img", { name: "Preview of your selected worksheet" }),
+    page.getByRole("img", { name: "Preview of your selected work" }),
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Retake photo" }),
   ).toBeVisible();
   await page
-    .getByRole("button", { name: "Read worksheet", exact: true })
+    .getByRole("button", { name: "Read my work", exact: true })
     .click();
   await expect(
-    page.getByRole("heading", { name: "Here’s your worksheet." }),
+    page.getByRole("heading", { name: "Here’s your work." }),
   ).toBeVisible();
   expect(attempts).toBe(2);
   await expect(
@@ -332,7 +332,7 @@ test("provider failure keeps the photo and retry reaches the real backend", asyn
   ).toBeVisible();
 });
 
-test("cancelled extraction cannot replace a later worksheet", async ({
+test("cancelled extraction cannot replace a later upload", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -370,11 +370,11 @@ test("cancelled extraction cannot replace a later worksheet", async ({
 
   await page.getByRole("button", { name: "Fractions", exact: true }).click();
   await page
-    .getByRole("button", { name: "Read worksheet", exact: true })
+    .getByRole("button", { name: "Read my work", exact: true })
     .click();
   await pendingOldResponse;
   await expect(
-    page.getByRole("heading", { name: "Reading your worksheet…" }),
+    page.getByRole("heading", { name: "Reading your work…" }),
   ).toBeVisible();
   await page.screenshot({
     path: `${screenshots}/mobile-reading.png`,
@@ -382,18 +382,18 @@ test("cancelled extraction cannot replace a later worksheet", async ({
   });
   await page.getByRole("button", { name: "Cancel", exact: true }).click();
   await expect(
-    page.getByRole("img", { name: "Preview of your selected worksheet" }),
+    page.getByRole("img", { name: "Preview of your selected work" }),
   ).toBeVisible();
   await expect(
-    page.getByRole("region", { name: "Upload a worksheet" }).getByRole("alert"),
+    page.getByRole("region", { name: "Upload work" }).getByRole("alert"),
   ).toHaveCount(0);
   await page.getByRole("button", { name: "Start over", exact: true }).click();
   await page.getByRole("button", { name: "Reading", exact: true }).click();
   await page
-    .getByRole("button", { name: "Read worksheet", exact: true })
+    .getByRole("button", { name: "Read my work", exact: true })
     .click();
   await expect(
-    page.getByRole("heading", { name: "Here’s your worksheet." }),
+    page.getByRole("heading", { name: "Here’s your work." }),
   ).toBeVisible();
   await expect(page.getByText("ELA · detected", { exact: true })).toBeVisible();
   releaseOldResponse();
