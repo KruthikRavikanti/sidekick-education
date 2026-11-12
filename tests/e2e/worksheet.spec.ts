@@ -234,6 +234,87 @@ test("camera input reads ELA with passage, partial question, and selected answer
   });
 });
 
+test("native image chooser preserves the selected photo after a focus session check", async ({
+  page,
+}) => {
+  const choosing = page.waitForEvent("filechooser");
+  await page.getByRole("button", { name: "Choose an image", exact: true }).click();
+  const chooser = await choosing;
+  await chooser.setFiles(path.join(root, "public/samples/math-worksheet.png"));
+
+  const preview = page.getByRole("img", { name: "Preview of your selected work" });
+  await expect(preview).toBeVisible();
+  const selectedPhoto = await preview.getAttribute("src");
+  expect(selectedPhoto).toMatch(/^blob:/);
+
+  const checkedSession = page.waitForResponse((response) =>
+    response.url().endsWith("/api/auth/session"),
+  );
+  await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+  expect((await checkedSession).ok()).toBe(true);
+  await expect(preview).toBeVisible();
+  await expect(preview).toHaveAttribute("src", selectedPhoto!);
+  await expect(page.getByText("math-worksheet.png", { exact: false })).toBeVisible();
+  await page.getByRole("button", { name: "Read my work", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Here’s your work." }),
+  ).toBeVisible();
+  await expect(page.getByText("Math · detected", { exact: true })).toBeVisible();
+});
+
+test("CSRF rejection keeps the photo and retries with a fresh token against the backend", async ({
+  page,
+}) => {
+  let attempts = 0;
+  await page.route("**/api/extract", async (route) => {
+    attempts += 1;
+    if (attempts === 1) {
+      await route.fulfill({
+        status: 403,
+        contentType: "application/json",
+        body: JSON.stringify({
+          error: {
+            code: "csrf_failed",
+            message: "This request could not be verified. Refresh the page and try again.",
+          },
+        }),
+      });
+      return;
+    }
+    await route.continue();
+  });
+  await page.getByLabel("Choose work image", { exact: true }).setInputFiles(
+    path.join(root, "public/samples/math-worksheet.png"),
+  );
+  await page.getByRole("button", { name: "Read my work", exact: true }).click();
+
+  await expect(
+    page.getByRole("region", { name: "Upload work" }).getByRole("alert"),
+  ).toContainText(/could not be verified|couldn’t verify|Refresh/);
+  await expect(
+    page.getByRole("img", { name: "Preview of your selected work" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Reading your work…" }),
+  ).toHaveCount(0);
+  const retry = page.getByRole("button", { name: "Read my work", exact: true });
+  await expect(retry).toBeEnabled();
+
+  const freshToken = page.waitForRequest((request) =>
+    request.url().endsWith("/api/auth/csrf"),
+  );
+  const extracted = page.waitForResponse((response) =>
+    response.url().endsWith("/api/extract") && response.status() === 200,
+  );
+  await retry.click();
+  await freshToken;
+  expect((await (await extracted).json()).source).toBe("fixture");
+  await expect(
+    page.getByRole("heading", { name: "Here’s your work." }),
+  ).toBeVisible();
+  expect(attempts).toBe(2);
+});
+
 test("invalid, oversized, and empty files are rejected before upload", async ({
   page,
 }) => {

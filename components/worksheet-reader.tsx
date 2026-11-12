@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import type { Extraction } from "@/lib/extraction";
 import { ExtractionResults } from "./extraction-results";
-import { apiFetch } from "@/lib/account-api";
+import { apiFetch, clearCSRF } from "@/lib/account-api";
 import { useAccountSession } from "./account-session";
 import type { UploadRecord } from "@/lib/learning-types";
 import { ActivitySuggestion } from "./activity-suggestion";
@@ -202,11 +202,20 @@ export function WorksheetReader() {
         return;
       if (
         response.status === 401 ||
-        response.status === 403 ||
+        (response.status === 403 &&
+          ["kid_required", "parent_required"].includes(data?.error?.code)) ||
         (response.status === 409 && data?.error?.code === "profile_changed")
       ) {
         await refresh(false);
         return;
+      }
+      // A rejected token does not mean the child changed. Keep the selected
+      // photo, show the error, and fetch a fresh token when they retry.
+      if (response.status === 403 && data?.error?.code === "csrf_failed") {
+        clearCSRF();
+        throw new Error(
+          "We couldn’t verify this upload. Tap Read my work again to retry.",
+        );
       }
       if (!response.ok)
         throw new Error(
