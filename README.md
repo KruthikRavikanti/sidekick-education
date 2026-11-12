@@ -66,7 +66,9 @@ The retained catalog compiler records **101 ready, verified item specifications*
 
 ## Student work observations
 
-Upload a JPG, PNG, WebP, or bounded PDF from the active child's **Upload work** action. Parents may also upload from the dashboard with a selected child. Preview, tap **Read my work**, and review problems in page order. Extraction preserves written mistakes, step order, fractions, shared context, and field-level uncertainty. Blank and unreadable responses remain distinct. Grading and mapping are separate stages; unsupported, blank, ambiguous, or unreadable work stays ungraded and cannot create incorrect skill evidence.
+Upload a JPG, PNG, WebP, HEIC/HEIF photo, or bounded PDF from the active child's **Upload work** action. The photo chooser uses the image wildcard so Mac Photos can offer images without the former narrow format filter. HEIC/HEIF photos receive a temporary PNG preview before **Read my work**; the original file is submitted and stored privately when reading starts. Parents may also upload from the dashboard with a selected child. Preview, tap **Read my work**, and review problems in page order. Extraction preserves written mistakes, step order, fractions, shared context, and field-level uncertainty. Blank and unreadable responses remain distinct. Grading and mapping are separate stages; unsupported, blank, ambiguous, or unreadable work stays ungraded and cannot create incorrect skill evidence.
+
+After updating an older checkout, install the updated backend dependencies with `backend/.venv/bin/python -m pip install -r backend/requirements.txt` and restart the app. If a native file chooser is already open, cancel it, refresh Sidekick, and reopen **Choose an image** so it uses the updated format filter.
 
 Candidate retrieval uses the same subject and grades up to one above the child's grade, with at most ten candidates. High-school labels stay outside the K–5 retrieval window. Mapping below 0.6 abstains. A confidently mapped incorrect answer can separately receive a visible-work error-pattern observation. Teacher marks are observations; conflicts with grading are flagged for review. Scores are initial routing estimates, not calibrated assessment probabilities.
 
@@ -155,13 +157,15 @@ Before model image calls, EXIF metadata is stripped and the top 6% of each page 
 | `SIDEKICK_PDF_MEMORY_MB` | `1024` | 256–2,048 MiB process memory ceiling where supported |
 | `SIDEKICK_HEADER_REDACTION_FRACTION` | `0.06` | 0–0.2 of page height; zero disables masking |
 
-The PDF renderer rejects encrypted/invalid/oversized files and caps rendered output at 128 MiB. Photos also pass the reader's JPEG/PNG/WebP integrity, single-frame, minimum 64-pixel dimension, and 24-megapixel checks. Both upload APIs use the configured size bound. Limits apply before provider calls. The renderer is a bounded local process, not a hardened isolation service.
+The PDF renderer rejects encrypted/invalid/oversized files and caps rendered output at 128 MiB. Photos also pass the reader's JPEG/PNG/WebP/HEIC/HEIF integrity, single-frame, minimum 64-pixel dimension, and 24-megapixel checks. Both upload APIs use the configured size bound. Limits apply before provider calls. The renderer is a bounded local process, not a hardened isolation service.
 
 ## API and extraction contract
 
 The product calls uploads **Student work** and explicitly welcomes worksheets, quizzes, tests, and other schoolwork. Existing internal `homework` identifiers, database tables, `/kid/homework` links, and the extraction contract’s `worksheet` field stay unchanged for compatibility. This wording change does not alter stored records or interpretation of printed source text.
 
 `POST /api/extract` retains the authenticated multipart `file` extraction response: `worksheet`, `problems`, and `source`. [Pydantic models](backend/models.py), [JSON Schema](backend/schema.json), [TypeScript types](lib/extraction.ts), and [fixtures](fixtures/README.md) document the contract. Every transcribed field is `{ "text": "legible text or null", "uncertain": false }`; partial text is retained with `uncertain: true`. Completely unreadable final/selected answers normalize answered status to unclear. Extraction never replaces a student's incorrect work with a solution.
+
+`POST /api/images/preview` accepts one multipart `file` from the authenticated active child and returns a validated, metadata-free PNG for HEIC/HEIF previews. It requires CSRF, applies the same file and image limits, rechecks the active profile after conversion, and sets `Cache-Control: no-store`. Preview conversion stays in memory; it creates no upload record and makes no model call.
 
 The student-work API adds:
 
@@ -209,7 +213,7 @@ Stop servers on ports 3000/8000 before Playwright; its configuration starts isol
 
 `data/evaluation_homework.json` contains 27 synthetic Math/ELA examples with expected mapping or abstention, correctness, and signature labels, including mistakes/slips, equivalent fractions, blanks, unreadable responses, shared context, missing context, and ambiguous multi-skill work. The offline command validates cases and catalog IDs; it does **not** measure model accuracy. The live command creates a temporary database/catalog and reports mapping coverage, accuracy among accepted mappings, grading accuracy, eligible incorrect signature accuracy, and provider failures. Missing credentials exit with setup instructions. No real student data is used.
 
-This activity milestone passed **226 backend tests, 17 browser tests, TypeScript, and the production build**. Browser coverage includes both complete paths, keyboard controls, visual hints, guided retries, a dropped-response retry, refresh, and protected parent results. Mobile screenshots confirm the independent question has no teaching visual.
+Current verification passed **248 backend tests, 23 browser tests, TypeScript, and the production build**. Browser coverage includes both complete activity paths, keyboard controls, visual hints, guided retries, a dropped-response retry, refresh, and protected parent results. Upload regressions cover the broad picker filter, real HEIC preview decoding, generic MIME fallback, original-byte submission, damaged-photo recovery, delayed preview cancellation, and retaining a photo after a rejected security token. Headless browser tests cannot exercise the native macOS Photos dialog itself. Mobile screenshots confirm the independent question has no teaching visual.
 
 The [live activity verification report](data/activities/live_verification.json) records real configured-provider photo extraction, a support observation, verified three-scene original reuse, and a newly composed four-scene fraction activity completed through the normal cookie/CSRF-protected API. Both final answers appeared in PIN-protected parent history and the support observation stayed unchanged. The verifier uses an isolated temporary account/database and only synthetic work; `--live` is mandatory and provider calls may incur charges. It does not modify your local family records. This is a narrow Math smoke test, not broad generation-quality evidence. Both complete paths are covered with controlled model decisions in automated tests; live ELA composition remains unverified.
 

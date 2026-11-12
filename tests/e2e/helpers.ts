@@ -3,6 +3,11 @@ import {
   type APIRequestContext,
   type BrowserContext,
 } from "@playwright/test";
+import { execFile } from "node:child_process";
+import path from "node:path";
+import { promisify } from "node:util";
+
+const execute = promisify(execFile);
 
 export const ORIGIN = "http://localhost:3000";
 export const PASSWORD = "password";
@@ -28,6 +33,15 @@ export async function mutate(
 }
 
 export async function createFamily(context: BrowserContext) {
+  const database = process.env.SIDEKICK_E2E_DATABASE_URL;
+  expect(database, "Family setup requires Playwright's isolated test database").toBeTruthy();
+  // Every test uses a fresh account. Reset only the shared synthetic signup-IP
+  // bucket so an expanded suite can exceed 20 families within five minutes.
+  // The helper refuses application databases; PIN/password/login limits remain.
+  await execute(path.join(process.cwd(), "backend/.venv/bin/python"), [
+    "tests/e2e/signup_fixture.py",
+    database!,
+  ], { env: { ...process.env, APP_ENV: "test" } });
   const request = context.request;
   const email = `family-${Date.now()}-${Math.random().toString(36).slice(2)}@example.com`;
   let response = await mutate(request, "/api/auth/signup", {

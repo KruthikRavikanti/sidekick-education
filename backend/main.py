@@ -11,8 +11,9 @@ from dotenv import load_dotenv
 from fastapi import BackgroundTasks, FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from PIL import Image, ImageOps, UnidentifiedImageError
+from pillow_heif import register_heif_opener
 from pydantic import ValidationError
 from starlette.datastructures import UploadFile
 from starlette.concurrency import run_in_threadpool
@@ -35,7 +36,11 @@ MAX_IMAGE_BYTES = 10 * 1024 * 1024
 MAX_BODY_BYTES = MAX_IMAGE_BYTES + 64 * 1024
 MAX_PIXELS = 24_000_000
 Image.MAX_IMAGE_PIXELS = MAX_PIXELS
-MIME_FORMATS = {"image/jpeg": "JPEG", "image/png": "PNG", "image/webp": "WEBP"}
+register_heif_opener(thumbnails=False, depth_images=False, aux_images=False, decode_threads=2)
+MIME_FORMATS = {"image/jpeg": "JPEG", "image/png": "PNG", "image/webp": "WEBP",
+                "image/heic": "HEIF", "image/heif": "HEIF",
+                "image/heic-sequence": "HEIF", "image/heif-sequence": "HEIF"}
+IMAGE_UPLOAD_PATHS = {"/api/extract", "/api/images/preview"}
 
 
 def error_response(code: str, message: str, status: int):
@@ -50,7 +55,7 @@ class BoundedBodyMiddleware:
         self.app = app
 
     async def __call__(self, scope, receive, send):
-        upload_path = scope.get("path", "") == "/api/extract" or scope.get("path", "").endswith("/uploads")
+        upload_path = scope.get("path", "") in IMAGE_UPLOAD_PATHS or scope.get("path", "").endswith("/uploads")
         if scope["type"] != "http" or not upload_path:
             return await self.app(scope, receive, send)
         body_limit = max_upload_bytes() + 64 * 1024
@@ -112,14 +117,14 @@ async def extraction_error_handler(_request, exc):
 
 @app.exception_handler(RequestValidationError)
 async def validation_error_handler(request, _exc):
-    if request.url.path == "/api/extract":
+    if request.url.path in IMAGE_UPLOAD_PATHS:
         return error_response("invalid_upload", "Choose one worksheet image and try again.", 400)
     return error_response("invalid_request", "Check the information and try again.", 400)
 
 
 @app.exception_handler(StarletteHTTPException)
 async def http_error_handler(request, exc):
-    if request.url.path == "/api/extract":
+    if request.url.path in IMAGE_UPLOAD_PATHS:
         return error_response("invalid_upload", "Choose one worksheet image and try again.", exc.status_code)
     return error_response("not_found" if exc.status_code == 404 else "invalid_request",
                           "This page could not be found." if exc.status_code == 404 else "The request could not be completed.", exc.status_code)
@@ -130,6 +135,8 @@ def prepare_image(data: bytes, mime: str) -> bytes:
         raise ExtractionError("empty_file", "This image is empty. Please choose another photo.", 400)
     if len(data) > max_upload_bytes():
         raise ExtractionError("file_too_large", f"This file is too large. Choose a file under {max_upload_bytes() // (1024 * 1024)} MB.", 413)
+    if mime not in MIME_FORMATS:
+        raise ExtractionError("unsupported_file", "Choose a JPG, PNG, WebP, HEIC, or HEIF photo.", 415)
     try:
         with warnings.catch_warnings():
             warnings.simplefilter("error", Image.DecompressionBombWarning)
@@ -141,12 +148,16 @@ def prepare_image(data: bytes, mime: str) -> bytes:
                 image.verify()
             with Image.open(io.BytesIO(data)) as image:
                 image.load()
+                # HEIF transformations may change dimensions during decoding.
+                if image.width * image.height > MAX_PIXELS or min(image.size) < 64:
+                    raise ValueError
                 normalized = ImageOps.exif_transpose(image).convert("RGB")
+                normalized.info.clear()
                 out = io.BytesIO()
                 normalized.save(out, format="PNG")
                 return out.getvalue()
-    except (UnidentifiedImageError, OSError, ValueError, SyntaxError, Image.DecompressionBombError, Image.DecompressionBombWarning):
-        raise ExtractionError("invalid_image", "We couldn't open this photo. Use a clear, single-page JPG, PNG, or WebP image (up to 24 megapixels).", 400) from None
+    except (UnidentifiedImageError, OSError, ValueError, SyntaxError, RuntimeError, EOFError, Image.DecompressionBombError, Image.DecompressionBombWarning):
+        raise ExtractionError("invalid_image", "We couldn't open this photo. Use a clear, single-page JPG, PNG, WebP, HEIC, or HEIF image (up to 24 megapixels).", 400) from None
 
 
 def fixture_mode() -> bool:
@@ -170,6 +181,26 @@ async def health():
                         headers={"Cache-Control": "no-store"})
 
 
+@app.post("/api/images/preview")
+async def image_preview(request: Request):
+    """Decode only in memory; selecting a photo never stores it or calls a model."""
+    kid_id, session_version = require_kid_context(request)
+    if not request.headers.get("content-type", "").lower().startswith("multipart/form-data"):
+        raise ExtractionError("invalid_upload", "Choose one photo and try again.", 400)
+    async with request.form(max_files=1, max_fields=0, max_part_size=max_upload_bytes()) as form:
+        entries = form.multi_items()
+        if len(entries) != 1 or entries[0][0] != "file" or not isinstance(entries[0][1], UploadFile):
+            raise ExtractionError("invalid_upload", "Choose one photo and try again.", 400)
+        upload = entries[0][1]
+        mime = (upload.content_type or "").lower()
+        data = await upload.read(max_upload_bytes() + 1)
+        image = await run_in_threadpool(prepare_image, data, mime)
+    assert_kid_context(request, kid_id, session_version)
+    return Response(image, media_type="image/png", headers={
+        "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff",
+    })
+
+
 @app.post("/api/extract", response_model=ExtractionResponse)
 async def extract(request: Request, background_tasks: BackgroundTasks):
     kid_id, session_version = require_kid_context(request)
@@ -182,7 +213,7 @@ async def extract(request: Request, background_tasks: BackgroundTasks):
         upload = entries[0][1]
         mime = (upload.content_type or "").lower()
         if mime not in MIME_FORMATS and mime != "application/pdf":
-            raise ExtractionError("unsupported_file", "Choose a JPG, PNG, or WebP photo of your worksheet.", 415)
+            raise ExtractionError("unsupported_file", "Choose a JPG, PNG, WebP, HEIC, or HEIF photo of your worksheet.", 415)
         data = await upload.read(max_upload_bytes() + 1)
         image = await run_in_threadpool(prepare_image, data, mime) if mime != "application/pdf" else None
         source = "fixture" if fixture_mode() else "live"
