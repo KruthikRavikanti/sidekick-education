@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 SCHEMA_VERSION = '1.0'
 COMPONENT_VERSION = 'sidekick-interactions-v1'
-PROMPT_VERSION = 'sidekick-activity-v1'
+PROMPT_VERSION = 'sidekick-activity-v2'
 SUPPORTED = {'3.NF.A.1-2': 'math', 'L.3.1-2': 'ela'}
 DENOMINATORS = {2, 3, 4, 6, 8}
 IRREGULAR = {'mouse': 'mice', 'man': 'men', 'woman': 'women', 'foot': 'feet', 'tooth': 'teeth', 'goose': 'geese', 'child': 'children', 'person': 'people'}

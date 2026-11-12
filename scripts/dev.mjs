@@ -107,7 +107,7 @@ except Exception as error:
 
   process.once("SIGINT", () => shutdown());
   process.once("SIGTERM", () => shutdown());
-  console.log(`Starting Sidekick in ${fixtureMode ? "sample mode (only the two bundled worksheets)" : "live mode (using backend/.env)"}. Keep this terminal open; Ctrl+C stops both servers.`);
+  console.log(`Starting Sidekick in ${fixtureMode ? "sample mode (bundled worksheets only)" : "live mode (using backend/.env)"}. Keep this terminal open; Ctrl+C stops both servers.`);
   start("FastAPI", python, ["-m", "uvicorn", "backend.main:app", "--host", "127.0.0.1", "--port", "8000", "--no-access-log"], {
     ...process.env,
     SIDEKICK_FIXTURE_MODE: fixtureMode ? "true" : "false",

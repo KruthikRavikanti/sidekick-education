@@ -12,8 +12,52 @@ function keys(value: unknown): string[] {
   return Object.entries(value).flatMap(([key, item]) => [key, ...keys(item)]);
 }
 
-for (const subject of ["math", "ela"] as const) {
-  test(`${subject} upload suggests an activity, saves guided play, and records a fresh independent answer`, async ({
+test("unsupported work explains why no activity is available while keeping extraction results", async ({
+  page,
+  context,
+}) => {
+  await createFamily(context);
+  await page.route("**/api/activities/kid/suggestion?*", (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        available: false,
+        reason: "no_supported_skill",
+        targetSkill: null,
+        sessionId: null,
+      }),
+    }),
+  );
+  await page.goto("/kid/homework");
+  await page.getByLabel("Choose work image", { exact: true }).setInputFiles(
+    path.join(process.cwd(), "public/samples/activity-math-work.png"),
+  );
+  const extracted = page.waitForResponse((response) =>
+    response.url().endsWith("/api/extract") && response.request().method() === "POST",
+  );
+  await page.getByRole("button", { name: "Read my work", exact: true }).click();
+  expect((await extracted).status()).toBe(200);
+
+  const suggestion = page.getByRole("region", { name: "Suggested learning activity", exact: true });
+  await expect(suggestion.getByRole("heading", { name: "No matching activity yet.", exact: true })).toBeVisible();
+  await expect(suggestion.getByText(
+    "We couldn’t reliably match this work to a supported activity. Right now, activities cover equal-part fractions and plural words.",
+    { exact: true },
+  )).toBeVisible();
+  await expect(suggestion.getByRole("button", { name: "Try an activity", exact: true })).toHaveCount(0);
+  await expect(suggestion.getByRole("button", { name: "Try again", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Here’s your work.", exact: true })).toBeVisible();
+  await expect(page.getByText("How many 1/4 pieces make 3/4?", { exact: true })).toBeVisible();
+});
+
+for (const [subject, correctness] of [
+  ["math", "incorrect"],
+  ["ela", "incorrect"],
+  ["math", "correct"],
+  ["ela", "correct"],
+] as const) {
+  test(`${subject} ${correctness === "correct" ? "all-correct" : "incorrect"} upload suggests an activity, saves guided play, and records a fresh independent answer`, async ({
     page,
     context,
   }) => {
@@ -22,7 +66,7 @@ for (const subject of ["math", "ela"] as const) {
     await page
       .getByLabel("Choose work image", { exact: true })
       .setInputFiles(
-        path.join(process.cwd(), `public/samples/activity-${subject}-work.png`),
+        path.join(process.cwd(), `public/samples/activity-${subject}${correctness === "correct" ? "-correct" : ""}-work.png`),
       );
     const extracted = page.waitForResponse(
       (response) =>
@@ -34,6 +78,13 @@ for (const subject of ["math", "ela"] as const) {
       .click();
     const uploadResponse = await extracted;
     expect(uploadResponse.status()).toBe(200);
+    const transcription = await uploadResponse.json();
+    expect(transcription.problems).toHaveLength(1);
+    expect(transcription.problems[0].student_work.final_answer.text).toBe(
+      subject === "math"
+        ? correctness === "correct" ? "3" : "4"
+        : correctness === "correct" ? "mice" : "mouses",
+    );
     const uploadId = uploadResponse.headers()["x-sidekick-upload-id"];
     expect(uploadId).toBeTruthy();
     await expect(
@@ -44,6 +95,7 @@ for (const subject of ["math", "ela"] as const) {
       process.env.SIDEKICK_E2E_DATABASE_URL!,
       family.kid.id,
       uploadId,
+      correctness,
     ]);
     const started = page.waitForResponse(
       (response) =>
@@ -201,6 +253,6 @@ for (const subject of ["math", "ela"] as const) {
       dashboard.skills.find(
         (skill: { id: string }) => skill.id === session.targetSkill.id,
       ).status,
-    ).toBe("needs_support");
+    ).toBe(correctness === "correct" ? "on_track" : "needs_support");
   });
 }

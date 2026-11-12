@@ -40,15 +40,25 @@ def activity_family(parent_client, security_context):
     return child, parent_client
 
 
-def upload(security, child, subject='math', *, state='completed', correctness='incorrect', eligible=True, subskill=None):
-    upload_id, problem_id = key(), key()
+def add_problem(security, child, upload_id, subject='math', *, correctness='incorrect', eligible=True,
+                subskill=None, confidence=.99, page_number=1, problem_order=0, teacher_conflict=False):
+    problem_id = key()
     subskill = subskill or ('3.NF.A.1-2' if subject == 'math' else 'L.3.1-2')
+    with security.db.transaction() as conn:
+        conn.execute("INSERT INTO homework_problems(id,upload_id,kid_id,page_number,problem_order,printed_id,extraction_json,context_json,fingerprint,teacher_conflict,created_at) VALUES(?,?,?,?,?,'1','{}','[]',?,?,?)", (problem_id, upload_id, child['id'], page_number, problem_order, key(), int(teacher_conflict), security.clock.now()))
+    record_homework_evidence(security, child['id'], problem_id, subskill, correctness, eligible, confidence,
+                             question='Sensitive uploaded content must not reach composition.', fingerprint=key())
+    return problem_id
+
+
+def upload(security, child, subject='math', *, state='completed', correctness='incorrect', eligible=True,
+           subskill=None, confidence=.99, teacher_conflict=False):
+    upload_id = key()
     now = security.clock.now()
     with security.db.transaction() as conn:
         conn.execute("INSERT INTO homework_uploads(id,kid_id,content_hash,file_ref,mime,pages_json,source,state,stage,created_at,updated_at) VALUES(?,?,?,'opaque','image/png','[]','fixture',?,'completed',?,?)", (upload_id, child['id'], key(), state, now, now))
-        conn.execute("INSERT INTO homework_problems(id,upload_id,kid_id,page_number,problem_order,printed_id,extraction_json,context_json,fingerprint,created_at) VALUES(?,?,?,1,0,'1','{}','[]',?,?)", (problem_id, upload_id, child['id'], key(), now))
-    record_homework_evidence(security, child['id'], problem_id, subskill, correctness, eligible, .99,
-                             question='Sensitive uploaded content must not reach composition.', fingerprint=key())
+    add_problem(security, child, upload_id, subject, correctness=correctness, eligible=eligible,
+                subskill=subskill, confidence=confidence, teacher_conflict=teacher_conflict)
     return upload_id
 
 
@@ -115,12 +125,82 @@ def test_upload_support_suggestion_reuse_play_resume_parent_result(activity_fami
         assert not conn.execute("SELECT 1 FROM learning_evidence WHERE source!='homework'").fetchone()
 
 
+@pytest.mark.parametrize('subject', ['math', 'ela'])
+def test_all_correct_upload_starts_reinforcement_and_preserves_on_track_state(activity_family, security_context, subject):
+    child, client = activity_family
+    upload_id = upload(security_context, child, subject, correctness='correct')
+    add_problem(security_context, child, upload_id, subject, correctness='correct', page_number=2)
+    subskill = '3.NF.A.1-2' if subject == 'math' else 'L.3.1-2'
+    with security_context.db.transaction() as conn:
+        before = service._homework_state(conn, child['id'], subskill)
+        assert before['status'] == 'on_track'
+
+    suggestion = client.get('/api/activities/kid/suggestion', params={'uploadId': upload_id}).json()
+    assert suggestion['available'] and suggestion['reason'] is None
+    assert suggestion['targetSkill']['id'] == subskill
+    response = start(client, upload_id)
+    assert response.status_code == 200, response.text
+    session = response.json()
+    assert client.get(f"/api/activities/kid/sessions/{session['id']}").json() == session
+    # Activity results remain separate even if the new independent answer is wrong.
+    result = complete(client, session, final_answer='7/8' if subject == 'math' else 'foots')
+    assert result['status'] == 'completed' and result['finalResult']['correct'] is False
+    picker(client)
+    unlock(client)
+    history = client.get(f"/api/activities/parent/{child['id']}/history").json()['activities']
+    assert history[0]['finalResult'] == result['finalResult']
+    with security_context.db.transaction() as conn:
+        assert service._homework_state(conn, child['id'], subskill) == before
+        assert conn.execute("SELECT COUNT(*) FROM learning_evidence WHERE kid_id=? AND eligible=1 AND correctness='correct'", (child['id'],)).fetchone()[0] == 2
+        chosen = conn.execute('SELECT e.correctness FROM activity_sessions s JOIN learning_evidence e ON e.id=s.evidence_id WHERE s.id=?', (session['id'],)).fetchone()
+        assert chosen['correctness'] == 'correct'
+        assert not conn.execute("SELECT 1 FROM learning_evidence WHERE source!='homework'").fetchone()
+
+
+def test_supported_errors_take_priority_then_follow_page_order(activity_family, security_context):
+    child, client = activity_family
+    upload_id = upload(security_context, child, correctness='correct')
+    # Insert the later-page math error first; original page order wins among errors.
+    add_problem(security_context, child, upload_id, 'math', page_number=3)
+    first_error = add_problem(security_context, child, upload_id, 'ela', page_number=2)
+    suggestion = client.get('/api/activities/kid/suggestion', params={'uploadId': upload_id}).json()
+    assert suggestion['available'] and suggestion['targetSkill']['subject'] == 'ela'
+    response = start(client, upload_id)
+    assert response.status_code == 200, response.text
+    with security_context.db.transaction() as conn:
+        selected = conn.execute('SELECT e.source_ref FROM activity_sessions s JOIN learning_evidence e ON e.id=s.evidence_id WHERE s.id=?', (response.json()['id'],)).fetchone()
+        assert selected['source_ref'] == first_error
+
+
+def test_all_correct_targets_follow_page_order_and_ignore_unsupported_errors(activity_family, security_context):
+    child, client = activity_family
+    upload_id = upload(security_context, child, 'ela', correctness='correct')
+    add_problem(security_context, child, upload_id, 'math', correctness='correct', problem_order=1)
+    add_problem(security_context, child, upload_id, 'math', subskill='3.OA.A.1-1', page_number=2)
+    suggestion = client.get('/api/activities/kid/suggestion', params={'uploadId': upload_id}).json()
+    assert suggestion['available'] and suggestion['targetSkill']['subject'] == 'ela'
+    assert start(client, upload_id).status_code == 200
+
+
+def test_correct_upload_is_available_even_when_earlier_work_still_needs_support(activity_family, security_context):
+    child, client = activity_family
+    upload(security_context, child)
+    upload_id = upload(security_context, child, correctness='correct')
+    suggestion = client.get('/api/activities/kid/suggestion', params={'uploadId': upload_id}).json()
+    assert suggestion['available'] and start(client, upload_id).status_code == 200
+    with security_context.db.transaction() as conn:
+        assert service._homework_state(conn, child['id'], '3.NF.A.1-2')['status'] == 'needs_support'
+
+
 def test_suggestion_get_is_read_only_and_unsupported_or_unusable_observations_do_not_start(activity_family, security_context, monkeypatch):
     child, client = activity_family
     uploads = [(upload(security_context, child, state='processing'), 'analysis_pending'),
                (upload(security_context, child, state='failed'), 'analysis_failed'),
                (upload(security_context, child, eligible=False), 'no_supported_skill'),
-               (upload(security_context, child, correctness='correct'), 'no_supported_skill'),
+               (upload(security_context, child, correctness='correct', eligible=False), 'no_supported_skill'),
+               (upload(security_context, child, correctness='ungraded'), 'no_supported_skill'),
+               (upload(security_context, child, correctness='correct', confidence=.1), 'no_supported_skill'),
+               (upload(security_context, child, correctness='correct', teacher_conflict=True), 'no_supported_skill'),
                (upload(security_context, child, subskill='3.OA.A.1-1'), 'no_supported_skill')]
     statements = []
     original = security_context.db.connect
@@ -171,9 +251,10 @@ def test_unseen_verified_match_prevents_model_call(activity_family, security_con
     assert not composer.calls
 
 
-def test_model_composes_and_saves_new_four_scene_spec_without_worksheet_or_identity(activity_family, security_context, monkeypatch):
+@pytest.mark.parametrize('correctness', ['correct', 'incorrect'])
+def test_model_composes_and_saves_new_four_scene_spec_without_worksheet_or_identity(activity_family, security_context, monkeypatch, correctness):
     child, client = activity_family
-    upload_id = upload(security_context, child)
+    upload_id = upload(security_context, child, correctness=correctness)
     complete(client, start(client, upload_id).json())
     composer = Composer(new_composition())
     monkeypatch.setitem(main.app.state._state, 'activity_adapter', composer)
@@ -187,6 +268,7 @@ def test_model_composes_and_saves_new_four_scene_spec_without_worksheet_or_ident
         version = conn.execute("SELECT * FROM activity_versions WHERE origin='model_generated'").fetchone()
         assert version['verified'] and version['model'] == 'test-composer' and version['component_version']
         assert ActivitySpec.model_validate_json(version['spec_json']).scenes[-1].answer.value == '5/8'
+        assert service._homework_state(conn, child['id'], '3.NF.A.1-2')['status'] == ('on_track' if correctness == 'correct' else 'needs_support')
 
 
 @pytest.mark.parametrize('invalid', [False, True])

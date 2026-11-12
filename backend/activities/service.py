@@ -28,9 +28,17 @@ def _target(conn, security, kid_id, upload_id, active):
         raise AccountError('not_found', 'That student work was not found.', 404)
     if upload['state'] != 'completed':
         return None, None, 'analysis_failed' if upload['state'] == 'failed' else 'analysis_pending'
-    rows = conn.execute("SELECT e.* FROM learning_evidence e JOIN homework_problems p ON p.id=e.source_ref AND p.kid_id=e.kid_id WHERE p.upload_id=? AND e.kid_id=? AND e.source='homework' AND e.eligible=1 AND e.correctness='incorrect' ORDER BY p.page_number,p.problem_order,e.id", (upload_id, kid_id)).fetchall()
+    # Correct work can lead to reinforcement, too. Prefer an eligible error when
+    # one exists, then retain the original page/problem order within each group.
+    rows = conn.execute("""SELECT e.* FROM learning_evidence e
+        JOIN homework_problems p ON p.id=e.source_ref AND p.kid_id=e.kid_id
+        WHERE p.upload_id=? AND e.kid_id=? AND e.source='homework'
+          AND e.eligible=1 AND e.correctness IN ('correct','incorrect')
+          AND p.teacher_conflict=0
+        ORDER BY CASE e.correctness WHEN 'incorrect' THEN 0 ELSE 1 END,
+                 p.page_number,p.problem_order,e.id""", (upload_id, kid_id)).fetchall()
     for evidence in rows:
-        if evidence['subskill_id'] not in SUPPORTED or _homework_state(conn, kid_id, evidence['subskill_id'])['status'] != 'needs_support':
+        if evidence['subskill_id'] not in SUPPORTED:
             continue
         target = get_subskill(conn, evidence['subskill_id'])
         if target and target['active'] and target['grade'] == '3':
@@ -134,6 +142,9 @@ safe interaction vocabulary, while you choose the activity sequence. IDs and nex
 form one linear sequence. Select only the requested subject, grade and subskill; copy the
 provided misconception tag exactly and use only supplied sourceRefs (these are design references).
 No worksheet text, student identity or private information is supplied or may be invented.
+Activities can reinforce correct work as well as support skills needing more practice. The
+misconception tag is curriculum metadata, not proof that this student made that mistake.
+Never claim that the student's uploaded answer was wrong or that they have a misconception.
 Math: guided fraction_builder or number_line. Fractions strictly between zero and one,
 denominators only 2,3,4,6,8. fraction_builder params denominator; number_line params denominator,
 min=0,max=1. Each guided prompt must explicitly name its target fraction a/b. Answer.value

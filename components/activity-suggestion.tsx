@@ -85,13 +85,8 @@ function SuggestionContent({ uploadId }: { uploadId: string }) {
     }
   }
 
-  if (
-    suggestion &&
-    !suggestion.available &&
-    suggestion.reason === "no_supported_skill" &&
-    !error
-  )
-    return null;
+  const unsupported =
+    !suggestion?.available && suggestion?.reason === "no_supported_skill";
   const pending = !suggestion || suggestion.reason === "analysis_pending";
   return (
     <section
@@ -106,17 +101,21 @@ function SuggestionContent({ uploadId }: { uploadId: string }) {
         <p className="account-eyebrow">YOUR NEXT LITTLE STEP</p>
         <h2>
           {suggestion?.available
-            ? "Let’s try it a different way."
+            ? "Keep learning with an activity."
             : pending
               ? "Finding your next little step…"
-              : "A little moment for your next step."}
+              : unsupported
+                ? "No matching activity yet."
+                : "A little moment for your next step."}
         </h2>
         <p>
           {suggestion?.available
             ? `Explore ${suggestion.targetSkill?.subject === "math" ? "fractions with equal pieces" : "word patterns and plurals"} in a short activity.`
             : pending
               ? "Sidekick is looking at the skills in your work."
-              : "We couldn’t find an activity just yet. You can try again."}
+              : unsupported
+                ? "We couldn’t reliably match this work to a supported activity. Right now, activities cover equal-part fractions and plural words."
+                : "We couldn’t find an activity just yet. You can try again."}
         </p>
         <FormError message={error} />
         {suggestion?.available ? (
@@ -141,7 +140,7 @@ function SuggestionContent({ uploadId }: { uploadId: string }) {
               </>
             )}
           </button>
-        ) : error || !pending || pollingPaused ? (
+        ) : error || (!pending && !unsupported) || pollingPaused ? (
           <button
             className="text-button"
             onClick={() => setReload((value) => value + 1)}

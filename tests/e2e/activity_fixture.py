@@ -36,7 +36,12 @@ class SyntheticDecisions:
 
 
 async def main():
-    database_url, kid_id, upload_id = sys.argv[1:]
+    if len(sys.argv) not in {4, 5}:
+        raise RuntimeError('Provide a test database, child, upload, and optional expected correctness.')
+    database_url, kid_id, upload_id = sys.argv[1:4]
+    expected_correctness = sys.argv[4] if len(sys.argv) == 5 else 'incorrect'
+    if expected_correctness not in {'correct', 'incorrect'}:
+        raise RuntimeError('Expected correctness must be correct or incorrect.')
     database_path = Path(database_url.removeprefix('sqlite:///'))
     if not database_url.startswith('sqlite:///') or not database_path.is_absolute() or not database_path.name.startswith('sidekick-e2e-') or not database_path.is_file():
         raise RuntimeError('Only an existing isolated browser-test database is allowed.')
@@ -53,7 +58,14 @@ async def main():
 
     result = await resume_upload(security, kid_id, upload_id, extractor=no_transcription, adapter=SyntheticDecisions())
     assert result['state'] == 'completed'
-    print(json.dumps({'id': result['id'], 'state': result['state']}))
+    # Prove the real grading stage agrees with the photo's actual transcription;
+    # the helper never changes extracted answers or fabricates learning evidence.
+    with security.db.transaction() as conn:
+        problems = conn.execute('SELECT grading_json FROM homework_problems WHERE upload_id=? AND kid_id=?', (upload_id, kid_id)).fetchall()
+        assert problems and all(json.loads(row['grading_json'])['correctness'] == expected_correctness for row in problems)
+        evidence = conn.execute("SELECT correctness,eligible FROM learning_evidence WHERE kid_id=? AND source='homework' AND source_ref IN (SELECT id FROM homework_problems WHERE upload_id=?)", (kid_id, upload_id)).fetchall()
+        assert evidence and all(row['correctness'] == expected_correctness and row['eligible'] == 1 for row in evidence)
+    print(json.dumps({'id': result['id'], 'state': result['state'], 'correctness': expected_correctness}))
 
 
 if __name__ == '__main__':
