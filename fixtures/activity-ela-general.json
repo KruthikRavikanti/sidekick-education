@@ -1,0 +1,58 @@
+{
+  "worksheet": {
+    "title": {
+      "text": "Reading with evidence",
+      "uncertain": false
+    },
+    "subject": "ela",
+    "subject_uncertain": false,
+    "printed_grade": {
+      "text": "Grade 3",
+      "uncertain": false
+    },
+    "directions": [],
+    "shared_context": [
+      {
+        "id": "article",
+        "type": "passage",
+        "title": {
+          "text": "Seasons",
+          "uncertain": false
+        },
+        "content": {
+          "text": "The seasons happen because Earth's axis is tilted as Earth moves around the sun.",
+          "uncertain": false
+        }
+      }
+    ]
+  },
+  "problems": [
+    {
+      "id": "activity-ela-general-1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "After an article: What causes the seasons? Quote or point to the sentence.",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [
+        "article"
+      ],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "Earth's axis is tilted.",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    }
+  ]
+}

@@ -17,18 +17,26 @@ import {
 } from "lucide-react";
 import type { Extraction } from "@/lib/extraction";
 import { ExtractionResults } from "./extraction-results";
-import { apiFetch } from "@/lib/account-api";
+import { apiFetch, clearCSRF } from "@/lib/account-api";
 import { useAccountSession } from "./account-session";
 import type { UploadRecord } from "@/lib/learning-types";
+import {
+  isHeifFile,
+  normalizeUploadFile,
+  PHOTO_ACCEPT,
+  WORK_ACCEPT,
+} from "@/lib/upload-files";
+import { ActivitySuggestion } from "./activity-suggestion";
 
 const MAX_BYTES = 10 * 1024 * 1024;
-const ACCEPT = "image/jpeg,image/png,image/webp,application/pdf";
 type Phase = "upload" | "reading" | "results";
 
 export function WorksheetReader() {
   const { refresh } = useAccountSession();
   const [file, setFile] = useState<File | null>(null);
+  const [previewBlob, setPreviewBlob] = useState<Blob | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [preparing, setPreparing] = useState(false);
   const [phase, setPhase] = useState<Phase>("upload");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<Extraction | null>(null);
@@ -39,6 +47,8 @@ export function WorksheetReader() {
   const uploadRef = useRef<HTMLInputElement>(null);
   const cameraRef = useRef<HTMLInputElement>(null);
   const controllerRef = useRef<AbortController | null>(null);
+  const preparationRef = useRef<AbortController | null>(null);
+  const selectionRef = useRef(0);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const readRef = useRef<HTMLButtonElement>(null);
 
@@ -57,57 +67,140 @@ export function WorksheetReader() {
     return () => {
       controller.abort();
       controllerRef.current?.abort();
+      preparationRef.current?.abort();
+      selectionRef.current += 1;
     };
   }, []);
 
   useEffect(() => {
-    if (!file) {
+    if (!previewBlob) {
       setPreview(null);
       return;
     }
-    const url = URL.createObjectURL(file);
+    const url = URL.createObjectURL(previewBlob);
     setPreview(url);
     return () => URL.revokeObjectURL(url);
-  }, [file]);
+  }, [previewBlob]);
 
   useEffect(() => {
     if (phase === "results") document.getElementById("results-title")?.focus();
   }, [phase]);
 
-  function selectFile(next: File | undefined) {
+  async function selectFile(next: File | undefined) {
     if (!next) return;
+    const selection = ++selectionRef.current;
     controllerRef.current?.abort();
+    preparationRef.current?.abort();
+    preparationRef.current = null;
+    setPreparing(false);
+    setFile(null);
+    setPreview(null);
+    setPreviewBlob(null);
     setError(null);
     setResult(null);
     setUploadId(null);
     setPhase("upload");
     if (next.size > limits.maxBytes) {
-      setFile(null);
       setError(
         `That file is too large. Choose a file smaller than ${limits.maxBytes / 1024 / 1024} MB.`,
       );
       return;
     }
-    if (next.type && !ACCEPT.split(",").includes(next.type)) {
-      setFile(null);
-      setError(
-        "Choose a JPG, PNG, or WebP image, or a PDF. Other file types can’t be read yet.",
-      );
-      return;
-    }
     if (next.size === 0) {
-      setFile(null);
       setError("That file is empty. Try another photo.");
       return;
     }
-    setFile(next);
-    setTimeout(() => readRef.current?.focus(), 0);
+    let selected: File;
+    try {
+      selected = normalizeUploadFile(next);
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "Choose another photo.");
+      return;
+    }
+    setFile(selected);
+    if (!isHeifFile(selected)) {
+      setPreviewBlob(selected);
+      setTimeout(() => {
+        if (selectionRef.current === selection) readRef.current?.focus();
+      }, 0);
+      return;
+    }
+
+    // Browsers cannot all display Apple photo originals. Decode only a temporary
+    // preview here; Read my work still submits the untouched original bytes.
+    const controller = new AbortController();
+    preparationRef.current = controller;
+    setPreparing(true);
+    const timeout = setTimeout(() => controller.abort("timeout"), 30000);
+    try {
+      const body = new FormData();
+      body.append("file", selected);
+      const response = await apiFetch("/api/images/preview", {
+        method: "POST",
+        body,
+        signal: controller.signal,
+      });
+      if (controller.signal.aborted || selectionRef.current !== selection) return;
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        if (controller.signal.aborted || selectionRef.current !== selection) return;
+        if (
+          response.status === 401 ||
+          (response.status === 403 &&
+            ["kid_required", "parent_required"].includes(data?.error?.code)) ||
+          (response.status === 409 && data?.error?.code === "profile_changed")
+        ) {
+          await refresh(false);
+          return;
+        }
+        if (data?.error?.code === "csrf_failed") clearCSRF();
+        throw new Error(
+          data?.error?.message ||
+            "That photo couldn’t be opened. Please choose it again.",
+        );
+      }
+      const image = await response.blob();
+      if (controller.signal.aborted || selectionRef.current !== selection) return;
+      if (image.type !== "image/png" || image.size === 0)
+        throw new Error("That photo couldn’t be opened. Please choose it again.");
+      setPreviewBlob(image);
+      setTimeout(() => {
+        if (selectionRef.current === selection) readRef.current?.focus();
+      }, 0);
+    } catch (caught) {
+      if (
+        selectionRef.current !== selection ||
+        (controller.signal.aborted && controller.signal.reason !== "timeout")
+      )
+        return;
+      setFile(null);
+      setPreviewBlob(null);
+      setError(
+        controller.signal.reason === "timeout"
+          ? "Opening this photo took too long. Choose it again or try another photo."
+          : caught instanceof Error && caught.message !== "Failed to fetch"
+            ? caught.message
+            : "Sidekick couldn’t connect. Choose the photo again to retry.",
+      );
+    } finally {
+      clearTimeout(timeout);
+      if (selectionRef.current === selection) {
+        setPreparing(false);
+        preparationRef.current = null;
+      }
+    }
   }
 
   function reset() {
+    selectionRef.current += 1;
     controllerRef.current?.abort();
+    preparationRef.current?.abort();
+    preparationRef.current = null;
+    setPreparing(false);
     setPhase("upload");
     setFile(null);
+    setPreviewBlob(null);
+    setPreview(null);
     setResult(null);
     setUploadId(null);
     setError(null);
@@ -123,7 +216,7 @@ export function WorksheetReader() {
     try {
       const response = await fetch(`/samples/${subject}-worksheet.png`);
       if (!response.ok) throw new Error();
-      selectFile(
+      await selectFile(
         new File([await response.blob()], `${subject}-worksheet.png`, {
           type: "image/png",
         }),
@@ -136,7 +229,7 @@ export function WorksheetReader() {
   }
 
   async function readWorksheet() {
-    if (!file || phase === "reading") return;
+    if (!file || preparing || !previewBlob || phase === "reading") return;
     const controller = new AbortController();
     controllerRef.current = controller;
     setPhase("reading");
@@ -201,11 +294,20 @@ export function WorksheetReader() {
         return;
       if (
         response.status === 401 ||
-        response.status === 403 ||
+        (response.status === 403 &&
+          ["kid_required", "parent_required"].includes(data?.error?.code)) ||
         (response.status === 409 && data?.error?.code === "profile_changed")
       ) {
         await refresh(false);
         return;
+      }
+      // A rejected token does not mean the child changed. Keep the selected
+      // photo, show the error, and fetch a fresh token when they retry.
+      if (response.status === 403 && data?.error?.code === "csrf_failed") {
+        clearCSRF();
+        throw new Error(
+          "We couldn’t verify this upload. Tap Read my work again to retry.",
+        );
       }
       if (!response.ok)
         throw new Error(
@@ -263,7 +365,15 @@ export function WorksheetReader() {
       <main className={phase === "results" ? "main-results" : "main-upload"}>
         {phase === "results" && result ? (
           <div>
-            <ExtractionResults result={result} onReset={reset} />
+            <ExtractionResults
+              result={result}
+              onReset={reset}
+              activity={
+                uploadId ? (
+                  <ActivitySuggestion key={uploadId} uploadId={uploadId} />
+                ) : undefined
+              }
+            />
             {uploadId && (
               <p className="results-footnote">
                 Your work is saved privately for your family. A parent can
@@ -347,14 +457,24 @@ export function WorksheetReader() {
                 </div>
               ) : (
                 <>
-                  {file && preview ? (
+                  {file ? (
                     <div className="preview-area">
                       <div className="preview-toolbar">
                         <span>
-                          <Check size={15} aria-hidden="true" />
-                          {file.type === "application/pdf"
-                            ? "PDF ready"
-                            : "Photo ready"}
+                          {preparing ? (
+                            <LoaderCircle
+                              size={15}
+                              className="spinner"
+                              aria-hidden="true"
+                            />
+                          ) : (
+                            <Check size={15} aria-hidden="true" />
+                          )}
+                          {preparing
+                            ? "Preparing photo"
+                            : file.type === "application/pdf"
+                              ? "PDF ready"
+                              : "Photo ready"}
                         </span>
                         <button
                           className="icon-button"
@@ -364,7 +484,21 @@ export function WorksheetReader() {
                           <X size={18} />
                         </button>
                       </div>
-                      {file.type === "application/pdf" ? (
+                      {preparing ? (
+                        <div
+                          className="reading-state"
+                          role="status"
+                          aria-live="polite"
+                        >
+                          <LoaderCircle
+                            size={28}
+                            className="spinner"
+                            aria-hidden="true"
+                          />
+                          <h2>Preparing your photo…</h2>
+                          <p>Your preview will be ready in a moment.</p>
+                        </div>
+                      ) : file.type === "application/pdf" ? (
                         <div className="pdf-preview">
                           <strong>PDF</strong>
                           <p>
@@ -374,19 +508,20 @@ export function WorksheetReader() {
                             in page order.
                           </p>
                         </div>
-                      ) : (
+                      ) : preview ? (
                         <img
                           className="worksheet-preview"
                           src={preview}
                           alt="Preview of your selected work"
                           onError={() => {
                             setFile(null);
+                            setPreviewBlob(null);
                             setError(
                               "That image couldn’t be opened. Choose another photo.",
                             );
                           }}
                         />
-                      )}
+                      ) : null}
                       <p className="file-caption">
                         {file.name} · {(file.size / 1024 / 1024).toFixed(1)} MB
                       </p>
@@ -398,7 +533,7 @@ export function WorksheetReader() {
                       onDrop={(event) => {
                         event.preventDefault();
                         if (!sampleLoading)
-                          selectFile(event.dataTransfer.files[0]);
+                          void selectFile(event.dataTransfer.files[0]);
                       }}
                     >
                       <div
@@ -443,7 +578,7 @@ export function WorksheetReader() {
                           ref={readRef}
                           className="button primary"
                           onClick={readWorksheet}
-                          disabled={sampleLoading}
+                          disabled={sampleLoading || preparing || !preview}
                         >
                           Read my work
                           <ArrowRight size={20} aria-hidden="true" />
@@ -485,7 +620,7 @@ export function WorksheetReader() {
                           Take a photo
                         </button>
                         <p className="file-types">
-                          JPG, PNG, WebP, or PDF · Up to{" "}
+                          JPG, PNG, WebP, HEIC, HEIF, or PDF · Up to{" "}
                           {limits.maxBytes / 1024 / 1024} MB
                         </p>
                       </>
@@ -497,12 +632,12 @@ export function WorksheetReader() {
                 ref={uploadRef}
                 className="visually-hidden"
                 type="file"
-                accept={ACCEPT}
+                accept={WORK_ACCEPT}
                 tabIndex={-1}
                 disabled={phase === "reading" || sampleLoading}
                 aria-label="Choose work image"
                 onChange={(event) => {
-                  selectFile(event.target.files?.[0]);
+                  void selectFile(event.target.files?.[0]);
                   event.target.value = "";
                 }}
               />
@@ -510,13 +645,13 @@ export function WorksheetReader() {
                 ref={cameraRef}
                 className="visually-hidden"
                 type="file"
-                accept="image/jpeg,image/png,image/webp"
+                accept={PHOTO_ACCEPT}
                 capture="environment"
                 tabIndex={-1}
                 disabled={phase === "reading" || sampleLoading}
                 aria-label="Take work photo"
                 onChange={(event) => {
-                  selectFile(event.target.files?.[0]);
+                  void selectFile(event.target.files?.[0]);
                   event.target.value = "";
                 }}
               />

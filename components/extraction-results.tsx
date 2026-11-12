@@ -6,6 +6,7 @@ import {
   FileText,
   RotateCcw,
 } from "lucide-react";
+import type { ReactNode } from "react";
 import type {
   Extraction,
   Problem,
@@ -184,9 +185,11 @@ function downloadJSON(result: Extraction) {
 export function ExtractionResults({
   result,
   onReset,
+  activity,
 }: {
   result: Extraction;
   onReset: () => void;
+  activity?: ReactNode;
 }) {
   const worksheet = result.worksheet;
   const subject = { math: "Math", ela: "ELA", unknown: "Subject unknown" }[
@@ -207,6 +210,7 @@ export function ExtractionResults({
         </h1>
         <p>Questions and your work, just as they appear on the page.</p>
       </div>
+      {activity}
       {result.source === "fixture" && (
         <p className="demo-notice">
           Sample results · This is a pre-written extraction of the sample page.
