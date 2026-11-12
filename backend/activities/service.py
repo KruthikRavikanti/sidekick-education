@@ -8,9 +8,11 @@ from fractions import Fraction
 from backend.accounts.security import AccountError
 from backend.gap.catalog import get_subskill
 from backend.gap.service import _audit, _homework_state, authorize, decode, encode
+from backend.gap.config import CONFIG
 from backend.gap.vision import VisionAdapter
-from .models import (ActivitySpec, COMPONENT_VERSION, PROMPT_VERSION, SUPPORTED,
+from .models import (ActivitySpec, COMPONENT_VERSION, COMPATIBLE_COMPONENT_VERSIONS, PROMPT_VERSION, SUPPORTED,
                      ChoiceResponse, PartsResponse, TickResponse, TilesResponse)
+from . import general
 
 
 def uid():
@@ -18,7 +20,7 @@ def uid():
 
 
 def target_view(target):
-    return dict(id=target['subskill_id'], name=target['subskill'], subject=SUPPORTED[target['subskill_id']])
+    return dict(id=target['subskill_id'], name=target['subskill'], subject=general.subject_for(target))
 
 
 def _target(conn, security, kid_id, upload_id, active):
@@ -28,21 +30,42 @@ def _target(conn, security, kid_id, upload_id, active):
         raise AccountError('not_found', 'That student work was not found.', 404)
     if upload['state'] != 'completed':
         return None, None, 'analysis_failed' if upload['state'] == 'failed' else 'analysis_pending'
-    # Correct work can lead to reinforcement, too. Prefer an eligible error when
-    # one exists, then retain the original page/problem order within each group.
-    rows = conn.execute("""SELECT e.* FROM learning_evidence e
-        JOIN homework_problems p ON p.id=e.source_ref AND p.kid_id=e.kid_id
-        WHERE p.upload_id=? AND e.kid_id=? AND e.source='homework'
-          AND e.eligible=1 AND e.correctness IN ('correct','incorrect')
-          AND p.teacher_conflict=0
-        ORDER BY CASE e.correctness WHEN 'incorrect' THEN 0 ELSE 1 END,
-                 p.page_number,p.problem_order,e.id""", (upload_id, kid_id)).fetchall()
-    for evidence in rows:
-        if evidence['subskill_id'] not in SUPPORTED:
+    # A reliable skill match is enough to teach it, even where automatic grading
+    # abstained. This does not promote that observation into support evidence.
+    rows = conn.execute("""SELECT p.*, e.id AS evidence_id,
+        e.subskill_id AS evidence_skill, e.correctness AS evidence_correctness,
+        e.eligible AS evidence_eligible, e.confidence AS evidence_confidence
+        FROM homework_problems p LEFT JOIN learning_evidence e
+          ON e.source_ref=p.id AND e.kid_id=p.kid_id AND e.source='homework'
+        WHERE p.upload_id=? AND p.kid_id=? AND p.teacher_conflict=0
+        ORDER BY p.page_number,p.problem_order,p.id""", (upload_id, kid_id)).fetchall()
+    candidates = []
+    for row in rows:
+        problem = decode(row['extraction_json'], {})
+        question = problem.get('question', {})
+        mapping = decode(row['mapping_json'], None)
+        if mapping is not None:
+            if (not isinstance(mapping, dict) or not isinstance(mapping.get('confidence'), (int, float))
+                    or mapping['confidence'] < CONFIG.mapping_confidence
+                    or not isinstance(question, dict) or question.get('uncertain')
+                    or not str(question.get('text') or '').strip()):
+                continue
+            subskill = mapping.get('subskill_id')
+        elif row['evidence_eligible'] and (row['evidence_confidence'] or 0) >= CONFIG.mapping_confidence:
+            # Historical verified evidence may predate stored mapping checkpoints.
+            if not isinstance(question, dict) or question.get('uncertain'):
+                continue
+            subskill = row['evidence_skill']
+        else:
             continue
-        target = get_subskill(conn, evidence['subskill_id'])
-        if target and target['active'] and target['grade'] == '3':
-            return target, evidence['id'], None
+        target = get_subskill(conn, subskill)
+        if not target or not target['active'] or general.subject_for(target) is None or general.grade_for(target) is None:
+            continue
+        priority = 0 if row['evidence_eligible'] and row['evidence_correctness'] == 'incorrect' else 1 if row['evidence_correctness'] == 'correct' else 2
+        candidates.append((priority, target, row['evidence_id']))
+    if candidates:
+        _, target, evidence_id = min(candidates, key=lambda candidate: candidate[0])
+        return target, evidence_id, None
     return None, None, 'no_supported_skill'
 
 
@@ -64,7 +87,10 @@ def _owned(conn, security, kid_id, session_id, active):
 
 def _result(conn, row, spec):
     attempt = conn.execute("SELECT * FROM activity_attempts WHERE session_id=? AND phase='independent'", (row['id'],)).fetchone()
-    return dict(question=spec.scenes[-1].prompt, response=attempt['response_text'], correct=bool(attempt['correct'])) if attempt else None
+    final = spec.scenes[-1]
+    context = getattr(final.params, 'context', None)
+    question = f'{context}\n\n{final.prompt}' if context else final.prompt
+    return dict(question=question, response=attempt['response_text'], correct=bool(attempt['correct'])) if attempt else None
 
 
 def _view(conn, row, spec):
@@ -88,6 +114,8 @@ def session_view(security, kid_id, session_id, active):
 
 
 def _task_key(scene):
+    if scene.component == 'independent_response':
+        return general.task_key(scene.prompt, scene.params.context)
     return ('math', str(Fraction(scene.answer.value))) if scene.component == 'independent_fraction' else ('ela', scene.params.baseWord)
 
 
@@ -95,10 +123,11 @@ def _blocked_tasks(conn, kid_id, upload_id, subject):
     """Compare original tasks locally. No original question crosses model boundary."""
     from .models import IRREGULAR, REGULAR
     keys = set()
-    for row in conn.execute('SELECT extraction_json FROM homework_problems WHERE kid_id=? AND upload_id=?', (kid_id, upload_id)):
+    for row in conn.execute('SELECT extraction_json,context_json FROM homework_problems WHERE kid_id=? AND upload_id=?', (kid_id, upload_id)):
         problem = decode(row[0], {})
         question = problem.get('question', {})
         text = question.get('text', '') if isinstance(question, dict) else str(question)
+        keys.add(general.task_key(text, general.context_text(decode(row['context_json'], []))))
         if subject == 'ela':
             keys.update(('ela', base) for base in set(IRREGULAR) | REGULAR if re.search(rf'\b{base}\b', text or '', re.I))
         else:
@@ -125,12 +154,13 @@ def _blocked_tasks(conn, kid_id, upload_id, subject):
 def _matches(conn, target, *, blocked=(), strong=True):
     tag = target['common_misconception']
     matches = []
-    for row in conn.execute('SELECT * FROM activity_versions WHERE subskill_id=? AND grade=3 AND active=1 AND verified=1 AND component_version=? ORDER BY created_at,id', (target['subskill_id'], COMPONENT_VERSION)):
+    versions = sorted(COMPATIBLE_COMPONENT_VERSIONS)
+    for row in conn.execute(f"SELECT * FROM activity_versions WHERE subskill_id=? AND grade=? AND active=1 AND verified=1 AND component_version IN ({','.join('?' for _ in versions)}) ORDER BY created_at,id", (target['subskill_id'], general.grade_for(target), *versions)):
         try:
             spec = ActivitySpec.model_validate_json(row['spec_json'])
         except ValueError:
             continue
-        if (not strong or tag in spec.misconceptionTags) and spec.subject == SUPPORTED[target['subskill_id']] and _task_key(spec.scenes[-1]) not in blocked:
+        if (not strong or tag in spec.misconceptionTags) and spec.subject == general.subject_for(target) and _task_key(spec.scenes[-1]) not in blocked:
             matches.append((row, spec))
     return matches
 
@@ -166,13 +196,19 @@ Make feedback explain why the skill works, without claims of mastery or changed 
 
 
 async def _generate(adapter, target, source_refs, seen_tasks, variation=0):
+    if target['subskill_id'] not in SUPPORTED:
+        return await general.compose(adapter, target, source_refs, seen_tasks, variation)
     from .models import IRREGULAR, REGULAR, plural
     data = dict(schemaVersion='1.0', subject=SUPPORTED[target['subskill_id']], grade=3,
                 subskillId=target['subskill_id'], subskill=target['subskill'], misconceptionTags=[target['common_misconception']], sourceRefs=source_refs,
                 supportedPlurals={base: plural(base) for base in sorted(set(IRREGULAR) | REGULAR)}, previousIndependentTasks=seen_tasks, variation=variation)
     result = await adapter._call(ActivitySpec, 'compose_activity', GENERATION_INSTRUCTION, data)
     spec = ActivitySpec.model_validate(result.model_dump() if isinstance(result, ActivitySpec) else result)
-    if spec.subskillId != target['subskill_id'] or target['common_misconception'] not in spec.misconceptionTags or not set(spec.sourceRefs).issubset(source_refs):
+    if (spec.schemaVersion != '1.0' or spec.grade != 3
+            or spec.subject != SUPPORTED[target['subskill_id']]
+            or spec.subskillId != target['subskill_id']
+            or target['common_misconception'] not in spec.misconceptionTags
+            or not set(spec.sourceRefs).issubset(source_refs)):
         raise ValueError('Generated activity is not aligned with catalog or references')
     return spec
 
@@ -196,16 +232,26 @@ async def start(security, kid_id, body, active, *, adapter=None):
             raise AccountError('activity_preparing', 'Your activity is being prepared. Please retry in a moment.', 409)
         now = security.clock.now()
         conn.execute('INSERT INTO activity_start_requests(kid_id,request_key,upload_id,lease_token,lease_until,created_at) VALUES(?,?,?,?,?,?) ON CONFLICT(kid_id,request_key) DO UPDATE SET lease_token=excluded.lease_token,lease_until=excluded.lease_until', (kid_id, key, upload_id, lease, now + 600, now))
-        blocked = _blocked_tasks(conn, kid_id, upload_id, SUPPORTED[target['subskill_id']])
+        blocked = _blocked_tasks(conn, kid_id, upload_id, general.subject_for(target))
         matches = _matches(conn, target, blocked=blocked)
         seen = {row[0] for row in conn.execute('SELECT activity_version_id FROM activity_sessions WHERE kid_id=?', (kid_id,))}
         selected = next((match for match in matches if match[0]['id'] not in seen), None)
         seen_tasks = []
         for row in conn.execute('SELECT v.spec_json FROM activity_sessions s JOIN activity_versions v ON v.id=s.activity_version_id WHERE s.kid_id=? AND s.subskill_id=?', (kid_id, target['subskill_id'])):
-            seen_tasks.append(ActivitySpec.model_validate_json(row[0]).scenes[-1].prompt)
+            scene = ActivitySpec.model_validate_json(row[0]).scenes[-1]
+            context = getattr(scene.params, 'context', None)
+            seen_tasks.append(f'{context}\n\n{scene.prompt}' if context else scene.prompt)
         refs = [row[0] for row in conn.execute('SELECT id FROM activity_sources WHERE active=1 ORDER BY id')]
         revision = conn.execute('SELECT id FROM activity_library_revisions ORDER BY imported_at DESC,id LIMIT 1').fetchone()
-        revision_id = revision['id'] if revision else None
+        if revision:
+            revision_id = revision['id']
+        else:
+            # Composition also works before the optional example library is seeded.
+            # This records the genuine empty source snapshot, not invented sources.
+            source_hash = hashlib.sha256(b'[]').hexdigest()
+            revision_id = 'alr_' + source_hash[:40]
+            conn.execute('INSERT INTO activity_library_revisions VALUES(?,?,?,?,?)',
+                         (revision_id, source_hash, security.clock.now(), 0, '[]'))
     # No transaction spans provider work. Only curriculum fields cross this boundary.
     generated, outcome = None, 'reused'
     if selected is None and adapter is not False and revision_id:
@@ -221,7 +267,8 @@ async def start(security, kid_id, body, active, *, adapter=None):
             except Exception:
                 # Never include exception text or raw model output in a log/audit.
                 outcome = 'generation_failed_fallback'
-                break
+                if target['subskill_id'] in SUPPORTED:
+                    break
     with security.db.transaction() as conn:
         # A logout, switch, deleted profile or deleted upload during generation
         # invalidates the result before it can become private child history.
@@ -235,7 +282,7 @@ async def start(security, kid_id, body, active, *, adapter=None):
         if opened:
             session_id = opened['id']
         else:
-            latest_blocked = _blocked_tasks(conn, kid_id, upload_id, SUPPORTED[target['subskill_id']])
+            latest_blocked = _blocked_tasks(conn, kid_id, upload_id, general.subject_for(target))
             if generated is not None and _task_key(generated.scenes[-1]) in latest_blocked:
                 generated = None
             if selected and _task_key(selected[1].scenes[-1]) in latest_blocked:
@@ -245,7 +292,7 @@ async def start(security, kid_id, body, active, *, adapter=None):
                 content_hash = hashlib.sha256(raw.encode()).hexdigest()
                 version_id = 'generated_' + content_hash[:40]
                 conn.execute('INSERT OR IGNORE INTO activity_versions(id,activity_id,version,spec_json,spec_sha256,subskill_id,subject,grade,misconception_tags_json,origin,verified,source_revision,model,prompt_version,component_version,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                             (version_id, version_id, 1, raw, content_hash, generated.subskillId, generated.subject, 3, encode(generated.misconceptionTags), 'model_generated', 1, revision_id, getattr(adapter, 'model', '') if adapter else VisionAdapter().model, PROMPT_VERSION, COMPONENT_VERSION, security.clock.now()))
+                             (version_id, version_id, 1, raw, content_hash, generated.subskillId, generated.subject, generated.grade, encode(generated.misconceptionTags), 'model_generated', 1, revision_id, getattr(adapter, 'model', '') if adapter else VisionAdapter().model, PROMPT_VERSION, COMPONENT_VERSION, security.clock.now()))
                 selected = (conn.execute('SELECT * FROM activity_versions WHERE spec_sha256=?', (content_hash,)).fetchone(), generated)
             if selected is None:
                 fallback = _matches(conn, target, blocked=latest_blocked, strong=False)
@@ -265,6 +312,8 @@ async def start(security, kid_id, body, active, *, adapter=None):
 
 
 def _grade(scene, response):
+    if scene.component in {'guided_choice', 'guided_response', 'independent_response'}:
+        return general.grade_response(scene, response)
     value = response
     if scene.component == 'fraction_builder' and isinstance(response, PartsResponse):
         if len(set(response.selectedParts)) != len(response.selectedParts) or any(part < 0 or part >= scene.params.denominator for part in response.selectedParts):

@@ -32,6 +32,22 @@ export type ActivityScene = ActivitySceneBase &
         params: { unitDenominator: number; copies: number };
       }
     | { component: "independent_word"; params: { baseWord: string } }
+    | {
+        component: "guided_choice";
+        params: {
+          context: string | null;
+          teachingText: string;
+          options: { id: string; text: string }[];
+        };
+      }
+    | {
+        component: "guided_response";
+        params: { context: string | null; teachingText: string };
+      }
+    | {
+        component: "independent_response";
+        params: { context: string | null };
+      }
   );
 
 export interface ActivityFeedback {

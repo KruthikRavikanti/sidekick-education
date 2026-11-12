@@ -279,6 +279,93 @@ function WordChoice({
   );
 }
 
+export function ActivitySceneMaterial({ scene }: { scene: ActivityScene }) {
+  if (
+    scene.component !== "guided_choice" &&
+    scene.component !== "guided_response" &&
+    scene.component !== "independent_response"
+  )
+    return null;
+
+  const teachingText =
+    scene.component === "independent_response" ? null : scene.params.teachingText;
+  if (!teachingText && !scene.params.context) return null;
+  return (
+    <div className="activity-learning-material">
+      {teachingText ? (
+        <section className="activity-teaching" aria-label="Learning tip">
+          <p className="account-eyebrow">LET’S LEARN</p>
+          <p>{teachingText}</p>
+        </section>
+      ) : null}
+      {scene.params.context ? (
+        <section className="activity-context" aria-label="Information for this step">
+          <p>{scene.params.context}</p>
+        </section>
+      ) : null}
+    </div>
+  );
+}
+
+function GuidedChoice({
+  scene,
+  disabled,
+  onResponse,
+  initialResponse,
+}: SceneControlProps & {
+  scene: Extract<ActivityScene, { component: "guided_choice" }>;
+}) {
+  return (
+    <fieldset className="activity-word-choices activity-general-choices" disabled={disabled}>
+      <legend className="activity-control-instruction">Choose your answer.</legend>
+      {scene.params.options.map((choice) => (
+        <label className="activity-word-choice" key={choice.id}>
+          <input
+            type="radio"
+            name={`choice-${scene.id}`}
+            value={choice.id}
+            defaultChecked={Boolean(
+              initialResponse &&
+                typeof initialResponse === "object" &&
+                "choiceId" in initialResponse &&
+                initialResponse.choiceId === choice.id,
+            )}
+            onChange={() => onResponse({ choiceId: choice.id }, true)}
+          />
+          <span>{choice.text}</span>
+        </label>
+      ))}
+    </fieldset>
+  );
+}
+
+function WrittenResponse({
+  scene,
+  disabled,
+  onResponse,
+  initialResponse,
+}: SceneControlProps) {
+  return (
+    <div className="activity-independent-answer activity-written-answer">
+      <label htmlFor={`answer-${scene.id}`}>Your answer</label>
+      <textarea
+        id={`answer-${scene.id}`}
+        name="answer"
+        rows={3}
+        autoComplete="off"
+        autoCapitalize="off"
+        spellCheck={false}
+        maxLength={500}
+        defaultValue={typeof initialResponse === "string" ? initialResponse : ""}
+        disabled={disabled}
+        onChange={(event) =>
+          onResponse(event.target.value, Boolean(event.target.value.trim()))
+        }
+      />
+    </div>
+  );
+}
+
 export function ActivitySceneControl(props: SceneControlProps) {
   const { scene, disabled, onResponse, initialResponse } = props;
   switch (scene.component) {
@@ -290,6 +377,11 @@ export function ActivitySceneControl(props: SceneControlProps) {
       return <WordTiles {...props} scene={scene} />;
     case "word_choice":
       return <WordChoice {...props} scene={scene} />;
+    case "guided_choice":
+      return <GuidedChoice {...props} scene={scene} />;
+    case "guided_response":
+    case "independent_response":
+      return <WrittenResponse {...props} />;
     case "independent_fraction":
     case "independent_word":
       return (

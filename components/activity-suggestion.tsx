@@ -105,18 +105,21 @@ function SuggestionContent({ uploadId }: { uploadId: string }) {
             : pending
               ? "Finding your next little step…"
               : unsupported
-                ? "No matching activity yet."
+                ? "Let’s get a clearer look."
                 : "A little moment for your next step."}
         </h2>
         <p>
           {suggestion?.available
-            ? `Explore ${suggestion.targetSkill?.subject === "math" ? "fractions with equal pieces" : "word patterns and plurals"} in a short activity.`
+            ? "Use what you’ve learned in a short activity. Sidekick can create one for the skills in your work."
             : pending
               ? "Sidekick is looking at the skills in your work."
               : unsupported
-                ? "We couldn’t reliably match this work to a supported activity. Right now, activities cover equal-part fractions and plural words."
+                ? "We couldn’t identify a clear Math or ELA skill in this page. Try a clearer photo with the whole page in view."
                 : "We couldn’t find an activity just yet. You can try again."}
         </p>
+        {suggestion?.available && suggestion.targetSkill ? (
+          <p className="activity-suggestion-skill">{suggestion.targetSkill.name}</p>
+        ) : null}
         <FormError message={error} />
         {suggestion?.available ? (
           <button

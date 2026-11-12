@@ -172,11 +172,11 @@ def test_supported_errors_take_priority_then_follow_page_order(activity_family, 
         assert selected['source_ref'] == first_error
 
 
-def test_all_correct_targets_follow_page_order_and_ignore_unsupported_errors(activity_family, security_context):
+def test_all_correct_targets_follow_page_order_and_ignore_unusable_errors(activity_family, security_context):
     child, client = activity_family
     upload_id = upload(security_context, child, 'ela', correctness='correct')
     add_problem(security_context, child, upload_id, 'math', correctness='correct', problem_order=1)
-    add_problem(security_context, child, upload_id, 'math', subskill='3.OA.A.1-1', page_number=2)
+    add_problem(security_context, child, upload_id, 'math', subskill='3.OA.A.1-1', eligible=False, page_number=2)
     suggestion = client.get('/api/activities/kid/suggestion', params={'uploadId': upload_id}).json()
     assert suggestion['available'] and suggestion['targetSkill']['subject'] == 'ela'
     assert start(client, upload_id).status_code == 200
@@ -200,8 +200,7 @@ def test_suggestion_get_is_read_only_and_unsupported_or_unusable_observations_do
                (upload(security_context, child, correctness='correct', eligible=False), 'no_supported_skill'),
                (upload(security_context, child, correctness='ungraded'), 'no_supported_skill'),
                (upload(security_context, child, correctness='correct', confidence=.1), 'no_supported_skill'),
-               (upload(security_context, child, correctness='correct', teacher_conflict=True), 'no_supported_skill'),
-               (upload(security_context, child, subskill='3.OA.A.1-1'), 'no_supported_skill')]
+               (upload(security_context, child, correctness='correct', teacher_conflict=True), 'no_supported_skill')]
     statements = []
     original = security_context.db.connect
     def traced():

@@ -169,7 +169,8 @@ def extract_fixture(data: bytes) -> Extraction:
         manifest = json.loads((ROOT / "fixtures" / "manifest.json").read_text())
         name = manifest.get(hashlib.sha256(data).hexdigest())
         if name not in {"math", "ela", "activity-math", "activity-ela",
-                         "activity-math-correct", "activity-ela-correct"}:
+                         "activity-math-correct", "activity-ela-correct",
+                         "activity-math-general", "activity-ela-general"}:
             raise ExtractionError("fixture_only", "Demo mode reads the bundled sample pages. Try a sample, or connect the reader to use your own photo.", 422)
         return Extraction.model_validate_json((ROOT / "fixtures" / f"{name}.json").read_text())
     except (OSError, ValueError, ValidationError):

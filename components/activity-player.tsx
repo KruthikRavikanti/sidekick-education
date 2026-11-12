@@ -17,7 +17,7 @@ import type {
 } from "@/lib/activity-types";
 import { RequireMode, useAccountSession } from "./account-session";
 import { AccountShell, FormError } from "./account-ui";
-import { ActivitySceneControl } from "./activity-scenes";
+import { ActivitySceneControl, ActivitySceneMaterial } from "./activity-scenes";
 
 type ActivityAction = "submit" | "hint" | "next";
 
@@ -66,6 +66,7 @@ function SceneStep({
           {activity.sceneIndex + 1} of {activity.sceneCount}
         </span>
       </div>
+      <ActivitySceneMaterial scene={scene} />
       <h2 id="activity-scene-prompt">{scene.prompt}</h2>
       {independent ? (
         <p className="activity-independent-note">
@@ -100,7 +101,11 @@ function SceneStep({
       {!independent && activity.hint ? (
         <aside
           className="activity-hint"
-          aria-label="Visual hint"
+          aria-label={
+            scene.component === "guided_choice" || scene.component === "guided_response"
+              ? "Learning hint"
+              : "Visual hint"
+          }
           aria-live="polite"
         >
           <Lightbulb size={20} aria-hidden="true" />
@@ -287,7 +292,7 @@ function ActivityContent({ sessionId }: { sessionId: string }) {
           <>
             <div className="activity-title" tabIndex={-1} ref={heading}>
               <p className="account-eyebrow">
-                {activity.subject === "math" ? "MATH" : "WORD LAB"} · A LITTLE
+                {activity.subject === "math" ? "MATH" : "READING & WORDS"} · A LITTLE
                 LEARNING ADVENTURE
               </p>
               <h1>{activity.title}</h1>
@@ -297,9 +302,7 @@ function ActivityContent({ sessionId }: { sessionId: string }) {
                   : "Generated activity"}
               </span>
               <p>
-                {activity.subject === "math"
-                  ? "Build fractions from equal parts."
-                  : "Explore how words change to mean more than one."}
+                {activity.targetSkill.name}
               </p>
             </div>
             <div

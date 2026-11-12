@@ -12,7 +12,7 @@ function keys(value: unknown): string[] {
   return Object.entries(value).flatMap(([key, item]) => [key, ...keys(item)]);
 }
 
-test("unsupported work explains why no activity is available while keeping extraction results", async ({
+test("unidentified work asks for a clearer page while keeping extraction results", async ({
   page,
   context,
 }) => {
@@ -40,9 +40,9 @@ test("unsupported work explains why no activity is available while keeping extra
   expect((await extracted).status()).toBe(200);
 
   const suggestion = page.getByRole("region", { name: "Suggested learning activity", exact: true });
-  await expect(suggestion.getByRole("heading", { name: "No matching activity yet.", exact: true })).toBeVisible();
+  await expect(suggestion.getByRole("heading", { name: "Let’s get a clearer look.", exact: true })).toBeVisible();
   await expect(suggestion.getByText(
-    "We couldn’t reliably match this work to a supported activity. Right now, activities cover equal-part fractions and plural words.",
+    "We couldn’t identify a clear Math or ELA skill in this page. Try a clearer photo with the whole page in view.",
     { exact: true },
   )).toBeVisible();
   await expect(suggestion.getByRole("button", { name: "Try an activity", exact: true })).toHaveCount(0);

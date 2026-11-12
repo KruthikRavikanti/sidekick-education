@@ -1,0 +1,98 @@
+{
+  "command": "backend/.venv/bin/python scripts/verify_general_activity.py --live",
+  "checkedAt": "2026-11-12T04:45:07.415393+00:00",
+  "success": true,
+  "model": "gpt-6.1-terra",
+  "isolatedTemporaryDatabase": true,
+  "fixtureMode": false,
+  "stubbedProvider": false,
+  "realComposition": true,
+  "separateModelReview": true,
+  "cases": [
+    {
+      "subject": "math",
+      "targetCatalogSkill": "6.RP.A.2-1",
+      "liveExtraction": true,
+      "liveAnalysis": true,
+      "inputCorrectness": [
+        "ungraded"
+      ],
+      "suggestionAvailable": true,
+      "noLibraryMatch": true,
+      "generatedActivity": {
+        "schemaVersion": "1.1",
+        "componentVersion": "sidekick-interactions-v2",
+        "promptVersion": "sidekick-activity-v3",
+        "sceneCount": 4,
+        "components": [
+          "guided_choice",
+          "guided_choice",
+          "guided_response",
+          "independent_response"
+        ],
+        "completed": true,
+        "independentCorrect": true,
+        "refreshResumed": true,
+        "submitRetrySafe": true,
+        "privateAnswersProtected": true,
+        "finalContextRetained": true
+      },
+      "independentModelReviewApproved": true,
+      "parentHistoryCount": 1,
+      "parentPinProtectedHistory": true,
+      "learningStatusUnchanged": true,
+      "statusBefore": "unassessed",
+      "statusAfter": "unassessed",
+      "success": true,
+      "providerActivityTasks": {
+        "compose_activity": 1,
+        "review_activity": 1
+      },
+      "reviewRejectionCodes": [],
+      "providerErrorCodes": []
+    },
+    {
+      "subject": "ela",
+      "targetCatalogSkill": "RI.3.1-1",
+      "liveExtraction": true,
+      "liveAnalysis": true,
+      "inputCorrectness": [
+        "correct"
+      ],
+      "suggestionAvailable": true,
+      "noLibraryMatch": true,
+      "generatedActivity": {
+        "schemaVersion": "1.1",
+        "componentVersion": "sidekick-interactions-v2",
+        "promptVersion": "sidekick-activity-v3",
+        "sceneCount": 4,
+        "components": [
+          "guided_choice",
+          "guided_choice",
+          "guided_response",
+          "independent_response"
+        ],
+        "completed": true,
+        "independentCorrect": true,
+        "refreshResumed": true,
+        "submitRetrySafe": true,
+        "privateAnswersProtected": true,
+        "finalContextRetained": true
+      },
+      "independentModelReviewApproved": true,
+      "parentHistoryCount": 1,
+      "parentPinProtectedHistory": true,
+      "learningStatusUnchanged": true,
+      "statusBefore": "on_track",
+      "statusAfter": "on_track",
+      "success": true,
+      "providerActivityTasks": {
+        "compose_activity": 1,
+        "review_activity": 1
+      },
+      "reviewRejectionCodes": [],
+      "providerErrorCodes": []
+    }
+  ],
+  "elapsedSeconds": 57.63
+}

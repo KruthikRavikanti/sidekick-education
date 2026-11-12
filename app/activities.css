@@ -92,6 +92,35 @@
 .activity-independent-note {
   margin-top: 13px;
 }
+.activity-learning-material {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.activity-teaching,
+.activity-context {
+  padding: 18px;
+  border-radius: 14px;
+  line-height: 1.8;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+.activity-teaching {
+  background: #f1f5e3;
+  border-left: 4px solid var(--forest);
+  color: var(--forest);
+}
+.activity-teaching .account-eyebrow {
+  margin-bottom: 8px;
+}
+.activity-teaching > p:last-child,
+.activity-context > p {
+  white-space: pre-wrap;
+}
+.activity-context {
+  background: var(--cream);
+  border: 1px solid var(--border);
+}
 .activity-manipulative {
   margin: 28px 0 8px;
 }
@@ -319,6 +348,20 @@
   font-size: 20px;
   font-weight: 800;
 }
+.activity-general-choices .activity-word-choice {
+  align-items: flex-start;
+}
+.activity-general-choices .activity-word-choice input {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.activity-general-choices .activity-word-choice span {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 .activity-independent-answer {
   margin: 26px 0;
 }
@@ -328,7 +371,8 @@
   font-weight: 900;
   margin-bottom: 9px;
 }
-.activity-independent-answer input {
+.activity-independent-answer input,
+.activity-independent-answer textarea {
   min-height: 56px;
   width: 100%;
   border: 2px solid #a5b39a;
@@ -338,9 +382,17 @@
   color: var(--forest);
   background: white;
 }
-.activity-independent-answer input:focus-visible {
+.activity-independent-answer input:focus-visible,
+.activity-independent-answer textarea:focus-visible {
   outline: 3px solid var(--berry);
   outline-offset: 3px;
+}
+.activity-written-answer textarea {
+  display: block;
+  resize: vertical;
+  font: inherit;
+  font-size: 18px;
+  line-height: 1.6;
 }
 .activity-feedback,
 .activity-hint {
@@ -448,6 +500,10 @@
 .activity-final-response p + p {
   margin-top: 10px;
 }
+.activity-final-response p,
+.activity-history-result > p {
+  white-space: pre-wrap;
+}
 .activity-suggestion {
   display: flex;
   gap: 18px;
@@ -479,6 +535,12 @@
 .activity-suggestion-copy > p:not(.account-eyebrow):not(.account-error) {
   color: var(--muted);
   font-size: 13px;
+}
+.activity-suggestion-copy > p.activity-suggestion-skill {
+  color: var(--forest);
+  font-weight: 800;
+  margin-top: 10px;
+  overflow-wrap: anywhere;
 }
 .activity-suggestion .button {
   margin-top: 20px;

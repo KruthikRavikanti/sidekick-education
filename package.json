@@ -11,6 +11,7 @@
     "catalog:seed": "backend/.venv/bin/python -m backend.gap seed-catalog",
     "activities:seed": "backend/.venv/bin/python -m backend.activities seed-library",
     "activities:verify:live": "backend/.venv/bin/python scripts/verify_live_activity.py --live",
+    "activities:verify:general:live": "backend/.venv/bin/python scripts/verify_general_activity.py --live",
     "gap:evaluate": "backend/.venv/bin/python -m backend.gap.evaluation",
     "gap:evaluate:live": "backend/.venv/bin/python -m backend.gap.evaluation --live",
     "build": "next build",
