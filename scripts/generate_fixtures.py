@@ -182,7 +182,9 @@ def make_ela():
 def main():
     SAMPLES.mkdir(parents=True, exist_ok=True)
     FIXTURES.mkdir(parents=True, exist_ok=True)
-    manifest = {}
+    manifest_path = FIXTURES / 'manifest.json'
+    manifest = {key: value for key, value in json.loads(manifest_path.read_text()).items()
+                if value not in {'math', 'ela'}} if manifest_path.exists() else {}
     for name, build in (("math", make_math), ("ela", make_ela)):
         image, result = build()
         image_path = SAMPLES / f"{name}-worksheet.png"

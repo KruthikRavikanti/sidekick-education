@@ -28,6 +28,7 @@ from .accounts.api import router as accounts_router, SessionSecurityMiddleware
 from .accounts.security import AccountError, require_kid_context, assert_kid_context, get_security, require_session
 from .gap.api import router as learning_router
 from .gap.uploads import router as homework_router
+from .activities.api import router as activities_router
 from .gap.homework import persist_ingest, resume_upload
 from .gap.storage import max_upload_bytes
 MAX_IMAGE_BYTES = 10 * 1024 * 1024
@@ -89,6 +90,7 @@ app = FastAPI(title="Sidekick", version="0.2.0", docs_url=None, redoc_url=None, 
 app.include_router(accounts_router)
 app.include_router(learning_router)
 app.include_router(homework_router)
+app.include_router(activities_router)
 app.add_middleware(BoundedBodyMiddleware)
 app.add_middleware(SessionSecurityMiddleware)
 app.add_middleware(CORSMiddleware,
@@ -155,8 +157,8 @@ def extract_fixture(data: bytes) -> Extraction:
     try:
         manifest = json.loads((ROOT / "fixtures" / "manifest.json").read_text())
         name = manifest.get(hashlib.sha256(data).hexdigest())
-        if name not in {"math", "ela"}:
-            raise ExtractionError("fixture_only", "Demo mode reads the two sample worksheets. Try a sample, or connect the reader to use your own photo.", 422)
+        if name not in {"math", "ela", "activity-math", "activity-ela"}:
+            raise ExtractionError("fixture_only", "Demo mode reads the bundled sample pages. Try a sample, or connect the reader to use your own photo.", 422)
         return Extraction.model_validate_json((ROOT / "fixtures" / f"{name}.json").read_text())
     except (OSError, ValueError, ValidationError):
         raise ExtractionError("fixture_unavailable", "The sample reading is unavailable. Please try again later.", 503) from None

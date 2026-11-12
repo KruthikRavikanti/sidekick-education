@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./accounts.css";
 import "./learning.css";
+import "./activities.css";
 import { AccountSessionProvider } from "@/components/account-session";
 
 export const metadata: Metadata = {

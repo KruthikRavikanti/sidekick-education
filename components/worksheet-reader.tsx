@@ -20,6 +20,7 @@ import { ExtractionResults } from "./extraction-results";
 import { apiFetch } from "@/lib/account-api";
 import { useAccountSession } from "./account-session";
 import type { UploadRecord } from "@/lib/learning-types";
+import { ActivitySuggestion } from "./activity-suggestion";
 
 const MAX_BYTES = 10 * 1024 * 1024;
 const ACCEPT = "image/jpeg,image/png,image/webp,application/pdf";
@@ -263,7 +264,15 @@ export function WorksheetReader() {
       <main className={phase === "results" ? "main-results" : "main-upload"}>
         {phase === "results" && result ? (
           <div>
-            <ExtractionResults result={result} onReset={reset} />
+            <ExtractionResults
+              result={result}
+              onReset={reset}
+              activity={
+                uploadId ? (
+                  <ActivitySuggestion key={uploadId} uploadId={uploadId} />
+                ) : undefined
+              }
+            />
             {uploadId && (
               <p className="results-footnote">
                 Your work is saved privately for your family. A parent can
