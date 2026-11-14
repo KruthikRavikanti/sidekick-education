@@ -1,0 +1,58 @@
+{
+  "worksheet": {
+    "title": {
+      "text": "Reading with evidence",
+      "uncertain": false
+    },
+    "subject": "ela",
+    "subject_uncertain": false,
+    "printed_grade": {
+      "text": "Grade 3",
+      "uncertain": false
+    },
+    "directions": [],
+    "shared_context": [
+      {
+        "id": "passage",
+        "type": "passage",
+        "title": {
+          "text": "Reading with evidence",
+          "uncertain": false
+        },
+        "content": {
+          "text": "The class grew seedlings by the door. The seedlings needed more sunlight, so the class moved them to a sunny window. They watered them each morning.",
+          "uncertain": false
+        }
+      }
+    ]
+  },
+  "problems": [
+    {
+      "id": "activity-toolkit-evidence-1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "Why did the class move the seedlings? Point to the sentence that tells you.",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [
+        "passage"
+      ],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "The seedlings needed more sunlight.",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    }
+  ]
+}
