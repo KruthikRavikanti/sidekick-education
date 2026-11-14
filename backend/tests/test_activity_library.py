@@ -58,17 +58,17 @@ def write_manifest(path, manifest):
     return path
 
 
-def test_imports_eleven_references_and_two_clearly_original_verified_examples(security_context):
+def test_imports_eleven_references_and_six_clearly_original_verified_examples(security_context):
     db = security_context.db
     seed_catalog(db)
     report = seed_library(db, now=10)
     assert report['referenceRowsImported'] == 11
-    assert report['originalExamplesImported'] == 2
+    assert report['originalExamplesImported'] == 6
     assert report['workbookActivityDefinitionsImported'] == 0
     assert not report['issues']
     with db.transaction() as conn:
         rows = conn.execute('SELECT * FROM activity_versions WHERE active=1').fetchall()
-        assert {row['subskill_id'] for row in rows} == {'3.NF.A.1-2', 'L.3.1-2'}
+        assert {row['subskill_id'] for row in rows} == {'3.NF.A.1-2', 'L.3.1-2', '3.NF.A.3-1', '3.NF.A.3-2', '4.NF.A.1-1', '4.NF.A.1-2'}
         assert all(row['origin'] == 'original_example' and row['verified'] for row in rows)
         assert conn.execute('SELECT COUNT(*) FROM activity_sources WHERE active=1').fetchone()[0] == 11
         for row in rows:
@@ -78,7 +78,7 @@ def test_imports_eleven_references_and_two_clearly_original_verified_examples(se
     repeated = seed_library(db, now=11)
     assert repeated['unchanged'] and repeated['activities'] == report['activities']
     with db.transaction() as conn:
-        assert conn.execute('SELECT COUNT(*) FROM activity_versions').fetchone()[0] == 2
+        assert conn.execute('SELECT COUNT(*) FROM activity_versions').fetchone()[0] == 6
         assert conn.execute('SELECT COUNT(*) FROM activity_library_revisions').fetchone()[0] == 1
 
 
@@ -102,11 +102,11 @@ def test_edits_retirement_and_reactivation_preserve_exact_session_versions(paren
         history = conn.execute("SELECT v.spec_json,v.active,a.response_text FROM activity_sessions s JOIN activity_versions v ON v.id=s.activity_version_id JOIN activity_attempts a ON a.session_id=s.id WHERE s.id='past'").fetchone()
         assert history['spec_json'] == original and not history['active'] and history['response_text'] == '3/8'
         assert conn.execute("SELECT COUNT(*) FROM activity_versions WHERE activity_id='original-word-lab' AND active=1").fetchone()[0] == 0
-        assert conn.execute('SELECT COUNT(*) FROM activity_versions').fetchone()[0] == 3
+        assert conn.execute('SELECT COUNT(*) FROM activity_versions').fetchone()[0] == 7
     reactivated = seed_library(db, now=13)
     assert not reactivated['unchanged'] and reactivated['activities'][0]['versionId'] == old_id
     with db.transaction() as conn:
-        assert conn.execute('SELECT COUNT(*) FROM activity_versions').fetchone()[0] == 3
+        assert conn.execute('SELECT COUNT(*) FROM activity_versions').fetchone()[0] == 7
         assert conn.execute('SELECT active FROM activity_versions WHERE id=?', (old_id,)).fetchone()[0] == 1
 
 
@@ -150,7 +150,7 @@ def test_invalid_skill_context_and_components_are_reported_and_not_served(securi
     assert {row['code'] for row in report['issues']} == {'missing_skill_link', 'unsupported_interaction', 'missing_context'}
     with db.transaction() as conn:
         assert conn.execute("SELECT COUNT(*) FROM activity_versions WHERE origin='original_example' AND active=1").fetchone()[0] == 0
-        assert conn.execute('SELECT COUNT(*) FROM activity_versions').fetchone()[0] == 2
+        assert conn.execute('SELECT COUNT(*) FROM activity_versions').fetchone()[0] == 6
 
 
 def test_invalid_source_file_leaves_previous_library_untouched(security_context, tmp_path):
@@ -162,7 +162,7 @@ def test_invalid_source_file_leaves_previous_library_untouched(security_context,
         seed_library(db, sources_path=invalid)
     with db.transaction() as conn:
         assert conn.execute('SELECT COUNT(*) FROM activity_library_revisions').fetchone()[0] == 1
-        assert conn.execute('SELECT COUNT(*) FROM activity_versions WHERE active=1').fetchone()[0] == 2
+        assert conn.execute('SELECT COUNT(*) FROM activity_versions WHERE active=1').fetchone()[0] == 6
         assert conn.execute('SELECT id FROM activity_library_revisions').fetchone()[0] == original['revision']
 
 

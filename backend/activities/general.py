@@ -3,6 +3,7 @@ import hashlib
 import re
 
 from .models import ActivityReview, ActivitySpec, normalize_text, numeric_answer
+from . import equivalent
 
 
 def subject_for(target):
@@ -77,19 +78,76 @@ the most appropriate fixed reason code. Do not reproduce content or answers in t
 """
 
 
-async def compose(adapter, target, source_refs, seen_tasks, variation):
+EQUIVALENT_INSTRUCTION = """
+For this equivalent-fractions skill, the child must learn by splitting and comparing the same whole.
+Invent an inviting setting (for example a rectangular garden bed, quilt, tray of pizza, or your own suitable rectangular whole),
+examples, prompts, and feedback where equal subdivisions explain the math. Use the learningGoal
+and supportedObservation to choose the focus; never invent a child's mistake from a catalog tag.
+At least one guided scene MUST use fraction_split_compare, rather than only question cards.
+Its params are context (your original setting, or null), teachingText, wholeLabel, shadedLabel,
+numerator, denominator, splitFactors. Start with a proper fraction n/d, d from 2 to 12. Offer 2 to 4
+distinct split factors from 2 to 6, with d*each factor at most 48. The child may explore the choices;
+the checked task must explicitly request a factor or target denominator so one offered choice is right.
+The private answer is ONLY {splitFactor: the requested factor}. The renderer starts unsplit and then
+animates equal new divisions while the shaded area stays fixed. For example splitting each half into
+three makes 1/2 become 3/6; both name the same amount. Explanations must connect the visual change
+to multiplying both numerator and denominator by the same factor, never adding to both numbers.
+You may use additional fraction_split_compare, guided_choice or guided_response scenes, while
+keeping a connected teaching activity. Every guided visual must use proper bounded fractions.
+Finish with a fresh independent_response, params {context:null}, asking explicitly for a source
+fraction in a requested denominator (for example 'Write 3/4 as a fraction with denominator 8.').
+Its private answer is {comparison:'fraction_form',value:'6/8',acceptedAnswers:[],sourceNumerator:3,
+sourceDenominator:4,targetDenominator:8} with your own mathematically consistent numbers. The
+target denominator must be a larger multiple of the source denominator, at most 48. The final
+source amount must differ from every guided visual amount, and its final fraction must not be
+revealed in guided content. The final scene has no visual, teaching, hints, or choices; the child
+must write the requested fraction form. An equivalent simplified fraction or decimal does not
+satisfy a requested denominator. Never claim a diagnosis, mastery, or changed support status.
+"""
+
+
+EQUIVALENT_REVIEW_INSTRUCTION = """
+This activity targets equivalent fractions. Require at least one guided fraction_split_compare.
+Independently check that every part is split equally, the shaded amount remains n/d, and both
+new counts multiply by the same factor. The task's requested factor/denominator must agree with
+its private splitFactor. A larger count of pieces must never be described as a larger amount.
+The final task must require the stated new denominator and have a correct fraction_form private
+key; its source amount must be fresh relative to all guided visual amounts. Do not approve an
+ordinary question-only replacement, an ambiguous split task, a simplified/decimal key instead
+of the requested form, or feedback that invents an unsupported student misconception.
+"""
+
+
+async def compose(adapter, target, source_refs, seen_tasks, variation, *, learning_goal=None):
     curriculum = dict(subject=subject_for(target), grade=grade_for(target),
                       subskillId=target['subskill_id'], subskill=target['subskill'],
                       misconceptionTags=[target['common_misconception']], sourceRefs=source_refs)
     payload = dict(curriculum, schemaVersion='1.1', previousIndependentTasks=seen_tasks[-30:], variation=variation)
-    result = await adapter._call(ActivitySpec, 'compose_activity', COMPOSE_INSTRUCTION, payload)
+    is_equivalent = equivalent.is_equivalent_target(target)
+    instruction = COMPOSE_INSTRUCTION
+    if is_equivalent:
+        payload['learningGoal'] = learning_goal or dict(intent='explore_skill',
+            objective='Show equivalent fractions as the same shaded amount after equal splitting.', supportedObservation=None)
+        instruction = instruction.replace(
+            'Use only guided_choice, guided_response, independent_response.',
+            'Use fraction_split_compare, guided_choice, guided_response, and independent_response.')
+        instruction = instruction.replace(
+            "Each scene's private answer has value, acceptedAnswers, comparison.",
+            "Each non-visual scene's private answer has value, acceptedAnswers, comparison; the split visual uses only splitFactor.")
+        instruction = instruction.replace(
+            'For response scenes use comparison number',
+            'Except for the required final fraction_form, for ordinary response scenes use comparison number')
+        instruction += EQUIVALENT_INSTRUCTION
+    result = await adapter._call(ActivitySpec, 'compose_activity', instruction, payload)
     spec = ActivitySpec.model_validate(result.model_dump() if hasattr(result, 'model_dump') else result)
     if (spec.schemaVersion != '1.1' or spec.subskillId != curriculum['subskillId']
             or spec.subject != curriculum['subject'] or spec.grade != curriculum['grade']
             or target['common_misconception'] not in spec.misconceptionTags
             or not set(spec.sourceRefs).issubset(source_refs)):
         raise ValueError('Generated activity is not aligned with curriculum')
-    verdict = await adapter._call(ActivityReview, 'review_activity', REVIEW_INSTRUCTION,
+    if is_equivalent:
+        equivalent.validate_equivalent_activity(spec)
+    verdict = await adapter._call(ActivityReview, 'review_activity', REVIEW_INSTRUCTION + (EQUIVALENT_REVIEW_INSTRUCTION if is_equivalent else ''),
                                   dict(curriculum, activity=spec.model_dump(), previousIndependentTasks=seen_tasks[-30:]))
     verdict = ActivityReview.model_validate(verdict.model_dump() if hasattr(verdict, 'model_dump') else verdict)
     if not verdict.approved:
@@ -111,6 +169,8 @@ def grade_response(scene, response):
             correct = numeric_answer(response) == numeric_answer(scene.answer.value)
         except ValueError:
             correct = False
+    elif scene.answer.comparison == 'fraction_form':
+        correct = equivalent.fraction_form_response_correct(scene.answer, response)
     else:
         correct = normalize_text(response) in {normalize_text(value) for value in expected}
     return response, correct

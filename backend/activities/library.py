@@ -71,6 +71,7 @@ def _read_manifest(path):
 
 def _validated_rows(connection, manifest, source_ids):
     from .models import ActivitySpec
+    from .equivalent import is_equivalent_target, validate_equivalent_activity
     rows = manifest['activities']
     counts = Counter(row.get('id') for row in rows if isinstance(row, dict) and isinstance(row.get('id'), str))
     valid, issues = [], []
@@ -89,13 +90,15 @@ def _validated_rows(connection, manifest, source_ids):
             raw_skill = raw_spec.get('subskillId') if isinstance(raw_spec, dict) else None
             if not isinstance(raw_skill, str) or not connection.execute('SELECT 1 FROM catalog_subskills WHERE id=? AND active=1', (raw_skill,)).fetchone():
                 code = 'missing_skill_link'
-            elif isinstance(raw_spec.get('scenes'), list) and any(isinstance(scene, dict) and scene.get('component') not in {'fraction_builder', 'number_line', 'word_tiles', 'word_choice', 'independent_fraction', 'independent_word'} for scene in raw_spec['scenes']):
+            elif isinstance(raw_spec.get('scenes'), list) and any(isinstance(scene, dict) and scene.get('component') not in {'fraction_builder', 'number_line', 'word_tiles', 'word_choice', 'independent_fraction', 'independent_word', 'fraction_split_compare', 'independent_response'} for scene in raw_spec['scenes']):
                 code = 'unsupported_interaction'
             elif isinstance(raw_spec.get('scenes'), list) and any(isinstance(scene, dict) and isinstance(scene.get('prompt'), str) and MISSING_CONTEXT.search(scene['prompt']) for scene in raw_spec['scenes']):
                 code = 'missing_context'
             else:
                 try:
                     spec = ActivitySpec.model_validate(raw_spec)
+                    if is_equivalent_target(spec):
+                        validate_equivalent_activity(spec)
                 except (TypeError, ValueError, ArithmeticError):
                     code = 'invalid_or_unsupported_activity_spec'
         if spec:

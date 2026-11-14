@@ -6,13 +6,14 @@ from functools import lru_cache
 from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
+from .equivalent import is_equivalent_target, validate_equivalent_activity, validate_fraction_form
 
 SCHEMA_VERSION = '1.1'
-COMPONENT_VERSION = 'sidekick-interactions-v2'
-COMPATIBLE_COMPONENT_VERSIONS = ('sidekick-interactions-v1', COMPONENT_VERSION)
-PROMPT_VERSION = 'sidekick-activity-v3'
+COMPONENT_VERSION = 'sidekick-interactions-v3'
+COMPATIBLE_COMPONENT_VERSIONS = ('sidekick-interactions-v1', 'sidekick-interactions-v2', COMPONENT_VERSION)
+PROMPT_VERSION = 'sidekick-activity-v4'
 SUPPORTED = {'3.NF.A.1-2': 'math', 'L.3.1-2': 'ela'}
-GENERIC_COMPONENTS = frozenset({'guided_choice', 'guided_response', 'independent_response'})
+GENERIC_COMPONENTS = frozenset({'guided_choice', 'guided_response', 'independent_response', 'fraction_split_compare'})
 DENOMINATORS = {2, 3, 4, 6, 8}
 IRREGULAR = {'mouse': 'mice', 'man': 'men', 'woman': 'women', 'foot': 'feet', 'tooth': 'teeth', 'goose': 'geese', 'child': 'children', 'person': 'people'}
 REGULAR = {'cat', 'dog', 'book', 'bird', 'tree', 'car', 'box', 'bus', 'dish', 'wish', 'class', 'brush', 'fox', 'baby', 'city', 'puppy', 'party', 'toy', 'key', 'boy', 'day'}
@@ -182,8 +183,49 @@ class ResponseAnswer(Closed):
     comparison: Literal['text', 'number']
 
 
+class FractionFormAnswer(Closed):
+    value: Annotated[str, Field(min_length=3, max_length=20)]
+    acceptedAnswers: Annotated[list[ShortText], Field(max_length=0)]
+    comparison: Literal['fraction_form']
+    sourceNumerator: Annotated[int, Field(ge=1, le=11)]
+    sourceDenominator: Annotated[int, Field(ge=2, le=12)]
+    targetDenominator: Annotated[int, Field(ge=4, le=48)]
+
+    @model_validator(mode='after')
+    def equivalent_math(self):
+        validate_fraction_form(self)
+        return self
+
+
+class FractionSplitParams(GuidedResponseParams):
+    wholeLabel: Annotated[str, Field(min_length=1, max_length=80)]
+    shadedLabel: Annotated[str, Field(min_length=1, max_length=80)]
+    numerator: Annotated[int, Field(ge=1, le=11)]
+    denominator: Annotated[int, Field(ge=2, le=12)]
+    splitFactors: Annotated[list[Annotated[int, Field(ge=2, le=6)]], Field(min_length=2, max_length=4)]
+
+    @model_validator(mode='after')
+    def equal_parts(self):
+        if (self.numerator >= self.denominator or len(set(self.splitFactors)) != len(self.splitFactors)
+                or any(self.denominator * factor > 48 for factor in self.splitFactors)):
+            raise ValueError('Split controls require bounded equal parts')
+        for value in (self.wholeLabel, self.shadedLabel):
+            _safe_generated_text(value)
+        return self
+
+
+class FractionSplitAnswer(Closed):
+    splitFactor: Annotated[int, Field(ge=2, le=6)]
+
+
+class FractionSplitScene(SceneBase):
+    component: Literal['fraction_split_compare']
+    params: FractionSplitParams
+    answer: FractionSplitAnswer
+
+
 class ResponseSceneBase(SceneBase):
-    answer: ResponseAnswer
+    answer: ResponseAnswer | FractionFormAnswer
 
 
 class GuidedChoiceScene(ResponseSceneBase):
@@ -204,7 +246,7 @@ class IndependentResponseScene(ResponseSceneBase):
 # A closed union emits JSON Schema anyOf supported by the existing strict
 # provider transport. Each variant has a distinct literal component.
 Scene = (FractionScene | LineScene | TilesScene | ChoiceScene | IndependentFractionScene | IndependentWordScene
-         | GuidedChoiceScene | GuidedResponseScene | IndependentResponseScene)
+         | GuidedChoiceScene | GuidedResponseScene | IndependentResponseScene | FractionSplitScene)
 
 
 class ActivitySpec(Closed):
@@ -309,7 +351,7 @@ class ActivitySpec(Closed):
                 raise ValueError('General activities require general response components')
             if scene.phase != ('independent' if final else 'guided') or scene.nextSceneId != (None if final else ids[index + 1]):
                 raise ValueError('Scenes require a linear guided-to-independent transition')
-            allowed = {'independent_response'} if final else {'guided_choice', 'guided_response'}
+            allowed = {'independent_response'} if final else {'guided_choice', 'guided_response', 'fraction_split_compare'}
             if scene.component not in allowed:
                 raise ValueError('Component is not aligned with its phase')
             for value in [scene.prompt, scene.feedback.correct, scene.feedback.incorrect, scene.feedback.hint]:
@@ -324,6 +366,12 @@ class ActivitySpec(Closed):
             if task in tasks:
                 raise ValueError('Activity tasks must be distinct')
             tasks.add(task)
+            if scene.component == 'fraction_split_compare':
+                if self.subject != 'math' or not is_equivalent_target(self):
+                    raise ValueError('Split and compare is scoped to equivalent fractions')
+                if scene.answer.splitFactor not in scene.params.splitFactors:
+                    raise ValueError('Split answer must be an offered equal partition')
+                continue
             _safe_generated_text(scene.answer.value)
             for value in scene.answer.acceptedAnswers:
                 _safe_generated_text(value)
@@ -335,6 +383,10 @@ class ActivitySpec(Closed):
                     raise ValueError('Choice answer must name exactly one option ID')
                 for option in options:
                     _safe_generated_text(option.text)
+            elif scene.answer.comparison == 'fraction_form':
+                if not final or not is_equivalent_target(self):
+                    raise ValueError('Requested fraction form is scoped to the independent equivalent-fractions task')
+                validate_fraction_form(scene.answer)
             elif scene.answer.comparison == 'number':
                 expected = numeric_answer(scene.answer.value)
                 if any(numeric_answer(value) != expected for value in scene.answer.acceptedAnswers):
@@ -350,6 +402,8 @@ class ActivitySpec(Closed):
         for answer in [final.answer.value, *final.answer.acceptedAnswers]:
             if re.search(rf'\b(?:independent|final)\s+(?:answer|response)\s*(?:is|:|=)\s*{re.escape(answer.strip())}(?!\w)', guided_text, re.I):
                 raise ValueError('Guided content must not disclose the independent answer')
+        if any(scene.component == 'fraction_split_compare' for scene in self.scenes) or final.answer.comparison == 'fraction_form':
+            validate_equivalent_activity(self)
         return self
 
 
@@ -385,10 +439,14 @@ class ChoiceResponse(Closed):
     choiceId: Identifier
 
 
+class FractionSplitResponse(Closed):
+    splitFactor: Annotated[int, Field(ge=2, le=6)]
+
+
 class SubmitRequest(Closed):
     sceneId: Identifier
     idempotencyKey: Annotated[str, Field(min_length=8, max_length=100)]
-    response: Annotated[str, Field(min_length=1, max_length=500)] | PartsResponse | TickResponse | TilesResponse | ChoiceResponse
+    response: Annotated[str, Field(min_length=1, max_length=500)] | PartsResponse | TickResponse | TilesResponse | ChoiceResponse | FractionSplitResponse
 
 
 class SceneRequest(Closed):

@@ -7,6 +7,7 @@ These are original synthetic worksheets, not real student records. The expected 
 - `activity-math.json` and `activity-ela.json` match their `public/samples/activity-*-work.png` pages. Each has one answered question with an incorrect response (`4` unit-fraction pieces or `mouses`).
 - `activity-math-correct.json` and `activity-ela-correct.json` match their `public/samples/activity-*-correct-work.png` pages. Each has the same question with the correct visible response (`3` pieces or `mice`). Activity tests derive grading from these actual responses and verify that an activity is available while the skill stays `on_track`.
 - `activity-math-general.json` and `activity-ela-general.json` match the corresponding `*-general-work.png` pages. They cover multiplicative comparisons and reading with text evidence. Browser tests map these clear questions through the normal analysis pipeline, then verify new activity composition/review through the real APIs when the library has no match. An ungraded uploaded answer is not made into incorrect support evidence.
+- `activity-equivalent.json` matches `public/samples/activity-equivalent-work.png`. It preserves the synthetic response `3` for `1/3 = ?/6`. The browser journeys map this question to equivalent fractions, manipulate the live partition while measuring unchanged shaded area, and independently save `6/8` as correct or `3/4` as the wrong requested form for eighths.
 
 Each worksheet has four problems in page order, including a subpart. A blank response has null answer fields with `uncertain: false`; an unreadable response has `status: "unclear"` and uncertainty on the affected fields.
 
@@ -14,4 +15,4 @@ Each worksheet has four problems in page order, including a subpart. A blank res
 
 To regenerate, install Pillow in a Python environment and run `python scripts/generate_fixtures.py` from the repository root. Font rendering can vary across operating systems; the manifest always matches the generated images.
 
-Regenerate the six single-question activity-entry pages with `backend/.venv/bin/python scripts/generate_activity_fixtures.py`.
+Regenerate the seven single-question activity-entry pages with `backend/.venv/bin/python scripts/generate_activity_fixtures.py`.

@@ -40,6 +40,7 @@ function SceneStep({
   );
   const [ready, setReady] = useState(activity.currentResponse !== null);
   const [editing, setEditing] = useState(false);
+  const [controlReset, setControlReset] = useState(0);
   const submitted = activity.feedback !== null;
   const independent = scene.phase === "independent";
   const showNext = submitted && !editing;
@@ -74,9 +75,14 @@ function SceneStep({
         </p>
       ) : null}
       <ActivitySceneControl
+        key={controlReset}
         scene={scene}
         disabled={busy || (submitted && !editing)}
-        initialResponse={activity.currentResponse}
+        initialResponse={
+          scene.component === "fraction_split_compare" && editing
+            ? null
+            : activity.currentResponse
+        }
         showHint={!independent && Boolean(activity.hint)}
         onResponse={(next, complete) => {
           setResponse(next);
@@ -162,8 +168,10 @@ function SceneStep({
             type="button"
             disabled={busy}
             onClick={() => {
-              setResponse(activity.currentResponse);
-              setReady(activity.currentResponse !== null);
+              const resetSplit = scene.component === "fraction_split_compare";
+              setResponse(resetSplit ? null : activity.currentResponse);
+              setReady(!resetSplit && activity.currentResponse !== null);
+              if (resetSplit) setControlReset((value) => value + 1);
               setEditing(true);
             }}
           >

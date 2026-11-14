@@ -1,0 +1,48 @@
+{
+  "worksheet": {
+    "title": {
+      "text": "Equivalent fractions",
+      "uncertain": false
+    },
+    "subject": "math",
+    "subject_uncertain": false,
+    "printed_grade": {
+      "text": "Grade 3",
+      "uncertain": false
+    },
+    "directions": [
+      {
+        "text": "Fill in the missing numerator.",
+        "uncertain": false
+      }
+    ],
+    "shared_context": []
+  },
+  "problems": [
+    {
+      "id": "activity-equivalent-1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "1/3 = ?/6",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "3",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    }
+  ]
+}

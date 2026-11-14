@@ -4,7 +4,8 @@ export type ActivityResponse =
   | { selectedParts: number[] }
   | { tick: number }
   | { tileIds: string[] }
-  | { choiceId: string };
+  | { choiceId: string }
+  | { splitFactor: number };
 
 export interface ActivitySceneBase {
   id: string;
@@ -43,6 +44,18 @@ export type ActivityScene = ActivitySceneBase &
     | {
         component: "guided_response";
         params: { context: string | null; teachingText: string };
+      }
+    | {
+        component: "fraction_split_compare";
+        params: {
+          context: string | null;
+          teachingText: string;
+          wholeLabel: string;
+          shadedLabel: string;
+          numerator: number;
+          denominator: number;
+          splitFactors: number[];
+        };
       }
     | {
         component: "independent_response";
