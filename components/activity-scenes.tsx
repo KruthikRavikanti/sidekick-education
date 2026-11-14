@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { ActivityResponse, ActivityScene } from "@/lib/activity-types";
 import { FractionSplitCompare } from "./fraction-split-compare";
+import { BundleBuilder, EvidenceBoard, TileOrder } from "./activity-toolkit";
 
 interface SceneControlProps {
   scene: ActivityScene;
@@ -285,12 +286,15 @@ export function ActivitySceneMaterial({ scene }: { scene: ActivityScene }) {
     scene.component !== "guided_choice" &&
     scene.component !== "guided_response" &&
     scene.component !== "fraction_split_compare" &&
+    scene.component !== "bundle_builder" &&
+    scene.component !== "tile_order" &&
+    scene.component !== "evidence_board" &&
     scene.component !== "independent_response"
   )
     return null;
 
   const teachingText =
-    scene.component === "independent_response" ? null : scene.params.teachingText;
+    scene.phase === "independent" || scene.component === "independent_response" ? null : scene.params.teachingText;
   if (!teachingText && !scene.params.context) return null;
   return (
     <div className="activity-learning-material">
@@ -377,6 +381,12 @@ export function ActivitySceneControl(props: SceneControlProps) {
       return <NumberLine {...props} scene={scene} />;
     case "fraction_split_compare":
       return <FractionSplitCompare {...props} scene={scene} />;
+    case "bundle_builder":
+      return <BundleBuilder {...props} scene={scene} />;
+    case "tile_order":
+      return <TileOrder {...props} scene={scene} />;
+    case "evidence_board":
+      return <EvidenceBoard {...props} scene={scene} />;
     case "word_tiles":
       return <WordTiles {...props} scene={scene} />;
     case "word_choice":

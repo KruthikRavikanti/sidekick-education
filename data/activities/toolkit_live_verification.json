@@ -1,0 +1,127 @@
+{
+  "command": "npm run activities:verify:toolkit:live",
+  "checkedAt": "2026-11-14T17:43:40.232349+00:00",
+  "success": true,
+  "model": "gpt-6.1-terra",
+  "isolatedTemporaryDatabase": true,
+  "fixtureMode": false,
+  "stubbedProvider": false,
+  "browserVerifiedByThisScript": false,
+  "cases": [
+    {
+      "case": "bundles",
+      "subject": "math",
+      "targetCatalogSkill": "1.NBT.B.2-1",
+      "liveExtraction": true,
+      "liveAnalysis": true,
+      "noPrebuiltActivity": true,
+      "generatedActivity": {
+        "schemaVersion": "1.1",
+        "componentVersion": "sidekick-interactions-v4",
+        "promptVersion": "sidekick-activity-v5",
+        "components": [
+          "bundle_builder",
+          "bundle_builder",
+          "bundle_builder"
+        ],
+        "sceneCount": 3,
+        "completed": true,
+        "independentCorrect": true,
+        "refreshResumed": true,
+        "submitRetrySafe": true,
+        "privateAnswersProtected": true,
+        "independentTeachingRemoved": true,
+        "independentHintsBlocked": true,
+        "bundleConservation": true
+      },
+      "separateReviewApproved": true,
+      "parentOutcomeVisible": true,
+      "parentPinProtectedHistory": true,
+      "learningStatusUnchanged": true,
+      "success": true,
+      "providerActivityTasks": {
+        "compose_activity": 1,
+        "review_activity": 1
+      },
+      "reviewRejectionCodes": [],
+      "providerErrorCodes": []
+    },
+    {
+      "case": "sequence",
+      "subject": "ela",
+      "targetCatalogSkill": "RI.3.3-1",
+      "liveExtraction": true,
+      "liveAnalysis": true,
+      "noPrebuiltActivity": true,
+      "generatedActivity": {
+        "schemaVersion": "1.1",
+        "componentVersion": "sidekick-interactions-v4",
+        "promptVersion": "sidekick-activity-v5",
+        "components": [
+          "tile_order",
+          "guided_choice",
+          "independent_response"
+        ],
+        "sceneCount": 3,
+        "completed": true,
+        "independentCorrect": true,
+        "refreshResumed": true,
+        "submitRetrySafe": true,
+        "privateAnswersProtected": true,
+        "independentTeachingRemoved": true,
+        "independentHintsBlocked": true,
+        "bundleConservation": null
+      },
+      "separateReviewApproved": true,
+      "parentOutcomeVisible": true,
+      "parentPinProtectedHistory": true,
+      "learningStatusUnchanged": true,
+      "success": true,
+      "providerActivityTasks": {
+        "compose_activity": 1,
+        "review_activity": 1
+      },
+      "reviewRejectionCodes": [],
+      "providerErrorCodes": []
+    },
+    {
+      "case": "evidence",
+      "subject": "ela",
+      "targetCatalogSkill": "RL.3.1-1",
+      "liveExtraction": true,
+      "liveAnalysis": true,
+      "noPrebuiltActivity": true,
+      "generatedActivity": {
+        "schemaVersion": "1.1",
+        "componentVersion": "sidekick-interactions-v4",
+        "promptVersion": "sidekick-activity-v5",
+        "components": [
+          "evidence_board",
+          "evidence_board",
+          "evidence_board"
+        ],
+        "sceneCount": 3,
+        "completed": true,
+        "independentCorrect": true,
+        "refreshResumed": true,
+        "submitRetrySafe": true,
+        "privateAnswersProtected": true,
+        "independentTeachingRemoved": true,
+        "independentHintsBlocked": true,
+        "bundleConservation": null
+      },
+      "separateReviewApproved": true,
+      "parentOutcomeVisible": true,
+      "parentPinProtectedHistory": true,
+      "learningStatusUnchanged": true,
+      "success": true,
+      "providerActivityTasks": {
+        "compose_activity": 1,
+        "review_activity": 1
+      },
+      "reviewRejectionCodes": [],
+      "providerErrorCodes": []
+    }
+  ],
+  "elapsedSeconds": 82.26
+}

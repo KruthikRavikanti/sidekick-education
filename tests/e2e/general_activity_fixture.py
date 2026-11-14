@@ -13,6 +13,9 @@ from backend.gap.homework_models import GradeDecision, MappingDecision, Signatur
 QUESTIONS = {
     'A scarf costs 6 dollars. A jacket costs 4 times as much. How much does the jacket cost?': '4.OA.A.2-1',
     'After an article: What causes the seasons? Quote or point to the sentence.': 'RI.3.1-1',
+    'You have 10 ones cubes. How many tens can you make?': '1.NBT.B.2-1',
+    'Put the steps for making a paper boat in order.': 'RI.3.3-1',
+    'Why did the class move the seedlings? Point to the sentence that tells you.': 'RI.3.1-1',
 }
 
 

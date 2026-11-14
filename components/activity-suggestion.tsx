@@ -87,6 +87,8 @@ function SuggestionContent({ uploadId }: { uploadId: string }) {
 
   const unsupported =
     !suggestion?.available && suggestion?.reason === "no_supported_skill";
+  const noMechanic =
+    !suggestion?.available && suggestion?.reason === "no_suitable_mechanic";
   const pending = !suggestion || suggestion.reason === "analysis_pending";
   return (
     <section
@@ -106,6 +108,8 @@ function SuggestionContent({ uploadId }: { uploadId: string }) {
               ? "Finding your next little step…"
               : unsupported
                 ? "Let’s get a clearer look."
+                : noMechanic
+                  ? "No activity for this skill yet."
                 : "A little moment for your next step."}
         </h2>
         <p>
@@ -115,9 +119,11 @@ function SuggestionContent({ uploadId }: { uploadId: string }) {
               ? "Sidekick is looking at the skills in your work."
               : unsupported
                 ? "We couldn’t identify a clear Math or ELA skill in this page. Try a clearer photo with the whole page in view."
+                : noMechanic
+                  ? "We found the skill in your work, but don’t have a suitable way to explore it on screen yet. Try an upload with another skill."
                 : "We couldn’t find an activity just yet. You can try again."}
         </p>
-        {suggestion?.available && suggestion.targetSkill ? (
+        {(suggestion?.available || noMechanic) && suggestion?.targetSkill ? (
           <p className="activity-suggestion-skill">{suggestion.targetSkill.name}</p>
         ) : null}
         <FormError message={error} />
@@ -143,7 +149,7 @@ function SuggestionContent({ uploadId }: { uploadId: string }) {
               </>
             )}
           </button>
-        ) : error || (!pending && !unsupported) || pollingPaused ? (
+        ) : error || (!pending && !unsupported && !noMechanic) || pollingPaused ? (
           <button
             className="text-button"
             onClick={() => setReload((value) => value + 1)}

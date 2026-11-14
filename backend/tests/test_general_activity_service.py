@@ -29,7 +29,7 @@ def family(parent_client, security_context, monkeypatch):
     return child, parent_client
 
 
-def mapped_upload(security, child, subskill='4.OA.A.2-1', *, correctness='ungraded', confidence=.99,
+def mapped_upload(security, child, subskill='1.NBT.B.2-1', *, correctness='ungraded', confidence=.99,
                   question='Private original question must never enter generation.', uncertain=False, conflict=False):
     upload, problem = uid(), uid()
     now = security.clock.now()
@@ -45,7 +45,7 @@ def mapped_upload(security, child, subskill='4.OA.A.2-1', *, correctness='ungrad
     return upload
 
 
-def generic_spec(subskill='4.OA.A.2-1'):
+def generic_spec(subskill='1.NBT.B.2-1'):
     def answer(value, comparison='number', alternatives=None):
         return dict(value=value, acceptedAnswers=alternatives or [], comparison=comparison)
 
@@ -53,34 +53,45 @@ def generic_spec(subskill='4.OA.A.2-1'):
         return dict(id=id, component=component, prompt=prompt, params=params, answer=key, phase=phase,
                     nextSceneId=next_id, feedback=dict(correct='You used the idea carefully.', incorrect='Try the idea one step at a time.', hint='Look at the relationship in the example.'))
 
-    ela = subskill == 'RI.4.2-1'
-    if ela:
+    if subskill == 'RI.3.1-1':
         scenes = [
-            scene('notice', 'guided_choice', 'Which sentence states the main idea?',
-                  dict(context='Rosa plants seeds. She waters the soil and pulls weeds. Soon her garden is full of flowers.',
-                       teachingText='A main idea tells what the whole passage is mostly about.',
-                       options=[dict(id='main', text='Rosa cares for a garden.'), dict(id='detail', text='Rosa pulls weeds.')]), answer('main', 'text'), 'build'),
-            scene('build', 'guided_response', 'Complete the main idea: Daily walking helps people stay ___. Write one word.',
-                  dict(context='Walking strengthens the heart. It can improve sleep and keep muscles active.',
-                       teachingText='Combine important details to state the main idea in a few words.'), answer('healthy', 'text', ['fit']), 'own'),
-            scene('own', 'independent_response', 'Complete the main idea: Bees help ___ grow. Write one word.',
-                  dict(context='Bees visit flowers for nectar. Pollen travels on their bodies to other flowers. This helps plants make seeds.'), answer('plants', 'text', ['flowers']), None, 'independent'),
+            scene('notice', 'evidence_board', 'Which sentence shows where Rosa planted the seeds?',
+                  dict(context=None, teachingText='Move the sentence that directly tells the place onto the clue board.',
+                       goal='Help the garden detective prove where the seeds were planted.', boardLabel='Garden clue',
+                       sentences=[dict(id='place', text='Rosa planted seeds beside her home.'), dict(id='water', text='She watered them every day.')]),
+                  dict(sentenceId='place', explanation='Beside her home directly tells where Rosa planted the seeds.'), 'build'),
+            scene('build', 'guided_response', 'Where did Theo read? Write the place named in the passage.',
+                  dict(context='Theo read at the library. He found a book about birds.',
+                       teachingText='The words after at the tell you the place.'), answer('library', 'text', ['the library']), 'own'),
+            scene('own', 'independent_response', 'Where did Ana play? Write the place named in the passage.',
+                  dict(context='Ana played basketball at the park. She wore her new shoes.'), answer('park', 'text', ['the park']), None, 'independent'),
         ]
-        subject, grade, tag = 'ela', 4, 'Picks a detail as main idea'
+        subject, grade, tag = 'ela', 3, 'Answers from memory'
+    elif subskill == 'RI.3.3-1':
+        scenes = [
+            scene('notice', 'tile_order', 'Arrange the repair steps so the kite is ready to fly.',
+                  dict(context=None, teachingText='An earlier step makes the next step possible.', goal='Rebuild the kite repair story.', ordering='story',
+                       tiles=[dict(id='fly', text='The repaired kite flew.'), dict(id='tear', text='The wind tore the kite.'), dict(id='fix', text='Jo taped the tear closed.')]),
+                  dict(order=['tear', 'fix', 'fly']), 'build'),
+            scene('build', 'guided_response', 'What did Sam do before filling the cup?',
+                  dict(context='Sam washed a dusty cup. Then he filled it with water.', teachingText='The first action prepared the cup for the next action.'),
+                  answer('washed it', 'text', ['washed the cup']), 'own'),
+            scene('own', 'independent_response', 'What did Priya plant after digging a hole?',
+                  dict(context='Priya dug a hole. She planted a seed in the hole. A sprout grew later.'), answer('seed', 'text', ['a seed']), None, 'independent'),
+        ]
+        subject, grade, tag = 'ela', 3, 'Reverses cause and effect'
     else:
-        ratio = subskill == '6.RP.A.2-1'
         scenes = [
-            scene('notice', 'guided_choice', 'Which expression finds the number in each equal group?' if ratio else 'Which expression finds the total number of crayons?',
-                  dict(context='There are 12 crayons shared equally among 3 boxes.' if ratio else 'There are 3 boxes with 4 crayons in each box.',
-                       teachingText='A unit rate compares an amount to one unit.' if ratio else 'Multiplication finds the total in equal groups.',
-                       options=[dict(id='product', text='12 ÷ 3' if ratio else '3 × 4'), dict(id='sum', text='12 + 3' if ratio else '3 + 4')]), answer('product', 'text'), 'build'),
-            scene('build', 'guided_response', 'How many cups are used per scoop? Write a number.' if ratio else 'Mina has 5 stamps. Jo has 3 times as many stamps. How many stamps does Jo have?',
-                  dict(context='A mixture uses 20 cups of water for 4 scoops of powder.' if ratio else None,
-                       teachingText='Divide the total amount by the number of equal units.' if ratio else 'Multiply the first count by the number of times as many.'), answer('5' if ratio else '15'), 'own'),
-            scene('own', 'independent_response', 'How many miles are traveled per hour? Write a number.' if ratio else 'A class has 6 red counters. It has 4 times as many blue counters. How many blue counters are there?',
-                  dict(context='A cyclist travels 30 miles in 5 hours at the same speed.' if ratio else None), answer('6' if ratio else '24'), None, 'independent'),
+            scene('notice', 'bundle_builder', 'Pack every full crate of ten apples.',
+                  dict(context='Help the orchard pack a shipment.', teachingText='Trade ten loose apples for one crate of ten. The total number stays the same.',
+                       goal='Pack every full crate, leaving fewer than ten apples loose.', itemLabel='apples', groupLabel='crates', total=24, groupSize=10),
+                  dict(bundles=2), 'build'),
+            scene('build', 'guided_response', 'There are 3 tens and 7 ones. How many ones are loose?',
+                  dict(context=None, teachingText='Every full group of ten is one ten; the objects left over are ones.'), answer('7'), 'own'),
+            scene('own', 'independent_response', 'How many full tens are in 43 ones?',
+                  dict(context=None), answer('4'), None, 'independent'),
         ]
-        subject, grade, tag = 'math', 6 if ratio else 4, 'Divides in the wrong order (b/a)' if ratio else 'Adds the numbers'
+        subject, grade, tag = 'math', 1, 'Does not trade 10 ones for a ten'
     return dict(schemaVersion='1.1', title='Discover the Idea', subject=subject, subskillId=subskill,
                 grade=grade, misconceptionTags=[tag], sourceRefs=[], scenes=scenes)
 
@@ -121,8 +132,17 @@ def test_legacy_generation_cannot_accept_a_generic_spec_without_independent_revi
 
 
 def finish(client, session, final):
-    for response in [{'choiceId': 'main' if session['subject'] == 'ela' else 'product'}, 'fit' if session['subject'] == 'ela' else '5' if session['targetSkill']['id'].startswith('6.') else '15', final]:
+    subskill = session['targetSkill']['id']
+    actions = {'1.NBT.B.2-1': [{'bundles': 2}, '7'], 'RI.3.1-1': [{'sentenceId': 'place'}, 'library'],
+               'RI.3.3-1': [{'order': ['tear', 'fix', 'fly']}, 'washed it']}
+    for response in [*actions[subskill], final]:
         scene = session['currentScene']
+        if scene['phase'] == 'independent':
+            assert scene['params'].get('teachingText') is None
+            assert session['hint'] is None and session['feedback'] is None
+            assert 'answer' not in scene and 'feedback' not in scene
+            private_hint = mutate(client, 'POST', f"/api/activities/kid/sessions/{session['id']}/hint", json={'sceneId': scene['id']})
+            assert private_hint.status_code == 409 and private_hint.json()['error']['code'] == 'hint_unavailable'
         submitted = mutate(client, 'POST', f"/api/activities/kid/sessions/{session['id']}/submit",
                            json={'sceneId': scene['id'], 'idempotencyKey': uid(), 'response': response})
         assert submitted.status_code == 200, submitted.text
@@ -136,8 +156,8 @@ def finish(client, session, final):
 
 
 @pytest.mark.parametrize('subskill,correctness,final', [
-    ('4.OA.A.2-1', 'correct', '24.00'), ('6.RP.A.2-1', 'ungraded', '12/2'),
-    ('RI.4.2-1', 'correct', '  PLANTS  '),
+    ('1.NBT.B.2-1', 'correct', '4.00'), ('1.NBT.B.2-1', 'ungraded', '8/2'),
+    ('RI.3.1-1', 'correct', '  PARK  '), ('RI.3.3-1', 'correct', 'a seed'),
 ])
 def test_no_matching_library_activity_generates_reviews_plays_and_keeps_learning_state(family, security_context, monkeypatch, subskill, correctness, final):
     child, client = family
@@ -152,8 +172,12 @@ def test_no_matching_library_activity_generates_reviews_plays_and_keeps_learning
     response = start(client, upload, key)
     assert response.status_code == 200, response.text
     session = response.json()
-    assert session['origin'] == 'model_generated' and session['currentScene']['component'] == 'guided_choice'
+    assert session['origin'] == 'model_generated' and session['currentScene']['component'] in {'bundle_builder', 'tile_order', 'evidence_board'}
     assert [call[0] for call in composer.calls] == ['compose_activity', 'review_activity']
+    assert composer.calls[0][2]['availableMechanics'] == [session['currentScene']['component']]
+    goal = composer.calls[0][2]['learningGoal']
+    assert goal['intent'] == ('reinforce_correct_work' if correctness == 'correct' else 'explore_skill')
+    assert goal['supportedObservation'] == ({'kind': 'correct_response'} if correctness == 'correct' else None)
     serialized = json.dumps(composer.calls)
     assert 'Private original question' not in serialized and child['id'] not in serialized and child['firstName'] not in serialized
     public = json.dumps(session)
@@ -163,8 +187,8 @@ def test_no_matching_library_activity_generates_reviews_plays_and_keeps_learning
     result = finish(client, session, final)
     assert result['status'] == 'completed' and result['finalResult']['correct'] is True
     assert result['finalResult']['response'] == final
-    if subskill.startswith('RI.'):
-        assert 'Bees visit flowers' in result['finalResult']['question']
+    if subskill == 'RI.3.1-1':
+        assert 'Ana played basketball' in result['finalResult']['question']
     picker(client)
     unlock(client)
     history = client.get(f"/api/activities/parent/{child['id']}/history").json()['activities']
@@ -172,7 +196,7 @@ def test_no_matching_library_activity_generates_reviews_plays_and_keeps_learning
     with security_context.db.transaction() as conn:
         assert _homework_state(conn, child['id'], subskill) == before
         version = conn.execute("SELECT grade,verified,prompt_version FROM activity_versions WHERE origin='model_generated'").fetchone()
-        assert version['grade'] == (6 if subskill.startswith('6.') else 4) and version['verified'] == 1
+        assert version['grade'] == (1 if subskill.startswith('1.') else 3) and version['verified'] == 1
         assert version['prompt_version'] == PROMPT_VERSION
 
 
@@ -231,3 +255,147 @@ def test_stored_legacy_component_versions_remain_reusable(family, security_conte
         conn.execute("UPDATE activity_versions SET component_version='sidekick-interactions-v1'")
     response = start(client, upload)
     assert response.status_code == 200 and response.json()['origin'] == 'original_example'
+
+
+def test_generated_toolkit_definition_is_saved_and_reused_for_another_kid_without_provider(family, security_context, monkeypatch):
+    child, client = family
+    composer = Composer()
+    monkeypatch.setitem(main.app.state._state, 'activity_adapter', composer)
+    generated = start(client, mapped_upload(security_context, child))
+    assert generated.status_code == 200
+    assert [call[0] for call in composer.calls] == ['compose_activity', 'review_activity']
+    with security_context.db.transaction() as conn:
+        version = conn.execute("SELECT v.id,v.verified,v.origin FROM activity_sessions s JOIN activity_versions v ON v.id=s.activity_version_id WHERE s.id=?", (generated.json()['id'],)).fetchone()
+        assert version['verified'] == 1 and version['origin'] == 'model_generated'
+    assert picker(client).status_code == 200
+    assert unlock(client).status_code == 200
+    second_child = create_child(client, name='Robin', grade='1').json()
+    assert select_child(client, second_child['id']).status_code == 200
+    unavailable_provider = Composer(failure=True)
+    monkeypatch.setitem(main.app.state._state, 'activity_adapter', unavailable_provider)
+    reused = start(client, mapped_upload(security_context, second_child))
+    assert reused.status_code == 200
+    assert reused.json()['currentScene'] == generated.json()['currentScene']
+    assert reused.json()['origin'] == 'model_generated'
+    assert unavailable_provider.calls == []
+    with security_context.db.transaction() as conn:
+        reused_version = conn.execute('SELECT activity_version_id FROM activity_sessions WHERE id=?', (reused.json()['id'],)).fetchone()[0]
+        assert reused_version == version['id']
+        assert conn.execute("SELECT COUNT(*) FROM activity_versions WHERE origin='model_generated'").fetchone()[0] == 1
+
+
+def test_failed_generation_reuses_verified_toolkit_for_the_same_goal(family, security_context, monkeypatch, tmp_path):
+    from backend.activities.library import source_id
+    child, client = family
+    # The trusted original has the same catalog objective and interaction, with
+    # a broad focus tag. It is a weak fallback, not an unverified model proposal.
+    spec = generic_spec()
+    spec['misconceptionTags'] = ['Ten ones form one ten']
+    spec['sourceRefs'] = [source_id('https://ies.ed.gov/ncee/wwc/practiceguide/26')]
+    manifest = tmp_path / 'verified-bundles.json'
+    manifest.write_text(json.dumps(dict(schemaVersion='1.0', activities=[dict(
+        id='verified-bundles-fallback', origin='original_example', spec=spec)])))
+    imported = seed_library(security_context.db, activities_path=manifest)
+    assert imported['originalExamplesImported'] == 1 and imported['issues'] == []
+    with security_context.db.transaction() as conn:
+        target = get_subskill(conn, '1.NBT.B.2-1')
+        assert service._matches(conn, target) == []
+        assert len(service._matches(conn, target, strong=False)) == 1
+    unavailable_provider = Composer(failure=True)
+    monkeypatch.setitem(main.app.state._state, 'activity_adapter', unavailable_provider)
+    fallback = start(client, mapped_upload(security_context, child))
+    assert fallback.status_code == 200
+    assert fallback.json()['origin'] == 'original_example'
+    assert fallback.json()['currentScene']['component'] == 'bundle_builder'
+    assert [call[0] for call in unavailable_provider.calls] == ['compose_activity', 'compose_activity']
+    with security_context.db.transaction() as conn:
+        version = conn.execute("SELECT v.id,v.verified FROM activity_sessions s JOIN activity_versions v ON v.id=s.activity_version_id WHERE s.id=?", (fallback.json()['id'],)).fetchone()
+        assert version['id'] == imported['activities'][0]['versionId'] and version['verified'] == 1
+        assert conn.execute("SELECT COUNT(*) FROM activity_versions WHERE origin='model_generated'").fetchone()[0] == 0
+
+
+@pytest.mark.parametrize('subskill', ['4.OA.A.2-1', '6.RP.A.2-1', 'W.4.3-1'])
+def test_objective_without_a_suitable_control_is_unavailable_without_provider_call(family, security_context, monkeypatch, subskill):
+    child, client = family
+    upload = mapped_upload(security_context, child, subskill)
+    composer = Composer()
+    monkeypatch.setitem(main.app.state._state, 'activity_adapter', composer)
+    suggestion = client.get('/api/activities/kid/suggestion', params={'uploadId': upload}).json()
+    assert suggestion['available'] is False
+    assert suggestion['reason'] == 'no_suitable_mechanic'
+    assert suggestion['targetSkill']['id'] == subskill
+    result = start(client, upload)
+    assert result.status_code == 409 and result.json()['error']['code'] == 'no_suitable_mechanic'
+    assert composer.calls == []
+
+
+def test_saved_question_cards_cannot_preempt_or_fallback_for_a_playable_activity(family, security_context, monkeypatch):
+    from backend.tests.test_general_activity_models import general_activity
+    from backend.activities.library import content_hash
+    from backend.activities.models import COMPONENT_VERSION
+    child, client = family
+    upload = mapped_upload(security_context, child)
+    card = general_activity()
+    card.update(subskillId='1.NBT.B.2-1', grade=1, misconceptionTags=['Does not trade 10 ones for a ten'])
+    with security_context.db.transaction() as conn:
+        revision = conn.execute('SELECT id FROM activity_library_revisions LIMIT 1').fetchone()[0]
+        conn.execute("""INSERT INTO activity_versions(id,activity_id,version,spec_json,spec_sha256,
+            subskill_id,subject,grade,misconception_tags_json,origin,verified,source_revision,
+            model,prompt_version,component_version,created_at)
+            VALUES('old-cards','old-cards',1,?,?,'1.NBT.B.2-1','math',1,?,'model_generated',1,?,'old-model','old-prompt',?,1)""",
+            (json.dumps(card), content_hash(card), json.dumps(card['misconceptionTags']), revision, COMPONENT_VERSION))
+        target = get_subskill(conn, '1.NBT.B.2-1')
+        assert not service._matches(conn, target)
+        assert not service._matches(conn, target, strong=False)
+    # Both matching and provider-failure fallback reject stored question cards.
+    assert start(client, upload).status_code == 503
+    composer = Composer()
+    monkeypatch.setitem(main.app.state._state, 'activity_adapter', composer)
+    result = start(client, upload)
+    assert result.status_code == 200 and result.json()['currentScene']['component'] == 'bundle_builder'
+    with security_context.db.transaction() as conn:
+        matches = service._matches(conn, target)
+        assert len(matches) == 1 and matches[0][0]['id'] != 'old-cards'
+
+
+@pytest.mark.parametrize('subskill,response,expected,correct', [
+    ('1.NBT.B.2-1', {'bundles': 4}, '4 groups of 10, 3 loose', True),
+    ('1.NBT.B.2-1', {'bundles': 3}, '3 groups of 10, 13 loose', False),
+    ('RI.3.1-1', {'sentenceId': 'keys'}, 'Hana found her keys under the bench.', True),
+    ('RI.3.3-1', {'order': ['wet', 'dry', 'wear']}, 'Rain soaked the coat. → The coat dried by the fire. → Ari put on the dry coat.', True),
+])
+def test_independent_control_is_graded_server_side_and_saved_in_protected_history(family, security_context, monkeypatch, subskill, response, expected, correct):
+    child, client = family
+    upload = mapped_upload(security_context, child, subskill)
+    with security_context.db.transaction() as conn:
+        learning_state = _homework_state(conn, child['id'], subskill)
+    spec = generic_spec(subskill)
+    final = spec['scenes'][-1]
+    if subskill == '1.NBT.B.2-1':
+        final.update(component='bundle_builder', prompt='Pack all full crates for the new orchard shipment.',
+                     params=dict(context=None, teachingText=None, goal='Pack every full crate of ten.', itemLabel='pears', groupLabel='crates', total=43, groupSize=10),
+                     answer=dict(bundles=4))
+    elif subskill == 'RI.3.1-1':
+        final.update(component='evidence_board', prompt='Find the sentence that proves where Hana found her keys.',
+                     params=dict(context=None, teachingText=None, goal='Resolve the lost-key mystery.', boardLabel='Key clue',
+                                 sentences=[dict(id='keys', text='Hana found her keys under the bench.'), dict(id='wind', text='Wind rustled the trees.')]),
+                     answer=dict(sentenceId='keys', explanation='Under the bench directly tells where the keys were.'))
+    else:
+        final.update(component='tile_order', prompt='Arrange what happened to the coat in order.',
+                     params=dict(context=None, teachingText=None, goal='Rebuild Ari’s coat story.', ordering='story',
+                                 tiles=[dict(id='wear', text='Ari put on the dry coat.'), dict(id='wet', text='Rain soaked the coat.'), dict(id='dry', text='The coat dried by the fire.')]),
+                     answer=dict(order=['wet', 'dry', 'wear']))
+    monkeypatch.setitem(main.app.state._state, 'activity_adapter', Composer(spec))
+    started = start(client, upload)
+    assert started.status_code == 200, started.text
+    completed = finish(client, started.json(), response)
+    assert completed['finalResult']['correct'] is correct
+    assert completed['finalResult']['response'] == expected
+    assert 'explanation' not in json.dumps(completed)
+    picker(client)
+    assert client.get(f"/api/activities/parent/{child['id']}/history").status_code == 403
+    unlock(client)
+    history = client.get(f"/api/activities/parent/{child['id']}/history").json()['activities']
+    assert history[0]['finalResult'] == completed['finalResult']
+    with security_context.db.transaction() as conn:
+        assert _homework_state(conn, child['id'], subskill) == learning_state

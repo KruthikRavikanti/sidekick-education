@@ -7,13 +7,14 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from .equivalent import is_equivalent_target, validate_equivalent_activity, validate_fraction_form
+from . import toolkit
 
 SCHEMA_VERSION = '1.1'
-COMPONENT_VERSION = 'sidekick-interactions-v3'
-COMPATIBLE_COMPONENT_VERSIONS = ('sidekick-interactions-v1', 'sidekick-interactions-v2', COMPONENT_VERSION)
-PROMPT_VERSION = 'sidekick-activity-v4'
+COMPONENT_VERSION = 'sidekick-interactions-v4'
+COMPATIBLE_COMPONENT_VERSIONS = ('sidekick-interactions-v1', 'sidekick-interactions-v2', 'sidekick-interactions-v3', COMPONENT_VERSION)
+PROMPT_VERSION = 'sidekick-activity-v5'
 SUPPORTED = {'3.NF.A.1-2': 'math', 'L.3.1-2': 'ela'}
-GENERIC_COMPONENTS = frozenset({'guided_choice', 'guided_response', 'independent_response', 'fraction_split_compare'})
+GENERIC_COMPONENTS = frozenset({'guided_choice', 'guided_response', 'independent_response', 'fraction_split_compare'}) | toolkit.COMPONENTS
 DENOMINATORS = {2, 3, 4, 6, 8}
 IRREGULAR = {'mouse': 'mice', 'man': 'men', 'woman': 'women', 'foot': 'feet', 'tooth': 'teeth', 'goose': 'geese', 'child': 'children', 'person': 'people'}
 REGULAR = {'cat', 'dog', 'book', 'bird', 'tree', 'car', 'box', 'bus', 'dish', 'wish', 'class', 'brush', 'fox', 'baby', 'city', 'puppy', 'party', 'toy', 'key', 'boy', 'day'}
@@ -243,10 +244,70 @@ class IndependentResponseScene(ResponseSceneBase):
     params: IndependentResponseParams
 
 
+class ToolkitParams(Closed):
+    context: Annotated[str, Field(min_length=1, max_length=4000)] | None
+    teachingText: Annotated[str, Field(min_length=1, max_length=1200)] | None
+    goal: ShortText
+
+
+class BundleParams(ToolkitParams):
+    itemLabel: Annotated[str, Field(min_length=1, max_length=80)]
+    groupLabel: Annotated[str, Field(min_length=1, max_length=80)]
+    total: Annotated[int, Field(ge=10, le=60)]
+    groupSize: Literal[10]
+
+
+class BundleAnswer(Closed):
+    bundles: Annotated[int, Field(ge=0, le=6)]
+
+
+class BundleScene(SceneBase):
+    component: Literal['bundle_builder']
+    params: BundleParams
+    answer: BundleAnswer
+
+
+class ToolkitTile(Closed):
+    id: Identifier
+    text: Annotated[str, Field(min_length=1, max_length=300)]
+
+
+class OrderParams(ToolkitParams):
+    tiles: Annotated[list[ToolkitTile], Field(min_length=2, max_length=6)]
+    ordering: Literal['story', 'sentence', 'ascending', 'descending']
+
+
+class OrderAnswer(Closed):
+    order: Annotated[list[Identifier], Field(min_length=2, max_length=6)]
+
+
+class OrderScene(SceneBase):
+    component: Literal['tile_order']
+    params: OrderParams
+    answer: OrderAnswer
+
+
+class EvidenceParams(ToolkitParams):
+    sentences: Annotated[list[ToolkitTile], Field(min_length=2, max_length=8)]
+    boardLabel: Annotated[str, Field(min_length=1, max_length=80)]
+
+
+class EvidenceAnswer(Closed):
+    sentenceId: Identifier
+    explanation: ShortText
+
+
+class EvidenceScene(SceneBase):
+    component: Literal['evidence_board']
+    params: EvidenceParams
+    answer: EvidenceAnswer
+
+
 # A closed union emits JSON Schema anyOf supported by the existing strict
 # provider transport. Each variant has a distinct literal component.
 Scene = (FractionScene | LineScene | TilesScene | ChoiceScene | IndependentFractionScene | IndependentWordScene
-         | GuidedChoiceScene | GuidedResponseScene | IndependentResponseScene | FractionSplitScene)
+         | GuidedChoiceScene | GuidedResponseScene | IndependentResponseScene | FractionSplitScene
+         | BundleScene | OrderScene | EvidenceScene)
 
 
 class ActivitySpec(Closed):
@@ -351,21 +412,28 @@ class ActivitySpec(Closed):
                 raise ValueError('General activities require general response components')
             if scene.phase != ('independent' if final else 'guided') or scene.nextSceneId != (None if final else ids[index + 1]):
                 raise ValueError('Scenes require a linear guided-to-independent transition')
-            allowed = {'independent_response'} if final else {'guided_choice', 'guided_response', 'fraction_split_compare'}
+            allowed = ({'independent_response'} if final else {'guided_choice', 'guided_response', 'fraction_split_compare'}) | toolkit.COMPONENTS
             if scene.component not in allowed:
                 raise ValueError('Component is not aligned with its phase')
             for value in [scene.prompt, scene.feedback.correct, scene.feedback.incorrect, scene.feedback.hint]:
                 _safe_generated_text(value)
             if scene.params.context is not None:
                 _safe_generated_text(scene.params.context)
-            elif _CONTEXT_REFERENCE.search(scene.prompt):
+            elif scene.component not in toolkit.COMPONENTS and _CONTEXT_REFERENCE.search(scene.prompt):
                 raise ValueError('Activity task refers to missing context')
-            if not final:
+            if not final and scene.component not in toolkit.COMPONENTS:
                 _safe_generated_text(scene.params.teachingText)
-            task = normalize_text(scene.prompt) + '\n' + normalize_text(scene.params.context or '')
+            # Manipulatives can reuse an instruction with genuinely new objects
+            # or passage pieces; their task is defined by that playable content.
+            task = toolkit.task_key(scene) if scene.component in toolkit.COMPONENTS else normalize_text(scene.prompt) + '\n' + normalize_text(scene.params.context or '')
             if task in tasks:
+                if final and scene.component in toolkit.COMPONENTS:
+                    raise ValueError('Independent control must use fresh content')
                 raise ValueError('Activity tasks must be distinct')
             tasks.add(task)
+            if scene.component in toolkit.COMPONENTS:
+                toolkit.validate_scene(scene, self.subject)
+                continue
             if scene.component == 'fraction_split_compare':
                 if self.subject != 'math' or not is_equivalent_target(self):
                     raise ValueError('Split and compare is scoped to equivalent fractions')
@@ -399,10 +467,12 @@ class ActivitySpec(Closed):
         final = self.scenes[-1]
         guided_text = self.title + ' ' + ' '.join(' '.join((scene.prompt, scene.feedback.correct, scene.feedback.incorrect,
             scene.feedback.hint, scene.params.model_dump_json())) for scene in self.scenes[:-1])
-        for answer in [final.answer.value, *final.answer.acceptedAnswers]:
+        for answer in ([final.answer.value, *final.answer.acceptedAnswers] if final.component not in toolkit.COMPONENTS else toolkit.answer_texts(final)):
             if re.search(rf'\b(?:independent|final)\s+(?:answer|response)\s*(?:is|:|=)\s*{re.escape(answer.strip())}(?!\w)', guided_text, re.I):
                 raise ValueError('Guided content must not disclose the independent answer')
-        if any(scene.component == 'fraction_split_compare' for scene in self.scenes) or final.answer.comparison == 'fraction_form':
+        if any(scene.component in toolkit.COMPONENTS for scene in self.scenes):
+            toolkit.validate_fresh_challenge(self)
+        if any(scene.component == 'fraction_split_compare' for scene in self.scenes) or getattr(final.answer, 'comparison', None) == 'fraction_form':
             validate_equivalent_activity(self)
         return self
 
@@ -443,10 +513,22 @@ class FractionSplitResponse(Closed):
     splitFactor: Annotated[int, Field(ge=2, le=6)]
 
 
+class BundleResponse(Closed):
+    bundles: Annotated[int, Field(ge=0, le=6)]
+
+
+class OrderResponse(Closed):
+    order: Annotated[list[Identifier], Field(min_length=2, max_length=6)]
+
+
+class EvidenceResponse(Closed):
+    sentenceId: Identifier
+
+
 class SubmitRequest(Closed):
     sceneId: Identifier
     idempotencyKey: Annotated[str, Field(min_length=8, max_length=100)]
-    response: Annotated[str, Field(min_length=1, max_length=500)] | PartsResponse | TickResponse | TilesResponse | ChoiceResponse | FractionSplitResponse
+    response: Annotated[str, Field(min_length=1, max_length=500)] | PartsResponse | TickResponse | TilesResponse | ChoiceResponse | FractionSplitResponse | BundleResponse | OrderResponse | EvidenceResponse
 
 
 class SceneRequest(Closed):

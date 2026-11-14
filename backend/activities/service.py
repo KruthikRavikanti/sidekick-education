@@ -12,7 +12,7 @@ from backend.gap.config import CONFIG
 from backend.gap.vision import VisionAdapter
 from .models import (ActivitySpec, COMPONENT_VERSION, COMPATIBLE_COMPONENT_VERSIONS, PROMPT_VERSION, SUPPORTED,
                      ChoiceResponse, FractionSplitResponse, PartsResponse, TickResponse, TilesResponse)
-from . import equivalent, general
+from . import capabilities, equivalent, general, toolkit
 
 
 def uid():
@@ -73,7 +73,13 @@ def suggestion(security, kid_id, upload_id, active):
     with security.db.transaction() as conn:
         target, _, reason = _target(conn, security, kid_id, upload_id, active)
         session = conn.execute("SELECT id FROM activity_sessions WHERE kid_id=? AND upload_id=? AND status='in_progress' ORDER BY started_at DESC LIMIT 1", (kid_id, upload_id)).fetchone()
-        return dict(available=bool(target), reason=reason, targetSkill=target_view(target) if target else None, sessionId=session['id'] if session else None)
+        available = bool(target and capabilities.mechanics_for(target))
+        if target and not available:
+            reason = 'no_suitable_mechanic'
+        # An existing immutable session keeps its original behavior/version.
+        if session:
+            available, reason = True, None
+        return dict(available=available, reason=reason, targetSkill=target_view(target) if target else None, sessionId=session['id'] if session else None)
 
 
 def _owned(conn, security, kid_id, session_id, active):
@@ -88,8 +94,7 @@ def _owned(conn, security, kid_id, session_id, active):
 def _result(conn, row, spec):
     attempt = conn.execute("SELECT * FROM activity_attempts WHERE session_id=? AND phase='independent'", (row['id'],)).fetchone()
     final = spec.scenes[-1]
-    context = getattr(final.params, 'context', None)
-    question = f'{context}\n\n{final.prompt}' if context else final.prompt
+    question = general.scene_question(final)
     return dict(question=question, response=attempt['response_text'], correct=bool(attempt['correct'])) if attempt else None
 
 
@@ -114,11 +119,41 @@ def session_view(security, kid_id, session_id, active):
 
 
 def _task_key(scene):
+    if scene.component in toolkit.COMPONENTS:
+        return toolkit.task_key(scene)
     if getattr(scene.answer, 'comparison', None) == 'fraction_form':
         return ('math', str(Fraction(scene.answer.sourceNumerator, scene.answer.sourceDenominator)))
     if scene.component == 'independent_response':
         return general.task_key(scene.prompt, scene.params.context)
     return ('math', str(Fraction(scene.answer.value))) if scene.component == 'independent_fraction' else ('ela', scene.params.baseWord)
+
+
+def _source_keys(text):
+    """Local fingerprints for substantial original passage/panel sentences."""
+    from .models import normalize_text
+    keys = set()
+    for piece in [text or '', *re.split(r'(?<=[.!?])\s+|\n+', text or '')]:
+        normalized = ' '.join(re.findall(r'\w+', normalize_text(piece)))
+        if len(normalized) >= 16 and len(normalized.split()) >= 4:
+            keys.add(('source_piece', hashlib.sha256(normalized.encode()).hexdigest()))
+    return keys
+
+
+def _scene_source_keys(scene):
+    # Instructions may recur with new content ("Pack all full crates"). It is
+    # the objects/passage/panels, not that reusable instruction, that must vary.
+    material = [getattr(scene.params, 'context', None) or '']
+    if scene.component in {'tile_order', 'evidence_board'}:
+        pieces = scene.params.tiles if scene.component == 'tile_order' else scene.params.sentences
+        material.extend(piece.text for piece in pieces)
+    return set().union(*(_source_keys(text) for text in material))
+
+
+def _task_blocked(scene, blocked):
+    return (_task_key(scene) in blocked
+            or (scene.component not in toolkit.COMPONENTS
+                and general.task_key(scene.prompt, getattr(scene.params, 'context', None)) in blocked)
+            or (scene.component in toolkit.COMPONENTS and bool(_scene_source_keys(scene) & set(blocked))))
 
 
 def _blocked_tasks(conn, kid_id, upload_id, subject, *, equivalent_skill=False):
@@ -129,10 +164,16 @@ def _blocked_tasks(conn, kid_id, upload_id, subject, *, equivalent_skill=False):
         problem = decode(row[0], {})
         question = problem.get('question', {})
         text = question.get('text', '') if isinstance(question, dict) else str(question)
-        keys.add(general.task_key(text, general.context_text(decode(row['context_json'], []))))
+        context = general.context_text(decode(row['context_json'], []))
+        keys.add(general.task_key(text, context))
+        keys.update(_source_keys(text))
+        keys.update(_source_keys(context))
         if subject == 'ela':
             keys.update(('ela', base) for base in set(IRREGULAR) | REGULAR if re.search(rf'\b{base}\b', text or '', re.I))
         else:
+            for token in re.findall(r'(?<![\w.])\d{2}(?![\w.])', text or ''):
+                if 10 <= int(token) <= 60:
+                    keys.add(toolkit.task_key(dict(component='bundle_builder', params=dict(total=int(token), groupSize=10))))
             for token in re.findall(r'\b\d{1,2}\s*/\s*[1-9]\d?\b', text or ''):
                 keys.add(('math', str(Fraction(token.replace(' ', '')))))
             for copies, denominator in re.findall(r'\b([1-9]\d?)\s+copies\s+of\s+1\s*/\s*([1-9]\d?)\b', text or '', re.I):
@@ -141,6 +182,7 @@ def _blocked_tasks(conn, kid_id, upload_id, subject, *, equivalent_skill=False):
     # extraction checkpoint does not. Never send either representation out.
     for row in conn.execute("SELECT e.question FROM learning_evidence e JOIN homework_problems p ON p.id=e.source_ref WHERE e.kid_id=? AND p.upload_id=? AND e.source='homework'", (kid_id, upload_id)):
         text = row[0] or ''
+        keys.update(_source_keys(text))
         if subject == 'ela':
             keys.update(('ela', base) for base in set(IRREGULAR) | REGULAR if re.search(rf'\b{base}\b', text, re.I))
         else:
@@ -151,6 +193,8 @@ def _blocked_tasks(conn, kid_id, upload_id, subject, *, equivalent_skill=False):
     for row in conn.execute('SELECT v.spec_json FROM activity_sessions s JOIN activity_versions v ON v.id=s.activity_version_id WHERE s.kid_id=?', (kid_id,)):
         final = ActivitySpec.model_validate_json(row[0]).scenes[-1]
         keys.add(_task_key(final))
+        if final.component in toolkit.COMPONENTS:
+            keys.update(_scene_source_keys(final))
         if equivalent_skill:
             # Old question-only activities may have used general response keys.
             # Keep their equivalent amounts fresh without changing other skills.
@@ -166,11 +210,10 @@ def _matches(conn, target, *, blocked=(), strong=True):
     for row in conn.execute(f"SELECT * FROM activity_versions WHERE subskill_id=? AND grade=? AND active=1 AND verified=1 AND component_version IN ({','.join('?' for _ in versions)}) ORDER BY created_at,id", (target['subskill_id'], general.grade_for(target), *versions)):
         try:
             spec = ActivitySpec.model_validate_json(row['spec_json'])
-            if equivalent.is_equivalent_target(target):
-                equivalent.validate_equivalent_activity(spec)
+            capabilities.validate_activity(spec, target)
         except ValueError:
             continue
-        if (not strong or tag in spec.misconceptionTags) and spec.subject == general.subject_for(target) and _task_key(spec.scenes[-1]) not in blocked:
+        if (not strong or tag in spec.misconceptionTags) and spec.subject == general.subject_for(target) and not _task_blocked(spec.scenes[-1], blocked):
             matches.append((row, spec))
     return matches
 
@@ -178,8 +221,10 @@ def _matches(conn, target, *, blocked=(), strong=True):
 def _learning_goal(conn, kid_id, upload_id, target, evidence_id):
     """Use only categorical, supported observations; original work stays local."""
     goal = dict(intent='explore_skill',
-                objective='Use equal subdivisions to show that equivalent fractions name the same shaded amount of the same whole.',
+                objective=target['subskill'],
                 supportedObservation=None)
+    if equivalent.is_equivalent_target(target):
+        goal['objective'] = 'Use equal subdivisions to show that equivalent fractions name the same shaded amount of the same whole.'
     if target['subskill_id'] in {'3.NF.A.3-2', '4.NF.A.1-1'}:
         goal['objective'] = 'Generate an equivalent fraction by multiplying the number of shaded parts and total equal parts by the same split factor.'
     if evidence_id is None:
@@ -212,6 +257,7 @@ provided misconception tag exactly and use only supplied sourceRefs (these are d
 No worksheet text, student identity or private information is supplied or may be invented.
 Activities can reinforce correct work as well as support skills needing more practice. The
 misconception tag is curriculum metadata, not proof that this student made that mistake.
+Use learningGoal and its supportedObservation to set the focus; do not invent other observations.
 Never claim that the student's uploaded answer was wrong or that they have a misconception.
 Math: guided fraction_builder or number_line. Fractions strictly between zero and one,
 denominators only 2,3,4,6,8. fraction_builder params denominator; number_line params denominator,
@@ -239,7 +285,8 @@ async def _generate(adapter, target, source_refs, seen_tasks, variation=0, learn
     from .models import IRREGULAR, REGULAR, plural
     data = dict(schemaVersion='1.0', subject=SUPPORTED[target['subskill_id']], grade=3,
                 subskillId=target['subskill_id'], subskill=target['subskill'], misconceptionTags=[target['common_misconception']], sourceRefs=source_refs,
-                supportedPlurals={base: plural(base) for base in sorted(set(IRREGULAR) | REGULAR)}, previousIndependentTasks=seen_tasks, variation=variation)
+                supportedPlurals={base: plural(base) for base in sorted(set(IRREGULAR) | REGULAR)}, previousIndependentTasks=seen_tasks, variation=variation,
+                availableMechanics=list(capabilities.mechanics_for(target)), learningGoal=learning_goal or dict(intent='explore_skill', objective=target['subskill'], supportedObservation=None))
     result = await adapter._call(ActivitySpec, 'compose_activity', GENERATION_INSTRUCTION, data)
     spec = ActivitySpec.model_validate(result.model_dump() if isinstance(result, ActivitySpec) else result)
     if (spec.schemaVersion != '1.0' or spec.grade != 3
@@ -248,6 +295,7 @@ async def _generate(adapter, target, source_refs, seen_tasks, variation=0, learn
             or target['common_misconception'] not in spec.misconceptionTags
             or not set(spec.sourceRefs).issubset(source_refs)):
         raise ValueError('Generated activity is not aligned with catalog or references')
+    capabilities.validate_activity(spec, target)
     return spec
 
 
@@ -266,21 +314,22 @@ async def start(security, kid_id, body, active, *, adapter=None):
         if opened:
             conn.execute('INSERT OR REPLACE INTO activity_start_requests(kid_id,request_key,upload_id,session_id,created_at) VALUES(?,?,?,?,?)', (kid_id, key, upload_id, opened['id'], security.clock.now()))
             return _view(conn, *_owned(conn, security, kid_id, opened['id'], active))
+        if not capabilities.mechanics_for(target):
+            raise AccountError('no_suitable_mechanic', 'An activity is not available for this skill yet.', 409)
         if prior and prior['lease_until'] and prior['lease_until'] > security.clock.now():
             raise AccountError('activity_preparing', 'Your activity is being prepared. Please retry in a moment.', 409)
         now = security.clock.now()
         conn.execute('INSERT INTO activity_start_requests(kid_id,request_key,upload_id,lease_token,lease_until,created_at) VALUES(?,?,?,?,?,?) ON CONFLICT(kid_id,request_key) DO UPDATE SET lease_token=excluded.lease_token,lease_until=excluded.lease_until', (kid_id, key, upload_id, lease, now + 600, now))
         blocked = _blocked_tasks(conn, kid_id, upload_id, general.subject_for(target),
                                  equivalent_skill=equivalent.is_equivalent_target(target))
-        learning_goal = _learning_goal(conn, kid_id, upload_id, target, evidence_id) if equivalent.is_equivalent_target(target) else None
+        learning_goal = _learning_goal(conn, kid_id, upload_id, target, evidence_id)
         matches = _matches(conn, target, blocked=blocked)
         seen = {row[0] for row in conn.execute('SELECT activity_version_id FROM activity_sessions WHERE kid_id=?', (kid_id,))}
         selected = next((match for match in matches if match[0]['id'] not in seen), None)
         seen_tasks = []
         for row in conn.execute('SELECT v.spec_json FROM activity_sessions s JOIN activity_versions v ON v.id=s.activity_version_id WHERE s.kid_id=? AND s.subskill_id=?', (kid_id, target['subskill_id'])):
             scene = ActivitySpec.model_validate_json(row[0]).scenes[-1]
-            context = getattr(scene.params, 'context', None)
-            seen_tasks.append(f'{context}\n\n{scene.prompt}' if context else scene.prompt)
+            seen_tasks.append(general.scene_question(scene))
         refs = [row[0] for row in conn.execute('SELECT id FROM activity_sources WHERE active=1 ORDER BY id')]
         revision = conn.execute('SELECT id FROM activity_library_revisions ORDER BY imported_at DESC,id LIMIT 1').fetchone()
         if revision:
@@ -298,7 +347,7 @@ async def start(security, kid_id, body, active, *, adapter=None):
         for variation in range(2):
             try:
                 generated = await _generate(adapter or VisionAdapter(), target, refs, seen_tasks, variation, learning_goal=learning_goal)
-                if _task_key(generated.scenes[-1]) in blocked:
+                if _task_blocked(generated.scenes[-1], blocked):
                     generated = None
                     outcome = 'freshness_rejected_fallback'
                     continue
@@ -324,9 +373,9 @@ async def start(security, kid_id, body, active, *, adapter=None):
         else:
             latest_blocked = _blocked_tasks(conn, kid_id, upload_id, general.subject_for(target),
                                             equivalent_skill=equivalent.is_equivalent_target(target))
-            if generated is not None and _task_key(generated.scenes[-1]) in latest_blocked:
+            if generated is not None and _task_blocked(generated.scenes[-1], latest_blocked):
                 generated = None
-            if selected and _task_key(selected[1].scenes[-1]) in latest_blocked:
+            if selected and _task_blocked(selected[1].scenes[-1], latest_blocked):
                 selected = None
             if generated is not None:
                 raw = json.dumps(generated.model_dump(), ensure_ascii=False, sort_keys=True, separators=(',', ':'))
@@ -353,6 +402,8 @@ async def start(security, kid_id, body, active, *, adapter=None):
 
 
 def _grade(scene, response):
+    if scene.component in toolkit.COMPONENTS:
+        return toolkit.grade_response(scene, response)
     if scene.component == 'fraction_split_compare':
         if not isinstance(response, FractionSplitResponse) or response.splitFactor not in scene.params.splitFactors:
             raise ValueError('Choose an offered equal split')

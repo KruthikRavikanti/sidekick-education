@@ -5,7 +5,16 @@ export type ActivityResponse =
   | { tick: number }
   | { tileIds: string[] }
   | { choiceId: string }
-  | { splitFactor: number };
+  | { splitFactor: number }
+  | { bundles: number }
+  | { order: string[] }
+  | { sentenceId: string };
+
+interface ToolkitMaterial {
+  context: string | null;
+  teachingText: string | null;
+  goal: string;
+}
 
 export interface ActivitySceneBase {
   id: string;
@@ -60,6 +69,29 @@ export type ActivityScene = ActivitySceneBase &
     | {
         component: "independent_response";
         params: { context: string | null };
+      }
+    | {
+        component: "bundle_builder";
+        params: ToolkitMaterial & {
+          itemLabel: string;
+          groupLabel: string;
+          total: number;
+          groupSize: 10;
+        };
+      }
+    | {
+        component: "tile_order";
+        params: ToolkitMaterial & {
+          tiles: { id: string; text: string }[];
+          ordering: "story" | "sentence" | "ascending" | "descending";
+        };
+      }
+    | {
+        component: "evidence_board";
+        params: ToolkitMaterial & {
+          sentences: { id: string; text: string }[];
+          boardLabel: string;
+        };
       }
   );
 

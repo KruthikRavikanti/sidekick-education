@@ -23,6 +23,11 @@
       "4.NF.A.1-2"
     ]
   },
+  "playableToolkit": {
+    "controls": ["bundle_builder", "tile_order", "evidence_board"],
+    "provenance": "Original Sidekick controls inspired by the Sources-only references to concrete virtual models, ordered reading activities, and feedback. No executable partner workbook or activity-element definitions were supplied or imported.",
+    "prebuiltActivitiesAdded": 0
+  },
   "references": [
     {
       "id": "src_c9325022b6d5c7979a7f",
