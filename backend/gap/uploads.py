@@ -38,8 +38,9 @@ async def upload(request,kid_id=None,background=None):
         data = await file.read(max_upload_bytes()+1)
     finally:
         await file.close()
-    if file.content_type not in {"image/jpeg","image/png","image/webp","application/pdf"}:
-        raise ExtractionError("unsupported_file","Choose a JPG, PNG, WEBP photo or a PDF.",415)
+    from backend.main import MIME_FORMATS
+    if file.content_type not in {*MIME_FORMATS,"application/pdf"}:
+        raise ExtractionError("unsupported_file","Choose a JPG, PNG, WebP, HEIC, or HEIF photo, or a PDF.",415)
     source = "live"
     import os
     extractor = extract_with_vision

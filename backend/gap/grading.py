@@ -35,6 +35,19 @@ def extract_math_answer(question: str) -> Fraction | None:
     text=re.sub(r"^\s*(?:\d+[.)]|\([a-z]\))\s+","",text)
     text=re.sub(r"(?<=\d)\s*x\s*(?=\d)"," × ",text)
     text=re.sub(r"=\s*(?:_+|□|\[\s*\])?\s*$","= ?",text)
+    # Explicit unit-fraction questions from the catalog. This small grammar
+    # establishes the answer independently instead of trusting a model key.
+    pieces = re.fullmatch(r"How many 1/(\d{1,2}) pieces make (\d{1,2})/(\d{1,2})\??", text, re.I)
+    if pieces:
+        unit_denominator, numerator, denominator = map(int, pieces.groups())
+        if 2 <= unit_denominator <= 12 and 0 <= numerator <= denominator <= 12:
+            count = Fraction(numerator * unit_denominator, denominator)
+            return count if count.denominator == 1 else None
+        return None
+    copies = re.fullmatch(r"(?:(\d{1,2}) copies of 1/(\d{1,2}) is what fraction|What fraction is (\d{1,2}) copies of 1/(\d{1,2}))\??", text, re.I)
+    if copies:
+        numerator, denominator = map(int, copies.groups()[:2] if copies.group(1) is not None else copies.groups()[2:])
+        return Fraction(numerator, denominator) if 2 <= denominator <= 12 and 0 <= numerator <= denominator else None
     solved=solve_numeric_question(text)
     return solved[0] if solved and len(solved) == 1 else None
 

@@ -1,11 +1,29 @@
 import { test, expect, type Page } from "@playwright/test";
+import { execFile } from "node:child_process";
 import { mkdir, readFile } from "node:fs/promises";
 import path from "node:path";
+import { promisify } from "node:util";
 import { createFamily } from "./helpers";
 
 const root = process.cwd();
 const screenshots = "/tmp/sidekick-screens";
+const execute = promisify(execFile);
 let browserErrors: string[];
+
+async function heicPhoto() {
+  // Encode a synthetic worksheet, never a real child's photo. Chromium cannot
+  // decode HEIC itself, so the preview must use the actual backend decoder.
+  const { stdout } = await execute(
+    path.join(root, "backend/.venv/bin/python"),
+    [
+      "-c",
+      "import io,sys; from PIL import Image; from pillow_heif import register_heif_opener; register_heif_opener(); image=Image.open(sys.argv[1]).convert('RGB'); image.thumbnail((640,640)); output=io.BytesIO(); image.save(output,format='HEIF',quality=70); sys.stdout.buffer.write(output.getvalue())",
+      path.join(root, "public/samples/math-worksheet.png"),
+    ],
+    { encoding: "buffer", maxBuffer: 2 * 1024 * 1024 },
+  );
+  return stdout;
+}
 
 test.beforeEach(async ({ page, context }) => {
   browserErrors = [];
@@ -234,6 +252,204 @@ test("camera input reads ELA with passage, partial question, and selected answer
   });
 });
 
+test("native image chooser preserves the selected photo after a focus session check", async ({
+  page,
+}) => {
+  // The wildcard lets macOS Photos supply its image format, including HEIC.
+  // Native macOS Photos dialog behavior is outside this browser test.
+  await expect(page.getByLabel("Choose work image", { exact: true })).toHaveAttribute(
+    "accept",
+    "image/*,application/pdf,.pdf",
+  );
+  await expect(page.getByLabel("Take work photo", { exact: true })).toHaveAttribute(
+    "accept",
+    "image/*",
+  );
+  const choosing = page.waitForEvent("filechooser");
+  await page.getByRole("button", { name: "Choose an image", exact: true }).click();
+  const chooser = await choosing;
+  await chooser.setFiles(path.join(root, "public/samples/math-worksheet.png"));
+
+  const preview = page.getByRole("img", { name: "Preview of your selected work" });
+  await expect(preview).toBeVisible();
+  const selectedPhoto = await preview.getAttribute("src");
+  expect(selectedPhoto).toMatch(/^blob:/);
+
+  const checkedSession = page.waitForResponse((response) =>
+    response.url().endsWith("/api/auth/session"),
+  );
+  await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+  expect((await checkedSession).ok()).toBe(true);
+  await expect(preview).toBeVisible();
+  await expect(preview).toHaveAttribute("src", selectedPhoto!);
+  await expect(page.getByText("math-worksheet.png", { exact: false })).toBeVisible();
+  await page.getByRole("button", { name: "Read my work", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Here’s your work." }),
+  ).toBeVisible();
+  await expect(page.getByText("Math · detected", { exact: true })).toBeVisible();
+});
+
+for (const mimeType of ["image/heic", "application/octet-stream"]) {
+  test(`Photos HEIC previews through the backend and sends original bytes (${mimeType})`, async ({
+    page,
+  }) => {
+    const original = await heicPhoto();
+    const fixture = JSON.parse(await readFile(path.join(root, "fixtures/math.json"), "utf8"));
+    // Fixture mode intentionally recognizes exact sample bytes only. Keep the
+    // real HEIC preview request and stub only the later model extraction.
+    await page.route("**/api/extract", (route) => route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ ...fixture, source: "fixture" }),
+    }));
+    const previewResponse = page.waitForResponse((response) =>
+      response.url().endsWith("/api/images/preview"),
+    );
+    await page.getByLabel("Choose work image", { exact: true }).setInputFiles({
+      name: "worksheet.HEIC",
+      mimeType,
+      buffer: original,
+    });
+    const decoded = await previewResponse;
+    expect(decoded.status()).toBe(200);
+    expect(decoded.headers()["content-type"]).toContain("image/png");
+    expect(decoded.headers()["cache-control"]).toContain("no-store");
+    const preview = page.getByRole("img", { name: "Preview of your selected work" });
+    await expect(preview).toBeVisible();
+    await expect.poll(() => preview.evaluate(
+      (image) => (image as HTMLImageElement).naturalWidth,
+    )).toBeGreaterThan(0);
+    const read = page.getByRole("button", { name: "Read my work", exact: true });
+    await expect(read).toBeEnabled();
+    const sent = page.waitForRequest((request) => request.url().endsWith("/api/extract"));
+    await read.click();
+    const request = await sent;
+    const multipart = request.postDataBuffer();
+    expect(multipart).not.toBeNull();
+    expect(multipart!.includes(original)).toBe(true);
+    expect(multipart!.toString("latin1")).toContain('filename="worksheet.HEIC"');
+    expect(multipart!.toString("latin1")).toContain("Content-Type: image/heic");
+    await expect(page.getByRole("heading", { name: "Here’s your work." })).toBeVisible();
+  });
+}
+
+test("an unreadable HEIC photo shows an error and allows choosing a different image", async ({
+  page,
+}) => {
+  const decoded = page.waitForResponse((response) => response.url().endsWith("/api/images/preview"));
+  const input = page.getByLabel("Choose work image", { exact: true });
+  await input.setInputFiles({
+    name: "damaged.heic",
+    mimeType: "image/heic",
+    buffer: Buffer.from("invalid HEIC image"),
+  });
+  const response = await decoded;
+  expect(response.status()).toBe(400);
+  expect((await response.json()).error.code).toBe("invalid_image");
+  await expect(page.getByRole("region", { name: "Upload work" }).getByRole("alert"))
+    .toContainText(/couldn’t|couldn't|Choose|could not/);
+  await expect(page.getByText("Preparing your photo…", { exact: true })).toHaveCount(0);
+  await input.setInputFiles(path.join(root, "public/samples/math-worksheet.png"));
+  await expect(page.getByRole("img", { name: "Preview of your selected work" })).toBeVisible();
+  await page.getByRole("button", { name: "Read my work", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Here’s your work." })).toBeVisible();
+});
+
+test("a delayed HEIC preview cannot replace a newer image selection", async ({
+  page,
+}) => {
+  let release!: () => void;
+  let markReady!: () => void;
+  let markFinished!: () => void;
+  const ready = new Promise<void>((resolve) => { markReady = resolve; });
+  const finished = new Promise<void>((resolve) => { markFinished = resolve; });
+  await page.route("**/api/images/preview", async (route) => {
+    const response = await route.fetch();
+    expect(response.status()).toBe(200);
+    const released = new Promise<void>((resolve) => { release = resolve; });
+    markReady();
+    await released;
+    // Replacement aborts the old request, whose delayed body must stay ignored.
+    await route.fulfill({ response }).catch(() => {});
+    markFinished();
+  });
+  await page.getByLabel("Choose work image", { exact: true }).setInputFiles({
+    name: "older.heic",
+    mimeType: "image/heic",
+    buffer: await heicPhoto(),
+  });
+  await ready;
+  await expect(page.getByText("Preparing your photo…", { exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Read my work", exact: true })).toBeDisabled();
+  const choosing = page.waitForEvent("filechooser");
+  await page.getByRole("button", { name: "Change image", exact: true }).click();
+  await (await choosing).setFiles(path.join(root, "public/samples/math-worksheet.png"));
+  const preview = page.getByRole("img", { name: "Preview of your selected work" });
+  await expect(preview).toBeVisible();
+  const newerPreview = await preview.getAttribute("src");
+  release();
+  await finished;
+  await expect(preview).toHaveAttribute("src", newerPreview!);
+  await expect(page.getByText("math-worksheet.png", { exact: false })).toBeVisible();
+  await expect(page.getByText("older.heic", { exact: false })).toHaveCount(0);
+  await page.getByRole("button", { name: "Read my work", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Here’s your work." })).toBeVisible();
+});
+
+test("CSRF rejection keeps the photo and retries with a fresh token against the backend", async ({
+  page,
+}) => {
+  let attempts = 0;
+  await page.route("**/api/extract", async (route) => {
+    attempts += 1;
+    if (attempts === 1) {
+      await route.fulfill({
+        status: 403,
+        contentType: "application/json",
+        body: JSON.stringify({
+          error: {
+            code: "csrf_failed",
+            message: "This request could not be verified. Refresh the page and try again.",
+          },
+        }),
+      });
+      return;
+    }
+    await route.continue();
+  });
+  await page.getByLabel("Choose work image", { exact: true }).setInputFiles(
+    path.join(root, "public/samples/math-worksheet.png"),
+  );
+  await page.getByRole("button", { name: "Read my work", exact: true }).click();
+
+  await expect(
+    page.getByRole("region", { name: "Upload work" }).getByRole("alert"),
+  ).toContainText(/could not be verified|couldn’t verify|Refresh/);
+  await expect(
+    page.getByRole("img", { name: "Preview of your selected work" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Reading your work…" }),
+  ).toHaveCount(0);
+  const retry = page.getByRole("button", { name: "Read my work", exact: true });
+  await expect(retry).toBeEnabled();
+
+  const freshToken = page.waitForRequest((request) =>
+    request.url().endsWith("/api/auth/csrf"),
+  );
+  const extracted = page.waitForResponse((response) =>
+    response.url().endsWith("/api/extract") && response.status() === 200,
+  );
+  await retry.click();
+  await freshToken;
+  expect((await (await extracted).json()).source).toBe("fixture");
+  await expect(
+    page.getByRole("heading", { name: "Here’s your work." }),
+  ).toBeVisible();
+  expect(attempts).toBe(2);
+});
+
 test("invalid, oversized, and empty files are rejected before upload", async ({
   page,
 }) => {
@@ -250,7 +466,7 @@ test("invalid, oversized, and empty files are rejected before upload", async ({
     mimeType: "text/plain",
     buffer: Buffer.from("not an image"),
   });
-  await expect(alert).toContainText("Choose a JPG, PNG, or WebP image, or a PDF.");
+  await expect(alert).toContainText("Choose a JPG, PNG, WebP, HEIC, or HEIF image, or a PDF.");
   await expect(
     page.getByRole("button", { name: "Read my work", exact: true }),
   ).toHaveCount(0);

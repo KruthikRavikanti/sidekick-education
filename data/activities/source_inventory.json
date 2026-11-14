@@ -1,0 +1,90 @@
+{
+  "sourceFile": "data/activities/sources.csv",
+  "sha256": "77abb65b85cdc1a8b18f2e19843f31c2bfb3b829c048c3ec938e59d099f5e3d7",
+  "referenceRows": 11,
+  "activityDefinitionRows": 0,
+  "componentDefinitionRows": 0,
+  "skillLinkRows": 0,
+  "partnerWorkbook": {
+    "url": "https://claude.ai/artifact/NwhbGKA4BwjaEhcwaa5iAd#sheet-sht_rsb2zebb87.0",
+    "access": "unavailable_security_verification",
+    "inspection": "The web reader could not open the artifact. A normal anonymous browser reached security verification and the workbook frame returned403. No challenge was bypassed and no workbook table was available."
+  },
+  "interpretation": "The supplied Sources tab contains provenance/design references, not executable activity definitions or catalog skill links. Its wording is imported as source data, not as instructions or independently verified research claims.",
+  "originalExamples": {
+    "count": 2,
+    "provenance": "Original Sidekick examples authored for this milestone; activity names are references to the supplied Sources tab, not copied workbook designs.",
+    "subskillIds": [
+      "3.NF.A.1-2",
+      "L.3.1-2"
+    ]
+  },
+  "references": [
+    {
+      "id": "src_c9325022b6d5c7979a7f",
+      "row": 2,
+      "source": "Developing Effective Fractions Instruction for Kindergarten Through 8th Grade (IES What Works Clearinghouse practice guide)",
+      "link": "https://ies.ed.gov/ncee/wwc/PracticeGuide/15"
+    },
+    {
+      "id": "src_57f408f24b57c8c1bce7",
+      "row": 3,
+      "source": "Assisting Students Struggling with Mathematics: Intervention in the Elementary Grades (IES What Works Clearinghouse practice guide, 2021)",
+      "link": "https://ies.ed.gov/ncee/wwc/practiceguide/26"
+    },
+    {
+      "id": "src_51f46dd24e63721ef4cd",
+      "row": 4,
+      "source": "Foundational Skills to Support Reading for Understanding in Kindergarten Through 3rd Grade (IES What Works Clearinghouse practice guide, 2016)",
+      "link": "https://ies.ed.gov/whatsnew/pressreleases/07_05_2016.asp"
+    },
+    {
+      "id": "src_afe5f89f8c5fdb4bed32",
+      "row": 5,
+      "source": "Florida Center for Reading Research, Student Center Activities",
+      "link": "https://www.fcrr.org/student-center-activities"
+    },
+    {
+      "id": "src_7701d922513a131ccafb",
+      "row": 6,
+      "source": "The Math Learning Center, free math apps",
+      "link": "https://catalog.mathlearningcenter.org/apps"
+    },
+    {
+      "id": "src_d58ad92608da7b2a39c8",
+      "row": 7,
+      "source": "Polypad by Amplify (Mathigon)",
+      "link": "https://mathigon.org/polypad"
+    },
+    {
+      "id": "src_36e65e3a808fd92458cd",
+      "row": 8,
+      "source": "Erroneous examples studies (Adams, McLaren and colleagues, middle school decimals)",
+      "link": "https://www.learningscientists.org/blog/2023/7/27"
+    },
+    {
+      "id": "src_a4d326f08589627782cb",
+      "row": 9,
+      "source": "Concreteness fading (Fyfe, McNeil, Son, and Goldstone, 2014)",
+      "link": "https://pc.cogs.indiana.edu/?p=885"
+    },
+    {
+      "id": "src_c82844bbd0dd068c1da7",
+      "row": 10,
+      "source": "Comparing solution methods (Rittle-Johnson and Star)",
+      "link": "https://core.ac.uk/download/28937511.pdf"
+    },
+    {
+      "id": "src_29987ae833a599d2102b",
+      "row": 11,
+      "source": "Teachable agents and the protege effect (Chase, Chin, Oppezzo, and Schwartz, 2009)",
+      "link": "https://purl.stanford.edu/zm369yx3532"
+    },
+    {
+      "id": "src_a85aced9f1190fe015d4",
+      "row": 12,
+      "source": "Sidekick skill map version 2",
+      "link": "sidekick_skill_map_v2.json"
+    }
+  ]
+}

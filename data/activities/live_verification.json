@@ -1,0 +1,44 @@
+{
+  "command": "backend/.venv/bin/python scripts/verify_live_activity.py --live",
+  "checkedAt": "2026-11-12T03:04:37.890087+00:00",
+  "success": true,
+  "model": "gpt-6.1-terra",
+  "isolatedTemporaryDatabase": true,
+  "fixtureMode": false,
+  "stubbedProvider": false,
+  "liveExtraction": true,
+  "liveSupportObservation": true,
+  "reusedActivity": {
+    "sceneCount": 3,
+    "components": [
+      "fraction_builder",
+      "number_line",
+      "independent_fraction"
+    ],
+    "origin": "original_example",
+    "completed": true,
+    "independentCorrect": true,
+    "refreshResumed": true,
+    "submitRetrySafe": true
+  },
+  "generatedActivity": {
+    "sceneCount": 4,
+    "components": [
+      "fraction_builder",
+      "number_line",
+      "fraction_builder",
+      "independent_fraction"
+    ],
+    "origin": "model_generated",
+    "completed": true,
+    "independentCorrect": true,
+    "refreshResumed": true,
+    "submitRetrySafe": true
+  },
+  "parentHistoryCount": 2,
+  "parentPinProtectedHistory": true,
+  "supportObservationUnchanged": true,
+  "liveGeneratedActivities": 1,
+  "independentTaskFresh": true,
+  "elapsedSeconds": 25.08
+}

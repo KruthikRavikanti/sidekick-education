@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "1.0",
+  "provenance": "These two activities are original Sidekick examples created for this milestone. The supplied Sources tab contains reference notes only, and the partner workbook definitions were inaccessible. Activity names reference the source notes; no workbook activity design was copied.",
+  "activities": [
+    {
+      "id": "original-equal-pieces",
+      "origin": "original_example",
+      "spec": {
+        "schemaVersion": "1.0",
+        "title": "Equal Pieces: Build a Fraction",
+        "subject": "math",
+        "subskillId": "3.NF.A.1-2",
+        "grade": 3,
+        "misconceptionTags": [
+          "Sees 3/4 as two separate numbers, 3 and 4"
+        ],
+        "sourceRefs": [
+          "src_c9325022b6d5c7979a7f",
+          "src_a4d326f08589627782cb",
+          "src_a85aced9f1190fe015d4"
+        ],
+        "scenes": [
+          {
+            "id": "build",
+            "component": "fraction_builder",
+            "phase": "guided",
+            "prompt": "Build 3/4. Select 3 copies of 1/4 in the whole.",
+            "params": {
+              "denominator": 4
+            },
+            "answer": {
+              "value": "3/4"
+            },
+            "feedback": {
+              "correct": "Three fourth-size pieces make three fourths. The denominator names the size of each equal piece.",
+              "incorrect": "Keep the whole split into four equal pieces, then count how many pieces you selected.",
+              "hint": "Try selecting three of the four equal pieces. Each piece is one fourth."
+            },
+            "nextSceneId": "line"
+          },
+          {
+            "id": "line",
+            "component": "number_line",
+            "phase": "guided",
+            "prompt": "Place 4/6 on the number line: 4 copies of 1/6 from zero.",
+            "params": {
+              "denominator": 6,
+              "min": 0,
+              "max": 1
+            },
+            "answer": {
+              "value": "4/6"
+            },
+            "feedback": {
+              "correct": "Four sixth-size steps land at four sixths.",
+              "incorrect": "Count equal steps from zero. The six intervals are the same size.",
+              "hint": "Start at zero and move four one-sixth steps to the right."
+            },
+            "nextSceneId": "independent"
+          },
+          {
+            "id": "independent",
+            "component": "independent_fraction",
+            "phase": "independent",
+            "prompt": "What fraction is 3 copies of 1/8?",
+            "params": {
+              "unitDenominator": 8,
+              "copies": 3
+            },
+            "answer": {
+              "value": "3/8"
+            },
+            "feedback": {
+              "correct": "Thanks for showing your thinking. Your response has been saved.",
+              "incorrect": "Thanks for showing your thinking. Your response has been saved.",
+              "hint": "Show your own thinking for this question."
+            },
+            "nextSceneId": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "original-word-lab",
+      "origin": "original_example",
+      "spec": {
+        "schemaVersion": "1.0",
+        "title": "Word Lab: More Than One",
+        "subject": "ela",
+        "subskillId": "L.3.1-2",
+        "grade": 3,
+        "misconceptionTags": [
+          "Writes 'mouses'"
+        ],
+        "sourceRefs": [
+          "src_51f46dd24e63721ef4cd",
+          "src_a4d326f08589627782cb",
+          "src_a85aced9f1190fe015d4"
+        ],
+        "scenes": [
+          {
+            "id": "tiles",
+            "component": "word_tiles",
+            "phase": "guided",
+            "prompt": "One mouse, two ___. Build the plural word with the tiles.",
+            "params": {
+              "baseWord": "mouse",
+              "tiles": [
+                {
+                  "id": "tile-m",
+                  "text": "m"
+                },
+                {
+                  "id": "tile-e",
+                  "text": "e"
+                },
+                {
+                  "id": "tile-i",
+                  "text": "i"
+                },
+                {
+                  "id": "tile-c",
+                  "text": "c"
+                }
+              ]
+            },
+            "answer": {
+              "value": "mice"
+            },
+            "feedback": {
+              "correct": "Mouse becomes mice. Some plural nouns change their letters instead of adding -s.",
+              "incorrect": "Adding -s does not make the plural of mouse. Look for the letters that make mice.",
+              "hint": "Use m, i, c, and e in that order. Mouse changes to mice instead of adding -s."
+            },
+            "nextSceneId": "choice"
+          },
+          {
+            "id": "choice",
+            "component": "word_choice",
+            "phase": "guided",
+            "prompt": "One man, two ___. Choose the plural word.",
+            "params": {
+              "baseWord": "man",
+              "options": [
+                {
+                  "id": "many-mans",
+                  "text": "mans"
+                },
+                {
+                  "id": "many-men",
+                  "text": "men"
+                },
+                {
+                  "id": "one-man",
+                  "text": "man"
+                }
+              ]
+            },
+            "answer": {
+              "value": "men"
+            },
+            "feedback": {
+              "correct": "Man becomes men. This plural changes the vowel instead of adding -s.",
+              "incorrect": "For this noun, the word changes when there is more than one.",
+              "hint": "Look for men. The vowel changes from a to e."
+            },
+            "nextSceneId": "independent"
+          },
+          {
+            "id": "independent",
+            "component": "independent_word",
+            "phase": "independent",
+            "prompt": "One foot, two ___. Write the plural word.",
+            "params": {
+              "baseWord": "foot"
+            },
+            "answer": {
+              "value": "feet"
+            },
+            "feedback": {
+              "correct": "Thanks for showing your thinking. Your response has been saved.",
+              "incorrect": "Thanks for showing your thinking. Your response has been saved.",
+              "hint": "Show your own thinking for this question."
+            },
+            "nextSceneId": null
+          }
+        ]
+      }
+    }
+  ]
+}

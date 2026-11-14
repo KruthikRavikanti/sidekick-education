@@ -85,7 +85,7 @@ async function main() {
   if (args.some(arg => arg !== "--fixtures")) throw new Error("Unknown option. Use npm run dev:demo or npm run dev:all.");
   try { await access(next); } catch { throw new Error("Next.js dependencies are missing. Run npm ci from the repository root first."); }
   try { await access(python); } catch { throw new Error("The backend virtual environment is missing. Run python3 -m venv backend/.venv, then backend/.venv/bin/python -m pip install -r backend/requirements.txt (see README.md for setup)."); }
-  const check = spawnSync(python, ["-c", "import fastapi, uvicorn, PIL, pydantic, httpx, multipart, dotenv, argon2, email_validator, pymupdf"], { cwd: root, stdio: "ignore" });
+  const check = spawnSync(python, ["-c", "import fastapi, uvicorn, PIL, pillow_heif, pydantic, httpx, multipart, dotenv, argon2, email_validator, pymupdf"], { cwd: root, stdio: "ignore" });
   if (check.status !== 0) throw new Error("Backend dependencies are missing. Run backend/.venv/bin/python -m pip install -r backend/requirements.txt.");
   const accountCheck = spawnSync(python, ["-c", `
 from pathlib import Path
@@ -107,7 +107,7 @@ except Exception as error:
 
   process.once("SIGINT", () => shutdown());
   process.once("SIGTERM", () => shutdown());
-  console.log(`Starting Sidekick in ${fixtureMode ? "sample mode (only the two bundled worksheets)" : "live mode (using backend/.env)"}. Keep this terminal open; Ctrl+C stops both servers.`);
+  console.log(`Starting Sidekick in ${fixtureMode ? "sample mode (bundled worksheets only)" : "live mode (using backend/.env)"}. Keep this terminal open; Ctrl+C stops both servers.`);
   start("FastAPI", python, ["-m", "uvicorn", "backend.main:app", "--host", "127.0.0.1", "--port", "8000", "--no-access-log"], {
     ...process.env,
     SIDEKICK_FIXTURE_MODE: fixtureMode ? "true" : "false",

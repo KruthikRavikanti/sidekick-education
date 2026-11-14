@@ -1,0 +1,2 @@
+# Keep the supplied source export byte-for-byte, including its BOM and CRLF.
+data/activities/sources.csv -text whitespace=cr-at-eol

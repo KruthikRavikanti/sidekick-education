@@ -1,0 +1,48 @@
+{
+  "worksheet": {
+    "title": {
+      "text": "Word pattern work",
+      "uncertain": false
+    },
+    "subject": "ela",
+    "subject_uncertain": false,
+    "printed_grade": {
+      "text": "Grade 3",
+      "uncertain": false
+    },
+    "directions": [
+      {
+        "text": "Answer the question.",
+        "uncertain": false
+      }
+    ],
+    "shared_context": []
+  },
+  "problems": [
+    {
+      "id": "activity-ela-correct-1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "One mouse, two ___.",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "mice",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    }
+  ]
+}

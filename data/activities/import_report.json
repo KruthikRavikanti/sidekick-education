@@ -1,0 +1,27 @@
+{
+  "revision": "alr_82673afe8e4235513fa5e5127c66de0466a1140d",
+  "sourceSha256": "77abb65b85cdc1a8b18f2e19843f31c2bfb3b829c048c3ec938e59d099f5e3d7",
+  "referenceRowsImported": 11,
+  "workbookActivityDefinitionsImported": 0,
+  "originalExamplesImported": 2,
+  "unchanged": false,
+  "issues": [],
+  "activities": [
+    {
+      "activityId": "original-equal-pieces",
+      "versionId": "av_07b7b4ac6385216baa39de9815fc6073374e1c28",
+      "version": 1,
+      "subskillId": "3.NF.A.1-2",
+      "title": "Equal Pieces: Build a Fraction",
+      "origin": "original_example"
+    },
+    {
+      "activityId": "original-word-lab",
+      "versionId": "av_218f8789af076d2b025616a26f36cf598ba19ab6",
+      "version": 1,
+      "subskillId": "L.3.1-2",
+      "title": "Word Lab: More Than One",
+      "origin": "original_example"
+    }
+  ]
+}

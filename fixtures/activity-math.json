@@ -1,0 +1,48 @@
+{
+  "worksheet": {
+    "title": {
+      "text": "Unit fraction work",
+      "uncertain": false
+    },
+    "subject": "math",
+    "subject_uncertain": false,
+    "printed_grade": {
+      "text": "Grade 3",
+      "uncertain": false
+    },
+    "directions": [
+      {
+        "text": "Answer the question.",
+        "uncertain": false
+      }
+    ],
+    "shared_context": []
+  },
+  "problems": [
+    {
+      "id": "activity-math-1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "How many 1/4 pieces make 3/4?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "4",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    }
+  ]
+}

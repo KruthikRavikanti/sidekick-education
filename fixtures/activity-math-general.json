@@ -1,0 +1,43 @@
+{
+  "worksheet": {
+    "title": {
+      "text": "Multiplicative comparison",
+      "uncertain": false
+    },
+    "subject": "math",
+    "subject_uncertain": false,
+    "printed_grade": {
+      "text": "Grade 4",
+      "uncertain": false
+    },
+    "directions": [],
+    "shared_context": []
+  },
+  "problems": [
+    {
+      "id": "activity-math-general-1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "A scarf costs 6 dollars. A jacket costs 4 times as much. How much does the jacket cost?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "24",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    }
+  ]
+}

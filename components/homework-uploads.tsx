@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { api, apiFetch, errorMessage } from "@/lib/account-api";
 import type { UploadRecord } from "@/lib/learning-types";
+import { normalizeUploadFile, WORK_ACCEPT } from "@/lib/upload-files";
 import { FormError } from "./account-ui";
 import { ExtractionResults } from "./extraction-results";
 
@@ -69,7 +70,7 @@ export function HomeworkUploads({ kidId }: { kidId: string }) {
     setError(null);
     try {
       const body = new FormData();
-      body.append("file", file);
+      body.append("file", normalizeUploadFile(file));
       const response = await apiFetch(base, {
         method: "POST",
         body,
@@ -140,7 +141,7 @@ export function HomeworkUploads({ kidId }: { kidId: string }) {
         <input
           className="visually-hidden"
           type="file"
-          accept="image/jpeg,image/png,image/webp,application/pdf"
+          accept={WORK_ACCEPT}
           disabled={busy}
           onChange={(e) => {
             void upload(e.target.files?.[0]);
