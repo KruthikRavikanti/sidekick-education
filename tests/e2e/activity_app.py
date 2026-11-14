@@ -1,5 +1,7 @@
 """Isolated browser app: replace only model composition/review, never auth or APIs."""
 import os
+import copy
+import json
 import tempfile
 from pathlib import Path
 
@@ -75,6 +77,17 @@ class BrowserComposer:
         if response_model is ActivityReview:
             return ActivityReview(approved=True, reason='approved')
         assert response_model is ActivitySpec and data['schemaVersion'] == '1.1'
+        if data['subskillId'] == '3.NF.A.3-2':
+            assert data['learningGoal']['intent'] in {'explore_skill', 'reinforce_correct_work', 'support_current_skill'}
+            manifest = json.loads((Path(__file__).resolve().parents[2] / 'data/activities/original_examples.json').read_text())
+            spec = copy.deepcopy(next(row['spec'] for row in manifest['activities'] if row['spec']['subskillId'] == data['subskillId']))
+            spec.update(title='Quilt Patches: Same Area, More Pieces', misconceptionTags=data['misconceptionTags'], sourceRefs=data['sourceRefs'])
+            for scene in spec['scenes'][:-1]:
+                scene['params'].update(context='A rectangular quilt has a colored patch. Try smaller equal stitches while keeping the colored patch fixed.', wholeLabel='One quilt', shadedLabel='colored')
+                scene['params']['teachingText'] = scene['params']['teachingText'].replace('planted area', 'colored area')
+                scene['prompt'] = scene['prompt'].replace('garden bed', 'quilt').replace('garden', 'quilt').replace('planted', 'colored')
+                scene['feedback'] = {key: value.replace('planted', 'colored') for key, value in scene['feedback'].items()}
+            return ActivitySpec.model_validate(spec)
         assert data['subskillId'] in {'4.OA.A.2-1', 'RI.3.1-1'}
         return ActivitySpec.model_validate(example(data['subject'], data))
 

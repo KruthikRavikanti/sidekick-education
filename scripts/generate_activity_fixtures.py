@@ -64,8 +64,26 @@ def main():
         (ROOT / f'fixtures/{name}.json').write_text(json.dumps(data, indent=2) + '\n')
         manifest = {key: value for key, value in manifest.items() if value != name}
         manifest[hashlib.sha256(path.read_bytes()).hexdigest()] = name
+    name = 'activity-equivalent'
+    image = Image.new('RGB', (1000, 1200), 'white')
+    draw = ImageDraw.Draw(image)
+    draw.text((65, 65), 'SIDEKICK / ORIGINAL SYNTHETIC WORK', fill='#69717D', font=font(20))
+    draw.text((65, 150), 'Equivalent fractions', fill='#064D32', font=font(42, bold=True))
+    draw.text((65, 220), 'Grade 3', fill='#242C36', font=font(24))
+    draw.text((65, 300), 'Fill in the missing numerator.', fill='#242C36', font=font(27))
+    draw.text((65, 420), '1. 1/3 = ?/6', fill='#242C36', font=font(38))
+    draw.text((100, 535), '3', fill='#325999', font=font(38, handwriting=True))
+    draw.text((65, 1080), 'Synthetic response. No real student information.', fill='#69717D', font=font(20))
+    path = ROOT / f'public/samples/{name}-work.png'
+    image.save(path, format='PNG', optimize=True)
+    data = {'worksheet': {'title': field('Equivalent fractions'), 'subject': 'math', 'subject_uncertain': False,
+                         'printed_grade': field('Grade 3'), 'directions': [field('Fill in the missing numerator.')], 'shared_context': []},
+            'problems': [problem(f'{name}-1', '1', '1/3 = ?/6', work('answered', final='3'))]}
+    (ROOT / f'fixtures/{name}.json').write_text(json.dumps(data, indent=2) + '\n')
+    manifest = {key: value for key, value in manifest.items() if value != name}
+    manifest[hashlib.sha256(path.read_bytes()).hexdigest()] = name
     manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
-    print('Generated six original synthetic activity-entry work pages.')
+    print('Generated seven original synthetic activity-entry work pages.')
 
 
 if __name__ == '__main__':

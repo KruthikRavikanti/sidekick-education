@@ -153,7 +153,7 @@ def verify(report):
         security.db.migrate()
         seed_catalog(security.db)
         imported = seed_library(security.db)
-        if imported['originalExamplesImported'] != 2:
+        if imported['originalExamplesImported'] != 6:
             raise VerificationFailure('seed_library', 'original_examples_missing')
         main.app.state.security = security
         main.app.state.gap_adapter = None

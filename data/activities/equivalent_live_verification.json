@@ -1,0 +1,58 @@
+{
+  "command": "backend/.venv/bin/python scripts/verify_equivalent_activity.py --live",
+  "checkedAt": "2026-11-14T15:52:18.401307+00:00",
+  "success": true,
+  "model": "gpt-6.1-terra",
+  "isolatedTemporaryDatabase": true,
+  "fixtureMode": false,
+  "stubbedProvider": false,
+  "realComposition": true,
+  "separateModelReview": true,
+  "liveExtraction": true,
+  "targetCatalogSkill": "3.NF.A.3-2",
+  "liveAnalysis": true,
+  "noStrongLibraryMatch": true,
+  "verifiedInteractionFallbackAvailable": true,
+  "inputCorrectness": [
+    "ungraded"
+  ],
+  "generatedActivity": {
+    "schemaVersion": "1.1",
+    "componentVersion": "sidekick-interactions-v3",
+    "promptVersion": "sidekick-activity-v4",
+    "sceneCount": 4,
+    "components": [
+      "fraction_split_compare",
+      "guided_choice",
+      "guided_response",
+      "independent_response"
+    ],
+    "splitSceneCount": 1,
+    "completed": true,
+    "independentCorrect": true,
+    "refreshResumed": true,
+    "submitRetrySafe": true,
+    "sameShadedAmountForEveryOfferedSplit": true,
+    "splitResponseRecorded": true,
+    "requestedDenominatorEnforced": true,
+    "reducedFormRejected": true,
+    "decimalFormRejected": true,
+    "independentVisualAndHintsAbsent": true,
+    "privateAnswersProtected": true,
+    "browserAnimationVerifiedByThisScript": false
+  },
+  "learningStatusUnchanged": true,
+  "statusBefore": "unassessed",
+  "statusAfter": "unassessed",
+  "parentHistoryCount": 1,
+  "parentPinProtectedHistory": true,
+  "providerActivityTasks": {
+    "compose_activity": 1,
+    "review_activity": 1
+  },
+  "reviewRejectionCodes": [],
+  "providerErrorCodes": [],
+  "learningGoalIntent": "explore_skill",
+  "supportedObservationKind": null,
+  "elapsedSeconds": 33.53
+}

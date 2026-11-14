@@ -57,7 +57,7 @@ def test_general_activity_accepts_new_catalog_skills_and_inline_context(subject)
 
 def test_legacy_originals_keep_their_original_validation():
     path = Path(__file__).resolve().parents[2] / 'data/activities/original_examples.json'
-    originals = json.loads(path.read_text())['activities']
+    originals = [entry for entry in json.loads(path.read_text())['activities'] if entry['spec']['schemaVersion'] == '1.0']
     assert len(originals) == 2
     for original in originals:
         raw = original['spec']

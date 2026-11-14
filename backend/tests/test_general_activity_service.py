@@ -8,6 +8,7 @@ import pytest
 
 from backend import main
 from backend.activities import service
+from backend.activities.models import PROMPT_VERSION
 from backend.activities.library import seed_library
 from backend.gap.catalog import get_subskill, seed_catalog
 from backend.gap.service import _homework_state, record_homework_evidence
@@ -172,7 +173,7 @@ def test_no_matching_library_activity_generates_reviews_plays_and_keeps_learning
         assert _homework_state(conn, child['id'], subskill) == before
         version = conn.execute("SELECT grade,verified,prompt_version FROM activity_versions WHERE origin='model_generated'").fetchone()
         assert version['grade'] == (6 if subskill.startswith('6.') else 4) and version['verified'] == 1
-        assert version['prompt_version'] == 'sidekick-activity-v3'
+        assert version['prompt_version'] == PROMPT_VERSION
 
 
 @pytest.mark.parametrize('failure', ['rejected', 'provider', 'freshness'])

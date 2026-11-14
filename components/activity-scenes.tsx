@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { ActivityResponse, ActivityScene } from "@/lib/activity-types";
+import { FractionSplitCompare } from "./fraction-split-compare";
 
 interface SceneControlProps {
   scene: ActivityScene;
@@ -283,6 +284,7 @@ export function ActivitySceneMaterial({ scene }: { scene: ActivityScene }) {
   if (
     scene.component !== "guided_choice" &&
     scene.component !== "guided_response" &&
+    scene.component !== "fraction_split_compare" &&
     scene.component !== "independent_response"
   )
     return null;
@@ -373,6 +375,8 @@ export function ActivitySceneControl(props: SceneControlProps) {
       return <FractionBuilder {...props} scene={scene} />;
     case "number_line":
       return <NumberLine {...props} scene={scene} />;
+    case "fraction_split_compare":
+      return <FractionSplitCompare {...props} scene={scene} />;
     case "word_tiles":
       return <WordTiles {...props} scene={scene} />;
     case "word_choice":

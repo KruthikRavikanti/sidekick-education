@@ -34,7 +34,7 @@ def no_remote_activity_calls(monkeypatch):
 def activity_family(parent_client, security_context):
     seed_catalog(security_context.db)
     report = seed_library(security_context.db)
-    assert report['originalExamplesImported'] == 2
+    assert report['originalExamplesImported'] == 6
     child = create_child(parent_client).json()
     select_child(parent_client, child['id'])
     return child, parent_client
@@ -119,7 +119,7 @@ def test_upload_support_suggestion_reuse_play_resume_parent_result(activity_fami
     assert history[0]['finalResult'] == result['finalResult'] and history[0]['completedAt']
     assert history[0]['guidedHintCount'] == 1
     with security_context.db.transaction() as conn:
-        assert conn.execute('SELECT COUNT(*) FROM activity_versions').fetchone()[0] == 2
+        assert conn.execute('SELECT COUNT(*) FROM activity_versions').fetchone()[0] == 6
         assert conn.execute('SELECT COUNT(*) FROM activity_attempts WHERE session_id=?', (result['id'],)).fetchone()[0] == 3
         assert service._homework_state(conn, child['id'], suggestion['targetSkill']['id'])['status'] == 'needs_support'
         assert not conn.execute("SELECT 1 FROM learning_evidence WHERE source!='homework'").fetchone()
@@ -424,7 +424,7 @@ def test_child_deletion_cascades_private_activity_records_but_keeps_library(acti
         conn.execute('DELETE FROM kid_profiles WHERE id=?', (child['id'],))
         for table in ('activity_sessions', 'activity_attempts', 'activity_start_requests', 'activity_scene_events'):
             assert not conn.execute(f'SELECT 1 FROM {table}').fetchone()
-        assert conn.execute('SELECT COUNT(*) FROM activity_versions').fetchone()[0] == 2
+        assert conn.execute('SELECT COUNT(*) FROM activity_versions').fetchone()[0] == 6
 
 
 @pytest.mark.parametrize('subject,question', [('math', 'What fraction is 3 copies of 1/8?'), ('ela', 'Write the plural of foot.')])
