@@ -237,7 +237,9 @@ export function WorksheetReader() {
     const isPDF = file.type === "application/pdf";
     const timeout = setTimeout(
       () => controller.abort("timeout"),
-      isPDF ? 600000 : 90000,
+      // Allow the provider's supported 180-second deadline plus upload/queue
+      // overhead. The API proxy must outlive this browser request budget.
+      isPDF ? 600000 : 240000,
     );
     try {
       const body = new FormData();
@@ -312,7 +314,7 @@ export function WorksheetReader() {
       if (!response.ok)
         throw new Error(
           data?.error?.message ||
-            "We couldn’t read that page. Please try again or take a clearer photo.",
+            "Sidekick’s reader couldn’t finish this upload. Please try again.",
         );
       if (
         !data?.worksheet ||
@@ -334,7 +336,7 @@ export function WorksheetReader() {
         return;
       setError(
         controller.signal.reason === "timeout"
-          ? "Reading took too long. Please retry or take a clearer photo."
+          ? "Reading took too long. Please try again."
           : caught instanceof Error && caught.message !== "Failed to fetch"
             ? caught.message
             : "Sidekick couldn’t connect. Check your connection and try again.",

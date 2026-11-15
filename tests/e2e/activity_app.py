@@ -1,5 +1,6 @@
 """Isolated browser app: replace only model composition/review, never auth or APIs."""
 import os
+import asyncio
 import copy
 import json
 import tempfile
@@ -16,6 +17,17 @@ if (os.getenv('APP_ENV') != 'test' or not database_url.startswith('sqlite:///')
 from backend.main import app
 from backend.activities.models import ActivityReview, ActivitySpec
 from toolkit_examples import example as toolkit_example
+
+
+@app.middleware('http')
+async def synthetic_slow_reader(request, call_next):
+    # This module cannot start outside the guarded disposable test database.
+    # Delay only an explicitly marked request while preserving the real upload,
+    # authentication, CSRF checks, and response through Next's external rewrite.
+    if (request.method == 'POST' and request.url.path == '/api/extract'
+            and request.headers.get('x-sidekick-test-slow-reader') == '31-seconds'):
+        await asyncio.sleep(31)
+    return await call_next(request)
 
 
 class BrowserComposer:

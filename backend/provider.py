@@ -31,7 +31,7 @@ class VisionSettings:
         model = os.getenv("VISION_MODEL", "").strip()
         base = os.getenv("VISION_BASE_URL", "https://api.openai.com/v1").rstrip("/")
         try:
-            timeout = float(os.getenv("VISION_TIMEOUT_SECONDS", "60"))
+            timeout = float(os.getenv("VISION_TIMEOUT_SECONDS", "120"))
             parsed = urlparse(base)
             valid_url = parsed.scheme == "https" or (parsed.scheme == "http" and parsed.hostname in {"localhost", "127.0.0.1", "::1"})
             if not valid_url or not parsed.hostname or parsed.username or parsed.password or parsed.query or parsed.fragment or not 1 <= timeout <= 180:
