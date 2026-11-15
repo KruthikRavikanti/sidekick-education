@@ -548,6 +548,70 @@ test("provider failure keeps the photo and retry reaches the real backend", asyn
   ).toBeVisible();
 });
 
+test("a slow reader response survives the external API proxy beyond thirty seconds", async ({ page }) => {
+  test.setTimeout(65_000);
+  await page.route("**/api/extract", async (route) => {
+    await route.continue({
+      headers: {
+        ...route.request().headers(),
+        "x-sidekick-test-slow-reader": "31-seconds",
+      },
+    });
+  });
+  await page.getByLabel("Choose work image", { exact: true }).setInputFiles(
+    path.join(root, "public/samples/math-worksheet.png"),
+  );
+  const extracted = page.waitForResponse(
+    (response) => response.url().endsWith("/api/extract") && response.request().method() === "POST",
+    { timeout: 45_000 },
+  );
+  const started = Date.now();
+  await page.getByRole("button", { name: "Read my work", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Reading your work…", exact: true })).toBeVisible();
+  const response = await extracted;
+  expect(Date.now() - started).toBeGreaterThanOrEqual(31_000);
+  expect(response.status()).toBe(200);
+  expect((await response.json()).source).toBe("fixture");
+  await expect(page.getByRole("heading", { name: "Here’s your work.", exact: true })).toBeVisible();
+  await expect(page.getByRole("article")).toHaveCount(4);
+});
+
+for (const status of [500, 502]) {
+  test(`non-JSON server failure (${status}) keeps the photo and retries without blaming photo quality`, async ({ page }) => {
+    let attempts = 0;
+    await page.route("**/api/extract", async (route) => {
+      attempts += 1;
+      if (attempts === 1) {
+        await route.fulfill({
+          status,
+          contentType: "text/html",
+          body: "<h1>Upstream unavailable</h1>",
+        });
+      } else {
+        await route.continue();
+      }
+    });
+    await page.getByLabel("Choose work image", { exact: true }).setInputFiles(
+      path.join(root, "public/samples/math-worksheet.png"),
+    );
+    const preview = page.getByRole("img", { name: "Preview of your selected work" });
+    const selectedSource = await preview.getAttribute("src");
+    await page.getByRole("button", { name: "Read my work", exact: true }).click();
+    const alert = page.getByRole("region", { name: "Upload work" }).getByRole("alert");
+    await expect(alert).toContainText("Sidekick’s reader couldn’t finish this upload. Please try again.");
+    await expect(alert).not.toContainText(/clearer|retake|focus/i);
+    await expect(preview).toBeVisible();
+    await expect(preview).toHaveAttribute("src", selectedSource!);
+    const retry = page.getByRole("button", { name: "Read my work", exact: true });
+    await expect(retry).toBeEnabled();
+    const extracted = page.waitForResponse((response) => response.url().endsWith("/api/extract") && response.status() === 200);
+    await retry.click();
+    expect((await (await extracted).json()).source).toBe("fixture");
+    await expect(page.getByRole("heading", { name: "Here’s your work.", exact: true })).toBeVisible();
+    expect(attempts).toBe(2);
+  });
+}
+
 test("cancelled extraction cannot replace a later upload", async ({
   page,
 }) => {
