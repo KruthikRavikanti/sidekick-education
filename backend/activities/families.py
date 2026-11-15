@@ -224,12 +224,17 @@ def validate_scene(scene, subject):
                         or any(count * unit != values[1] for count in counts)):
                     raise ValueError('Multiplication must build the stated number of equal groups')
     elif component == 'math_workspace':
+        from . import composition
         _safe(params.unitLabel)
         if _number(params.step) <= 0:
             raise ValueError('Board scale must be positive')
         _number(params.origin)
         _unique(params.objects, 'label', distinct_labels=False)
         _unique(params.tokens, distinct_labels=False)
+        if params.mode in composition.AREA_MODES:
+            return composition.validate_area_scene(scene, subject)
+        if params.area is not None:
+            raise ValueError('Area configuration requires an actual area action')
         for obj in params.objects:
             if obj.x + obj.width > params.width or obj.y + obj.height > params.height:
                 raise ValueError('Objects must fit the visible board')
@@ -283,7 +288,9 @@ def validate_scene(scene, subject):
             raise ValueError('Writing bounds must be reachable')
         if params.initialText:
             _safe(params.initialText)
-        if params.mode == 'edit' and not params.initialText.strip():
+        incoming_draft = (getattr(scene, 'connection', None) is not None
+                          and scene.connection.targetInput == 'draft_text')
+        if params.mode == 'edit' and not params.initialText.strip() and not incoming_draft:
             raise ValueError('Editing requires an original draft')
         if params.mode == 'assemble' and len(params.wordBank) < 2:
             raise ValueError('Text assembly requires word pieces')
@@ -366,7 +373,8 @@ def task_key(scene):
     elif component == 'math_workspace':
         content = [component, params.mode, params.width, params.height, params.step, params.origin,
                    [(o.shape, o.x, o.y, o.width, o.height, o.label) for o in params.objects],
-                   sorted(t.text for t in params.tokens), scene.prompt]
+                   sorted(t.text for t in params.tokens), scene.prompt,
+                   params.area.model_dump() if params.area is not None else None]
     elif component == 'sort_connect':
         content = [component, sorted(p.text for p in params.pieces), sorted(t.label for t in params.targets),
                    params.visual.model_dump() if params.visual else None]
@@ -441,7 +449,11 @@ def validate_coverage(spec, entry):
     if required_guided and not required_guided.intersection(scene.component for scene in guided):
         raise ValueError('Catalog demonstration requires its specified guided mechanic')
     modes = set(constraints.get('workspaceModes', []))
-    if modes and any(scene.component == 'math_workspace' and scene.params.mode not in modes for scene in spec.scenes):
+    # The unit-square actions refine the existing grid/shape coverage family;
+    # they do not silently make unrelated ruler/clock goals compatible.
+    area_modes = {'area_tile', 'area_design', 'area_expression'}
+    if modes and any(scene.component == 'math_workspace' and scene.params.mode not in modes
+                     and not (scene.params.mode in area_modes and modes.intersection({'grid', 'shape'})) for scene in spec.scenes):
         raise ValueError('Workspace mode does not demonstrate this catalog objective')
     visual_kind = constraints.get('requiredVisual')
     if visual_kind:
@@ -466,7 +478,7 @@ def validate_coverage(spec, entry):
 def _has_visual(scene, required):
     visual = getattr(scene.params, 'visual', None)
     if required == 'geometry':
-        if scene.component == 'math_workspace' and scene.params.mode in {'grid', 'shape', 'angle'}:
+        if scene.component == 'math_workspace' and scene.params.mode in {'grid', 'shape', 'angle', 'area_tile', 'area_design', 'area_expression'}:
             return True
         return visual is not None and (visual.kind == 'solid_shapes' or any(item.kind in {'rect', 'circle', 'triangle', 'line', 'cube', 'sphere', 'cone', 'cylinder'} for item in visual.items))
     if required == 'chart':
@@ -497,6 +509,9 @@ def grade_response(scene, response):
         text = '; '.join([*labels, f'{params.stock - sum(counts)} loose'])
         return text, None if manual else counts == answer.expectedCounts
     if component == 'math_workspace':
+        from . import composition
+        if params.mode in composition.AREA_MODES:
+            return composition.grade_area_response(scene, response)
         if not isinstance(response, WorkspaceResponse):
             raise ValueError('Build or mark the offered board')
         points = _validate_marks(params, response.marks)

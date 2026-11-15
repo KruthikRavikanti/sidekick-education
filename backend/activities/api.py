@@ -57,6 +57,11 @@ def history(kid_id: str, request: Request):
     return service.history(get_security(request), kid_id, require_parent(request))
 
 
+@router.get('/parent/{kid_id}/sessions/{session_id}')
+def parent_attempt(kid_id: str, session_id: str, request: Request):
+    return service.parent_attempt(get_security(request), kid_id, session_id, require_parent(request))
+
+
 @router.post('/kid/sessions/{session_id}/recording')
 async def recording(session_id: str, request: Request):
     security, kid_id, active = kid_context(request)

@@ -139,7 +139,7 @@ def test_learning_goal_uses_only_supported_current_observation(family, security_
     assert '9/11' not in json.dumps(composer.calls)
 
 
-def test_generation_failure_falls_back_only_to_verified_split_activity(family, security_context, monkeypatch):
+def test_failed_live_composition_does_not_substitute_a_finished_split_activity(family, security_context, monkeypatch):
     child, client = family
     upload = mapped_upload(security_context, child, '4.NF.A.1-1', correctness='incorrect')
     save_version(security_context, old_question_card(security_context))
@@ -147,12 +147,12 @@ def test_generation_failure_falls_back_only_to_verified_split_activity(family, s
     composer = Composer(failure=True)
     monkeypatch.setitem(main.app.state._state, 'activity_adapter', composer)
     response = start(client, upload)
-    assert response.status_code == 200
-    session = response.json()
-    assert session['origin'] == 'original_example' and session['currentScene']['component'] == 'fraction_split_compare'
+    assert response.status_code == 503
+    assert response.json()['error']['code'] == 'activity_unavailable'
     assert len(composer.calls) == 2
     with security_context.db.transaction() as connection:
-        assert connection.execute('SELECT activity_version_id FROM activity_sessions WHERE id=?', (session['id'],)).fetchone()[0] == fallback_id
+        assert connection.execute('SELECT COUNT(*) FROM activity_sessions').fetchone()[0] == 0
+        assert connection.execute('SELECT verified FROM activity_versions WHERE id=?', (fallback_id,)).fetchone()[0] == 1
 
 
 def test_question_only_generation_and_fallback_cannot_replace_the_mechanic(family, security_context, monkeypatch):

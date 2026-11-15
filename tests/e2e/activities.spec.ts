@@ -57,7 +57,7 @@ for (const [subject, correctness] of [
   ["math", "correct"],
   ["ela", "correct"],
 ] as const) {
-  test(`${subject} ${correctness === "correct" ? "all-correct" : "incorrect"} upload suggests an activity, saves guided play, and records a fresh independent answer`, async ({
+  test(`${subject} ${correctness === "correct" ? "all-correct" : "incorrect"} upload resumes a historical activity, saves guided play, and records a fresh independent answer`, async ({
     page,
     context,
   }) => {
@@ -99,11 +99,11 @@ for (const [subject, correctness] of [
     ]);
     const started = page.waitForResponse(
       (response) =>
-        response.url().endsWith("/api/activities/kid/start") &&
-        response.request().method() === "POST",
+        /\/api\/activities\/kid\/sessions\/[^/]+$/.test(response.url()) &&
+        response.request().method() === "GET",
     );
     await page
-      .getByRole("button", { name: "Try an activity", exact: true })
+      .getByRole("button", { name: "Continue activity", exact: true })
       .click();
     const session = await (await started).json();
     expect(

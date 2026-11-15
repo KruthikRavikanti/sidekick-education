@@ -7,12 +7,12 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from .equivalent import is_equivalent_target, validate_equivalent_activity, validate_fraction_form
-from . import families, toolkit
+from . import composition, families, toolkit
 
-SCHEMA_VERSION = '1.2'
-COMPONENT_VERSION = 'sidekick-interactions-v5'
-COMPATIBLE_COMPONENT_VERSIONS = ('sidekick-interactions-v1', 'sidekick-interactions-v2', 'sidekick-interactions-v3', 'sidekick-interactions-v4', COMPONENT_VERSION)
-PROMPT_VERSION = 'sidekick-activity-v6'
+SCHEMA_VERSION = '1.3'
+COMPONENT_VERSION = 'sidekick-interactions-v6'
+COMPATIBLE_COMPONENT_VERSIONS = ('sidekick-interactions-v1', 'sidekick-interactions-v2', 'sidekick-interactions-v3', 'sidekick-interactions-v4', 'sidekick-interactions-v5', COMPONENT_VERSION)
+PROMPT_VERSION = 'sidekick-activity-v7'
 SUPPORTED = {'3.NF.A.1-2': 'math', 'L.3.1-2': 'ela'}
 GENERIC_COMPONENTS = frozenset({'guided_choice', 'guided_response', 'independent_response', 'fraction_split_compare'}) | toolkit.COMPONENTS | families.COMPONENTS
 DENOMINATORS = {2, 3, 4, 6, 8}
@@ -121,6 +121,12 @@ class Feedback(Closed):
     hint: ShortText
 
 
+class SceneConnection(Closed):
+    sourceSceneId: Identifier
+    sourceOutput: Literal['area_rectangle', 'quantity_total', 'ordered_text', 'selected_evidence', 'written_text']
+    targetInput: Literal['area_rectangle', 'quantity_equation', 'context_material', 'draft_text']
+
+
 class SceneBase(Closed):
     id: Identifier
     phase: Literal['guided', 'independent']
@@ -128,6 +134,7 @@ class SceneBase(Closed):
     answer: Answer
     feedback: Feedback
     nextSceneId: Identifier | None
+    connection: SceneConnection | None = None
 
 
 class FractionScene(SceneBase):
@@ -393,8 +400,14 @@ class BoardObject(Closed):
     value: Annotated[str, Field(min_length=1, max_length=80)] | None
 
 
+class AreaBoard(Closed):
+    rows: Annotated[int, Field(ge=1, le=12)]
+    columns: Annotated[int, Field(ge=1, le=12)]
+    targetArea: Annotated[int, Field(ge=1, le=120)]
+
+
 class MathWorkspaceParams(FamilyParams):
-    mode: Literal['grid', 'ruler', 'number_line', 'clock', 'chart', 'equation', 'shape', 'angle', 'balance', 'vessel']
+    mode: Literal['grid', 'ruler', 'number_line', 'clock', 'chart', 'equation', 'shape', 'angle', 'balance', 'vessel', 'area_tile', 'area_design', 'area_expression']
     width: Annotated[int, Field(ge=1, le=20)]
     height: Annotated[int, Field(ge=1, le=20)]
     step: Annotated[str, Field(min_length=1, max_length=80)]
@@ -402,6 +415,7 @@ class MathWorkspaceParams(FamilyParams):
     unitLabel: Annotated[str, Field(min_length=1, max_length=100)]
     objects: Annotated[list[BoardObject], Field(max_length=24)]
     tokens: Annotated[list[ToolkitTile], Field(max_length=24)]
+    area: AreaBoard | None = None
 
 
 class WorkspaceAnswer(Closed):
@@ -491,7 +505,7 @@ Scene = (FractionScene | LineScene | TilesScene | ChoiceScene | IndependentFract
 
 
 class ActivitySpec(Closed):
-    schemaVersion: Literal['1.0', '1.1', '1.2']
+    schemaVersion: Literal['1.0', '1.1', '1.2', '1.3']
     title: Annotated[str, Field(min_length=1, max_length=100)]
     subject: Literal['math', 'ela']
     subskillId: Identifier
@@ -502,8 +516,10 @@ class ActivitySpec(Closed):
 
     @model_validator(mode='after')
     def verify(self):
-        if self.schemaVersion in {'1.1', '1.2'}:
+        if self.schemaVersion in {'1.1', '1.2', '1.3'}:
             return self.verify_general()
+        if any(scene.connection is not None for scene in self.scenes):
+            raise ValueError('Connected activity scenes require schema 1.3')
         if self.subskillId not in SUPPORTED or self.grade != 3:
             raise ValueError('Legacy activities require their original grade-three skill')
         if SUPPORTED[self.subskillId] != self.subject:
@@ -587,65 +603,68 @@ class ActivitySpec(Closed):
             _safe_generated_text(value)
         tasks = set()
         for index, scene in enumerate(self.scenes):
-            final = index == len(self.scenes) - 1
-            if scene.component not in GENERIC_COMPONENTS:
-                raise ValueError('General activities require general response components')
-            if scene.phase != ('independent' if final else 'guided') or scene.nextSceneId != (None if final else ids[index + 1]):
-                raise ValueError('Scenes require a linear guided-to-independent transition')
-            allowed = ({'independent_response'} if final else {'guided_choice', 'guided_response', 'fraction_split_compare'}) | toolkit.COMPONENTS | families.COMPONENTS
-            if scene.component not in allowed:
-                raise ValueError('Component is not aligned with its phase')
-            for value in [scene.prompt, scene.feedback.correct, scene.feedback.incorrect, scene.feedback.hint]:
-                _safe_generated_text(value)
-            if scene.params.context is not None:
-                _safe_generated_text(scene.params.context)
-            elif scene.component not in toolkit.COMPONENTS | families.COMPONENTS and _CONTEXT_REFERENCE.search(scene.prompt):
-                raise ValueError('Activity task refers to missing context')
-            if not final and scene.component not in toolkit.COMPONENTS | families.COMPONENTS:
-                _safe_generated_text(scene.params.teachingText)
-            # Manipulatives can reuse an instruction with genuinely new objects
-            # or passage pieces; their task is defined by that playable content.
-            task = families.task_key(scene) if scene.component in families.COMPONENTS else toolkit.task_key(scene) if scene.component in toolkit.COMPONENTS else normalize_text(scene.prompt) + '\n' + normalize_text(scene.params.context or '')
-            if task in tasks:
-                if final and scene.component in toolkit.COMPONENTS | families.COMPONENTS:
-                    raise ValueError('Independent control must use fresh content')
-                raise ValueError('Activity tasks must be distinct')
-            tasks.add(task)
-            if scene.component in families.COMPONENTS:
-                if self.schemaVersion != '1.2':
-                    raise ValueError('Family mechanics require activity schema 1.2')
-                families.validate_scene(scene, self.subject)
-                continue
-            if scene.component in toolkit.COMPONENTS:
-                toolkit.validate_scene(scene, self.subject)
-                continue
-            if scene.component == 'fraction_split_compare':
-                if self.subject != 'math' or not is_equivalent_target(self):
-                    raise ValueError('Split and compare is scoped to equivalent fractions')
-                if scene.answer.splitFactor not in scene.params.splitFactors:
-                    raise ValueError('Split answer must be an offered equal partition')
-                continue
-            _safe_generated_text(scene.answer.value)
-            for value in scene.answer.acceptedAnswers:
-                _safe_generated_text(value)
-            if scene.component == 'guided_choice':
-                options = scene.params.options
-                if len({option.id for option in options}) != len(options) or len({normalize_text(option.text) for option in options}) != len(options):
-                    raise ValueError('Choice controls require distinct IDs and labels')
-                if scene.answer.value not in {option.id for option in options} or scene.answer.acceptedAnswers or scene.answer.comparison != 'text':
-                    raise ValueError('Choice answer must name exactly one option ID')
-                for option in options:
-                    _safe_generated_text(option.text)
-            elif scene.answer.comparison == 'fraction_form':
-                if not final or not is_equivalent_target(self):
-                    raise ValueError('Requested fraction form is scoped to the independent equivalent-fractions task')
-                validate_fraction_form(scene.answer)
-            elif scene.answer.comparison == 'number':
-                expected = numeric_answer(scene.answer.value)
-                if any(numeric_answer(value) != expected for value in scene.answer.acceptedAnswers):
-                    raise ValueError('Numeric alternatives must equal the canonical answer')
-            elif len({normalize_text(value) for value in scene.answer.acceptedAnswers}) != len(scene.answer.acceptedAnswers):
-                raise ValueError('Accepted answers must be distinct')
+            with composition.scene_validation(index):
+                final = index == len(self.scenes) - 1
+                if scene.component not in GENERIC_COMPONENTS:
+                    raise ValueError('General activities require general response components')
+                if scene.phase != ('independent' if final else 'guided') or scene.nextSceneId != (None if final else ids[index + 1]):
+                    raise ValueError('Scenes require a linear guided-to-independent transition')
+                allowed = ({'independent_response'} if final else {'guided_choice', 'guided_response', 'fraction_split_compare'}) | toolkit.COMPONENTS | families.COMPONENTS
+                if scene.component not in allowed:
+                    raise ValueError('Component is not aligned with its phase')
+                for value in [scene.prompt, scene.feedback.correct, scene.feedback.incorrect, scene.feedback.hint]:
+                    _safe_generated_text(value)
+                if scene.params.context is not None:
+                    _safe_generated_text(scene.params.context)
+                elif scene.component not in toolkit.COMPONENTS | families.COMPONENTS and _CONTEXT_REFERENCE.search(scene.prompt):
+                    raise ValueError('Activity task refers to missing context')
+                if not final and scene.component not in toolkit.COMPONENTS | families.COMPONENTS:
+                    _safe_generated_text(scene.params.teachingText)
+                # Manipulatives can reuse an instruction with genuinely new objects
+                # or passage pieces; their task is defined by that playable content.
+                task = families.task_key(scene) if scene.component in families.COMPONENTS else toolkit.task_key(scene) if scene.component in toolkit.COMPONENTS else normalize_text(scene.prompt) + '\n' + normalize_text(scene.params.context or '')
+                if task in tasks:
+                    if final and scene.component in toolkit.COMPONENTS | families.COMPONENTS:
+                        raise ValueError('Independent control must use fresh content')
+                    raise ValueError('Activity tasks must be distinct')
+                tasks.add(task)
+                if scene.component in families.COMPONENTS:
+                    if self.schemaVersion not in {'1.2', '1.3'}:
+                        raise ValueError('Family mechanics require activity schema 1.2 or 1.3')
+                    if scene.component == 'math_workspace' and (scene.params.area is not None or scene.params.mode in composition.AREA_MODES) and self.schemaVersion != '1.3':
+                        raise ValueError('Connected area actions require activity schema 1.3')
+                    families.validate_scene(scene, self.subject)
+                    continue
+                if scene.component in toolkit.COMPONENTS:
+                    toolkit.validate_scene(scene, self.subject)
+                    continue
+                if scene.component == 'fraction_split_compare':
+                    if self.subject != 'math' or not is_equivalent_target(self):
+                        raise ValueError('Split and compare is scoped to equivalent fractions')
+                    if scene.answer.splitFactor not in scene.params.splitFactors:
+                        raise ValueError('Split answer must be an offered equal partition')
+                    continue
+                _safe_generated_text(scene.answer.value)
+                for value in scene.answer.acceptedAnswers:
+                    _safe_generated_text(value)
+                if scene.component == 'guided_choice':
+                    options = scene.params.options
+                    if len({option.id for option in options}) != len(options) or len({normalize_text(option.text) for option in options}) != len(options):
+                        raise ValueError('Choice controls require distinct IDs and labels')
+                    if scene.answer.value not in {option.id for option in options} or scene.answer.acceptedAnswers or scene.answer.comparison != 'text':
+                        raise ValueError('Choice answer must name exactly one option ID')
+                    for option in options:
+                        _safe_generated_text(option.text)
+                elif scene.answer.comparison == 'fraction_form':
+                    if not final or not is_equivalent_target(self):
+                        raise ValueError('Requested fraction form is scoped to the independent equivalent-fractions task')
+                    validate_fraction_form(scene.answer)
+                elif scene.answer.comparison == 'number':
+                    expected = numeric_answer(scene.answer.value)
+                    if any(numeric_answer(value) != expected for value in scene.answer.acceptedAnswers):
+                        raise ValueError('Numeric alternatives must equal the canonical answer')
+                elif len({normalize_text(value) for value in scene.answer.acceptedAnswers}) != len(scene.answer.acceptedAnswers):
+                    raise ValueError('Accepted answers must be distinct')
         # Review separately checks semantic freshness. Here we reject overt answer
         # disclosures without confusing a recurring small number or common word
         # with a leaked solution to a different, otherwise fresh task.
@@ -657,8 +676,9 @@ class ActivitySpec(Closed):
                 raise ValueError('Guided content must not disclose the independent answer')
         if any(scene.component in toolkit.COMPONENTS for scene in self.scenes):
             toolkit.validate_fresh_challenge(self)
-        if self.schemaVersion == '1.2':
+        if self.schemaVersion in {'1.2', '1.3'}:
             families.validate_activity(self)
+        composition.validate_connections(self)
         if any(scene.component == 'fraction_split_compare' for scene in self.scenes) or getattr(final.answer, 'comparison', None) == 'fraction_form':
             validate_equivalent_activity(self)
         return self

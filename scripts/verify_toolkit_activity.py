@@ -139,7 +139,7 @@ def verify_case(client, security, recorder, name):
         parentOutcomeVisible=True, parentPinProtectedHistory=True, learningStatusUnchanged=True, success=True)
 
 
-def verify(report, selected, *, case_runner=None):
+def verify(report, selected, *, case_runner=None, empty_library=False):
     from dotenv import load_dotenv
     load_dotenv(ROOT / 'backend/.env')
     from backend.provider import ExtractionError, VisionSettings
@@ -164,6 +164,7 @@ def verify(report, selected, *, case_runner=None):
                 super().__init__(settings=settings)
                 self.counts, self.rejections, self.errors, self.approvals = {}, [], [], 0
                 self.proposals = []
+                self.failed_proposals, self.repairs = [], []
 
             async def _call(self, response_model, task, instruction, data):
                 self.counts[task] = self.counts.get(task, 0) + 1
@@ -171,6 +172,9 @@ def verify(report, selected, *, case_runner=None):
                     result = await super()._call(response_model, task, instruction, data)
                 except ExtractionError as error:
                     self.errors.append(safe_code(error.code))
+                    candidate = getattr(error, '_activity_candidate', None)
+                    if isinstance(candidate, dict):
+                        self.failed_proposals.append(dict(task=task, candidate=candidate))
                     raise
                 if isinstance(result, ActivityReview):
                     if result.approved:
@@ -181,6 +185,8 @@ def verify(report, selected, *, case_runner=None):
                     # In-memory original synthetic activity proposals allow an
                     # opt-in verifier to diagnose a rejected run without logs.
                     self.proposals.append(result.model_dump())
+                elif task == 'repair_activity_scene':
+                    self.repairs.append(result.model_dump())
                 return result
 
         security = SecurityContext(Settings(database_url=database_url, app_env='test', password_policy='dev', cookie_secure=False, trusted_origins=('http://testserver',)))
@@ -188,10 +194,17 @@ def verify(report, selected, *, case_runner=None):
             raise VerificationFailure('isolation', 'unsafe_database_location')
         security.db.migrate()
         seed_catalog(security.db)
-        seed_library(security.db)
+        if not empty_library:
+            seed_library(security.db)
+        with security.db.transaction() as conn:
+            initial_activity_count = conn.execute('SELECT COUNT(*) FROM activity_versions').fetchone()[0]
+        if empty_library and initial_activity_count:
+            raise VerificationFailure('isolation', 'finished_library_not_empty')
         main.app.state.security = security
         main.app.state.gap_adapter = None
-        report.update(isolatedTemporaryDatabase=True, fixtureMode=False, stubbedProvider=False, browserVerifiedByThisScript=False, cases=[])
+        report.update(isolatedTemporaryDatabase=True, fixtureMode=False, stubbedProvider=False,
+                      emptyLibraryAtStart=empty_library, initialFinishedActivityCount=initial_activity_count,
+                      browserVerifiedByThisScript=False, cases=[])
         for name in selected:
             recorder = RecordingAdapter()
             main.app.state.activity_adapter = recorder

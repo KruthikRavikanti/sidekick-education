@@ -13,7 +13,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 MAP_PATH = ROOT / 'data/activities/catalog_coverage.json'
 CATALOG_PATH = ROOT / 'data/sidekick_skill_map_v2.json'
-EVIDENCE_PATHS = (ROOT / 'data/activities/catalog_verification.json', ROOT / 'data/activities/catalog_live_verification.json')
+EVIDENCE_PATHS = (ROOT / 'data/activities/catalog_verification.json', ROOT / 'data/activities/catalog_live_verification.json',
+                  ROOT / 'data/activities/composition_live_verification.json')
 GRADE_NAMES = ('K', '1', '2', '3', '4', '5')
 COMPONENTS = frozenset({'quantity_lab', 'math_workspace', 'sort_connect', 'text_editor', 'oral_studio', 'drawing_studio',
     'bundle_builder', 'tile_order', 'evidence_board', 'fraction_split_compare', 'fraction_builder', 'number_line', 'word_tiles', 'word_choice'})
@@ -117,6 +118,7 @@ def evidence_records(paths=EVIDENCE_PATHS):
     indexed = defaultdict(list)
     rejected = []
     expected_hash = file_sha(MAP_PATH)
+    from .models import COMPONENT_VERSION, PROMPT_VERSION
     for path in map(Path, paths):
         if not path.is_file():
             continue
@@ -149,9 +151,12 @@ def evidence_records(paths=EVIDENCE_PATHS):
             scored = (generated and case.get('playedScored') is True
                       and outcome in {'correct', 'incorrect'}
                       and (not manual or case.get('parentReviewed') is True))
+            current_composition = (case['providerMode'] == 'live' and report.get('componentVersion') == COMPONENT_VERSION
+                and report.get('promptVersion') == PROMPT_VERSION and report.get('emptyLibraryAtStart') is True
+                and case.get('liveUpload') is True and case.get('noFinishedActivityReuse') is True)
             indexed[sid].append(dict(source=source, generatedValidated=generated, playedScored=scored,
                 providerMode=case['providerMode'], specSha256=spec_hash, outcome=outcome,
-                parentReviewed=case.get('parentReviewed') is True))
+                parentReviewed=case.get('parentReviewed') is True, currentComposition=current_composition))
     return indexed, rejected
 
 
@@ -188,7 +193,9 @@ def build_report(evidence_paths=EVIDENCE_PATHS):
             missing_requirements.append('coin_image_assets')
         stages = dict(mechanicSuitable=suitable,
             generatedValidated=any(case['generatedValidated'] for case in evidence[sid]),
-            playedScored=any(case['playedScored'] for case in evidence[sid]))
+            playedScored=any(case['playedScored'] for case in evidence[sid]),
+            liveComposedGenerated=any(case['currentComposition'] and case['generatedValidated'] for case in evidence[sid]),
+            liveComposedPlayed=any(case['currentComposition'] and case['playedScored'] for case in evidence[sid]))
         item = dict(subskillId=sid, grade=entry['grade'], subject=entry['subject'], domain=entry['domain'],
                     family=entry['family'], assessment=entry['assessment'], parentParticipation=entry['parentParticipation'],
                     **stages, missingMechanics=sorted(mechanics - implemented) if not suitable else [],
@@ -197,6 +204,9 @@ def build_report(evidence_paths=EVIDENCE_PATHS):
         groups[(entry['subject'], entry['grade'], entry['domain'])].append(item)
     def counts(items):
         return dict(total=len(items), mechanicSuitable=sum(item['mechanicSuitable'] for item in items),
+            liveComposedGenerated=sum(item['liveComposedGenerated'] for item in items),
+            liveComposedPlayed=sum(item['liveComposedPlayed'] for item in items),
+            unverifiedLiveComposition=[item['subskillId'] for item in items if not item['liveComposedPlayed']],
             generatedValidated=sum(item['generatedValidated'] for item in items), playedScored=sum(item['playedScored'] for item in items),
             fixtureGeneratedValidated=sum(any(case['providerMode'] == 'fixture' and case['generatedValidated'] for case in item['evidence']) for item in items),
             liveGeneratedValidated=sum(any(case['providerMode'] == 'live' and case['generatedValidated'] for case in item['evidence']) for item in items),
@@ -205,6 +215,8 @@ def build_report(evidence_paths=EVIDENCE_PATHS):
             uncovered=[item['subskillId'] for item in items if not item['mechanicSuitable']])
     return dict(schemaVersion='1.0', catalogSha256=file_sha(CATALOG_PATH), coverageMapSha256=file_sha(MAP_PATH),
         definitions=dict(mechanicSuitable='A mapped meaningful control and required response mode exist in both backend and React; semantic/material requirements still gate every generated activity.',
+            liveComposedGenerated='An actual-provider composition from an initially empty library passed the CURRENT component/prompt versions through a real upload, without reusing a finished activity.',
+            liveComposedPlayed='That current live composition completed the independent challenge and reached protected parent history with an automatic or explicit parent outcome.',
             generatedValidated='A current-map evidence record identifies an actual generated definition that passed activity validation and independent review.',
             playedScored='A current-map generated activity was actually completed and scored, including explicit parent review when required. Pending review is not scored.'),
         totals=counts(entries), assessmentTotals=dict(Counter(item['assessment'] for item in entries)),
@@ -219,8 +231,12 @@ def build_report(evidence_paths=EVIDENCE_PATHS):
 def markdown_report(report):
     totals = report['totals']
     lines = ['# Sidekick K–5 activity coverage', '',
-        f"Catalog subskills: **{totals['total']}**. Suitable mechanic paths: **{totals['mechanicSuitable']}**. "
-        f"Generated and validated: **{totals['generatedValidated']}**. Played and scored: **{totals['playedScored']}**.", '',
+        f"Current live composer: **{totals['liveComposedGenerated']}** skills generated and validated; "
+        f"**{totals['liveComposedPlayed']}** played and scored through real uploads with an initially empty library.", '',
+        f"**{len(totals['unverifiedLiveComposition'])} of {totals['total']} skills remain unverified through the current live flow.** "
+        'A mapped control is a coverage plan, not a successful lesson.', '',
+        f"Mapped mechanic paths: **{totals['mechanicSuitable']}**. Historical/current evidence combined: "
+        f"**{totals['generatedValidated']}** generated/validated and **{totals['playedScored']}** played/scored.", '',
         f"Controlled model-boundary fixtures: **{totals['fixtureGeneratedValidated']}** generated/validated, "
         f"**{totals['fixturePlayedScored']}** played/scored. Actual configured provider: "
         f"**{totals['liveGeneratedValidated']}** generated/validated, **{totals['livePlayedScored']}** played/scored. "
@@ -228,11 +244,11 @@ def markdown_report(report):
         'These are separate stages. A catalog assignment is not evidence that an activity was generated or played. '
         'Parent-reviewed artifacts remain pending until a parent records an outcome. '
         'Full pedagogical effectiveness and repeated real-world performance are not established by a playable path.', '',
-        '| Subject | Grade | Domain | Catalog | Suitable | Generated + validated | Played + scored |',
+        '| Subject | Grade | Domain | Catalog | Mapped path | Current live generated | Current live played + scored |',
         '| --- | --- | --- | ---: | ---: | ---: | ---: |']
     for row in report['byGradeDomain']:
         grade = 'K' if row['grade'] == 0 else row['grade']
-        lines.append(f"| {row['subject']} | {grade} | {row['domain']} | {row['total']} | {row['mechanicSuitable']} | {row['generatedValidated']} | {row['playedScored']} |")
+        lines.append(f"| {row['subject']} | {grade} | {row['domain']} | {row['total']} | {row['mechanicSuitable']} | {row['liveComposedGenerated']} | {row['liveComposedPlayed']} |")
     lines += ['', '## Uncovered subskills', '']
     uncovered = [row for row in report['subskills'] if not row['mechanicSuitable']]
     if not uncovered:

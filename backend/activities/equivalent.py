@@ -95,7 +95,7 @@ def validate_equivalent_activity(spec):
     scenes = _field(spec, 'scenes', [])
     final = scenes[-1]
     answer = _field(final, 'answer')
-    if (_field(spec, 'schemaVersion') == '1.2' and _field(spec, 'subskillId') == '4.NF.A.1-2'
+    if (_field(spec, 'schemaVersion') in {'1.2', '1.3'} and _field(spec, 'subskillId') == '4.NF.A.1-2'
             and _field(final, 'component') in {'text_editor', 'oral_studio'}
             and _field(final, 'phase') == 'independent'
             and _field(answer, 'assessment') == 'parent_review' and _field(answer, 'rubric')):

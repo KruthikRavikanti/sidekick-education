@@ -20,7 +20,8 @@ from backend.main import app
 from backend.activities.models import ActivityReview, ActivitySpec
 from toolkit_examples import example as toolkit_example
 from catalog_examples import EXAMPLE_KINDS, example as catalog_example
-from backend.activities.general import FamilyActivityReview
+from composed_examples import area_example
+from backend.activities.general import CompositionActivityReview, FamilyActivityReview
 
 
 @app.middleware('http')
@@ -37,16 +38,26 @@ async def synthetic_slow_reader(request, call_next):
 class BrowserComposer:
     model = 'explicit-synthetic-browser-composer'
 
+    @staticmethod
+    def specification(raw):
+        # Old fixture source files describe controlled provider content, not
+        # saved sessions. New provider output always uses the current contract.
+        raw = copy.deepcopy(raw)
+        raw['schemaVersion'] = '1.3'
+        return ActivitySpec.model_validate(raw)
+
     async def _call(self, response_model, task, instruction, data):
-        if response_model is FamilyActivityReview:
-            return FamilyActivityReview(approved=True, reason='approved', demonstratesTarget=True,
+        if response_model in {CompositionActivityReview, FamilyActivityReview}:
+            return response_model(approved=True, reason='approved', demonstratesTarget=True,
                 interactionNecessary=True, goalAchievable=True, scoringAligned=True,
                 materialsPresent=True, independentFresh=True)
         if response_model is ActivityReview:
             return ActivityReview(approved=True, reason='approved')
-        assert response_model is ActivitySpec and data['schemaVersion'] in {'1.1', '1.2'}
+        assert response_model is ActivitySpec and data['schemaVersion'] in {'1.1', '1.2', '1.3'}
+        if data['subskillId'] == '3.MD.C.7-1':
+            return self.specification(area_example(data))
         if data['subskillId'] in EXAMPLE_KINDS:
-            return ActivitySpec.model_validate(catalog_example(data))
+            return self.specification(catalog_example(data))
         if data['subskillId'] == '3.NF.A.3-2':
             assert data['learningGoal']['intent'] in {'explore_skill', 'reinforce_correct_work', 'support_current_skill'}
             manifest = json.loads((Path(__file__).resolve().parents[2] / 'data/activities/original_examples.json').read_text())
@@ -57,9 +68,9 @@ class BrowserComposer:
                 scene['params']['teachingText'] = scene['params']['teachingText'].replace('planted area', 'colored area')
                 scene['prompt'] = scene['prompt'].replace('garden bed', 'quilt').replace('garden', 'quilt').replace('planted', 'colored')
                 scene['feedback'] = {key: value.replace('planted', 'colored') for key, value in scene['feedback'].items()}
-            return ActivitySpec.model_validate(spec)
+            return self.specification(spec)
         assert data['subskillId'] in {'1.NBT.B.2-1', 'RI.3.3-1', 'RI.3.1-1'}
-        return ActivitySpec.model_validate(toolkit_example(data))
+        return self.specification(toolkit_example(data))
 
 
 app.state.activity_adapter = BrowserComposer()

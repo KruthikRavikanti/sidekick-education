@@ -33,11 +33,13 @@ class FamilyComposer:
 
     async def _call(self, response_model, task, instruction, data):
         self.calls.append((task, copy.deepcopy(data)))
-        if response_model is FamilyActivityReview:
+        if issubclass(response_model, FamilyActivityReview):
             return dict(approved=self.approved, reason='approved' if self.approved else 'unsuitable_task',
                 demonstratesTarget=True, interactionNecessary=self.approved, goalAchievable=True,
                 scoringAligned=True, materialsPresent=True, independentFresh=True)
-        return example(data)
+        result = example(data)
+        result['schemaVersion'] = '1.3'
+        return result
 
 
 def wav_bytes():

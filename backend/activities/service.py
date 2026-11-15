@@ -1,5 +1,6 @@
 """Owned activity orchestration. Reusable definitions contain curriculum data only."""
 import hashlib
+import asyncio
 import json
 import re
 import uuid
@@ -10,9 +11,11 @@ from backend.gap.catalog import get_subskill
 from backend.gap.service import _audit, _homework_state, authorize, decode, encode
 from backend.gap.config import CONFIG
 from backend.gap.vision import VisionAdapter
-from .models import (ActivitySpec, COMPONENT_VERSION, COMPATIBLE_COMPONENT_VERSIONS, PROMPT_VERSION, SUPPORTED,
+from .models import (ActivitySpec, COMPONENT_VERSION, COMPATIBLE_COMPONENT_VERSIONS, PROMPT_VERSION,
                      ChoiceResponse, FractionSplitResponse, PartsResponse, TickResponse, TilesResponse)
 from . import capabilities, equivalent, general, toolkit
+
+COMPOSITION_TIMEOUT_SECONDS = 480
 
 
 def uid():
@@ -100,8 +103,18 @@ def _result(conn, row, spec):
     return result_details(conn, row, spec, attempt)
 
 
+def _resolved_scene(conn, row, spec, scene):
+    from .composition import resolve_scene
+    responses = {}
+    for attempt in conn.execute('SELECT scene_id,response_json FROM activity_attempts WHERE session_id=? ORDER BY rowid', (row['id'],)):
+        responses[attempt['scene_id']] = decode(attempt['response_json'])
+    return resolve_scene(spec, scene, responses)
+
+
 def _view(conn, row, spec):
     scene = spec.scenes[row['current_scene']] if row['status'] == 'in_progress' else None
+    if scene:
+        scene = _resolved_scene(conn, row, spec, scene)
     attempt = conn.execute('SELECT * FROM activity_attempts WHERE session_id=? AND scene_id=? ORDER BY rowid DESC LIMIT 1', (row['id'], scene.id)).fetchone() if scene else None
     hinted = bool(conn.execute('SELECT 1 FROM activity_attempts WHERE session_id=? AND scene_id=? AND hint_used=1', (row['id'], scene.id)).fetchone()) if scene else False
     origin = conn.execute('SELECT origin FROM activity_versions WHERE id=?', (row['activity_version_id'],)).fetchone()[0]
@@ -111,9 +124,14 @@ def _view(conn, row, spec):
     if final_result:
         # Parent criteria and review notes stay behind the parent PIN boundary.
         final_result = {**final_result, 'rubric': [], 'reviewNote': None}
+    public_params = scene.params.model_dump() if scene else None
+    if scene and scene.phase == 'independent' and scene.component == 'math_workspace' and scene.params.mode == 'area_expression':
+        # The child sees the rectangle and side counts, then determines its
+        # area. Retain the derived total only in the immutable private spec.
+        public_params['area']['targetArea'] = None
     # Deliberate allowlist: never serialize ActivitySpec or a later scene.
     return dict(id=row['id'], title=spec.title, subject=spec.subject, origin=origin, targetSkill=target_view(target), status=row['status'], sceneIndex=row['current_scene'], sceneCount=len(spec.scenes),
-                currentScene=dict(id=scene.id, component=scene.component, phase=scene.phase, prompt=scene.prompt, params=scene.params.model_dump(),
+                currentScene=dict(id=scene.id, component=scene.component, phase=scene.phase, prompt=scene.prompt, params=public_params,
                     parentParticipation=bool((path or {}).get('parentParticipation'))) if scene else None,
                 currentResponse=decode(attempt['response_json']) if attempt else None,
                 feedback=dict(correct=None if attempt['assessment_status'] == 'pending_parent_review' else bool(attempt['correct']),
@@ -238,6 +256,22 @@ def _learning_goal(conn, kid_id, upload_id, target, evidence_id):
     goal = dict(intent='explore_skill',
                 objective=target['subskill'],
                 supportedObservation=None)
+    path = capabilities.coverage_for(target)
+    goal['problemType'] = dict(family=(path or {}).get('family'), responseForm='unknown')
+    # Characterize the reliably mapped task locally. Only categorical features
+    # leave this boundary; worksheet wording/examples never steer the scenario.
+    for problem_row in conn.execute('SELECT extraction_json,mapping_json FROM homework_problems WHERE kid_id=? AND upload_id=? AND teacher_conflict=0 ORDER BY page_number,problem_order', (kid_id, upload_id)):
+        mapping = decode(problem_row['mapping_json'], {}) or {}
+        if (not isinstance(mapping, dict) or mapping.get('subskill_id') != target['subskill_id']
+                or not isinstance(mapping.get('confidence'), (int, float))
+                or mapping['confidence'] < CONFIG.mapping_confidence):
+            continue
+        problem = decode(problem_row['extraction_json'], {}) or {}
+        if not isinstance(problem, dict):
+            continue
+        form = 'selected_choice' if problem.get('answer_choices') else 'written_response'
+        goal['problemType']['responseForm'] = form
+        break
     if equivalent.is_equivalent_target(target):
         goal['objective'] = 'Use equal subdivisions to show that equivalent fractions name the same shaded amount of the same whole.'
     if target['subskill_id'] in {'3.NF.A.3-2', '4.NF.A.1-1'}:
@@ -263,55 +297,12 @@ def _learning_goal(conn, kid_id, upload_id, target, evidence_id):
     return goal
 
 
-GENERATION_INSTRUCTION = """Compose a new, complete ActivitySpec, not a single question or a fixed template.
-Choose 3 to 6 scenes and their order, explanatory prompts, parameters, feedback and transitions.
-Use 2 to 5 guided scenes followed by exactly one fresh independent scene. The component is the
-safe interaction vocabulary, while you choose the activity sequence. IDs and nextSceneId must
-form one linear sequence. Select only the requested subject, grade and subskill; copy the
-provided misconception tag exactly and use only supplied sourceRefs (these are design references).
-No worksheet text, student identity or private information is supplied or may be invented.
-Activities can reinforce correct work as well as support skills needing more practice. The
-misconception tag is curriculum metadata, not proof that this student made that mistake.
-Use learningGoal and its supportedObservation to set the focus; do not invent other observations.
-Never claim that the student's uploaded answer was wrong or that they have a misconception.
-Math: guided fraction_builder or number_line. Fractions strictly between zero and one,
-denominators only 2,3,4,6,8. fraction_builder params denominator; number_line params denominator,
-min=0,max=1. Each guided prompt must explicitly name its target fraction a/b. Answer.value
-is that exact fraction. Explain numerator as copies of the equal unit fraction, not two unrelated
-numbers. Final independent_fraction params unitDenominator,copies; prompt explicitly asks
-'What fraction is N copies of 1/D?' Answer.value=N/D. Choose a final fraction unequal to all
-guided fractions and never mention the final answer fraction in guided content.
-ELA: guided word_tiles params baseWord,tiles[{id,text}] whose letters exactly form the correct
-plural, or word_choice params baseWord,options[{id,text}] including exactly one correct plural.
-Every word prompt must contain the base word and the word 'plural'. Choose only supported
-base words from the supplied dictionary. Answer.value is the deterministically correct plural.
-Final independent_word params baseWord: prompt exactly 'One BASE, two ___. Write the plural word.'
-or 'Write the plural of BASE.' Use a fresh base word and plural never mentioned in
-any guided prompt, hint, feedback or option. Do not reveal its plural in its prompt.
-Independent scenes have no tiles, choices or visual. Feedback objects contain correct, incorrect,
-hint strings even for the final scene, but those final strings are never shown to the child.
-Make feedback explain why the skill works, without claims of mastery or changed skill status.
-"""
-
-
-async def _generate(adapter, target, source_refs, seen_tasks, variation=0, learning_goal=None):
-    if target['subskill_id'] not in SUPPORTED:
-        return await general.compose(adapter, target, source_refs, seen_tasks, variation, learning_goal=learning_goal)
-    from .models import IRREGULAR, REGULAR, plural
-    data = dict(schemaVersion='1.0', subject=SUPPORTED[target['subskill_id']], grade=3,
-                subskillId=target['subskill_id'], subskill=target['subskill'], misconceptionTags=[target['common_misconception']], sourceRefs=source_refs,
-                supportedPlurals={base: plural(base) for base in sorted(set(IRREGULAR) | REGULAR)}, previousIndependentTasks=seen_tasks, variation=variation,
-                availableMechanics=list(capabilities.mechanics_for(target)), learningGoal=learning_goal or dict(intent='explore_skill', objective=target['subskill'], supportedObservation=None))
-    result = await adapter._call(ActivitySpec, 'compose_activity', GENERATION_INSTRUCTION, data)
-    spec = ActivitySpec.model_validate(result.model_dump() if isinstance(result, ActivitySpec) else result)
-    if (spec.schemaVersion != '1.0' or spec.grade != 3
-            or spec.subject != SUPPORTED[target['subskill_id']]
-            or spec.subskillId != target['subskill_id']
-            or target['common_misconception'] not in spec.misconceptionTags
-            or not set(spec.sourceRefs).issubset(source_refs)):
-        raise ValueError('Generated activity is not aligned with catalog or references')
-    capabilities.validate_activity(spec, target)
-    return spec
+async def _generate(adapter, target, source_refs, seen_tasks, variation=0, learning_goal=None,
+                    *, previous_interactions=None, on_event=None):
+    # All new live activities use the same compositional toolkit. The old 1.0
+    # definitions remain readable for immutable sessions/offline examples only.
+    return await general.compose(adapter, target, source_refs, seen_tasks, variation,
+        learning_goal=learning_goal, previous_interactions=previous_interactions, on_event=on_event)
 
 
 async def start(security, kid_id, body, active, *, adapter=None):
@@ -338,13 +329,16 @@ async def start(security, kid_id, body, active, *, adapter=None):
         blocked = _blocked_tasks(conn, kid_id, upload_id, general.subject_for(target),
                                  equivalent_skill=equivalent.is_equivalent_target(target))
         learning_goal = _learning_goal(conn, kid_id, upload_id, target, evidence_id)
-        matches = _matches(conn, target, blocked=blocked)
+        matches = _matches(conn, target, blocked=blocked) if adapter is False else []
         seen = {row[0] for row in conn.execute('SELECT activity_version_id FROM activity_sessions WHERE kid_id=?', (kid_id,))}
-        selected = next((match for match in matches if match[0]['id'] not in seen), None)
-        seen_tasks = []
-        for row in conn.execute('SELECT v.spec_json FROM activity_sessions s JOIN activity_versions v ON v.id=s.activity_version_id WHERE s.kid_id=? AND s.subskill_id=?', (kid_id, target['subskill_id'])):
-            scene = ActivitySpec.model_validate_json(row[0]).scenes[-1]
+        selected = next((match for match in matches if match[0]['id'] not in seen), None) if adapter is False else None
+        seen_tasks, previous_interactions = [], []
+        for row in conn.execute('SELECT v.spec_json FROM activity_sessions s JOIN activity_versions v ON v.id=s.activity_version_id WHERE s.kid_id=? AND s.subskill_id=? ORDER BY s.started_at,s.rowid', (kid_id, target['subskill_id'])):
+            previous_spec = ActivitySpec.model_validate_json(row[0])
+            scene = previous_spec.scenes[-1]
             seen_tasks.append(general.scene_question(scene))
+            previous_interactions.append([dict(component=item.component, mode=getattr(item.params, 'mode', None))
+                for item in previous_spec.scenes if item.phase == 'guided'])
         refs = [row[0] for row in conn.execute('SELECT id FROM activity_sources WHERE active=1 ORDER BY id')]
         revision = conn.execute('SELECT id FROM activity_library_revisions ORDER BY imported_at DESC,id LIMIT 1').fetchone()
         if revision:
@@ -357,22 +351,34 @@ async def start(security, kid_id, body, active, *, adapter=None):
             conn.execute('INSERT INTO activity_library_revisions VALUES(?,?,?,?,?)',
                          (revision_id, source_hash, security.clock.now(), 0, '[]'))
     # No transaction spans provider work. Only curriculum fields cross this boundary.
-    generated, outcome = None, 'reused'
+    generated, outcome, generation_events = None, 'reused_offline', []
     if selected is None and adapter is not False and revision_id:
+        composition_deadline = asyncio.get_running_loop().time() + COMPOSITION_TIMEOUT_SECONDS
         for variation in range(2):
             try:
-                generated = await _generate(adapter or VisionAdapter(), target, refs, seen_tasks, variation, learning_goal=learning_goal)
+                # Keep bounded recovery inside the start lease and HTTP proxy
+                # budgets, even if several provider calls each hit their limit.
+                async with asyncio.timeout_at(composition_deadline):
+                    generated = await _generate(adapter or VisionAdapter(), target, refs, seen_tasks, variation, learning_goal=learning_goal,
+                        previous_interactions=previous_interactions[-10:], on_event=generation_events.append)
                 if _task_blocked(generated.scenes[-1], blocked):
                     generated = None
-                    outcome = 'freshness_rejected_fallback'
+                    outcome = 'freshness_rejected'
+                    generation_events.append(dict(category='review', code='source_or_previous_task_reused', sceneIndex=None, field=None, constraint=None, mode='original', action='validation_failed'))
                     continue
                 outcome = 'generated'
                 break
+            except TimeoutError:
+                generated, outcome = None, 'composition_timeout'
+                generation_events.append(dict(category='provider', code='composition_timeout', sceneIndex=None,
+                    field=None, constraint=None, mode='original', action='compose_failed'))
+                break
             except Exception:
                 # Never include exception text or raw model output in a log/audit.
-                outcome = 'generation_failed_fallback'
-                if target['subskill_id'] in SUPPORTED:
-                    break
+                outcome = 'composition_failed'
+                # compose() already attempted scene-local repair and one simpler
+                # composition for this exact goal; do not restart a hidden loop.
+                break
     with security.db.transaction() as conn:
         # A logout, switch, deleted profile or deleted upload during generation
         # invalidates the result before it can become private child history.
@@ -382,6 +388,13 @@ async def start(security, kid_id, body, active, *, adapter=None):
         reservation = conn.execute('SELECT * FROM activity_start_requests WHERE kid_id=? AND request_key=?', (kid_id, key)).fetchone()
         if not reservation or reservation['lease_token'] != lease:
             raise AccountError('activity_preparing', 'Please retry to resume the activity.', 409)
+        for event in generation_events:
+            # Safe fixed reason codes and schema-owned locations only. Neither
+            # candidate scenes, original work, nor arbitrary exceptions are logged.
+            audit_event = {name: event.get(name) for name in ('category', 'code', 'sceneIndex', 'field', 'mode', 'action')}
+            _audit(conn, security, 'compose_activity_stage', upload_id, event['code'],
+                model=getattr(adapter, 'model', '') if adapter else '', prompt_version=PROMPT_VERSION,
+                catalog_revision=target['revision'], explanation=encode(audit_event), kid_id=kid_id)
         opened = conn.execute("SELECT id FROM activity_sessions WHERE kid_id=? AND upload_id=? AND status='in_progress'", (kid_id, upload_id)).fetchone()
         if opened:
             session_id = opened['id']
@@ -399,7 +412,7 @@ async def start(security, kid_id, body, active, *, adapter=None):
                 conn.execute('INSERT OR IGNORE INTO activity_versions(id,activity_id,version,spec_json,spec_sha256,subskill_id,subject,grade,misconception_tags_json,origin,verified,source_revision,model,prompt_version,component_version,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
                              (version_id, version_id, 1, raw, content_hash, generated.subskillId, generated.subject, generated.grade, encode(generated.misconceptionTags), 'model_generated', 1, revision_id, getattr(adapter, 'model', '') if adapter else VisionAdapter().model, PROMPT_VERSION, COMPONENT_VERSION, security.clock.now()))
                 selected = (conn.execute('SELECT * FROM activity_versions WHERE spec_sha256=?', (content_hash,)).fetchone(), generated)
-            if selected is None:
+            if selected is None and adapter is False:
                 fallback = _matches(conn, target, blocked=latest_blocked, strong=False)
                 selected = next((match for match in fallback if match[0]['origin'] == 'original_example'), fallback[0] if fallback else None)
             if selected is None:
@@ -471,7 +484,7 @@ def submit(security, kid_id, session_id, body, active):
             return _view(conn, row, spec)
         if row['status'] != 'in_progress' or spec.scenes[row['current_scene']].id != body.sceneId:
             raise AccountError('scene_changed', 'This step changed. Please refresh the activity.', 409)
-        scene = spec.scenes[row['current_scene']]
+        scene = _resolved_scene(conn, row, spec, spec.scenes[row['current_scene']])
         if scene.phase == 'independent' and conn.execute('SELECT 1 FROM activity_attempts WHERE session_id=? AND scene_id=?', (session_id, scene.id)).fetchone():
             raise AccountError('already_answered', 'Your first answer is saved. Continue to the next step.', 409)
         try:
@@ -528,3 +541,32 @@ def history(security, kid_id, active):
             count = conn.execute("SELECT COUNT(DISTINCT scene_id) FROM activity_attempts WHERE session_id=? AND phase='guided' AND hint_used=1", (row['id'],)).fetchone()[0]
             activities.append(dict(id=row['id'], title=spec.title, subject=spec.subject, origin=row['origin'], targetSkill=target_view(target), status=row['status'], startedAt=row['started_at'], completedAt=row['completed_at'], finalResult=_result(conn, row, spec), guidedHintCount=count))
         return dict(activities=activities)
+
+
+def parent_attempt(security, kid_id, session_id, active):
+    """Review the exact persisted composition and every saved child action."""
+    with security.db.transaction() as conn:
+        authorize(security, conn, kid_id, active, 'parent')
+        row = conn.execute('SELECT * FROM activity_sessions WHERE id=? AND kid_id=?', (session_id, kid_id)).fetchone()
+        if not row:
+            raise AccountError('not_found', 'That activity was not found.', 404)
+        version = conn.execute('SELECT spec_json,origin,spec_sha256 FROM activity_versions WHERE id=?', (row['activity_version_id'],)).fetchone()
+        spec = ActivitySpec.model_validate_json(version['spec_json'])
+        responded_scenes = {item[0] for item in conn.execute('SELECT DISTINCT scene_id FROM activity_attempts WHERE session_id=?', (session_id,))}
+        scenes = []
+        for scene in spec.scenes:
+            connection_pending = bool(scene.connection and scene.connection.sourceSceneId not in responded_scenes)
+            resolved = scene if connection_pending else _resolved_scene(conn, row, spec, scene)
+            attempts = conn.execute('SELECT * FROM activity_attempts WHERE session_id=? AND scene_id=? ORDER BY rowid', (session_id, scene.id)).fetchall()
+            scenes.append(dict(id=scene.id, component=scene.component, phase=scene.phase,
+                prompt=resolved.prompt, params=resolved.params.model_dump(),
+                connection=scene.connection.model_dump() if getattr(scene, 'connection', None) else None,
+                connectionPending=connection_pending,
+                responses=[dict(response=decode(attempt['response_json']), responseText=attempt['response_text'],
+                    correct=None if attempt['assessment_status'] == 'pending_parent_review' else bool(attempt['correct']),
+                    assessmentStatus=attempt['assessment_status'], hintUsed=bool(attempt['hint_used']),
+                    createdAt=attempt['created_at']) for attempt in attempts]))
+        return dict(id=row['id'], title=spec.title, subject=spec.subject, schemaVersion=spec.schemaVersion,
+            definitionHash=version['spec_sha256'], origin=version['origin'], status=row['status'],
+            targetSkill=target_view(get_subskill(conn, row['subskill_id'])), scenes=scenes,
+            finalResult=_result(conn, row, spec))

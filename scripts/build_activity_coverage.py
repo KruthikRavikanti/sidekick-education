@@ -315,6 +315,11 @@ def record_for(row):
         requirements += ['named_units_and_valid_conversion']; modes = ['equation', 'ruler']
     elif family == 'measurement_area_volume':
         requirements += ['visible_equal_unit_region_or_solid']; modes = ['grid', 'shape']
+        if sid == '3.MD.C.7-1':
+            # Preserve older saved boards while advertising the implemented
+            # composable actions to both the designer and independent reviewer.
+            modes += ['area_tile', 'area_design', 'area_expression']
+            requirements += ['connected_unit_covering_or_factor_design_to_area_expression']
     elif family == 'data_graphs':
         requirements += ['actual_labeled_scaled_graph']; modes = ['chart']
         required_visual = 'chart'
@@ -404,7 +409,9 @@ def main():
     if not args.check:
         (ROOT / 'data/activities/coverage_report.json').write_text(json.dumps(report, indent=2) + '\n')
         (ROOT / 'data/activities/coverage_report.md').write_text(markdown_report(report))
-    print(json.dumps(dict(**report['totals'], mapFile=str(MAP.relative_to(ROOT)), checked=args.check)))
+    totals = {key:value for key,value in report['totals'].items() if key != 'unverifiedLiveComposition'}
+    print(json.dumps(dict(**totals, unverifiedLiveCompositionCount=len(report['totals']['unverifiedLiveComposition']),
+                          mapFile=str(MAP.relative_to(ROOT)), checked=args.check)))
 
 
 if __name__ == '__main__':
