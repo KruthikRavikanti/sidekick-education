@@ -1,0 +1,43 @@
+{
+  "worksheet": {
+    "title": {
+      "text": "Titles",
+      "uncertain": false
+    },
+    "subject": "ela",
+    "subject_uncertain": false,
+    "printed_grade": {
+      "text": "Grade 3",
+      "uncertain": false
+    },
+    "directions": [],
+    "shared_context": []
+  },
+  "problems": [
+    {
+      "id": "activity-catalog-editing-1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "Write this title correctly: the cat in the hat",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "The Cat in the Hat",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    }
+  ]
+}

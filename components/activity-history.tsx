@@ -1,10 +1,51 @@
 "use client";
 
 import { BookOpen, Check, Clock3, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api, errorMessage } from "@/lib/account-api";
-import type { ActivityHistoryItem } from "@/lib/activity-types";
+import type { ActivityHistoryItem, ActivityResult } from "@/lib/activity-types";
 import { FormError } from "./account-ui";
+import { DrawingPreview } from "./activity-media-controls";
+
+function ParentReview({ kidId, activity, onReviewed }: { kidId: string; activity: ActivityHistoryItem; onReviewed: (result: ActivityResult) => void }) {
+  const [correct, setCorrect] = useState<boolean | null>(null);
+  const [note, setNote] = useState("");
+  const [observed, setObserved] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const keys = useRef(new Map<string, string>());
+  const result = activity.finalResult!;
+  async function submit() {
+    if (correct === null || (result.parentParticipation && !observed) || busy) return;
+    setBusy(true);
+    setError(null);
+    const operation = JSON.stringify({ correct, note, parentObserved: observed });
+    let idempotencyKey = keys.current.get(operation);
+    if (!idempotencyKey) { idempotencyKey = crypto.randomUUID(); keys.current.set(operation, idempotencyKey); }
+    try {
+      const response = await api<{ finalResult: ActivityResult }>(`/api/activities/parent/${encodeURIComponent(kidId)}/sessions/${encodeURIComponent(activity.id)}/review`, {
+        method: "POST", body: { correct, note, parentObserved: observed, idempotencyKey },
+      });
+      onReviewed(response.finalResult);
+    } catch (caught) { setError(errorMessage(caught)); }
+    finally { setBusy(false); }
+  }
+  return <form className="parent-activity-review" onSubmit={event => { event.preventDefault(); void submit(); }}>
+    <h4>Review the learning goal</h4>
+    <p>Use the saved response and these criteria. This result has not been marked correct or incorrect yet.</p>
+    {result.rubric?.length ? <ul>{result.rubric.map((criterion, index) => <li key={index}>{criterion}</li>)}</ul> : null}
+    <fieldset disabled={busy}>
+      <legend>What did the child demonstrate?</legend>
+      <label><input type="radio" name={`review-${activity.id}`} checked={correct === true} onChange={() => setCorrect(true)} />Demonstrated the goal</label>
+      <label><input type="radio" name={`review-${activity.id}`} checked={correct === false} onChange={() => setCorrect(false)} />Needs another try</label>
+    </fieldset>
+    {result.parentParticipation ? <label className="parent-review-observed"><input type="checkbox" checked={observed} disabled={busy} onChange={event => setObserved(event.target.checked)} required />I observed the child take part in this activity.</label> : null}
+    <label htmlFor={`review-note-${activity.id}`}>Review note (optional)</label>
+    <textarea id={`review-note-${activity.id}`} value={note} maxLength={500} rows={3} disabled={busy} onChange={event => setNote(event.target.value)} />
+    <FormError message={error} />
+    <button className="button primary" type="submit" disabled={busy || correct === null || Boolean(result.parentParticipation && !observed)}>{busy ? "Saving review…" : "Save parent review"}</button>
+  </form>;
+}
 
 function activityDate(value: number) {
   const date = new Date(value * 1000);
@@ -89,7 +130,7 @@ function HistoryContent({ kidId }: { kidId: string }) {
                     <Clock3 size={13} aria-hidden="true" />
                   )}
                   {activity.status === "completed"
-                    ? "Completed"
+                    ? activity.finalResult?.correct === null ? "Awaiting parent review" : "Completed"
                     : "In progress"}
                 </span>
               </div>
@@ -118,11 +159,15 @@ function HistoryContent({ kidId }: { kidId: string }) {
                       {activity.finalResult.response}
                     </span>
                   </p>
+                  {activity.finalResult.recordingId ? <audio controls preload="none" className="family-audio" aria-label="Child’s recorded response" src={`/api/activities/parent/${encodeURIComponent(kidId)}/recordings/${encodeURIComponent(activity.finalResult.recordingId)}`} /> : null}
+                  {activity.finalResult.strokes?.length ? <DrawingPreview strokes={activity.finalResult.strokes} label="Child’s submitted drawing" /> : null}
                   <span
                     className={`status ${activity.finalResult.correct ? "status-answered" : "status-unclear"}`}
                   >
-                    {activity.finalResult.correct ? "Correct" : "Incorrect"}
+                    {activity.finalResult.correct === null ? "Parent review needed" : activity.finalResult.correct ? "Correct" : "Incorrect"}
                   </span>
+                  {activity.finalResult.assessmentStatus === "parent_reviewed" ? <p className="activity-review-attribution">Reviewed by parent{activity.finalResult.reviewNote ? ` · ${activity.finalResult.reviewNote}` : ""}</p> : null}
+                  {activity.finalResult.correct === null ? <ParentReview kidId={kidId} activity={activity} onReviewed={result => setActivities(current => current?.map(item => item.id === activity.id ? { ...item, finalResult: result } : item) ?? null)} /> : null}
                 </div>
               ) : (
                 <p className="activity-history-pending">

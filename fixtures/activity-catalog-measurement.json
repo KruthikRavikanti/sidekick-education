@@ -1,0 +1,43 @@
+{
+  "worksheet": {
+    "title": {
+      "text": "Measuring from zero",
+      "uncertain": false
+    },
+    "subject": "math",
+    "subject_uncertain": false,
+    "printed_grade": {
+      "text": "Grade 2",
+      "uncertain": false
+    },
+    "directions": [],
+    "shared_context": []
+  },
+  "problems": [
+    {
+      "id": "activity-catalog-measurement-1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "A ribbon starts at 0 cm and ends at 6 cm on a ruler. How long is it?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "6 cm",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    }
+  ]
+}

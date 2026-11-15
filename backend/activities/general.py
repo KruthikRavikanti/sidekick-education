@@ -4,6 +4,24 @@ import re
 
 from .models import ActivityReview, ActivitySpec, normalize_text, numeric_answer
 from . import capabilities, equivalent
+from pydantic import model_validator
+
+
+class FamilyActivityReview(ActivityReview):
+    demonstratesTarget: bool
+    interactionNecessary: bool
+    goalAchievable: bool
+    scoringAligned: bool
+    materialsPresent: bool
+    independentFresh: bool
+
+    @model_validator(mode='after')
+    def evidence_required(self):
+        checks = (self.demonstratesTarget, self.interactionNecessary, self.goalAchievable,
+                  self.scoringAligned, self.materialsPresent, self.independentFresh)
+        if self.approved and not all(checks):
+            raise ValueError('Approval requires every objective and playability check')
+        return self
 
 
 def subject_for(target):
@@ -40,6 +58,21 @@ def scene_question(scene):
         material.append('Tiles: ' + ' | '.join(tile.text for tile in scene.params.tiles))
     elif scene.component == 'bundle_builder':
         material.append(f'{scene.params.total} {scene.params.itemLabel}; groups of {scene.params.groupSize}.')
+    elif scene.component == 'quantity_lab':
+        material.append(f'{scene.params.stock} pieces, each worth {scene.params.unitValue}. ' + ' | '.join(item.label for item in scene.params.containers))
+    elif scene.component == 'math_workspace':
+        material.append(f'{scene.params.mode} board; unit: {scene.params.unitLabel}; tick: {scene.params.step}. ' + ' | '.join(item.label for item in scene.params.objects))
+    elif scene.component == 'sort_connect':
+        material.append('Pieces: ' + ' | '.join(piece.text for piece in scene.params.pieces))
+        material.append('Destinations: ' + ' | '.join(target.label for target in scene.params.targets))
+    elif scene.component == 'text_editor' and scene.params.initialText:
+        material.append(scene.params.initialText)
+    elif scene.component == 'oral_studio':
+        material.extend(value for value in (scene.params.passage, scene.params.listenText) if value)
+    elif scene.component == 'drawing_studio':
+        material.append(scene.params.backgroundPrompt)
+    if getattr(scene.params, 'visual', None):
+        material.append(scene.params.visual.title)
     return '\n\n'.join([*material, scene.prompt])
 
 
@@ -209,6 +242,94 @@ of the requested form, or feedback that invents an unsupported student misconcep
 """
 
 
+FAMILY_INSTRUCTION = """
+Use schemaVersion 1.2. The coveragePath describes what THIS subskill requires the child to
+demonstrate, the compatible mechanics, material constraints and assessment method. Treat the
+worksheet's format/examples as irrelevant. Invent an original mission with a meaningful starting
+state. No decorative interaction: removing the action must remove the opportunity to demonstrate
+the skill. A child must not finish by moving arbitrary pieces or following answer labels without
+using the target skill. Use availableMechanics; never force every objective into the same control.
+
+New controls share context, teachingText (null independent), goal, visual (null if unnecessary).
+visual is an actual renderer-supported scene/book cover/pages/coins/solid-shapes/diagram made
+of bounded primitives, not an image description. Include every required visual. Original text,
+original illustrations and original passages may be composed freely. Do not invent a quotation,
+external source attribution or pretend that a caption is a picture. Research tasks need supplied
+source material; shared/performance tasks require parent participation and an observable artifact.
+
+quantity_lab: stock counts ALL available unit pieces, including initialCounts already placed.
+containers have id,label, initialCounts matches their order, unitValue is a positive rational.
+taskOperation distribute/combine/remove/build determines the action. Children move pieces into
+and out of containers while total stock is conserved. Private automatic key has assessment,
+expectedCounts and mathRule {operation,operands,result}; compute exact math. Divide demonstrates
+fair sharing (each bin value equals quotient); multiply constructs equal groups.
+Use these exact enum relationships: represent or multiply MUST use taskOperation 'build';
+add MUST use 'combine'; subtract MUST use 'remove'; divide MUST use 'distribute'. Multiplication's
+first operand is the number of containers, and each container's count times unitValue equals
+the second operand. Division's first operand is stock times unitValue and its second operand
+is the number of containers. These are fixed renderer/validator contracts, not story wording.
+Large amounts
+use scaled unitValue, never hundreds of tiny unrenderable objects. A parent_review key may
+assess a genuine explanation/complex state, but is not a substitute for a solvable task.
+
+math_workspace: choose an appropriate actual board: grid,ruler,number_line,clock,chart,equation,
+shape,angle,balance,vessel. Supply width,height,step,origin,unitLabel,objects,tokens. Objects carry
+geometry and optional value. The child changes marks/cells, clock hands, measured endpoints,
+protractor ray, counterweights, liquid fill, data display, or assembles/edits an expression.
+Automatic keys use expectedMarks, expectedText (nullable), mathRule (nullable). Derive the key
+from the visible data, never make the child guess an invisible measurement. Geometry construction
+and handwriting need drawing_studio when a click or typed name cannot demonstrate the skill.
+
+sort_connect: pieces{id,text}, targets{id,label}, mode sort/connect. The child moves every piece
+to a group or connects it to a target, changing the board. Automatic private key is assessment
+plus placements[{pieceId,targetId}], every piece exactly once. Labels must not simply give away
+the mapping. For phonics, use the relevant word parts/sound relationships; oral objectives need
+actual voice recording. Do not substitute silent letter matching for spoken sound production.
+
+text_editor: mode edit/compose/assemble, initialText, minLength,maxLength,wordBank. The child
+creates or changes the actual text; guided material cannot just request clicking a supplied
+correct answer. Automatic key has assessment plus acceptedTexts only for one objectively
+determined edit. Compose, alternative rewrites, explanations and extended writing require
+parent_review with an explicit objective-specific rubric. Honor minWrittenWords constraints,
+pages, research sources, and parent-observed collaboration/typing when required.
+
+oral_studio: mode read_aloud/say_sounds/listen_respond/perform, passage, listenText nullable.
+The child actually records voice; no typed transcript replaces the recording. listenText is
+spoken by the device when needed, and passage supplies real text for reading fluency.
+Private key always {assessment:'parent_review',rubric:[observable criteria]}. Do not pretend
+automatic speech or fluency scoring exists. An adult observes physical performances when needed.
+
+drawing_studio: backgroundPrompt,labels. The child draws with actual strokes on the board.
+Private key always parent_review plus rubric for this objective. Use it for handwriting,
+constructing shapes/lines/symmetry, diagrams or model-based explanations that need drawing.
+
+Parent_review applies to guided scenes and the fresh final; it means pending assessment, never
+incorrect. Give useful guided self-check feedback without inventing correctness. A manual final
+is completed by saving its artifact; only the parent may then assess the result. Its private
+rubric and feedback never appear to the child as independent teaching cues. Keep the challenge
+fresh and supply all task information while removing instruction, hints and worked solutions.
+For 4.NF.A.1-2 keep a guided split-and-compare visual but finish with a fresh parent-reviewed
+written/oral explanation of why equal splitting preserves amount, rather than only a fraction.
+"""
+
+
+FAMILY_REVIEW = """
+Additionally return explicit demonstratesTarget, interactionNecessary, goalAchievable,
+scoringAligned, materialsPresent and independentFresh booleans. Approve only when ALL are true.
+Independently reconstruct how the implemented control state changes. Reject a decorative click,
+moving already labeled answers, brute copying of a demonstrated final, a quiz disguised as a
+board, or an action unrelated to this exact subskill. The coveragePath's demonstration and
+constraints are authoritative task requirements, not evidence about a child. Check real visual
+and audio material exists where needed. Oral fluency must actually record reading aloud;
+handwriting must produce strokes; writing must produce text. Parent-assisted performances and
+research/collaboration need explicit observable rubric criteria, not fabricated automatic grades.
+Check automatic arithmetic/geometry keys yourself; parent_review keys may legitimately have
+many correct artifacts but must supply concrete aligned criteria. Neither private rubric nor
+required private final feedback is a child-visible hint. Do not approve broad unsupported
+mastery claims. Return fixed verdict codes and booleans, never a copy of private student work.
+"""
+
+
 async def compose(adapter, target, source_refs, seen_tasks, variation, *, learning_goal=None):
     available = capabilities.mechanics_for(target)
     if not available:
@@ -216,29 +337,44 @@ async def compose(adapter, target, source_refs, seen_tasks, variation, *, learni
     curriculum = dict(subject=subject_for(target), grade=grade_for(target),
                       subskillId=target['subskill_id'], subskill=target['subskill'],
                       misconceptionTags=[target['common_misconception']], sourceRefs=source_refs)
-    payload = dict(curriculum, schemaVersion='1.1', previousIndependentTasks=seen_tasks[-30:], variation=variation,
+    path = capabilities.coverage_for(target) if hasattr(capabilities, 'coverage_for') else None
+    payload = dict(curriculum, schemaVersion='1.2', previousIndependentTasks=seen_tasks[-30:], variation=variation,
                    availableMechanics=list(available), learningGoal=learning_goal or dict(intent='explore_skill',
                    objective=target['subskill'], supportedObservation=None))
+    payload['coveragePath'] = path
     is_equivalent = equivalent.is_equivalent_target(target)
-    instruction = COMPOSE_INSTRUCTION
+    instruction = COMPOSE_INSTRUCTION.replace('Return schemaVersion 1.1', 'Return schemaVersion 1.2')
+    instruction = instruction.replace(
+        'Never ask an essay, subjective explanation or unlimited open-ended response\nthat would require a rubric. Do not ask for several answers in one response.',
+        'Automatically scored responses require an objective key. Original writing, explanations,\nspeech and drawing use parent_review with explicit criteria rather than automatic correctness.')
+    instruction += FAMILY_INSTRUCTION
     if is_equivalent:
         payload['learningGoal'] = learning_goal or dict(intent='explore_skill',
             objective='Show equivalent fractions as the same shaded amount after equal splitting.', supportedObservation=None)
         instruction = instruction.replace(
             'For response scenes use comparison number',
             'Except for the required final fraction_form, for ordinary response scenes use comparison number')
-        instruction += EQUIVALENT_INSTRUCTION
+        if target['subskill_id'] != '4.NF.A.1-2':
+            instruction += EQUIVALENT_INSTRUCTION
     result = await adapter._call(ActivitySpec, 'compose_activity', instruction, payload)
     spec = ActivitySpec.model_validate(result.model_dump() if hasattr(result, 'model_dump') else result)
-    if (spec.schemaVersion != '1.1' or spec.subskillId != curriculum['subskillId']
+    if (spec.schemaVersion not in {'1.1', '1.2'} or spec.subskillId != curriculum['subskillId']
             or spec.subject != curriculum['subject'] or spec.grade != curriculum['grade']
             or target['common_misconception'] not in spec.misconceptionTags
             or not set(spec.sourceRefs).issubset(source_refs)):
         raise ValueError('Generated activity is not aligned with curriculum')
     capabilities.validate_activity(spec, target)
-    verdict = await adapter._call(ActivityReview, 'review_activity', REVIEW_INSTRUCTION + (EQUIVALENT_REVIEW_INSTRUCTION if is_equivalent else ''),
-                                  dict(curriculum, activity=spec.model_dump(), previousIndependentTasks=seen_tasks[-30:]))
-    verdict = ActivityReview.model_validate(verdict.model_dump() if hasattr(verdict, 'model_dump') else verdict)
+    review_model = FamilyActivityReview if spec.schemaVersion == '1.2' else ActivityReview
+    review_instruction = REVIEW_INSTRUCTION + (FAMILY_REVIEW if spec.schemaVersion == '1.2' else '')
+    if spec.schemaVersion == '1.2':
+        review_instruction = review_instruction.replace(
+            'subjective/essay tasks, ambiguous keys or unsupported grading.',
+            'ambiguous automatic keys or unsupported automatic grading. Original writing, explanations,\noral reading and drawing are supported with explicit parent_review criteria, not automatic grading.')
+    if is_equivalent and not (target['subskill_id'] == '4.NF.A.1-2' and spec.schemaVersion == '1.2'):
+        review_instruction += EQUIVALENT_REVIEW_INSTRUCTION
+    verdict = await adapter._call(review_model, 'review_activity', review_instruction,
+                                  dict(curriculum, coveragePath=path, activity=spec.model_dump(), previousIndependentTasks=seen_tasks[-30:]))
+    verdict = review_model.model_validate(verdict.model_dump() if hasattr(verdict, 'model_dump') else verdict)
     if not verdict.approved:
         raise ValueError('Generated activity did not pass independent review')
     return spec

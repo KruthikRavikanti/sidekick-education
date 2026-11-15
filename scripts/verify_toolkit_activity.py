@@ -139,7 +139,7 @@ def verify_case(client, security, recorder, name):
         parentOutcomeVisible=True, parentPinProtectedHistory=True, learningStatusUnchanged=True, success=True)
 
 
-def verify(report, selected):
+def verify(report, selected, *, case_runner=None):
     from dotenv import load_dotenv
     load_dotenv(ROOT / 'backend/.env')
     from backend.provider import ExtractionError, VisionSettings
@@ -155,7 +155,7 @@ def verify(report, selected):
         from backend.accounts.security import SecurityContext
         from backend.accounts.settings import Settings
         from backend.activities.library import seed_library
-        from backend.activities.models import ActivityReview
+        from backend.activities.models import ActivityReview, ActivitySpec
         from backend.gap.catalog import seed_catalog
         from backend.gap.vision import VisionAdapter
 
@@ -163,6 +163,7 @@ def verify(report, selected):
             def __init__(self):
                 super().__init__(settings=settings)
                 self.counts, self.rejections, self.errors, self.approvals = {}, [], [], 0
+                self.proposals = []
 
             async def _call(self, response_model, task, instruction, data):
                 self.counts[task] = self.counts.get(task, 0) + 1
@@ -176,6 +177,10 @@ def verify(report, selected):
                         self.approvals += 1
                     else:
                         self.rejections.append(result.reason)
+                elif isinstance(result, ActivitySpec):
+                    # In-memory original synthetic activity proposals allow an
+                    # opt-in verifier to diagnose a rejected run without logs.
+                    self.proposals.append(result.model_dump())
                 return result
 
         security = SecurityContext(Settings(database_url=database_url, app_env='test', password_policy='dev', cookie_secure=False, trusted_origins=('http://testserver',)))
@@ -193,11 +198,13 @@ def verify(report, selected):
             print(json.dumps({'case': name, 'stage': 'live_upload_analysis_and_generation', 'started': True}), flush=True)
             with TestClient(main.app, base_url='http://testserver') as client:
                 try:
-                    case = verify_case(client, security, recorder, name)
+                    case = (case_runner or verify_case)(client, security, recorder, name)
                 except VerificationFailure as error:
                     case = dict(case=name, success=False, failedStage=error.stage, errorCode=error.code)
                 except Exception:
                     case = dict(case=name, success=False, failedStage='unexpected_failure', errorCode='verification_failed')
+            if not case['success']:
+                case.update(getattr(recorder, 'case_metadata', {}))
             case.update(providerActivityTasks=recorder.counts, reviewRejectionCodes=recorder.rejections, providerErrorCodes=recorder.errors)
             report['cases'].append(case)
             print(json.dumps({'case': name, 'success': case['success'], 'failedStage': case.get('failedStage')}), flush=True)

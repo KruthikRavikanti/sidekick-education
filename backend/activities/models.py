@@ -7,14 +7,14 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from .equivalent import is_equivalent_target, validate_equivalent_activity, validate_fraction_form
-from . import toolkit
+from . import families, toolkit
 
-SCHEMA_VERSION = '1.1'
-COMPONENT_VERSION = 'sidekick-interactions-v4'
-COMPATIBLE_COMPONENT_VERSIONS = ('sidekick-interactions-v1', 'sidekick-interactions-v2', 'sidekick-interactions-v3', COMPONENT_VERSION)
-PROMPT_VERSION = 'sidekick-activity-v5'
+SCHEMA_VERSION = '1.2'
+COMPONENT_VERSION = 'sidekick-interactions-v5'
+COMPATIBLE_COMPONENT_VERSIONS = ('sidekick-interactions-v1', 'sidekick-interactions-v2', 'sidekick-interactions-v3', 'sidekick-interactions-v4', COMPONENT_VERSION)
+PROMPT_VERSION = 'sidekick-activity-v6'
 SUPPORTED = {'3.NF.A.1-2': 'math', 'L.3.1-2': 'ela'}
-GENERIC_COMPONENTS = frozenset({'guided_choice', 'guided_response', 'independent_response', 'fraction_split_compare'}) | toolkit.COMPONENTS
+GENERIC_COMPONENTS = frozenset({'guided_choice', 'guided_response', 'independent_response', 'fraction_split_compare'}) | toolkit.COMPONENTS | families.COMPONENTS
 DENOMINATORS = {2, 3, 4, 6, 8}
 IRREGULAR = {'mouse': 'mice', 'man': 'men', 'woman': 'women', 'foot': 'feet', 'tooth': 'teeth', 'goose': 'geese', 'child': 'children', 'person': 'people'}
 REGULAR = {'cat', 'dog', 'book', 'bird', 'tree', 'car', 'box', 'bus', 'dish', 'wish', 'class', 'brush', 'fox', 'baby', 'city', 'puppy', 'party', 'toy', 'key', 'boy', 'day'}
@@ -303,15 +303,195 @@ class EvidenceScene(SceneBase):
     answer: EvidenceAnswer
 
 
+class ParentReviewAnswer(Closed):
+    assessment: Literal['parent_review']
+    rubric: Annotated[list[ShortText], Field(min_length=1, max_length=6)]
+
+
+class VisualItem(Closed):
+    id: Identifier
+    kind: Literal['rect', 'circle', 'triangle', 'line', 'text', 'cube', 'sphere', 'cone', 'cylinder', 'penny', 'nickel', 'dime', 'quarter', 'fox', 'tree', 'sun', 'book']
+    label: Annotated[str, Field(min_length=1, max_length=100)]
+    x: Annotated[int, Field(ge=0, le=100)]
+    y: Annotated[int, Field(ge=0, le=100)]
+    width: Annotated[int, Field(ge=0, le=100)]
+    height: Annotated[int, Field(ge=0, le=100)]
+    color: Literal['green', 'blue', 'red', 'yellow', 'gray', 'brown']
+
+
+class FamilyVisual(Closed):
+    kind: Literal['scene', 'book_cover', 'book_pages', 'coins', 'solid_shapes', 'diagram', 'chart']
+    title: Annotated[str, Field(min_length=1, max_length=200)]
+    author: Annotated[str, Field(min_length=1, max_length=100)] | None
+    caption: Annotated[str, Field(min_length=1, max_length=1000)] | None
+    items: Annotated[list[VisualItem], Field(min_length=1, max_length=16)]
+
+
+class FamilyParams(ToolkitParams):
+    visual: FamilyVisual | None
+
+
+class MathRule(Closed):
+    operation: Literal['represent', 'add', 'subtract', 'multiply', 'divide']
+    operands: Annotated[list[Annotated[str, Field(min_length=1, max_length=80)]], Field(min_length=1, max_length=4)]
+    result: Annotated[str, Field(min_length=1, max_length=80)]
+
+    @model_validator(mode='after')
+    def exact_math(self):
+        families.validate_math_rule(self)
+        return self
+
+
+class FamilyContainer(Closed):
+    id: Identifier
+    label: Annotated[str, Field(min_length=1, max_length=100)]
+
+
+class Allocation(Closed):
+    containerId: Identifier
+    count: Annotated[int, Field(ge=0, le=120)]
+
+
+class QuantityLabParams(FamilyParams):
+    stock: Annotated[int, Field(ge=0, le=120)]
+    containers: Annotated[list[FamilyContainer], Field(min_length=1, max_length=12)]
+    unitValue: Annotated[str, Field(min_length=1, max_length=80)]
+    taskOperation: Literal['distribute', 'combine', 'remove', 'build']
+    initialCounts: Annotated[list[Annotated[int, Field(ge=0, le=120)]], Field(min_length=1, max_length=12)]
+
+
+class QuantityAnswer(Closed):
+    assessment: Literal['automatic']
+    expectedCounts: Annotated[list[Annotated[int, Field(ge=0, le=120)]], Field(min_length=1, max_length=12)]
+    mathRule: MathRule
+
+
+class QuantityLabScene(SceneBase):
+    component: Literal['quantity_lab']
+    params: QuantityLabParams
+    answer: QuantityAnswer | ParentReviewAnswer
+
+
+class BoardPoint(Closed):
+    x: Annotated[float, Field(ge=0, le=180)]
+    y: Annotated[float, Field(ge=0, le=180)]
+
+
+class DrawingPoint(Closed):
+    x: Annotated[float, Field(ge=0, le=100)]
+    y: Annotated[float, Field(ge=0, le=100)]
+
+
+class BoardObject(Closed):
+    id: Identifier
+    label: Annotated[str, Field(min_length=1, max_length=300)]
+    x: Annotated[int, Field(ge=0, le=20)]
+    y: Annotated[int, Field(ge=0, le=20)]
+    width: Annotated[int, Field(ge=0, le=20)]
+    height: Annotated[int, Field(ge=0, le=20)]
+    shape: Literal['rect', 'circle', 'triangle', 'line', 'text']
+    value: Annotated[str, Field(min_length=1, max_length=80)] | None
+
+
+class MathWorkspaceParams(FamilyParams):
+    mode: Literal['grid', 'ruler', 'number_line', 'clock', 'chart', 'equation', 'shape', 'angle', 'balance', 'vessel']
+    width: Annotated[int, Field(ge=1, le=20)]
+    height: Annotated[int, Field(ge=1, le=20)]
+    step: Annotated[str, Field(min_length=1, max_length=80)]
+    origin: Annotated[str, Field(min_length=1, max_length=80)]
+    unitLabel: Annotated[str, Field(min_length=1, max_length=100)]
+    objects: Annotated[list[BoardObject], Field(max_length=24)]
+    tokens: Annotated[list[ToolkitTile], Field(max_length=24)]
+
+
+class WorkspaceAnswer(Closed):
+    assessment: Literal['automatic']
+    expectedMarks: Annotated[list[BoardPoint], Field(max_length=441)]
+    expectedText: Annotated[str, Field(min_length=1, max_length=2000)] | None
+    mathRule: MathRule | None
+
+
+class MathWorkspaceScene(SceneBase):
+    component: Literal['math_workspace']
+    params: MathWorkspaceParams
+    answer: WorkspaceAnswer | ParentReviewAnswer
+
+
+class Placement(Closed):
+    pieceId: Identifier
+    targetId: Identifier
+
+
+class SortConnectParams(FamilyParams):
+    pieces: Annotated[list[ToolkitTile], Field(min_length=2, max_length=20)]
+    targets: Annotated[list[FamilyContainer], Field(min_length=2, max_length=12)]
+    mode: Literal['sort', 'connect']
+
+
+class SortAnswer(Closed):
+    assessment: Literal['automatic']
+    placements: Annotated[list[Placement], Field(min_length=2, max_length=20)]
+
+
+class SortConnectScene(SceneBase):
+    component: Literal['sort_connect']
+    params: SortConnectParams
+    answer: SortAnswer | ParentReviewAnswer
+
+
+class TextEditorParams(FamilyParams):
+    mode: Literal['edit', 'compose', 'assemble']
+    initialText: Annotated[str, Field(max_length=5000)]
+    minLength: Annotated[int, Field(ge=1, le=5000)]
+    maxLength: Annotated[int, Field(ge=1, le=5000)]
+    minWords: Annotated[int, Field(ge=0, le=1200)]
+    wordBank: Annotated[list[Annotated[str, Field(min_length=1, max_length=100)]], Field(max_length=30)]
+
+
+class TextAnswer(Closed):
+    assessment: Literal['automatic']
+    acceptedTexts: Annotated[list[Annotated[str, Field(min_length=1, max_length=5000)]], Field(min_length=1, max_length=8)]
+
+
+class TextEditorScene(SceneBase):
+    component: Literal['text_editor']
+    params: TextEditorParams
+    answer: TextAnswer | ParentReviewAnswer
+
+
+class OralStudioParams(FamilyParams):
+    mode: Literal['read_aloud', 'say_sounds', 'listen_respond', 'perform']
+    passage: Annotated[str, Field(min_length=1, max_length=4000)]
+    listenText: Annotated[str, Field(min_length=1, max_length=4000)] | None
+
+
+class OralStudioScene(SceneBase):
+    component: Literal['oral_studio']
+    params: OralStudioParams
+    answer: ParentReviewAnswer
+
+
+class DrawingStudioParams(FamilyParams):
+    backgroundPrompt: Annotated[str, Field(min_length=1, max_length=2000)]
+    labels: Annotated[list[Annotated[str, Field(min_length=1, max_length=100)]], Field(max_length=16)]
+
+
+class DrawingStudioScene(SceneBase):
+    component: Literal['drawing_studio']
+    params: DrawingStudioParams
+    answer: ParentReviewAnswer
+
+
 # A closed union emits JSON Schema anyOf supported by the existing strict
 # provider transport. Each variant has a distinct literal component.
 Scene = (FractionScene | LineScene | TilesScene | ChoiceScene | IndependentFractionScene | IndependentWordScene
          | GuidedChoiceScene | GuidedResponseScene | IndependentResponseScene | FractionSplitScene
-         | BundleScene | OrderScene | EvidenceScene)
+         | BundleScene | OrderScene | EvidenceScene | QuantityLabScene | MathWorkspaceScene
+         | SortConnectScene | TextEditorScene | OralStudioScene | DrawingStudioScene)
 
 
 class ActivitySpec(Closed):
-    schemaVersion: Literal['1.0', '1.1']
+    schemaVersion: Literal['1.0', '1.1', '1.2']
     title: Annotated[str, Field(min_length=1, max_length=100)]
     subject: Literal['math', 'ela']
     subskillId: Identifier
@@ -322,7 +502,7 @@ class ActivitySpec(Closed):
 
     @model_validator(mode='after')
     def verify(self):
-        if self.schemaVersion == '1.1':
+        if self.schemaVersion in {'1.1', '1.2'}:
             return self.verify_general()
         if self.subskillId not in SUPPORTED or self.grade != 3:
             raise ValueError('Legacy activities require their original grade-three skill')
@@ -412,25 +592,30 @@ class ActivitySpec(Closed):
                 raise ValueError('General activities require general response components')
             if scene.phase != ('independent' if final else 'guided') or scene.nextSceneId != (None if final else ids[index + 1]):
                 raise ValueError('Scenes require a linear guided-to-independent transition')
-            allowed = ({'independent_response'} if final else {'guided_choice', 'guided_response', 'fraction_split_compare'}) | toolkit.COMPONENTS
+            allowed = ({'independent_response'} if final else {'guided_choice', 'guided_response', 'fraction_split_compare'}) | toolkit.COMPONENTS | families.COMPONENTS
             if scene.component not in allowed:
                 raise ValueError('Component is not aligned with its phase')
             for value in [scene.prompt, scene.feedback.correct, scene.feedback.incorrect, scene.feedback.hint]:
                 _safe_generated_text(value)
             if scene.params.context is not None:
                 _safe_generated_text(scene.params.context)
-            elif scene.component not in toolkit.COMPONENTS and _CONTEXT_REFERENCE.search(scene.prompt):
+            elif scene.component not in toolkit.COMPONENTS | families.COMPONENTS and _CONTEXT_REFERENCE.search(scene.prompt):
                 raise ValueError('Activity task refers to missing context')
-            if not final and scene.component not in toolkit.COMPONENTS:
+            if not final and scene.component not in toolkit.COMPONENTS | families.COMPONENTS:
                 _safe_generated_text(scene.params.teachingText)
             # Manipulatives can reuse an instruction with genuinely new objects
             # or passage pieces; their task is defined by that playable content.
-            task = toolkit.task_key(scene) if scene.component in toolkit.COMPONENTS else normalize_text(scene.prompt) + '\n' + normalize_text(scene.params.context or '')
+            task = families.task_key(scene) if scene.component in families.COMPONENTS else toolkit.task_key(scene) if scene.component in toolkit.COMPONENTS else normalize_text(scene.prompt) + '\n' + normalize_text(scene.params.context or '')
             if task in tasks:
-                if final and scene.component in toolkit.COMPONENTS:
+                if final and scene.component in toolkit.COMPONENTS | families.COMPONENTS:
                     raise ValueError('Independent control must use fresh content')
                 raise ValueError('Activity tasks must be distinct')
             tasks.add(task)
+            if scene.component in families.COMPONENTS:
+                if self.schemaVersion != '1.2':
+                    raise ValueError('Family mechanics require activity schema 1.2')
+                families.validate_scene(scene, self.subject)
+                continue
             if scene.component in toolkit.COMPONENTS:
                 toolkit.validate_scene(scene, self.subject)
                 continue
@@ -467,11 +652,13 @@ class ActivitySpec(Closed):
         final = self.scenes[-1]
         guided_text = self.title + ' ' + ' '.join(' '.join((scene.prompt, scene.feedback.correct, scene.feedback.incorrect,
             scene.feedback.hint, scene.params.model_dump_json())) for scene in self.scenes[:-1])
-        for answer in ([final.answer.value, *final.answer.acceptedAnswers] if final.component not in toolkit.COMPONENTS else toolkit.answer_texts(final)):
+        for answer in (families.answer_texts(final) if final.component in families.COMPONENTS else toolkit.answer_texts(final) if final.component in toolkit.COMPONENTS else [final.answer.value, *final.answer.acceptedAnswers]):
             if re.search(rf'\b(?:independent|final)\s+(?:answer|response)\s*(?:is|:|=)\s*{re.escape(answer.strip())}(?!\w)', guided_text, re.I):
                 raise ValueError('Guided content must not disclose the independent answer')
         if any(scene.component in toolkit.COMPONENTS for scene in self.scenes):
             toolkit.validate_fresh_challenge(self)
+        if self.schemaVersion == '1.2':
+            families.validate_activity(self)
         if any(scene.component == 'fraction_split_compare' for scene in self.scenes) or getattr(final.answer, 'comparison', None) == 'fraction_form':
             validate_equivalent_activity(self)
         return self
@@ -525,10 +712,35 @@ class EvidenceResponse(Closed):
     sentenceId: Identifier
 
 
+class QuantityResponse(Closed):
+    allocations: Annotated[list[Allocation], Field(min_length=1, max_length=12)]
+
+
+class WorkspaceResponse(Closed):
+    marks: Annotated[list[BoardPoint], Field(max_length=441)]
+    text: Annotated[str, Field(max_length=2000)]
+
+
+class SortResponse(Closed):
+    placements: Annotated[list[Placement], Field(min_length=2, max_length=20)]
+
+
+class WrittenResponse(Closed):
+    writtenText: Annotated[str, Field(min_length=1, max_length=5000)]
+
+
+class OralResponse(Closed):
+    recordingId: Identifier
+
+
+class DrawingResponse(Closed):
+    strokes: Annotated[list[Annotated[list[DrawingPoint], Field(min_length=2, max_length=200)]], Field(min_length=1, max_length=20)]
+
+
 class SubmitRequest(Closed):
     sceneId: Identifier
     idempotencyKey: Annotated[str, Field(min_length=8, max_length=100)]
-    response: Annotated[str, Field(min_length=1, max_length=500)] | PartsResponse | TickResponse | TilesResponse | ChoiceResponse | FractionSplitResponse | BundleResponse | OrderResponse | EvidenceResponse
+    response: Annotated[str, Field(min_length=1, max_length=500)] | PartsResponse | TickResponse | TilesResponse | ChoiceResponse | FractionSplitResponse | BundleResponse | OrderResponse | EvidenceResponse | QuantityResponse | WorkspaceResponse | SortResponse | WrittenResponse | OralResponse | DrawingResponse
 
 
 class SceneRequest(Closed):

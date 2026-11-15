@@ -491,7 +491,7 @@
       "id": "original-split-compare-4-NF-A-1-2",
       "origin": "original_example",
       "spec": {
-        "schemaVersion": "1.1",
+        "schemaVersion": "1.2",
         "title": "Garden Beds: Same Area, New Pieces",
         "subject": "math",
         "subskillId": "4.NF.A.1-2",
@@ -563,19 +563,28 @@
           },
           {
             "id": "independent",
-            "component": "independent_response",
+            "component": "text_editor",
             "phase": "independent",
-            "prompt": "Write 3/4 in eighths.",
+            "prompt": "A new garden has 3/4 of its area planted. Explain why splitting each fourth into two equal pieces changes the fraction name but keeps the planted amount the same.",
             "params": {
-              "context": null
+              "context": null,
+              "teachingText": null,
+              "goal": "Explain why equal splitting preserves the same amount.",
+              "visual": null,
+              "mode": "compose",
+              "initialText": "",
+              "minLength": 20,
+              "minWords": 0,
+              "maxLength": 2000,
+              "wordBank": []
             },
             "answer": {
-              "value": "6/8",
-              "acceptedAnswers": [],
-              "comparison": "fraction_form",
-              "sourceNumerator": 3,
-              "sourceDenominator": 4,
-              "targetDenominator": 8
+              "assessment": "parent_review",
+              "rubric": [
+                "Explains that splitting changes the number and size of pieces without adding or removing planted area.",
+                "Uses the same whole and equal subdivisions.",
+                "Connects multiplying both counts by two to 3/4 and 6/8 representing the same amount."
+              ]
             },
             "feedback": {
               "correct": "Your response is saved.",

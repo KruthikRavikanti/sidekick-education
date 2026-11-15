@@ -4,9 +4,12 @@ import { useState } from "react";
 import type { ActivityResponse, ActivityScene } from "@/lib/activity-types";
 import { FractionSplitCompare } from "./fraction-split-compare";
 import { BundleBuilder, EvidenceBoard, TileOrder } from "./activity-toolkit";
+import { FamilyControl } from "./activity-families";
+import { FamilyVisual } from "./activity-visual";
 
 interface SceneControlProps {
   scene: ActivityScene;
+  sessionId?: string;
   disabled: boolean;
   onResponse: (response: ActivityResponse, ready: boolean) => void;
   initialResponse?: ActivityResponse | null;
@@ -282,20 +285,12 @@ function WordChoice({
 }
 
 export function ActivitySceneMaterial({ scene }: { scene: ActivityScene }) {
-  if (
-    scene.component !== "guided_choice" &&
-    scene.component !== "guided_response" &&
-    scene.component !== "fraction_split_compare" &&
-    scene.component !== "bundle_builder" &&
-    scene.component !== "tile_order" &&
-    scene.component !== "evidence_board" &&
-    scene.component !== "independent_response"
-  )
-    return null;
+  if (!("context" in scene.params)) return null;
 
   const teachingText =
-    scene.phase === "independent" || scene.component === "independent_response" ? null : scene.params.teachingText;
-  if (!teachingText && !scene.params.context) return null;
+    scene.phase === "guided" && "teachingText" in scene.params ? scene.params.teachingText : null;
+  const visual = "visual" in scene.params ? scene.params.visual : null;
+  if (!teachingText && !scene.params.context && !visual) return null;
   return (
     <div className="activity-learning-material">
       {teachingText ? (
@@ -309,6 +304,7 @@ export function ActivitySceneMaterial({ scene }: { scene: ActivityScene }) {
           <p>{scene.params.context}</p>
         </section>
       ) : null}
+      {visual ? <FamilyVisual visual={visual} /> : null}
     </div>
   );
 }
@@ -375,6 +371,13 @@ function WrittenResponse({
 export function ActivitySceneControl(props: SceneControlProps) {
   const { scene, disabled, onResponse, initialResponse } = props;
   switch (scene.component) {
+    case "quantity_lab":
+    case "math_workspace":
+    case "sort_connect":
+    case "text_editor":
+    case "oral_studio":
+    case "drawing_studio":
+      return <FamilyControl {...props} scene={scene} sessionId={props.sessionId ?? ""} />;
     case "fraction_builder":
       return <FractionBuilder {...props} scene={scene} />;
     case "number_line":

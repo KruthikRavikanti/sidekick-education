@@ -69,14 +69,16 @@ function SceneStep({
       </div>
       <ActivitySceneMaterial scene={scene} />
       <h2 id="activity-scene-prompt">{scene.prompt}</h2>
+      {scene.parentParticipation ? <p className="activity-parent-participation" role="note">Ask a parent to join you for this step. They will need to observe your work.</p> : null}
       {independent ? (
         <p className="activity-independent-note">
-          One fresh question. Give it your best try.
+          A fresh challenge. Give it your best try.
         </p>
       ) : null}
       <ActivitySceneControl
         key={controlReset}
         scene={scene}
+        sessionId={activity.id}
         disabled={busy || (submitted && !editing)}
         initialResponse={
           scene.component === "fraction_split_compare" && editing
@@ -338,12 +340,16 @@ function ActivityContent({ sessionId }: { sessionId: string }) {
                 </span>
                 <p className="account-eyebrow">ACTIVITY COMPLETE</p>
                 <h2>
-                  {activity.finalResult?.correct
+                  {activity.finalResult?.assessmentStatus === "pending_parent_review"
+                    ? "Your work is ready for a parent."
+                    : activity.finalResult?.correct
                     ? "You did it!"
                     : "Every try is a step forward."}
                 </h2>
                 <p>
-                  {activity.finalResult?.correct
+                  {activity.finalResult?.assessmentStatus === "pending_parent_review"
+                    ? "Your response is saved. A parent can review it in the activity history."
+                    : activity.finalResult?.correct
                     ? "You answered the last question on your own."
                     : "Your answer is saved. Keep exploring — there’s more to learn."}
                 </p>

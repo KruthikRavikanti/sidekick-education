@@ -28,6 +28,7 @@ export default defineConfig({
       env: {
         SIDEKICK_FIXTURE_MODE: "true",
         DATABASE_URL: process.env.SIDEKICK_E2E_DATABASE_URL,
+        SIDEKICK_PRIVATE_UPLOAD_DIR: `${process.env.SIDEKICK_E2E_DATABASE_URL!.slice("sqlite:///".length)}.uploads`,
         APP_ENV: "test",
         PASSWORD_POLICY: "dev",
         COOKIE_SECURE: "false",
