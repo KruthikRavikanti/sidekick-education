@@ -147,6 +147,22 @@ def test_actual_provider_and_controlled_fixture_proof_are_counted_separately(tmp
     assert report['totals']['fixturePlayedScored'] == report['totals']['livePlayedScored'] == 1
 
 
+def test_current_live_composition_requires_empty_library_real_upload_and_current_engine(tmp_path):
+    from backend.activities.models import COMPONENT_VERSION, PROMPT_VERSION
+    path = write_evidence(tmp_path, [case(providerMode='live', liveUpload=True, noFinishedActivityReuse=True)])
+    report = coverage.build_report([path])
+    assert report['totals']['liveComposedPlayed'] == 0
+    raw = json.loads(path.read_text())
+    raw.update(componentVersion=COMPONENT_VERSION, promptVersion=PROMPT_VERSION, emptyLibraryAtStart=True)
+    path.write_text(json.dumps(raw))
+    report = coverage.build_report([path])
+    assert report['totals']['liveComposedGenerated'] == report['totals']['liveComposedPlayed'] == 1
+    assert len(report['totals']['unverifiedLiveComposition']) == 794
+    raw['componentVersion'] = 'previous-engine'
+    path.write_text(json.dumps(raw))
+    assert coverage.build_report([path])['totals']['liveComposedPlayed'] == 0
+
+
 def test_component_names_alone_do_not_claim_missing_visual_or_measurement_support(monkeypatch):
     features = coverage.implementation_features()
     features['workspaceModes'] -= {'angle'}

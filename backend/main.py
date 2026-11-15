@@ -176,7 +176,8 @@ def extract_fixture(data: bytes) -> Extraction:
                          "activity-toolkit-bundles", "activity-toolkit-sequence", "activity-toolkit-evidence",
                          "activity-catalog-multiplication", "activity-catalog-division", "activity-catalog-measurement",
                          "activity-catalog-coordinates", "activity-catalog-phonics", "activity-catalog-fluency",
-                         "activity-catalog-writing", "activity-catalog-editing", "activity-catalog-handwriting", "activity-catalog-sorting"}:
+                         "activity-catalog-writing", "activity-catalog-editing", "activity-catalog-handwriting", "activity-catalog-sorting",
+                         "activity-composed-area"}:
             raise ExtractionError("fixture_only", "Demo mode reads the bundled sample pages. Try a sample, or connect the reader to use your own photo.", 422)
         return Extraction.model_validate_json((ROOT / "fixtures" / f"{name}.json").read_text())
     except (OSError, ValueError, ValidationError):

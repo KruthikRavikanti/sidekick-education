@@ -45,6 +45,11 @@ export interface ActivitySceneBase {
   prompt: string;
   phase: "guided" | "independent";
   parentParticipation?: boolean;
+  connection?: {
+    sourceSceneId: string;
+    sourceOutput: "area_rectangle" | "quantity_total" | "ordered_text" | "selected_evidence" | "written_text";
+    targetInput: "area_rectangle" | "quantity_equation" | "context_material" | "draft_text";
+  } | null;
 }
 
 export type ActivityScene = ActivitySceneBase &
@@ -131,7 +136,7 @@ export type ActivityScene = ActivitySceneBase &
     | {
         component: "math_workspace";
         params: FamilyMaterial & {
-          mode: "grid" | "ruler" | "number_line" | "clock" | "angle" | "balance" | "vessel" | "chart" | "equation" | "shape";
+          mode: "grid" | "ruler" | "number_line" | "clock" | "angle" | "balance" | "vessel" | "chart" | "equation" | "shape" | "area_tile" | "area_design" | "area_expression";
           width: number;
           height: number;
           step: string;
@@ -139,6 +144,7 @@ export type ActivityScene = ActivitySceneBase &
           unitLabel: string;
           objects: { id: string; label: string; x: number; y: number; width: number; height: number; shape: "rect" | "circle" | "triangle" | "line" | "text"; value: string | null }[];
           tokens: { id: string; text: string }[];
+          area?: { rows: number; columns: number; targetArea: number | null } | null;
         };
       }
     | {
@@ -229,4 +235,23 @@ export interface ActivityHistoryItem {
   completedAt: number | null;
   finalResult: ActivityResult | null;
   guidedHintCount?: number;
+}
+
+export interface ActivityAttemptDetail {
+  id: string;
+  title: string;
+  subject: "math" | "ela";
+  status: "in_progress" | "completed";
+  targetSkill: ActivitySession["targetSkill"];
+  scenes: (ActivityScene & {
+    responses: {
+      response: ActivityResponse;
+      responseText: string;
+      correct: boolean | null;
+      assessmentStatus: "automatic" | "pending_parent_review" | "parent_reviewed";
+      hintUsed: boolean;
+      createdAt: number;
+    }[];
+  })[];
+  finalResult: ActivityResult | null;
 }

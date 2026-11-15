@@ -33,7 +33,7 @@ def validate_activity(spec, target):
             raise ValueError('Control is not compatible with this catalog demonstration')
     if equivalent.is_equivalent_target(target):
         equivalent.validate_equivalent_activity(spec)
-    if spec.schemaVersion == '1.2':
+    if spec.schemaVersion in {'1.2', '1.3'}:
         families.validate_activity(spec, allowed_components=allowed)
     else:
         toolkit.validate_activity(spec, allowed_components=allowed)

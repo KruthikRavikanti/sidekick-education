@@ -77,15 +77,60 @@ async def structured_call(response_model: type[T], *, task: str, system: str, us
         raise ExtractionError("provider_timeout", "Reading took too long. Please retry.", 504) from None
     except httpx.RequestError:
         raise ExtractionError("provider_unavailable", "Sidekick couldn't connect to the reader. Please retry.", 503) from None
+    activity_task = task in {'compose_activity', 'repair_activity_scene', 'compose_simpler_activity'}
+    content = None
     try:
         body = json.loads(chunks)
         choice = body["choices"][0]
         message = choice["message"]
         if choice.get("finish_reason") != "stop" or message.get("refusal"):
             raise ValueError
-        return response_model.model_validate_json(message["content"])
-    except (ValueError, KeyError, IndexError, TypeError, ValidationError):
+        content = message["content"]
+        return response_model.model_validate_json(content)
+    except ValidationError as error:
+        if activity_task:
+            candidate = None
+            if isinstance(content, str) and len(content.encode('utf-8')) <= 256 * 1024:
+                try:
+                    candidate = json.loads(content)
+                except (ValueError, TypeError):
+                    pass
+            diagnostic = activity_schema_diagnostic(error, response_model)
+            raise ExtractionError('activity_schema_invalid', 'The activity needs another attempt.',
+                                  diagnostic=diagnostic,
+                                  activity_candidate=candidate if isinstance(candidate, dict) else None) from None
         raise ExtractionError("invalid_extraction", "The reading was incomplete. Please retry or take a clearer photo.") from None
+    except (ValueError, KeyError, IndexError, TypeError):
+        if activity_task:
+            raise ExtractionError('activity_provider_invalid', 'The activity needs another attempt.',
+                                  diagnostic=dict(stage='provider', code='provider_response_invalid', sceneIndex=None, field=None)) from None
+        raise ExtractionError("invalid_extraction", "The reading was incomplete. Please retry or take a clearer photo.") from None
+
+
+def activity_schema_diagnostic(error, response_model):
+    """Only schema-owned field names and bounded indices may leave validation.
+
+    Pydantic errors contain input values and arbitrary extra-field names. Never
+    stringify those errors into logs, audit records, or subsequent prompts.
+    """
+    allowed = set()
+    def collect(value):
+        if isinstance(value, dict):
+            allowed.update(value.get('properties', {}))
+            for child in value.values():
+                collect(child)
+        elif isinstance(value, list):
+            for child in value:
+                collect(child)
+    collect(response_model.model_json_schema())
+    entries = error.errors(include_input=False, include_context=False, include_url=False)
+    loc = entries[0].get('loc', ()) if entries else ()
+    index = next((part for before, part in zip(loc, loc[1:])
+                  if before == 'scenes' and type(part) is int and 0 <= part < 6), None)
+    path = [str(part) for part in loc if (isinstance(part, str) and part in allowed)
+            or (type(part) is int and 0 <= part < 6)]
+    return dict(stage='schema', code='schema_validation_failed', sceneIndex=index,
+                field='.'.join(path)[:160] or None)
 
 
 def minimal_problem(problem: dict, context: list[dict] | None = None):

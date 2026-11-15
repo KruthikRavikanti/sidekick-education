@@ -4,6 +4,7 @@ import { Minus, Plus, RotateCcw } from "lucide-react";
 import { useState } from "react";
 import type { ActivityResponse, ActivityScene } from "@/lib/activity-types";
 import { DrawingControl, OralControl } from "./activity-media-controls";
+import { AreaWorkspace } from "./activity-area-workspace";
 
 export type FamilyComponent = "quantity_lab" | "math_workspace" | "sort_connect" | "text_editor" | "oral_studio" | "drawing_studio";
 type FamilyScene<C extends FamilyComponent> = Extract<ActivityScene, { component: C }>;
@@ -313,7 +314,7 @@ export function FamilyControl(props: FamilyProps<FamilyComponent>) {
   const { scene, sessionId, disabled, initialResponse, onResponse } = props;
   switch (scene.component) {
     case "quantity_lab": return <QuantityLab {...props} scene={scene} />;
-    case "math_workspace": return <MathWorkspace {...props} scene={scene} />;
+    case "math_workspace": return scene.params.mode.startsWith("area_") ? <AreaWorkspace {...props} scene={scene} /> : <MathWorkspace {...props} scene={scene} />;
     case "sort_connect": return <SortConnect {...props} scene={scene} />;
     case "text_editor": return <TextEditor {...props} scene={scene} />;
     case "oral_studio": return <><Mission>{scene.params.goal}</Mission><OralControl sessionId={sessionId} sceneId={scene.id} mode={scene.params.mode} passage={scene.params.passage} listenText={scene.params.listenText} disabled={disabled} recordingId={initialResponse && typeof initialResponse === "object" && "recordingId" in initialResponse ? initialResponse.recordingId : null} onResponse={onResponse} /></>;

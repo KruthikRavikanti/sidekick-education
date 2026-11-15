@@ -101,7 +101,7 @@ for (const example of cases) {
     await launch.click();
     const session = await (await started).json() as ActivitySession;
     expect(session.targetSkill.id).toBe(example.skill);
-    expect(["model_generated", "original_example"]).toContain(session.origin);
+    expect(session.origin).toBe("model_generated");
     expect(session.currentScene?.component).toBe(example.component);
     expect(keys(session).filter(k => ["answer", "acceptedAnswers", "comparison", "scenes", "nextSceneId", "explanation"].includes(k))).toEqual([]);
     await expect(page).toHaveURL(new RegExp(`/kid/activities/${session.id}$`));

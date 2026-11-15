@@ -6,6 +6,7 @@ import { api, errorMessage } from "@/lib/account-api";
 import type { ActivityHistoryItem, ActivityResult } from "@/lib/activity-types";
 import { FormError } from "./account-ui";
 import { DrawingPreview } from "./activity-media-controls";
+import { ParentActivityAttempt } from "./parent-activity-attempt";
 
 function ParentReview({ kidId, activity, onReviewed }: { kidId: string; activity: ActivityHistoryItem; onReviewed: (result: ActivityResult) => void }) {
   const [correct, setCorrect] = useState<boolean | null>(null);
@@ -179,6 +180,7 @@ function HistoryContent({ kidId }: { kidId: string }) {
                   Guided hints used: {activity.guidedHintCount}
                 </p>
               ) : null}
+              <ParentActivityAttempt kidId={kidId} sessionId={activity.id} />
             </article>
           ))}
         </div>

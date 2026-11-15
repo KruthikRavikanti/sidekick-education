@@ -216,15 +216,33 @@ def test_suggestion_get_is_read_only_and_unsupported_or_unusable_observations_do
 
 
 def new_composition():
-    spec = copy.deepcopy(examples()[0])
-    spec['title'] = 'A New Fraction Journey'
-    inserted = copy.deepcopy(spec['scenes'][0])
-    inserted.update(id='extra', prompt='Build 1/2 using equal parts.', params={'denominator': 2}, answer={'value': '1/2'}, nextSceneId='independent')
-    inserted['feedback'] = {'correct': 'Each equal piece is a half.', 'incorrect': 'Count the equal pieces.', 'hint': 'Select one of two equal parts.'}
-    spec['scenes'][1]['nextSceneId'] = 'extra'
-    spec['scenes'].insert(2, inserted)
-    spec['scenes'][-1].update(prompt='What fraction is 5 copies of 1/8?', params={'unitDenominator': 8, 'copies': 5}, answer={'value': '5/8'})
-    return spec
+    # New live compositions use current general components, while the example
+    # helper above keeps testing immutable historical 1.0 sessions separately.
+    raw = copy.deepcopy(examples()[0])
+    scenes = []
+    for index, (copies, denominator) in enumerate([(3, 4), (2, 3), (1, 2)]):
+        identifier = f'construct-{index}'
+        scenes.append(dict(id=identifier, component='quantity_lab', phase='guided',
+            prompt=f'Build {copies} copies of the equal unit 1/{denominator} in the display tray.',
+            params=dict(context='Make an original museum display from equal sections of one whole.',
+                teachingText='Each unit names one equal piece of the same whole; copies combine to make the numerator.',
+                goal='Build the requested copies of the equal unit.', visual=None,
+                stock=denominator, unitValue=f'1/{denominator}', taskOperation='build',
+                initialCounts=[0], containers=[dict(id='display', label='Display tray')]),
+            answer=dict(assessment='automatic', expectedCounts=[copies],
+                mathRule=dict(operation='represent', operands=[f'{copies}/{denominator}'], result=f'{copies}/{denominator}')),
+            feedback=dict(correct='The equal copies show the named fractional amount.',
+                incorrect='Compare the requested copies with the equal pieces you moved.',
+                hint='Each moved piece is one copy of the equal unit.'),
+            nextSceneId=f'construct-{index + 1}' if index < 2 else 'independent'))
+    scenes.append(dict(id='independent', component='independent_response', phase='independent',
+        prompt='What fraction is 5 copies of 1/8?', params=dict(context=None),
+        answer=dict(value='5/8', comparison='number', acceptedAnswers=[]),
+        feedback=dict(correct='You represented equal copies of a unit fraction.',
+            incorrect='The numerator names how many equal copies are used.', hint='Use the copies and equal-unit size.'),
+        nextSceneId=None))
+    raw.update(schemaVersion='1.3', title='A New Fraction Journey', scenes=scenes)
+    return raw
 
 
 class Composer:
@@ -239,15 +257,19 @@ class Composer:
             self.callback()
         if self.error:
             raise RuntimeError('Provider failure includes private payload; do not save this exception.')
+        if task == 'review_activity':
+            return dict(approved=True, reason='approved', demonstratesTarget=True,
+                interactionNecessary=True, goalAchievable=True, scoringAligned=True,
+                materialsPresent=True, independentFresh=True, failedSceneIds=[], sceneIssues=[])
         return self.result
 
 
-def test_unseen_verified_match_prevents_model_call(activity_family, security_context, monkeypatch):
+def test_finished_library_match_does_not_prevent_new_live_composition(activity_family, security_context, monkeypatch):
     child, client = activity_family
     composer = Composer(error=True)
     monkeypatch.setitem(main.app.state._state, 'activity_adapter', composer)
-    assert start(client, upload(security_context, child)).status_code == 200
-    assert not composer.calls
+    assert start(client, upload(security_context, child)).status_code == 503
+    assert [call[0] for call in composer.calls] == ['compose_activity', 'compose_activity']
 
 
 @pytest.mark.parametrize('correctness', ['correct', 'incorrect'])
@@ -271,7 +293,7 @@ def test_model_composes_and_saves_new_four_scene_spec_without_worksheet_or_ident
 
 
 @pytest.mark.parametrize('invalid', [False, True])
-def test_generation_failure_or_invalid_spec_uses_verified_fallback(activity_family, security_context, monkeypatch, tmp_path, invalid):
+def test_generation_failure_or_invalid_spec_retries_without_finished_library_substitution(activity_family, security_context, monkeypatch, tmp_path, invalid):
     child, client = activity_family
     upload_id = upload(security_context, child)
     # A verified same-skill example with a general misconception tag is suitable
@@ -282,11 +304,11 @@ def test_generation_failure_or_invalid_spec_uses_verified_fallback(activity_fami
     path.write_text(json.dumps(manifest))
     seed_library(security_context.db, activities_path=path)
     malformed = new_composition()
-    malformed['scenes'][-1]['answer']['value'] = '7/8'
+    malformed['scenes'][0]['params']['unitValue'] = '0'
     composer = Composer(malformed, error=not invalid)
     monkeypatch.setitem(main.app.state._state, 'activity_adapter', composer)
     second = start(client, upload_id)
-    assert second.status_code == 200 and second.json()['title'] == 'Equal Pieces: Build a Fraction'
+    assert second.status_code == 503 and second.json()['error']['code'] == 'activity_unavailable'
     assert composer.calls
     with security_context.db.transaction() as conn:
         assert not conn.execute("SELECT 1 FROM activity_versions WHERE origin='model_generated'").fetchone()
@@ -301,7 +323,7 @@ def test_no_fallback_friendly_retry_releases_reservation(activity_family, securi
     monkeypatch.setitem(main.app.state._state, 'activity_adapter', Composer(error=True))
     failed = start(client, upload_id, request_key)
     assert failed.status_code == 503 and failed.json()['error']['code'] == 'activity_unavailable'
-    seed_library(security_context.db)
+    monkeypatch.setitem(main.app.state._state, 'activity_adapter', Composer(new_composition()))
     assert start(client, upload_id, request_key).status_code == 200
 
 
@@ -439,7 +461,7 @@ def test_original_upload_independent_task_collision_never_reuses_example(activit
         assert not conn.execute('SELECT 1 FROM activity_sessions').fetchone()
 
 
-def test_generated_task_collision_is_retried_without_passing_uploaded_question(activity_family, security_context, monkeypatch):
+def test_legacy_model_definition_is_retried_without_passing_uploaded_question(activity_family, security_context, monkeypatch):
     child, client = activity_family
     upload_id = upload(security_context, child)
     with security_context.db.transaction() as conn:
@@ -451,7 +473,7 @@ def test_generated_task_collision_is_retried_without_passing_uploaded_question(a
     assert all('What fraction is 3 copies of 1/8?' not in json.dumps(call[2]) for call in composer.calls)
 
 
-def test_equivalent_task_cannot_be_repeated_by_rewording_model_prompt(activity_family, security_context, monkeypatch):
+def test_legacy_plural_definition_cannot_replace_new_composition_by_rewording(activity_family, security_context, monkeypatch):
     child, client = activity_family
     upload_id = upload(security_context, child, 'ela')
     complete(client, start(client, upload_id).json())
@@ -462,7 +484,7 @@ def test_equivalent_task_cannot_be_repeated_by_rewording_model_prompt(activity_f
     assert start(client, upload_id).status_code == 503 and len(composer.calls) == 2
 
 
-def test_concurrent_start_retry_uses_one_provider_call_and_one_session(activity_family, security_context):
+def test_concurrent_start_retry_uses_one_composition_one_review_and_one_session(activity_family, security_context):
     child, client = activity_family
     upload_id = upload(security_context, child)
     with security_context.db.transaction() as conn:
@@ -479,6 +501,10 @@ def test_concurrent_start_retry_uses_one_provider_call_and_one_session(activity_
                 self.calls += 1
                 entered.set()
                 await release.wait()
+                if task == 'review_activity':
+                    return dict(approved=True, reason='approved', demonstratesTarget=True,
+                        interactionNecessary=True, goalAchievable=True, scoringAligned=True,
+                        materialsPresent=True, independentFresh=True, failedSceneIds=[], sceneIssues=[])
                 return new_composition()
         adapter = PausedComposer()
         first = asyncio.create_task(service.start(security_context, child['id'], body, active, adapter=adapter))
@@ -489,7 +515,7 @@ def test_concurrent_start_retry_uses_one_provider_call_and_one_session(activity_
         release.set()
         result = await first
         retry = await service.start(security_context, child['id'], body, active, adapter=adapter)
-        assert retry['id'] == result['id'] and adapter.calls == 1
+        assert retry['id'] == result['id'] and adapter.calls == 2
     asyncio.run(exercise())
     with security_context.db.transaction() as conn:
         assert conn.execute('SELECT COUNT(*) FROM activity_sessions').fetchone()[0] == 1

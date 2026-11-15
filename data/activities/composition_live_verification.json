@@ -1,0 +1,530 @@
+{
+  "command": "npm run activities:verify:composition:live",
+  "checkedAt": "2026-11-15T03:02:14.691265+00:00",
+  "coverageMapSha256": "97c153e07b8b4bcc62b494b94cd8ef09500c163aac43780a78eea3fac96cbd5c",
+  "componentVersion": "sidekick-interactions-v6",
+  "promptVersion": "sidekick-activity-v7",
+  "success": true,
+  "model": "gpt-6.1-terra",
+  "isolatedTemporaryDatabase": true,
+  "fixtureMode": false,
+  "stubbedProvider": false,
+  "emptyLibraryAtStart": true,
+  "initialFinishedActivityCount": 0,
+  "browserVerifiedByThisScript": false,
+  "cases": [
+    {
+      "case": "area_1",
+      "subskillId": "3.MD.C.7-1",
+      "generatedValidated": true,
+      "playedScored": true,
+      "providerMode": "live",
+      "assessment": "automatic",
+      "parentReviewed": false,
+      "outcome": "correct",
+      "specSha256": "ab2ff48966443c2f4e00bd78d1c2f8ba0910b29c8041a1fbb5af716b9e4893a7",
+      "guidedActions": [
+        "quantity_lab",
+        "math_workspace:area_tile",
+        "math_workspace:area_expression"
+      ],
+      "connectedScenes": 1,
+      "liveUpload": true,
+      "noFinishedActivityReuse": true,
+      "refreshResumed": true,
+      "parentPinProtectedHistory": true,
+      "exactAttemptReview": true,
+      "success": true
+    },
+    {
+      "case": "area_2",
+      "subskillId": "3.MD.C.7-1",
+      "generatedValidated": true,
+      "playedScored": true,
+      "providerMode": "live",
+      "assessment": "automatic",
+      "parentReviewed": false,
+      "outcome": "correct",
+      "specSha256": "1c45c94910dc3ec8d929ed55e7e212e0ffc370943ade2bef9e9d382191ac1708",
+      "guidedActions": [
+        "quantity_lab",
+        "math_workspace:area_design",
+        "math_workspace:area_expression"
+      ],
+      "connectedScenes": 1,
+      "liveUpload": true,
+      "noFinishedActivityReuse": true,
+      "refreshResumed": true,
+      "parentPinProtectedHistory": true,
+      "exactAttemptReview": true,
+      "success": true
+    },
+    {
+      "case": "multiplication",
+      "subskillId": "3.OA.A.1-1",
+      "generatedValidated": true,
+      "playedScored": true,
+      "providerMode": "live",
+      "assessment": "automatic",
+      "parentReviewed": false,
+      "outcome": "correct",
+      "specSha256": "44c4ac880a053688c4dd7101d4532816263efc6461e21765b5a9987ce70f8478",
+      "guidedActions": [
+        "quantity_lab",
+        "math_workspace:equation"
+      ],
+      "connectedScenes": 1,
+      "liveUpload": true,
+      "noFinishedActivityReuse": true,
+      "refreshResumed": true,
+      "parentPinProtectedHistory": true,
+      "exactAttemptReview": true,
+      "success": true
+    },
+    {
+      "case": "measurement",
+      "subskillId": "2.MD.A.1-2",
+      "generatedValidated": true,
+      "playedScored": true,
+      "providerMode": "live",
+      "assessment": "automatic",
+      "parentReviewed": false,
+      "outcome": "correct",
+      "specSha256": "e966d1666d202a9a41aa2e752c514a8cf6a3fe0e953e7fc9a26f0fde122751ae",
+      "guidedActions": [
+        "math_workspace:ruler",
+        "math_workspace:ruler"
+      ],
+      "connectedScenes": 0,
+      "liveUpload": true,
+      "noFinishedActivityReuse": true,
+      "refreshResumed": true,
+      "parentPinProtectedHistory": true,
+      "exactAttemptReview": true,
+      "success": true
+    },
+    {
+      "case": "phonics",
+      "subskillId": "RF.1.3-2",
+      "generatedValidated": true,
+      "playedScored": true,
+      "providerMode": "live",
+      "assessment": "parent_review",
+      "parentReviewed": true,
+      "outcome": "incorrect",
+      "specSha256": "2bd981967009f3e587e496a8247b1afc207efb6c3360d09e64c824990e94366c",
+      "guidedActions": [
+        "sort_connect:sort",
+        "text_editor:edit",
+        "oral_studio:read_aloud"
+      ],
+      "connectedScenes": 1,
+      "liveUpload": true,
+      "noFinishedActivityReuse": true,
+      "refreshResumed": true,
+      "parentPinProtectedHistory": true,
+      "exactAttemptReview": true,
+      "success": true
+    },
+    {
+      "case": "writing",
+      "subskillId": "W.3.3-1",
+      "generatedValidated": true,
+      "playedScored": true,
+      "providerMode": "live",
+      "assessment": "parent_review",
+      "parentReviewed": true,
+      "outcome": "incorrect",
+      "specSha256": "17f5259fa4ca211a88e12a6ae2e44c8209994c3acf4a68e74c94495b0caf0f32",
+      "guidedActions": [
+        "drawing_studio",
+        "oral_studio:perform",
+        "text_editor:compose",
+        "text_editor:edit"
+      ],
+      "connectedScenes": 1,
+      "liveUpload": true,
+      "noFinishedActivityReuse": true,
+      "refreshResumed": true,
+      "parentPinProtectedHistory": true,
+      "exactAttemptReview": true,
+      "success": true
+    },
+    {
+      "case": "evidence",
+      "subskillId": "RL.3.1-1",
+      "generatedValidated": true,
+      "playedScored": true,
+      "providerMode": "live",
+      "assessment": "automatic",
+      "parentReviewed": false,
+      "outcome": "correct",
+      "specSha256": "00061c482b9c5917a04eff4bd80c945afa31071912a94f5b5d79e824b620b157",
+      "guidedActions": [
+        "evidence_board",
+        "sort_connect:connect",
+        "text_editor:compose"
+      ],
+      "connectedScenes": 1,
+      "liveUpload": true,
+      "noFinishedActivityReuse": true,
+      "refreshResumed": true,
+      "parentPinProtectedHistory": true,
+      "exactAttemptReview": true,
+      "success": true
+    }
+  ],
+  "caseGroups": [
+    {
+      "case": "area",
+      "success": true,
+      "activities": [
+        {
+          "case": "area_1",
+          "subskillId": "3.MD.C.7-1",
+          "generatedValidated": true,
+          "playedScored": true,
+          "providerMode": "live",
+          "assessment": "automatic",
+          "parentReviewed": false,
+          "outcome": "correct",
+          "specSha256": "ab2ff48966443c2f4e00bd78d1c2f8ba0910b29c8041a1fbb5af716b9e4893a7",
+          "guidedActions": [
+            "quantity_lab",
+            "math_workspace:area_tile",
+            "math_workspace:area_expression"
+          ],
+          "connectedScenes": 1,
+          "liveUpload": true,
+          "noFinishedActivityReuse": true,
+          "refreshResumed": true,
+          "parentPinProtectedHistory": true,
+          "exactAttemptReview": true,
+          "success": true
+        },
+        {
+          "case": "area_2",
+          "subskillId": "3.MD.C.7-1",
+          "generatedValidated": true,
+          "playedScored": true,
+          "providerMode": "live",
+          "assessment": "automatic",
+          "parentReviewed": false,
+          "outcome": "correct",
+          "specSha256": "1c45c94910dc3ec8d929ed55e7e212e0ffc370943ade2bef9e9d382191ac1708",
+          "guidedActions": [
+            "quantity_lab",
+            "math_workspace:area_design",
+            "math_workspace:area_expression"
+          ],
+          "connectedScenes": 1,
+          "liveUpload": true,
+          "noFinishedActivityReuse": true,
+          "refreshResumed": true,
+          "parentPinProtectedHistory": true,
+          "exactAttemptReview": true,
+          "success": true
+        }
+      ],
+      "subskillId": "3.MD.C.7-1",
+      "family": "measurement_area_volume",
+      "recoveryDiagnostics": [
+        {
+          "code": "schema_validation_failed",
+          "details": {
+            "category": "schema",
+            "code": "schema_validation_failed",
+            "sceneIndex": null,
+            "field": null,
+            "mode": "original",
+            "action": "compose_failed"
+          }
+        },
+        {
+          "code": "schema_validation_failed",
+          "details": {
+            "category": "schema",
+            "code": "schema_validation_failed",
+            "sceneIndex": null,
+            "field": null,
+            "mode": "original",
+            "action": "compose_failed"
+          }
+        }
+      ],
+      "providerActivityTasks": {
+        "compose_activity": 2,
+        "review_activity": 2
+      },
+      "reviewRejectionCodes": [],
+      "providerErrorCodes": [
+        "activity_schema_invalid",
+        "activity_schema_invalid"
+      ]
+    },
+    {
+      "case": "multiplication",
+      "success": true,
+      "activities": [
+        {
+          "case": "multiplication",
+          "subskillId": "3.OA.A.1-1",
+          "generatedValidated": true,
+          "playedScored": true,
+          "providerMode": "live",
+          "assessment": "automatic",
+          "parentReviewed": false,
+          "outcome": "correct",
+          "specSha256": "44c4ac880a053688c4dd7101d4532816263efc6461e21765b5a9987ce70f8478",
+          "guidedActions": [
+            "quantity_lab",
+            "math_workspace:equation"
+          ],
+          "connectedScenes": 1,
+          "liveUpload": true,
+          "noFinishedActivityReuse": true,
+          "refreshResumed": true,
+          "parentPinProtectedHistory": true,
+          "exactAttemptReview": true,
+          "success": true
+        }
+      ],
+      "subskillId": "3.OA.A.1-1",
+      "family": "equal_groups",
+      "recoveryDiagnostics": [],
+      "providerActivityTasks": {
+        "compose_activity": 1,
+        "review_activity": 1
+      },
+      "reviewRejectionCodes": [],
+      "providerErrorCodes": []
+    },
+    {
+      "case": "measurement",
+      "success": true,
+      "activities": [
+        {
+          "case": "measurement",
+          "subskillId": "2.MD.A.1-2",
+          "generatedValidated": true,
+          "playedScored": true,
+          "providerMode": "live",
+          "assessment": "automatic",
+          "parentReviewed": false,
+          "outcome": "correct",
+          "specSha256": "e966d1666d202a9a41aa2e752c514a8cf6a3fe0e953e7fc9a26f0fde122751ae",
+          "guidedActions": [
+            "math_workspace:ruler",
+            "math_workspace:ruler"
+          ],
+          "connectedScenes": 0,
+          "liveUpload": true,
+          "noFinishedActivityReuse": true,
+          "refreshResumed": true,
+          "parentPinProtectedHistory": true,
+          "exactAttemptReview": true,
+          "success": true
+        }
+      ],
+      "subskillId": "2.MD.A.1-2",
+      "family": "measurement_length",
+      "recoveryDiagnostics": [
+        {
+          "code": "review_target_action_missing",
+          "details": {
+            "category": "review",
+            "code": "review_target_action_missing",
+            "sceneIndex": 2,
+            "field": null,
+            "mode": "original",
+            "action": "validation_failed"
+          }
+        },
+        {
+          "code": "scene_repaired",
+          "details": {
+            "category": "review",
+            "code": "scene_repaired",
+            "sceneIndex": 2,
+            "field": null,
+            "mode": "original",
+            "action": "repair_returned"
+          }
+        },
+        {
+          "code": "composition_recovered",
+          "details": {
+            "category": "schema",
+            "code": "composition_recovered",
+            "sceneIndex": null,
+            "field": null,
+            "mode": "original",
+            "action": "validated"
+          }
+        }
+      ],
+      "providerActivityTasks": {
+        "compose_activity": 1,
+        "review_activity": 2,
+        "repair_activity_scene": 1
+      },
+      "reviewRejectionCodes": [
+        "misaligned_skill"
+      ],
+      "providerErrorCodes": []
+    },
+    {
+      "case": "phonics",
+      "success": true,
+      "activities": [
+        {
+          "case": "phonics",
+          "subskillId": "RF.1.3-2",
+          "generatedValidated": true,
+          "playedScored": true,
+          "providerMode": "live",
+          "assessment": "parent_review",
+          "parentReviewed": true,
+          "outcome": "incorrect",
+          "specSha256": "2bd981967009f3e587e496a8247b1afc207efb6c3360d09e64c824990e94366c",
+          "guidedActions": [
+            "sort_connect:sort",
+            "text_editor:edit",
+            "oral_studio:read_aloud"
+          ],
+          "connectedScenes": 1,
+          "liveUpload": true,
+          "noFinishedActivityReuse": true,
+          "refreshResumed": true,
+          "parentPinProtectedHistory": true,
+          "exactAttemptReview": true,
+          "success": true
+        }
+      ],
+      "subskillId": "RF.1.3-2",
+      "family": "phonics_decoding",
+      "recoveryDiagnostics": [],
+      "providerActivityTasks": {
+        "compose_activity": 1,
+        "review_activity": 1
+      },
+      "reviewRejectionCodes": [],
+      "providerErrorCodes": []
+    },
+    {
+      "case": "writing",
+      "success": true,
+      "activities": [
+        {
+          "case": "writing",
+          "subskillId": "W.3.3-1",
+          "generatedValidated": true,
+          "playedScored": true,
+          "providerMode": "live",
+          "assessment": "parent_review",
+          "parentReviewed": true,
+          "outcome": "incorrect",
+          "specSha256": "17f5259fa4ca211a88e12a6ae2e44c8209994c3acf4a68e74c94495b0caf0f32",
+          "guidedActions": [
+            "drawing_studio",
+            "oral_studio:perform",
+            "text_editor:compose",
+            "text_editor:edit"
+          ],
+          "connectedScenes": 1,
+          "liveUpload": true,
+          "noFinishedActivityReuse": true,
+          "refreshResumed": true,
+          "parentPinProtectedHistory": true,
+          "exactAttemptReview": true,
+          "success": true
+        }
+      ],
+      "subskillId": "W.3.3-1",
+      "family": "writing_composition",
+      "recoveryDiagnostics": [
+        {
+          "code": "review_answer_state_mismatch",
+          "details": {
+            "category": "review",
+            "code": "review_answer_state_mismatch",
+            "sceneIndex": 4,
+            "field": null,
+            "mode": "original",
+            "action": "validation_failed"
+          }
+        },
+        {
+          "code": "scene_repaired",
+          "details": {
+            "category": "review",
+            "code": "scene_repaired",
+            "sceneIndex": 4,
+            "field": null,
+            "mode": "original",
+            "action": "repair_returned"
+          }
+        },
+        {
+          "code": "composition_recovered",
+          "details": {
+            "category": "schema",
+            "code": "composition_recovered",
+            "sceneIndex": null,
+            "field": null,
+            "mode": "original",
+            "action": "validated"
+          }
+        }
+      ],
+      "providerActivityTasks": {
+        "compose_activity": 1,
+        "review_activity": 2,
+        "repair_activity_scene": 1
+      },
+      "reviewRejectionCodes": [
+        "unsuitable_task"
+      ],
+      "providerErrorCodes": []
+    },
+    {
+      "case": "evidence",
+      "success": true,
+      "activities": [
+        {
+          "case": "evidence",
+          "subskillId": "RL.3.1-1",
+          "generatedValidated": true,
+          "playedScored": true,
+          "providerMode": "live",
+          "assessment": "automatic",
+          "parentReviewed": false,
+          "outcome": "correct",
+          "specSha256": "00061c482b9c5917a04eff4bd80c945afa31071912a94f5b5d79e824b620b157",
+          "guidedActions": [
+            "evidence_board",
+            "sort_connect:connect",
+            "text_editor:compose"
+          ],
+          "connectedScenes": 1,
+          "liveUpload": true,
+          "noFinishedActivityReuse": true,
+          "refreshResumed": true,
+          "parentPinProtectedHistory": true,
+          "exactAttemptReview": true,
+          "success": true
+        }
+      ],
+      "subskillId": "RL.3.1-1",
+      "family": "reading_evidence",
+      "recoveryDiagnostics": [],
+      "providerActivityTasks": {
+        "compose_activity": 1,
+        "review_activity": 1
+      },
+      "reviewRejectionCodes": [],
+      "providerErrorCodes": []
+    }
+  ],
+  "elapsedSeconds": 276.48
+}

@@ -1,0 +1,41 @@
+{
+  "baselineCommit": "8856624",
+  "checkedAt": "2026-11-15T02:26:20.322482+00:00",
+  "success": false,
+  "model": "gpt-6.1-terra",
+  "isolatedTemporaryDatabase": true,
+  "fixtureMode": false,
+  "stubbedProvider": false,
+  "browserVerifiedByThisScript": false,
+  "cases": [
+    {
+      "case": "rectangle",
+      "success": false,
+      "failedStage": "generate_activity",
+      "errorCode": "activity_unavailable",
+      "subskillId": "3.MD.C.7-1",
+      "providerMode": "live",
+      "generatedValidated": false,
+      "playedScored": false,
+      "parentReviewed": false,
+      "outcome": "not_completed",
+      "source": "scripts/verify_catalog_activities.py",
+      "liveUpload": true,
+      "providerActivityTasks": {
+        "compose_activity": 2,
+        "review_activity": 2
+      },
+      "reviewRejectionCodes": [
+        "misaligned_skill",
+        "misaligned_skill"
+      ],
+      "providerErrorCodes": []
+    }
+  ],
+  "schemaFailures": [],
+  "elapsedSeconds": 80.77,
+  "normalAuthenticatedUpload": true,
+  "finishedLibraryEmptyForTarget": true,
+  "syntheticInput": "public/samples/activity-composed-area-work.png",
+  "failureReproduced": true
+}

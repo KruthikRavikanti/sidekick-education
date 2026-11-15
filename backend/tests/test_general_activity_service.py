@@ -116,7 +116,10 @@ class Composer:
                 verdict.update(demonstratesTarget=True, interactionNecessary=self.approved,
                     goalAchievable=True, scoringAligned=True, materialsPresent=True, independentFresh=True)
             return verdict
-        return copy.deepcopy(self.spec)
+        result = copy.deepcopy(self.spec)
+        if result.get('schemaVersion') in {'1.1', '1.2'}:
+            result['schemaVersion'] = '1.3'
+        return result
 
 
 def start(client, upload, key=None):
@@ -130,9 +133,9 @@ def test_legacy_generation_cannot_accept_a_generic_spec_without_independent_revi
     spec.update(subskillId=target['subskill_id'], grade=3,
                 misconceptionTags=[target['common_misconception']])
     composer = Composer(spec)
-    with pytest.raises(ValueError, match='not aligned'):
+    with pytest.raises(ValueError, match='missing_target_action'):
         asyncio.run(service._generate(composer, target, [], [], 0))
-    assert [call[0] for call in composer.calls] == ['compose_activity']
+    assert [call[0] for call in composer.calls] == ['compose_activity', 'compose_activity']
 
 
 def finish(client, session, final):
@@ -262,7 +265,7 @@ def test_stored_legacy_component_versions_remain_reusable(family, security_conte
     assert response.status_code == 200 and response.json()['origin'] == 'original_example'
 
 
-def test_generated_toolkit_definition_is_saved_and_reused_for_another_kid_without_provider(family, security_context, monkeypatch):
+def test_new_child_gets_on_demand_composition_even_when_a_verified_definition_exists(family, security_context, monkeypatch):
     child, client = family
     composer = Composer()
     monkeypatch.setitem(main.app.state._state, 'activity_adapter', composer)
@@ -276,20 +279,21 @@ def test_generated_toolkit_definition_is_saved_and_reused_for_another_kid_withou
     assert unlock(client).status_code == 200
     second_child = create_child(client, name='Robin', grade='1').json()
     assert select_child(client, second_child['id']).status_code == 200
-    unavailable_provider = Composer(failure=True)
-    monkeypatch.setitem(main.app.state._state, 'activity_adapter', unavailable_provider)
-    reused = start(client, mapped_upload(security_context, second_child))
-    assert reused.status_code == 200
-    assert reused.json()['currentScene'] == generated.json()['currentScene']
-    assert reused.json()['origin'] == 'model_generated'
-    assert unavailable_provider.calls == []
+    fresh_spec = generic_spec()
+    fresh_spec['title'] = 'An Original Orchard Mission'
+    fresh_provider = Composer(fresh_spec)
+    monkeypatch.setitem(main.app.state._state, 'activity_adapter', fresh_provider)
+    composed = start(client, mapped_upload(security_context, second_child))
+    assert composed.status_code == 200
+    assert composed.json()['origin'] == 'model_generated'
+    assert [call[0] for call in fresh_provider.calls] == ['compose_activity', 'review_activity']
     with security_context.db.transaction() as conn:
-        reused_version = conn.execute('SELECT activity_version_id FROM activity_sessions WHERE id=?', (reused.json()['id'],)).fetchone()[0]
-        assert reused_version == version['id']
-        assert conn.execute("SELECT COUNT(*) FROM activity_versions WHERE origin='model_generated'").fetchone()[0] == 1
+        fresh_version = conn.execute('SELECT activity_version_id FROM activity_sessions WHERE id=?', (composed.json()['id'],)).fetchone()[0]
+        assert fresh_version != version['id']
+        assert conn.execute("SELECT COUNT(*) FROM activity_versions WHERE origin='model_generated'").fetchone()[0] == 2
 
 
-def test_failed_generation_reuses_verified_toolkit_for_the_same_goal(family, security_context, monkeypatch, tmp_path):
+def test_failed_live_composition_does_not_silently_substitute_a_finished_library_activity(family, security_context, monkeypatch, tmp_path):
     from backend.activities.library import source_id
     child, client = family
     # The trusted original has the same catalog objective and interaction, with
@@ -309,13 +313,11 @@ def test_failed_generation_reuses_verified_toolkit_for_the_same_goal(family, sec
     unavailable_provider = Composer(failure=True)
     monkeypatch.setitem(main.app.state._state, 'activity_adapter', unavailable_provider)
     fallback = start(client, mapped_upload(security_context, child))
-    assert fallback.status_code == 200
-    assert fallback.json()['origin'] == 'original_example'
-    assert fallback.json()['currentScene']['component'] == 'bundle_builder'
+    assert fallback.status_code == 503
+    assert fallback.json()['error']['code'] == 'activity_unavailable'
     assert [call[0] for call in unavailable_provider.calls] == ['compose_activity', 'compose_activity']
     with security_context.db.transaction() as conn:
-        version = conn.execute("SELECT v.id,v.verified FROM activity_sessions s JOIN activity_versions v ON v.id=s.activity_version_id WHERE s.id=?", (fallback.json()['id'],)).fetchone()
-        assert version['id'] == imported['activities'][0]['versionId'] and version['verified'] == 1
+        assert conn.execute('SELECT COUNT(*) FROM activity_sessions').fetchone()[0] == 0
         assert conn.execute("SELECT COUNT(*) FROM activity_versions WHERE origin='model_generated'").fetchone()[0] == 0
 
 

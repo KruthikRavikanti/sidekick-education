@@ -6,6 +6,9 @@ only external model decisions, with no test endpoint or production auth bypass.
 import asyncio
 import json
 import sys
+import tempfile
+import time
+import uuid
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
@@ -43,7 +46,9 @@ async def main():
     if expected_correctness not in {'correct', 'incorrect'}:
         raise RuntimeError('Expected correctness must be correct or incorrect.')
     database_path = Path(database_url.removeprefix('sqlite:///'))
-    if not database_url.startswith('sqlite:///') or not database_path.is_absolute() or not database_path.name.startswith('sidekick-e2e-') or not database_path.is_file():
+    if (not database_url.startswith('sqlite:///') or not database_path.is_absolute()
+            or not database_path.name.startswith('sidekick-e2e-') or not database_path.is_file()
+            or database_path.is_symlink() or database_path.resolve().parent != Path(tempfile.gettempdir()).resolve()):
         raise RuntimeError('Only an existing isolated browser-test database is allowed.')
     security = SecurityContext(Settings(database_url=database_url, app_env='test', password_policy='dev',
                                        cookie_secure=False, trusted_origins=('http://localhost:3000',)))
@@ -65,6 +70,17 @@ async def main():
         assert problems and all(json.loads(row['grading_json'])['correctness'] == expected_correctness for row in problems)
         evidence = conn.execute("SELECT correctness,eligible FROM learning_evidence WHERE kid_id=? AND source='homework' AND source_ref IN (SELECT id FROM homework_problems WHERE upload_id=?)", (kid_id, upload_id)).fetchall()
         assert evidence and all(row['correctness'] == expected_correctness and row['eligible'] == 1 for row in evidence)
+        # These four regressions exercise resuming historical schema-1.0
+        # sessions (old controls, retries, hints and private answer handling).
+        # New composition is tested separately with current provider fixtures.
+        # Make the historical boundary explicit rather than allowing a finished
+        # library lesson to replace on-demand generation in production.
+        target = '3.NF.A.1-2' if question == 'How many 1/4 pieces make 3/4?' else 'L.3.1-2'
+        version = conn.execute("SELECT id FROM activity_versions WHERE subskill_id=? AND origin='original_example' AND active=1 ORDER BY id LIMIT 1", (target,)).fetchone()
+        assert version
+        source = conn.execute("SELECT id FROM learning_evidence WHERE kid_id=? AND source_ref IN (SELECT id FROM homework_problems WHERE upload_id=?) LIMIT 1", (kid_id, upload_id)).fetchone()
+        conn.execute("INSERT INTO activity_sessions(id,kid_id,upload_id,evidence_id,activity_version_id,subskill_id,status,started_at) VALUES(?,?,?,?,?,?,'in_progress',?)",
+            (uuid.uuid4().hex, kid_id, upload_id, source['id'], version['id'], target, time.time()))
     print(json.dumps({'id': result['id'], 'state': result['state'], 'correctness': expected_correctness}))
 
 
