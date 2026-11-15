@@ -73,7 +73,9 @@ def cleanup_references(security, references):
 
 def private_refs_for_child(connection, kid_id):
     rows = connection.execute("SELECT file_ref,pages_json FROM homework_uploads WHERE kid_id=?", (kid_id,)).fetchall()
-    return [reference for row in rows for reference in [row["file_ref"], *json.loads(row["pages_json"])]]
+    references = [reference for row in rows for reference in [row["file_ref"], *json.loads(row["pages_json"])]]
+    references.extend(row[0] for row in connection.execute('SELECT file_ref FROM activity_recordings WHERE kid_id=?', (kid_id,)))
+    return references
 
 
 def mask_header(png):

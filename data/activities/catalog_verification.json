@@ -1,0 +1,120 @@
+{
+  "coverageMapSha256": "fd02220ef6fd690265f223123106c440236d31dcf8608d70e377c27a25dc20dd",
+  "checkedAt": "2026-11-15T01:40:20.937107+00:00",
+  "description": "Normal mobile browser uploads, controlled external model decisions, real activity APIs and private parent review. Fixture cases do not claim live AI generation or semantic model evaluation.",
+  "actualMicrophonePath": true,
+  "syntheticAudioInput": true,
+  "browserTestsPassed": 10,
+  "cases": [
+    {
+      "subskillId": "5.G.A.1-1",
+      "generatedValidated": true,
+      "playedScored": true,
+      "specSha256": "9d3e349cf7bc8347ca8b50564a53c26eb1b8f86cc2222c95b1b103301861d0df",
+      "providerMode": "fixture",
+      "assessment": "automatic",
+      "parentReviewed": false,
+      "outcome": "correct",
+      "source": "tests/e2e/catalog-activities.spec.ts"
+    },
+    {
+      "subskillId": "3.OA.A.2-1",
+      "generatedValidated": true,
+      "playedScored": true,
+      "specSha256": "e44801a99cd316f565798c5bc7f6b88dc3d0bba1f32dea0f13bbc34088d519c5",
+      "providerMode": "fixture",
+      "assessment": "automatic",
+      "parentReviewed": false,
+      "outcome": "correct",
+      "source": "tests/e2e/catalog-activities.spec.ts"
+    },
+    {
+      "subskillId": "L.3.2-1",
+      "generatedValidated": true,
+      "playedScored": true,
+      "specSha256": "9ee0feeda05085c242085c71a04d9463b8d98278a79a86a887a47fba1fa542f5",
+      "providerMode": "fixture",
+      "assessment": "automatic",
+      "parentReviewed": false,
+      "outcome": "correct",
+      "source": "tests/e2e/catalog-activities.spec.ts"
+    },
+    {
+      "subskillId": "RF.3.4-2",
+      "generatedValidated": true,
+      "playedScored": true,
+      "specSha256": "9573ea30341aa7380b253a8eb2f886c9a4c9a70131e69e7263d47df653a7c2e6",
+      "providerMode": "fixture",
+      "assessment": "parent_review",
+      "parentReviewed": true,
+      "outcome": "incorrect",
+      "source": "tests/e2e/catalog-activities.spec.ts"
+    },
+    {
+      "subskillId": "L.K.1-1",
+      "generatedValidated": true,
+      "playedScored": true,
+      "specSha256": "16c95e8d1e8ea4bb58e9f6d85484c30c3440eec48d249f24d3143e5a756e91c4",
+      "providerMode": "fixture",
+      "assessment": "parent_review",
+      "parentReviewed": true,
+      "outcome": "correct",
+      "source": "tests/e2e/catalog-activities.spec.ts"
+    },
+    {
+      "subskillId": "2.MD.A.1-2",
+      "generatedValidated": true,
+      "playedScored": true,
+      "specSha256": "925316488acafe0418bf77a725beca4c14d566c014614a4d19ec818861198e90",
+      "providerMode": "fixture",
+      "assessment": "automatic",
+      "parentReviewed": false,
+      "outcome": "correct",
+      "source": "tests/e2e/catalog-activities.spec.ts"
+    },
+    {
+      "subskillId": "3.OA.A.1-1",
+      "generatedValidated": true,
+      "playedScored": true,
+      "specSha256": "8455df4833b213d20d5d144f308fbc2b397d821dde4950edda209f0d1fed0abd",
+      "providerMode": "fixture",
+      "assessment": "automatic",
+      "parentReviewed": false,
+      "outcome": "correct",
+      "source": "tests/e2e/catalog-activities.spec.ts"
+    },
+    {
+      "subskillId": "RF.1.3-2",
+      "generatedValidated": true,
+      "playedScored": true,
+      "specSha256": "c656b8aff2433d225c1b7d7d5b00cd5ecbccdf039543888635e50f24933a65f9",
+      "providerMode": "fixture",
+      "assessment": "parent_review",
+      "parentReviewed": true,
+      "outcome": "incorrect",
+      "source": "tests/e2e/catalog-activities.spec.ts"
+    },
+    {
+      "subskillId": "L.1.5-1",
+      "generatedValidated": true,
+      "playedScored": true,
+      "specSha256": "a8639397ff954cc8c52a9422f0c1809be0c358bcdb4eac10d9e4c25e3ed2bfd4",
+      "providerMode": "fixture",
+      "assessment": "parent_review",
+      "parentReviewed": true,
+      "outcome": "correct",
+      "source": "tests/e2e/catalog-activities.spec.ts"
+    },
+    {
+      "subskillId": "W.3.3-1",
+      "generatedValidated": true,
+      "playedScored": true,
+      "specSha256": "deb5a8ce30c70df0d6482a49e14201be6b0cccfbcb9985597824d4bc6c606abc",
+      "providerMode": "fixture",
+      "assessment": "parent_review",
+      "parentReviewed": true,
+      "outcome": "correct",
+      "source": "tests/e2e/catalog-activities.spec.ts"
+    }
+  ]
+}

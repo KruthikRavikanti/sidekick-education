@@ -22,12 +22,20 @@ def test_multiple_catalog_skills_share_controls_by_objective(subskill, component
 
 
 @pytest.mark.parametrize('subskill', [
-    '2.NBT.A.1-1',  # ten tens -> hundred exceeds the current ones/tens control
-    '4.OA.A.2-1', '6.RP.A.2-1', 'W.4.3-1',
+    '2.NBT.A.1-1', '4.OA.A.2-1', 'W.4.3-1',
     'RL.1.2-1', 'RI.K.2-2', 'RI.4.2-2', 'RL.4.5-2',
 ])
-def test_related_parent_skill_words_do_not_overstate_control_support(subskill):
-    assert capabilities.mechanics_for(CATALOG[subskill]) == ()
+def test_previously_blocked_families_have_explicit_demonstration_paths(subskill):
+    entry = capabilities.coverage_for(CATALOG[subskill])
+    assert capabilities.mechanics_for(CATALOG[subskill]) == tuple(entry['mechanics'])
+    assert entry['demonstration'] == CATALOG[subskill]['subskill']
+    if subskill.startswith(('W.', 'RL.', 'RI.')):
+        assert entry['assessment'] == 'parent_review'
+        assert entry['constraints']['requiredResponse'] in {'writing', 'oral'}
+
+
+def test_catalog_bands_outside_k5_are_not_silently_advertised():
+    assert capabilities.mechanics_for(CATALOG['6.RP.A.2-1']) == ()
 
 
 def test_a_control_from_another_family_cannot_be_used_as_decoration():

@@ -55,10 +55,11 @@ class BoundedBodyMiddleware:
         self.app = app
 
     async def __call__(self, scope, receive, send):
-        upload_path = scope.get("path", "") in IMAGE_UPLOAD_PATHS or scope.get("path", "").endswith("/uploads")
+        recording_path = scope.get('path', '').startswith('/api/activities/') and scope.get('path', '').endswith('/recording')
+        upload_path = scope.get("path", "") in IMAGE_UPLOAD_PATHS or scope.get("path", "").endswith("/uploads") or recording_path
         if scope["type"] != "http" or not upload_path:
             return await self.app(scope, receive, send)
-        body_limit = max_upload_bytes() + 64 * 1024
+        body_limit = (8 * 1024 * 1024 if recording_path else max_upload_bytes()) + 64 * 1024
         headers = dict(scope.get("headers", []))
         too_large = False
         try:
@@ -78,7 +79,8 @@ class BoundedBodyMiddleware:
                 if not message.get("more_body", False):
                     break
         if too_large:
-            return await error_response("file_too_large", f"This file is too large. Choose a file under {max_upload_bytes() // (1024 * 1024)} MB.", 413)(scope, receive, send)
+            limit_mb = 8 if recording_path else max_upload_bytes() // (1024 * 1024)
+            return await error_response("file_too_large", f"This file is too large. Choose a file under {limit_mb} MB.", 413)(scope, receive, send)
         delivered = False
 
         async def bounded_receive():
@@ -171,7 +173,10 @@ def extract_fixture(data: bytes) -> Extraction:
         if name not in {"math", "ela", "activity-math", "activity-ela",
                          "activity-math-correct", "activity-ela-correct",
                          "activity-math-general", "activity-ela-general", "activity-equivalent",
-                         "activity-toolkit-bundles", "activity-toolkit-sequence", "activity-toolkit-evidence"}:
+                         "activity-toolkit-bundles", "activity-toolkit-sequence", "activity-toolkit-evidence",
+                         "activity-catalog-multiplication", "activity-catalog-division", "activity-catalog-measurement",
+                         "activity-catalog-coordinates", "activity-catalog-phonics", "activity-catalog-fluency",
+                         "activity-catalog-writing", "activity-catalog-editing", "activity-catalog-handwriting", "activity-catalog-sorting"}:
             raise ExtractionError("fixture_only", "Demo mode reads the bundled sample pages. Try a sample, or connect the reader to use your own photo.", 422)
         return Extraction.model_validate_json((ROOT / "fixtures" / f"{name}.json").read_text())
     except (OSError, ValueError, ValidationError):

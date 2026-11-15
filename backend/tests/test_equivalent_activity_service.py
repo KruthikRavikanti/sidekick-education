@@ -42,7 +42,7 @@ def split_spec(security, subskill='4.NF.A.1-1', *, weak=False):
                     feedback=dict(correct=f'{numerator}/{denominator} becomes {numerator * factor}/{denominator * factor}: the same area has finer equal parts.',
                                   incorrect='Keep the planted area fixed and choose the requested equal split.',
                                   hint=f'Split each original part into {factor} equal pieces.'))
-    return dict(schemaVersion='1.1', title='One Garden, More Equal Pieces', subject='math',
+    spec = dict(schemaVersion='1.1', title='One Garden, More Equal Pieces', subject='math',
                 subskillId=subskill, grade=int(target['grade']), sourceRefs=[],
                 misconceptionTags=['Equivalent fractions keep the same shaded area'] if weak else [target['common_misconception']],
                 scenes=[visual('halves', 1, 2, 3, [2, 3, 4], 'thirds'),
@@ -54,6 +54,14 @@ def split_spec(security, subskill='4.NF.A.1-1', *, weak=False):
                              feedback=dict(correct='You kept the same amount in the requested equal parts.',
                                            incorrect='Use the requested denominator for the same fraction amount.',
                                            hint='Use the same multiplication factor for both counts.'), nextSceneId=None)])
+    if subskill == '4.NF.A.1-2':
+        spec['schemaVersion'] = '1.2'
+        final = spec['scenes'][-1]
+        final.update(component='text_editor', prompt='Explain why splitting each fourth of a new garden into two pieces preserves its planted 3/4 area.',
+            params=dict(context=None, teachingText=None, goal='Explain the same amount after equal splitting.', visual=None,
+                mode='compose', initialText='', minLength=20, minWords=0, maxLength=2000, wordBank=[]),
+            answer=dict(assessment='parent_review', rubric=['Explains unchanged area and equal subdivisions.', 'Connects both counts to the same split factor.']))
+    return spec
 
 
 def save_version(security, spec, *, origin='model_generated'):

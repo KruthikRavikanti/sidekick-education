@@ -1,0 +1,43 @@
+{
+  "worksheet": {
+    "title": {
+      "text": "Story openings",
+      "uncertain": false
+    },
+    "subject": "ela",
+    "subject_uncertain": false,
+    "printed_grade": {
+      "text": "Grade 3",
+      "uncertain": false
+    },
+    "directions": [],
+    "shared_context": []
+  },
+  "problems": [
+    {
+      "id": "activity-catalog-writing-1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "Write the beginning of a story: who is in it, where, and what is happening.",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "Mina waited at the river. Her little boat had drifted away.",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    }
+  ]
+}

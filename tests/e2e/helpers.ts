@@ -32,7 +32,7 @@ export async function mutate(
   });
 }
 
-export async function createFamily(context: BrowserContext) {
+export async function createFamily(context: BrowserContext, grade = "3") {
   const database = process.env.SIDEKICK_E2E_DATABASE_URL;
   expect(database, "Family setup requires Playwright's isolated test database").toBeTruthy();
   // Every test uses a fresh account. Reset only the shared synthetic signup-IP
@@ -59,7 +59,7 @@ export async function createFamily(context: BrowserContext) {
   expect(response.ok(), await response.text()).toBeTruthy();
   response = await mutate(request, "/api/parent/profiles", {
     firstName: "Alex",
-    grade: "3",
+    grade,
     avatarKey: "fox",
   });
   expect(response.ok(), await response.text()).toBeTruthy();

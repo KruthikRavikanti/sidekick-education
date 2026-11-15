@@ -38,7 +38,8 @@ class SessionSecurityMiddleware:
             if scope['path'] not in PUBLIC and scope['method'] != 'OPTIONS':
                 require_session(request)
             # Bound JSON/auth input separately from the existing multipart image cap.
-            if scope['method'] in {'POST', 'PUT', 'PATCH', 'DELETE'} and scope['path'] not in {'/api/extract', '/api/images/preview'} and not scope['path'].endswith('/uploads'):
+            recording_upload = scope['path'].startswith('/api/activities/') and scope['path'].endswith('/recording')
+            if scope['method'] in {'POST', 'PUT', 'PATCH', 'DELETE'} and scope['path'] not in {'/api/extract', '/api/images/preview'} and not scope['path'].endswith('/uploads') and not recording_upload:
                 body = bytearray()
                 while True:
                     message = await receive()

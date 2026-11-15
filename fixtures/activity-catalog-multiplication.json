@@ -1,0 +1,43 @@
+{
+  "worksheet": {
+    "title": {
+      "text": "Equal groups",
+      "uncertain": false
+    },
+    "subject": "math",
+    "subject_uncertain": false,
+    "printed_grade": {
+      "text": "Grade 3",
+      "uncertain": false
+    },
+    "directions": [],
+    "shared_context": []
+  },
+  "problems": [
+    {
+      "id": "activity-catalog-multiplication-1",
+      "label": {
+        "text": "1",
+        "uncertain": false
+      },
+      "question": {
+        "text": "What does 5 x 7 mean: 5 groups of 7, or 5 and 7 more?",
+        "uncertain": false
+      },
+      "answer_choices": [],
+      "context_refs": [],
+      "student_work": {
+        "steps": [],
+        "final_answer": {
+          "text": "5 groups of 7",
+          "uncertain": false
+        },
+        "selected_choice": {
+          "text": null,
+          "uncertain": false
+        },
+        "status": "answered"
+      }
+    }
+  ]
+}

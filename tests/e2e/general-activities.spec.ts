@@ -157,7 +157,7 @@ for (const example of cases) {
   });
 }
 
-test("a mapped skill without a suitable control is explicitly unavailable", async ({page, context}) => {
+test("a previously blocked K–5 skill now offers a playable activity", async ({page, context}) => {
   const family = await createFamily(context);
   await page.goto("/kid/homework");
   await page.getByLabel("Choose work image", {exact:true}).setInputFiles(path.join(process.cwd(), "public/samples/activity-math-general-work.png"));
@@ -165,6 +165,6 @@ test("a mapped skill without a suitable control is explicitly unavailable", asyn
   await page.getByRole("button", {name:"Read my work", exact:true}).click();
   const upload = await uploaded;
   await execute("backend/.venv/bin/python", ["tests/e2e/general_activity_fixture.py", process.env.SIDEKICK_E2E_DATABASE_URL!, family.kid.id, upload.headers()["x-sidekick-upload-id"]]);
-  await expect(page.getByRole("heading", {name:"No activity for this skill yet.", exact:true})).toBeVisible();
-  await expect(page.getByRole("button", {name:"Try an activity", exact:true})).toHaveCount(0);
+  await expect(page.getByRole("button", {name:"Try an activity", exact:true})).toBeVisible();
+  await expect(page.getByRole("heading", {name:"No activity for this skill yet.", exact:true})).toHaveCount(0);
 });

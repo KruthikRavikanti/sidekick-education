@@ -62,9 +62,12 @@ def _target(conn, security, kid_id, upload_id, active):
         if not target or not target['active'] or general.subject_for(target) is None or general.grade_for(target) is None:
             continue
         priority = 0 if row['evidence_eligible'] and row['evidence_correctness'] == 'incorrect' else 1 if row['evidence_correctness'] == 'correct' else 2
-        candidates.append((priority, target, row['evidence_id']))
+        # A reliably mapped playable item must not be hidden by an earlier or
+        # incorrect question whose skill has no available interaction.
+        playable = bool(capabilities.mechanics_for(target))
+        candidates.append((0 if playable else 1, priority, target, row['evidence_id']))
     if candidates:
-        _, target, evidence_id = min(candidates, key=lambda candidate: candidate[0])
+        _, _, target, evidence_id = min(candidates, key=lambda candidate: candidate[:2])
         return target, evidence_id, None
     return None, None, 'no_supported_skill'
 
@@ -93,9 +96,8 @@ def _owned(conn, security, kid_id, session_id, active):
 
 def _result(conn, row, spec):
     attempt = conn.execute("SELECT * FROM activity_attempts WHERE session_id=? AND phase='independent'", (row['id'],)).fetchone()
-    final = spec.scenes[-1]
-    question = general.scene_question(final)
-    return dict(question=question, response=attempt['response_text'], correct=bool(attempt['correct'])) if attempt else None
+    from .assessment import result_details
+    return result_details(conn, row, spec, attempt)
 
 
 def _view(conn, row, spec):
@@ -104,13 +106,20 @@ def _view(conn, row, spec):
     hinted = bool(conn.execute('SELECT 1 FROM activity_attempts WHERE session_id=? AND scene_id=? AND hint_used=1', (row['id'], scene.id)).fetchone()) if scene else False
     origin = conn.execute('SELECT origin FROM activity_versions WHERE id=?', (row['activity_version_id'],)).fetchone()[0]
     target = get_subskill(conn, row['subskill_id'])
+    path = capabilities.coverage_for(target)
+    final_result = _result(conn, row, spec)
+    if final_result:
+        # Parent criteria and review notes stay behind the parent PIN boundary.
+        final_result = {**final_result, 'rubric': [], 'reviewNote': None}
     # Deliberate allowlist: never serialize ActivitySpec or a later scene.
     return dict(id=row['id'], title=spec.title, subject=spec.subject, origin=origin, targetSkill=target_view(target), status=row['status'], sceneIndex=row['current_scene'], sceneCount=len(spec.scenes),
-                currentScene=dict(id=scene.id, component=scene.component, phase=scene.phase, prompt=scene.prompt, params=scene.params.model_dump()) if scene else None,
+                currentScene=dict(id=scene.id, component=scene.component, phase=scene.phase, prompt=scene.prompt, params=scene.params.model_dump(),
+                    parentParticipation=bool((path or {}).get('parentParticipation'))) if scene else None,
                 currentResponse=decode(attempt['response_json']) if attempt else None,
-                feedback=dict(correct=bool(attempt['correct']), message=scene.feedback.correct if attempt['correct'] else scene.feedback.incorrect) if attempt else None,
+                feedback=dict(correct=None if attempt['assessment_status'] == 'pending_parent_review' else bool(attempt['correct']),
+                    message=scene.feedback.hint if attempt['assessment_status'] == 'pending_parent_review' else scene.feedback.correct if attempt['correct'] else scene.feedback.incorrect) if attempt else None,
                 hint=scene.feedback.hint if attempt and hinted and scene.phase == 'guided' else None,
-                canAdvance=bool(attempt and scene.phase == 'guided'), finalResult=_result(conn, row, spec))
+                canAdvance=bool(attempt and scene.phase == 'guided'), finalResult=final_result)
 
 
 def session_view(security, kid_id, session_id, active):
@@ -119,6 +128,9 @@ def session_view(security, kid_id, session_id, active):
 
 
 def _task_key(scene):
+    from . import families
+    if scene.component in families.COMPONENTS:
+        return families.task_key(scene)
     if scene.component in toolkit.COMPONENTS:
         return toolkit.task_key(scene)
     if getattr(scene.answer, 'comparison', None) == 'fraction_form':
@@ -146,6 +158,9 @@ def _scene_source_keys(scene):
     if scene.component in {'tile_order', 'evidence_board'}:
         pieces = scene.params.tiles if scene.component == 'tile_order' else scene.params.sentences
         material.extend(piece.text for piece in pieces)
+    if scene.component in {'text_editor', 'oral_studio', 'drawing_studio', 'quantity_lab', 'math_workspace', 'sort_connect'}:
+        for name in ('initialText', 'passage', 'listenText', 'backgroundPrompt'):
+            material.append(getattr(scene.params, name, None) or '')
     return set().union(*(_source_keys(text) for text in material))
 
 
@@ -153,7 +168,7 @@ def _task_blocked(scene, blocked):
     return (_task_key(scene) in blocked
             or (scene.component not in toolkit.COMPONENTS
                 and general.task_key(scene.prompt, getattr(scene.params, 'context', None)) in blocked)
-            or (scene.component in toolkit.COMPONENTS and bool(_scene_source_keys(scene) & set(blocked))))
+            or (scene.component in toolkit.COMPONENTS | {'text_editor', 'oral_studio', 'drawing_studio', 'quantity_lab', 'math_workspace', 'sort_connect'} and bool(_scene_source_keys(scene) & set(blocked))))
 
 
 def _blocked_tasks(conn, kid_id, upload_id, subject, *, equivalent_skill=False):
@@ -193,7 +208,7 @@ def _blocked_tasks(conn, kid_id, upload_id, subject, *, equivalent_skill=False):
     for row in conn.execute('SELECT v.spec_json FROM activity_sessions s JOIN activity_versions v ON v.id=s.activity_version_id WHERE s.kid_id=?', (kid_id,)):
         final = ActivitySpec.model_validate_json(row[0]).scenes[-1]
         keys.add(_task_key(final))
-        if final.component in toolkit.COMPONENTS:
+        if final.component in toolkit.COMPONENTS | {'text_editor', 'oral_studio', 'drawing_studio', 'quantity_lab', 'math_workspace', 'sort_connect'}:
             keys.update(_scene_source_keys(final))
         if equivalent_skill:
             # Old question-only activities may have used general response keys.
@@ -402,6 +417,9 @@ async def start(security, kid_id, body, active, *, adapter=None):
 
 
 def _grade(scene, response):
+    from . import families
+    if scene.component in families.COMPONENTS:
+        return families.grade_response(scene, response)
     if scene.component in toolkit.COMPONENTS:
         return toolkit.grade_response(scene, response)
     if scene.component == 'fraction_split_compare':
@@ -457,10 +475,14 @@ def submit(security, kid_id, session_id, body, active):
         if scene.phase == 'independent' and conn.execute('SELECT 1 FROM activity_attempts WHERE session_id=? AND scene_id=?', (session_id, scene.id)).fetchone():
             raise AccountError('already_answered', 'Your first answer is saved. Continue to the next step.', 409)
         try:
+            if scene.component == 'oral_studio':
+                from .assessment import require_recording
+                require_recording(conn, kid_id, session_id, scene.id, body.response)
             response_text, correct = _grade(scene, body.response)
         except (ValueError, TypeError, ZeroDivisionError):
             raise AccountError('invalid_response', 'Choose an answer for this step and try again.', 400) from None
-        conn.execute('INSERT INTO activity_attempts(id,session_id,scene_id,request_key,phase,response_json,response_text,correct,created_at) VALUES(?,?,?,?,?,?,?,?,?)', (uid(), session_id, scene.id, body.idempotencyKey, scene.phase, serialized, response_text, int(correct), security.clock.now()))
+        conn.execute('INSERT INTO activity_attempts(id,session_id,scene_id,request_key,phase,response_json,response_text,correct,created_at,assessment_status) VALUES(?,?,?,?,?,?,?,?,?,?)',
+            (uid(), session_id, scene.id, body.idempotencyKey, scene.phase, serialized, response_text, int(bool(correct)), security.clock.now(), 'pending_parent_review' if correct is None else 'automatic'))
         if scene.phase == 'independent':
             conn.execute("UPDATE activity_sessions SET status='completed',completed_at=? WHERE id=?", (security.clock.now(), session_id))
             row = conn.execute('SELECT * FROM activity_sessions WHERE id=?', (session_id,)).fetchone()

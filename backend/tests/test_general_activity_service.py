@@ -111,7 +111,11 @@ class Composer:
         if task == 'review_activity':
             if self.callback:
                 self.callback()
-            return {'approved': self.approved, 'reason': 'approved' if self.approved else 'incorrect_answer'}
+            verdict = {'approved': self.approved, 'reason': 'approved' if self.approved else 'incorrect_answer'}
+            if 'demonstratesTarget' in schema.model_fields:
+                verdict.update(demonstratesTarget=True, interactionNecessary=self.approved,
+                    goalAchievable=True, scoringAligned=True, materialsPresent=True, independentFresh=True)
+            return verdict
         return copy.deepcopy(self.spec)
 
 
@@ -174,7 +178,8 @@ def test_no_matching_library_activity_generates_reviews_plays_and_keeps_learning
     session = response.json()
     assert session['origin'] == 'model_generated' and session['currentScene']['component'] in {'bundle_builder', 'tile_order', 'evidence_board'}
     assert [call[0] for call in composer.calls] == ['compose_activity', 'review_activity']
-    assert composer.calls[0][2]['availableMechanics'] == [session['currentScene']['component']]
+    assert session['currentScene']['component'] in composer.calls[0][2]['availableMechanics']
+    assert set(composer.calls[0][2]['availableMechanics']) == set(composer.calls[0][2]['coveragePath']['mechanics'])
     goal = composer.calls[0][2]['learningGoal']
     assert goal['intent'] == ('reinforce_correct_work' if correctness == 'correct' else 'explore_skill')
     assert goal['supportedObservation'] == ({'kind': 'correct_response'} if correctness == 'correct' else None)
@@ -314,7 +319,7 @@ def test_failed_generation_reuses_verified_toolkit_for_the_same_goal(family, sec
         assert conn.execute("SELECT COUNT(*) FROM activity_versions WHERE origin='model_generated'").fetchone()[0] == 0
 
 
-@pytest.mark.parametrize('subskill', ['4.OA.A.2-1', '6.RP.A.2-1', 'W.4.3-1'])
+@pytest.mark.parametrize('subskill', ['6.RP.A.2-1'])
 def test_objective_without_a_suitable_control_is_unavailable_without_provider_call(family, security_context, monkeypatch, subskill):
     child, client = family
     upload = mapped_upload(security_context, child, subskill)

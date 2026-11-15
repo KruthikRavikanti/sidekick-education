@@ -14,7 +14,7 @@ from backend.accounts.database import ROOT
 DEFAULT_SOURCES = ROOT / 'data/activities/sources.csv'
 DEFAULT_ACTIVITIES = ROOT / 'data/activities/original_examples.json'
 REQUIRED_SOURCE_COLUMNS = ('Source', 'What it says, in our words', 'Where we used it', 'Link')
-IMPORTER_VERSION = 'sidekick-activity-library-v2'
+IMPORTER_VERSION = 'sidekick-activity-library-v3'
 MISSING_CONTEXT = re.compile(r'\b(?:passage|story|article|text)\s+(?:above|below|provided)\b|\b(?:from|in)\s+(?:the|this)\s+(?:passage|story|article)\b', re.I)
 
 
@@ -71,7 +71,7 @@ def _read_manifest(path):
 
 def _validated_rows(connection, manifest, source_ids):
     from .models import ActivitySpec
-    from . import capabilities, general
+    from . import capabilities, general, families
     from backend.gap.catalog import get_subskill
     rows = manifest['activities']
     counts = Counter(row.get('id') for row in rows if isinstance(row, dict) and isinstance(row.get('id'), str))
@@ -91,9 +91,9 @@ def _validated_rows(connection, manifest, source_ids):
             raw_skill = raw_spec.get('subskillId') if isinstance(raw_spec, dict) else None
             if not isinstance(raw_skill, str) or not connection.execute('SELECT 1 FROM catalog_subskills WHERE id=? AND active=1', (raw_skill,)).fetchone():
                 code = 'missing_skill_link'
-            elif isinstance(raw_spec.get('scenes'), list) and any(isinstance(scene, dict) and scene.get('component') not in {'fraction_builder', 'number_line', 'word_tiles', 'word_choice', 'independent_fraction', 'independent_word', 'fraction_split_compare', 'guided_choice', 'guided_response', 'independent_response', 'bundle_builder', 'tile_order', 'evidence_board'} for scene in raw_spec['scenes']):
+            elif isinstance(raw_spec.get('scenes'), list) and any(isinstance(scene, dict) and scene.get('component') not in {'fraction_builder', 'number_line', 'word_tiles', 'word_choice', 'independent_fraction', 'independent_word', 'fraction_split_compare', 'guided_choice', 'guided_response', 'independent_response', 'bundle_builder', 'tile_order', 'evidence_board'} | families.COMPONENTS for scene in raw_spec['scenes']):
                 code = 'unsupported_interaction'
-            elif isinstance(raw_spec.get('scenes'), list) and any(isinstance(scene, dict) and isinstance(scene.get('prompt'), str) and MISSING_CONTEXT.search(scene['prompt']) and not (isinstance(scene.get('params'), dict) and (scene['params'].get('context') or scene['params'].get('sentences') or (scene.get('component') == 'tile_order' and scene['params'].get('tiles')))) for scene in raw_spec['scenes']):
+            elif isinstance(raw_spec.get('scenes'), list) and any(isinstance(scene, dict) and scene.get('component') not in families.COMPONENTS and isinstance(scene.get('prompt'), str) and MISSING_CONTEXT.search(scene['prompt']) and not (isinstance(scene.get('params'), dict) and (scene['params'].get('context') or scene['params'].get('sentences') or (scene.get('component') == 'tile_order' and scene['params'].get('tiles')))) for scene in raw_spec['scenes']):
                 code = 'missing_context'
             else:
                 try:

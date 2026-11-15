@@ -8,7 +8,13 @@ export type ActivityResponse =
   | { splitFactor: number }
   | { bundles: number }
   | { order: string[] }
-  | { sentenceId: string };
+  | { sentenceId: string }
+  | { allocations: { containerId: string; count: number }[] }
+  | { marks: { x: number; y: number }[]; text: string }
+  | { placements: { pieceId: string; targetId: string }[] }
+  | { writtenText: string }
+  | { recordingId: string }
+  | { strokes: { x: number; y: number }[][] };
 
 interface ToolkitMaterial {
   context: string | null;
@@ -16,10 +22,29 @@ interface ToolkitMaterial {
   goal: string;
 }
 
+export interface ActivityVisual {
+  kind: "scene" | "book_cover" | "book_pages" | "coins" | "solid_shapes" | "diagram" | "chart";
+  title: string;
+  author: string | null;
+  caption: string | null;
+  items: {
+    id: string;
+    kind: "rect" | "circle" | "triangle" | "line" | "text" | "cube" | "sphere" | "cone" | "cylinder" | "penny" | "nickel" | "dime" | "quarter" | "fox" | "tree" | "sun" | "book";
+    label: string;
+    x: number; y: number; width: number; height: number;
+    color: "green" | "blue" | "red" | "yellow" | "gray" | "brown";
+  }[];
+}
+
+interface FamilyMaterial extends ToolkitMaterial {
+  visual: ActivityVisual | null;
+}
+
 export interface ActivitySceneBase {
   id: string;
   prompt: string;
   phase: "guided" | "independent";
+  parentParticipation?: boolean;
 }
 
 export type ActivityScene = ActivitySceneBase &
@@ -93,11 +118,80 @@ export type ActivityScene = ActivitySceneBase &
           boardLabel: string;
         };
       }
+    | {
+        component: "quantity_lab";
+        params: FamilyMaterial & {
+          stock: number;
+          containers: { id: string; label: string }[];
+          unitValue: string;
+          taskOperation: "distribute" | "combine" | "remove" | "build";
+          initialCounts: number[];
+        };
+      }
+    | {
+        component: "math_workspace";
+        params: FamilyMaterial & {
+          mode: "grid" | "ruler" | "number_line" | "clock" | "angle" | "balance" | "vessel" | "chart" | "equation" | "shape";
+          width: number;
+          height: number;
+          step: string;
+          origin: string;
+          unitLabel: string;
+          objects: { id: string; label: string; x: number; y: number; width: number; height: number; shape: "rect" | "circle" | "triangle" | "line" | "text"; value: string | null }[];
+          tokens: { id: string; text: string }[];
+        };
+      }
+    | {
+        component: "sort_connect";
+        params: FamilyMaterial & {
+          pieces: { id: string; text: string }[];
+          targets: { id: string; label: string }[];
+          mode: "sort" | "connect";
+        };
+      }
+    | {
+        component: "text_editor";
+        params: FamilyMaterial & {
+          mode: "edit" | "compose" | "assemble";
+          initialText: string;
+          minLength: number;
+          maxLength: number;
+          minWords: number;
+          wordBank: string[];
+        };
+      }
+    | {
+        component: "oral_studio";
+        params: FamilyMaterial & {
+          mode: "read_aloud" | "say_sounds" | "listen_respond" | "perform";
+          passage: string;
+          listenText: string | null;
+        };
+      }
+    | {
+        component: "drawing_studio";
+        params: FamilyMaterial & {
+          backgroundPrompt: string;
+          labels: string[];
+        };
+      }
   );
 
 export interface ActivityFeedback {
-  correct: boolean;
+  correct: boolean | null;
   message: string;
+}
+
+export interface ActivityResult {
+  question: string;
+  response: string;
+  correct: boolean | null;
+  assessmentStatus?: "automatic" | "pending_parent_review" | "parent_reviewed";
+  rubric?: string[];
+  recordingId?: string | null;
+  strokes?: { x: number; y: number }[][] | null;
+  reviewNote?: string | null;
+  parentParticipation?: boolean;
 }
 
 export interface ActivitySession {
@@ -114,7 +208,7 @@ export interface ActivitySession {
   feedback: ActivityFeedback | null;
   hint: string | null;
   canAdvance: boolean;
-  finalResult: { question: string; response: string; correct: boolean } | null;
+  finalResult: ActivityResult | null;
 }
 
 export interface ActivitySuggestionData {
@@ -133,6 +227,6 @@ export interface ActivityHistoryItem {
   status: "in_progress" | "completed";
   startedAt: number;
   completedAt: number | null;
-  finalResult: { question: string; response: string; correct: boolean } | null;
+  finalResult: ActivityResult | null;
   guidedHintCount?: number;
 }
