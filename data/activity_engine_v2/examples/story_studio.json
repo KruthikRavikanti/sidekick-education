@@ -1,0 +1,395 @@
+{
+  "schemaVersion": "2.0-foundation",
+  "id": "story_studio",
+  "title": "Open the rescue journal",
+  "definitionVersion": 1,
+  "componentVersion": "sidekick-program-contract-v1",
+  "intent": {
+    "targets": [
+      {
+        "skillId": "W.3.3-1",
+        "demonstration": "Establish a situation and narrator or characters; order events naturally"
+      }
+    ],
+    "observations": [
+      {
+        "id": "synthetic-observation",
+        "skillId": "W.3.3-1",
+        "kind": "incorrect_response",
+        "source": "uploaded_work",
+        "confidence": 0.92,
+        "summary": "The opening did not establish the situation and characters for a new reader."
+      }
+    ],
+    "misconceptions": [
+      {
+        "skillId": "W.3.3-1",
+        "description": "An opening did not establish who was present or what situation began the story.",
+        "confidence": 0.78,
+        "observationIds": [
+          "synthetic-observation"
+        ]
+      }
+    ],
+    "successEvidence": [
+      "opening-and-revision"
+    ]
+  },
+  "world": {
+    "state": [
+      {
+        "id": "opening-text",
+        "kind": "text",
+        "initial": "",
+        "maxLength": 1200,
+        "mutable": true
+      },
+      {
+        "id": "revision-saved",
+        "kind": "boolean",
+        "initial": false,
+        "mutable": true
+      }
+    ],
+    "materials": [
+      {
+        "id": "journal-prompt",
+        "kind": "prompt",
+        "text": "Create a rescue-journal opening. Help a new reader meet the narrator or characters, understand the situation, and follow what happens first. Then revise your own opening so the setup and event order are clearer. Many different stories can work.",
+        "items": [],
+        "quantity": null
+      }
+    ],
+    "objects": [
+      {
+        "id": "opening",
+        "kind": "text_artifact",
+        "bindings": {
+          "text": "opening-text"
+        },
+        "materialIds": [
+          "journal-prompt"
+        ]
+      },
+      {
+        "id": "revision-progress",
+        "kind": "progress",
+        "bindings": {
+          "value": "revision-saved"
+        },
+        "materialIds": []
+      }
+    ],
+    "relationships": [],
+    "invariants": []
+  },
+  "components": [
+    {
+      "id": "journal-editor",
+      "kind": "text_editor",
+      "objectIds": [
+        "opening",
+        "revision-progress"
+      ],
+      "spaceId": "workshop"
+    }
+  ],
+  "actions": [
+    {
+      "id": "write-opening",
+      "componentId": "journal-editor",
+      "operation": "replace_text",
+      "inputs": [
+        {
+          "id": "text",
+          "kind": "text",
+          "maxLength": 1200
+        }
+      ],
+      "label": "Write an opening"
+    },
+    {
+      "id": "revise-opening",
+      "componentId": "journal-editor",
+      "operation": "revise_text",
+      "inputs": [
+        {
+          "id": "text",
+          "kind": "text",
+          "maxLength": 1200
+        }
+      ],
+      "label": "Revise your opening"
+    }
+  ],
+  "rules": [
+    {
+      "id": "save-original-opening",
+      "onAction": "write-opening",
+      "when": {
+        "kind": "all",
+        "conditions": [
+          {
+            "kind": "compare",
+            "op": "gte",
+            "left": {
+              "kind": "operator",
+              "op": "word_count",
+              "args": [
+                {
+                  "kind": "input",
+                  "ref": "text"
+                }
+              ]
+            },
+            "right": {
+              "kind": "literal",
+              "value": 8
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "operator",
+              "op": "word_count",
+              "args": [
+                {
+                  "kind": "state",
+                  "ref": "opening-text"
+                }
+              ]
+            },
+            "right": {
+              "kind": "literal",
+              "value": 0
+            }
+          }
+        ]
+      },
+      "effects": [
+        {
+          "kind": "set",
+          "target": "opening-text",
+          "value": {
+            "kind": "input",
+            "ref": "text"
+          }
+        },
+        {
+          "kind": "set",
+          "target": "revision-saved",
+          "value": {
+            "kind": "literal",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "save-changed-revision",
+      "onAction": "revise-opening",
+      "when": {
+        "kind": "all",
+        "conditions": [
+          {
+            "kind": "compare",
+            "op": "gte",
+            "left": {
+              "kind": "operator",
+              "op": "word_count",
+              "args": [
+                {
+                  "kind": "state",
+                  "ref": "opening-text"
+                }
+              ]
+            },
+            "right": {
+              "kind": "literal",
+              "value": 8
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "gte",
+            "left": {
+              "kind": "operator",
+              "op": "word_count",
+              "args": [
+                {
+                  "kind": "input",
+                  "ref": "text"
+                }
+              ]
+            },
+            "right": {
+              "kind": "literal",
+              "value": 8
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "ne",
+            "left": {
+              "kind": "input",
+              "ref": "text"
+            },
+            "right": {
+              "kind": "state",
+              "ref": "opening-text"
+            }
+          }
+        ]
+      },
+      "effects": [
+        {
+          "kind": "set",
+          "target": "opening-text",
+          "value": {
+            "kind": "input",
+            "ref": "text"
+          }
+        },
+        {
+          "kind": "set",
+          "target": "revision-saved",
+          "value": {
+            "kind": "literal",
+            "value": true
+          }
+        }
+      ]
+    }
+  ],
+  "goals": [
+    {
+      "id": "journal-saved",
+      "description": "Save an original opening and a changed revision for a parent to read.",
+      "when": {
+        "kind": "all",
+        "conditions": [
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "revision-saved"
+            },
+            "right": {
+              "kind": "literal",
+              "value": true
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "gte",
+            "left": {
+              "kind": "operator",
+              "op": "word_count",
+              "args": [
+                {
+                  "kind": "state",
+                  "ref": "opening-text"
+                }
+              ]
+            },
+            "right": {
+              "kind": "literal",
+              "value": 8
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "when": {
+      "kind": "goal",
+      "goalId": "journal-saved"
+    },
+    "goalIds": [
+      "journal-saved"
+    ],
+    "allowAssisted": true
+  },
+  "help": [
+    {
+      "id": "look-again",
+      "kind": "hint",
+      "text": "Imagine the first moment of your story. Help the reader see who is there and what is happening before the next event. You may revise more than once.",
+      "availableWhen": {
+        "kind": "always"
+      },
+      "actionIds": [
+        "write-opening",
+        "revise-opening"
+      ],
+      "maxUses": 3
+    }
+  ],
+  "evidence": [
+    {
+      "id": "opening-and-revision",
+      "skillIds": [
+        "W.3.3-1"
+      ],
+      "actionIds": [
+        "write-opening",
+        "revise-opening"
+      ],
+      "stateRefs": [
+        "opening-text",
+        "revision-saved"
+      ],
+      "assessment": {
+        "kind": "parent_review",
+        "rubric": [
+          "The opening establishes the situation so a new reader understands where or when the story begins and what is happening.",
+          "The opening introduces the narrator or characters rather than leaving the people unclear.",
+          "Events or ideas follow a natural order, and the revision improves the setup or makes that order clearer."
+        ]
+      },
+      "assistance": "server_event_history"
+    }
+  ],
+  "presentation": {
+    "entrySpace": "workshop",
+    "spaces": [
+      {
+        "id": "workshop",
+        "title": "Open the rescue journal",
+        "visibleWhen": null
+      }
+    ],
+    "assets": []
+  },
+  "provenance": {
+    "origin": "original_contract_fixture",
+    "author": "Sidekick",
+    "sourceRefs": [],
+    "model": null,
+    "promptVersion": null
+  },
+  "limits": {
+    "maxActions": 64,
+    "maxRulesPerAction": 4,
+    "maxEffectsPerAction": 8,
+    "maxExpressionDepth": 8,
+    "maxExpressionNodes": 64
+  },
+  "witness": [
+    {
+      "actionId": "write-opening",
+      "inputs": {
+        "text": "Mira stood beside the town pond. She held a paper map."
+      }
+    },
+    {
+      "actionId": "revise-opening",
+      "inputs": {
+        "text": "At dawn, Mira stood beside the town pond with a paper map. She was waiting for her brother to bring their boat."
+      }
+    }
+  ]
+}

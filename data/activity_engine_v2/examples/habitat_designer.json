@@ -1,0 +1,654 @@
+{
+  "schemaVersion": "2.0-foundation",
+  "id": "habitat_designer",
+  "title": "Make room for the rescue animals",
+  "definitionVersion": 1,
+  "componentVersion": "sidekick-program-contract-v1",
+  "intent": {
+    "targets": [
+      {
+        "skillId": "3.MD.C.7-1",
+        "demonstration": "Tile a rectangle and show area = side x side"
+      }
+    ],
+    "observations": [
+      {
+        "id": "synthetic-observation",
+        "skillId": "3.MD.C.7-1",
+        "kind": "observed_strategy",
+        "source": "activity_history",
+        "confidence": 0.92,
+        "summary": "Counted individual square units, but did not connect side lengths to a multiplication representation."
+      }
+    ],
+    "misconceptions": [
+      {
+        "skillId": "3.MD.C.7-1",
+        "description": "Counting units has not yet been connected to the two side lengths.",
+        "confidence": 0.78,
+        "observationIds": [
+          "synthetic-observation"
+        ]
+      }
+    ],
+    "successEvidence": [
+      "area-construction"
+    ]
+  },
+  "world": {
+    "state": [
+      {
+        "id": "rows",
+        "kind": "integer",
+        "initial": 1,
+        "minimum": 1,
+        "maximum": 6,
+        "mutable": true,
+        "unit": null
+      },
+      {
+        "id": "columns",
+        "kind": "integer",
+        "initial": 1,
+        "minimum": 1,
+        "maximum": 6,
+        "mutable": true,
+        "unit": null
+      },
+      {
+        "id": "tile-budget",
+        "kind": "integer",
+        "initial": 12,
+        "minimum": 12,
+        "maximum": 12,
+        "mutable": false,
+        "unit": "unit_squares"
+      },
+      {
+        "id": "covered-cells",
+        "kind": "id_set",
+        "initial": [],
+        "options": [
+          "r0c0",
+          "r0c1",
+          "r0c2",
+          "r0c3",
+          "r0c4",
+          "r0c5",
+          "r1c0",
+          "r1c1",
+          "r1c2",
+          "r1c3",
+          "r1c4",
+          "r1c5",
+          "r2c0",
+          "r2c1",
+          "r2c2",
+          "r2c3",
+          "r2c4",
+          "r2c5",
+          "r3c0",
+          "r3c1",
+          "r3c2",
+          "r3c3",
+          "r3c4",
+          "r3c5",
+          "r4c0",
+          "r4c1",
+          "r4c2",
+          "r4c3",
+          "r4c4",
+          "r4c5",
+          "r5c0",
+          "r5c1",
+          "r5c2",
+          "r5c3",
+          "r5c4",
+          "r5c5"
+        ],
+        "maxItems": 36,
+        "mutable": true
+      },
+      {
+        "id": "expression-left",
+        "kind": "integer",
+        "initial": 0,
+        "minimum": 0,
+        "maximum": 6,
+        "mutable": true,
+        "unit": null
+      },
+      {
+        "id": "expression-right",
+        "kind": "integer",
+        "initial": 0,
+        "minimum": 0,
+        "maximum": 6,
+        "mutable": true,
+        "unit": null
+      },
+      {
+        "id": "expression-result",
+        "kind": "integer",
+        "initial": 0,
+        "minimum": 0,
+        "maximum": 36,
+        "mutable": true,
+        "unit": null
+      }
+    ],
+    "materials": [
+      {
+        "id": "square-tiles",
+        "kind": "unit_tiles",
+        "text": null,
+        "items": [],
+        "quantity": 12
+      },
+      {
+        "id": "mission",
+        "kind": "prompt",
+        "text": "Design a rectangular pen using all 12 unit-square mats. Change its rows and columns, then build a multiplication equality for your design. Different rectangles can work.",
+        "items": [],
+        "quantity": null
+      }
+    ],
+    "objects": [
+      {
+        "id": "region",
+        "kind": "grid",
+        "bindings": {
+          "rows": "rows",
+          "columns": "columns",
+          "cells": "covered-cells"
+        },
+        "materialIds": [
+          "square-tiles",
+          "mission"
+        ],
+        "width": 6,
+        "height": 6
+      },
+      {
+        "id": "expression",
+        "kind": "equation",
+        "bindings": {
+          "left": "expression-left",
+          "right": "expression-right",
+          "result": "expression-result"
+        },
+        "materialIds": [
+          "mission"
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "id": "area-relationship",
+        "kind": "represents",
+        "source": "expression",
+        "target": "region"
+      }
+    ],
+    "invariants": []
+  },
+  "components": [
+    {
+      "id": "area-workbench",
+      "kind": "math_workspace",
+      "objectIds": [
+        "region",
+        "expression"
+      ],
+      "spaceId": "workshop"
+    }
+  ],
+  "actions": [
+    {
+      "id": "reshape",
+      "componentId": "area-workbench",
+      "operation": "resize_rectangle",
+      "inputs": [
+        {
+          "id": "rows",
+          "kind": "integer",
+          "minimum": 1,
+          "maximum": 6
+        },
+        {
+          "id": "columns",
+          "kind": "integer",
+          "minimum": 1,
+          "maximum": 6
+        }
+      ],
+      "label": "Change the rows and columns"
+    },
+    {
+      "id": "build-product",
+      "componentId": "area-workbench",
+      "operation": "assemble_product",
+      "inputs": [
+        {
+          "id": "left",
+          "kind": "integer",
+          "minimum": 1,
+          "maximum": 6
+        },
+        {
+          "id": "right",
+          "kind": "integer",
+          "minimum": 1,
+          "maximum": 6
+        },
+        {
+          "id": "result",
+          "kind": "integer",
+          "minimum": 1,
+          "maximum": 36
+        }
+      ],
+      "label": "Build the multiplication equality"
+    }
+  ],
+  "rules": [
+    {
+      "id": "reshape-within-stock",
+      "onAction": "reshape",
+      "when": {
+        "kind": "compare",
+        "op": "lte",
+        "left": {
+          "kind": "operator",
+          "op": "multiply",
+          "args": [
+            {
+              "kind": "input",
+              "ref": "rows"
+            },
+            {
+              "kind": "input",
+              "ref": "columns"
+            }
+          ]
+        },
+        "right": {
+          "kind": "state",
+          "ref": "tile-budget"
+        }
+      },
+      "effects": [
+        {
+          "kind": "set",
+          "target": "rows",
+          "value": {
+            "kind": "input",
+            "ref": "rows"
+          }
+        },
+        {
+          "kind": "set",
+          "target": "columns",
+          "value": {
+            "kind": "input",
+            "ref": "columns"
+          }
+        }
+      ]
+    },
+    {
+      "id": "save-authored-expression",
+      "onAction": "build-product",
+      "when": {
+        "kind": "always"
+      },
+      "effects": [
+        {
+          "kind": "set",
+          "target": "expression-left",
+          "value": {
+            "kind": "input",
+            "ref": "left"
+          }
+        },
+        {
+          "kind": "set",
+          "target": "expression-right",
+          "value": {
+            "kind": "input",
+            "ref": "right"
+          }
+        },
+        {
+          "kind": "set",
+          "target": "expression-result",
+          "value": {
+            "kind": "input",
+            "ref": "result"
+          }
+        }
+      ]
+    }
+  ],
+  "goals": [
+    {
+      "id": "region-explained",
+      "description": "Use every required unit square and show how the two side lengths determine the area.",
+      "when": {
+        "kind": "all",
+        "conditions": [
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "operator",
+              "op": "multiply",
+              "args": [
+                {
+                  "kind": "state",
+                  "ref": "rows"
+                },
+                {
+                  "kind": "state",
+                  "ref": "columns"
+                }
+              ]
+            },
+            "right": {
+              "kind": "state",
+              "ref": "tile-budget"
+            }
+          },
+          {
+            "kind": "any",
+            "conditions": [
+              {
+                "kind": "all",
+                "conditions": [
+                  {
+                    "kind": "compare",
+                    "op": "eq",
+                    "left": {
+                      "kind": "state",
+                      "ref": "expression-left"
+                    },
+                    "right": {
+                      "kind": "state",
+                      "ref": "rows"
+                    }
+                  },
+                  {
+                    "kind": "compare",
+                    "op": "eq",
+                    "left": {
+                      "kind": "state",
+                      "ref": "expression-right"
+                    },
+                    "right": {
+                      "kind": "state",
+                      "ref": "columns"
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "all",
+                "conditions": [
+                  {
+                    "kind": "compare",
+                    "op": "eq",
+                    "left": {
+                      "kind": "state",
+                      "ref": "expression-left"
+                    },
+                    "right": {
+                      "kind": "state",
+                      "ref": "columns"
+                    }
+                  },
+                  {
+                    "kind": "compare",
+                    "op": "eq",
+                    "left": {
+                      "kind": "state",
+                      "ref": "expression-right"
+                    },
+                    "right": {
+                      "kind": "state",
+                      "ref": "rows"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "expression-result"
+            },
+            "right": {
+              "kind": "operator",
+              "op": "multiply",
+              "args": [
+                {
+                  "kind": "state",
+                  "ref": "rows"
+                },
+                {
+                  "kind": "state",
+                  "ref": "columns"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "when": {
+      "kind": "goal",
+      "goalId": "region-explained"
+    },
+    "goalIds": [
+      "region-explained"
+    ],
+    "allowAssisted": true
+  },
+  "help": [
+    {
+      "id": "look-again",
+      "kind": "hint",
+      "text": "Look at one row of equal squares and how many rows there are. Your expression should describe that same rectangle.",
+      "availableWhen": {
+        "kind": "always"
+      },
+      "actionIds": [
+        "reshape",
+        "build-product"
+      ],
+      "maxUses": 3
+    }
+  ],
+  "evidence": [
+    {
+      "id": "area-construction",
+      "skillIds": [
+        "3.MD.C.7-1"
+      ],
+      "actionIds": [
+        "reshape",
+        "build-product"
+      ],
+      "stateRefs": [
+        "rows",
+        "columns",
+        "covered-cells",
+        "expression-left",
+        "expression-right",
+        "expression-result"
+      ],
+      "assessment": {
+        "kind": "automatic",
+        "when": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "compare",
+              "op": "eq",
+              "left": {
+                "kind": "operator",
+                "op": "multiply",
+                "args": [
+                  {
+                    "kind": "state",
+                    "ref": "rows"
+                  },
+                  {
+                    "kind": "state",
+                    "ref": "columns"
+                  }
+                ]
+              },
+              "right": {
+                "kind": "state",
+                "ref": "tile-budget"
+              }
+            },
+            {
+              "kind": "any",
+              "conditions": [
+                {
+                  "kind": "all",
+                  "conditions": [
+                    {
+                      "kind": "compare",
+                      "op": "eq",
+                      "left": {
+                        "kind": "state",
+                        "ref": "expression-left"
+                      },
+                      "right": {
+                        "kind": "state",
+                        "ref": "rows"
+                      }
+                    },
+                    {
+                      "kind": "compare",
+                      "op": "eq",
+                      "left": {
+                        "kind": "state",
+                        "ref": "expression-right"
+                      },
+                      "right": {
+                        "kind": "state",
+                        "ref": "columns"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "conditions": [
+                    {
+                      "kind": "compare",
+                      "op": "eq",
+                      "left": {
+                        "kind": "state",
+                        "ref": "expression-left"
+                      },
+                      "right": {
+                        "kind": "state",
+                        "ref": "columns"
+                      }
+                    },
+                    {
+                      "kind": "compare",
+                      "op": "eq",
+                      "left": {
+                        "kind": "state",
+                        "ref": "expression-right"
+                      },
+                      "right": {
+                        "kind": "state",
+                        "ref": "rows"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "compare",
+              "op": "eq",
+              "left": {
+                "kind": "state",
+                "ref": "expression-result"
+              },
+              "right": {
+                "kind": "operator",
+                "op": "multiply",
+                "args": [
+                  {
+                    "kind": "state",
+                    "ref": "rows"
+                  },
+                  {
+                    "kind": "state",
+                    "ref": "columns"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "assistance": "server_event_history"
+    }
+  ],
+  "presentation": {
+    "entrySpace": "workshop",
+    "spaces": [
+      {
+        "id": "workshop",
+        "title": "Make room for the rescue animals",
+        "visibleWhen": null
+      }
+    ],
+    "assets": []
+  },
+  "provenance": {
+    "origin": "original_contract_fixture",
+    "author": "Sidekick",
+    "sourceRefs": [],
+    "model": null,
+    "promptVersion": null
+  },
+  "limits": {
+    "maxActions": 64,
+    "maxRulesPerAction": 4,
+    "maxEffectsPerAction": 8,
+    "maxExpressionDepth": 8,
+    "maxExpressionNodes": 64
+  },
+  "witness": [
+    {
+      "actionId": "reshape",
+      "inputs": {
+        "rows": 2,
+        "columns": 6
+      }
+    },
+    {
+      "actionId": "build-product",
+      "inputs": {
+        "left": 2,
+        "right": 6,
+        "result": 12
+      }
+    }
+  ]
+}
