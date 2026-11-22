@@ -19,6 +19,12 @@ def load_preview(key):
         program = require_valid_program(path.read_bytes())
     except (OSError, ProgramInvalid):
         raise AccountError('preview_definition_unavailable', 'This preview is unavailable.', 503) from None
+    validate_runtime_compatibility(program)
+    return program
+
+
+def validate_runtime_compatibility(program):
+    """Shared admission gate; generated programs never touch the fixture loader."""
     if any(action.operation not in PREVIEW_OPERATIONS for action in program.actions):
         raise AccountError('runtime_adapter_unavailable', 'This activity needs a control that is not available in the preview.', 422)
     core = ExecutionCore(program)

@@ -7,7 +7,7 @@ export default async function ActivityPreviewLayout({ children }: { children: Re
   await requireAccount("kid");
   // The backend owns the development flag. No public build-time flag can enable it.
   const response = await fetch(
-    `${process.env.BACKEND_URL || "http://127.0.0.1:8000"}/api/activity-programs/preview`,
+    `${process.env.BACKEND_URL || "http://127.0.0.1:8000"}/api/activity-programs/capabilities`,
     { headers: { Cookie: (await cookies()).toString() }, cache: "no-store" },
   );
   if (response.status === 404) notFound();

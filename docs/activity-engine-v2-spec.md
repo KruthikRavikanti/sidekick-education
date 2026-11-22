@@ -2,6 +2,8 @@
 
 This document records the foundation contract and its original milestone boundary. The subsequent [trusted runtime development preview](activity-engine-v2-runtime.md) implements owned persistence and six shared-workspace adapters behind a disabled-by-default development flag. Sections describing later runtime work below remain the original architecture plan; the runtime document identifies what is now implemented and verified. V1 remains the default engine.
 
+The [live composition integration](activity-engine-v2-composition.md) adds owned-upload learning context, closed provider authoring, bounded repair, hash-bound review and admission into that runtime. Its verification report separates live results, stubbed checks and external provider limitations.
+
 Status: architecture and isolated contract implementation. The current Next.js/FastAPI application continues to run `ActivitySpec` 1.0–1.3. No `ActivityProgram` is served to a child, no current session is converted, and no learning-state policy or database migration changes in this task.
 
 ## 1. Product contract and boundaries

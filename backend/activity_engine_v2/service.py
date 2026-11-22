@@ -130,6 +130,10 @@ def _project(row, program, core, version, events):
             'You finished your mission with help. Your workspace is saved.' if outcome['assisted'] else
             'You finished your mission. Your workspace is saved.') if outcome['missionComplete'] else None,
     }
+    # Preserve exact public/cache shape for historical fixture sessions. New
+    # generated sessions can be honestly labeled without rewriting old events.
+    if program.provenance.origin == 'ai_composed':
+        result['origin'] = 'ai_composed'
     return result
 
 
@@ -163,26 +167,55 @@ def start(security, kid_id, key, request_id, active):
                 raise AccountError('request_id_conflict', 'That request was already used for a different action.', 409)
             return json.loads(previous['response_json'])
         program = load_preview(key)
-        core = ExecutionCore(program)
-        definition = program.model_dump()
-        definition_hash = _hash(definition)
-        now = security.clock.now()
-        version_id = definition_hash
-        connection.execute('''INSERT OR IGNORE INTO activity_program_versions
-            (id,program_key,definition_json,definition_sha256,schema_version,component_version,runtime_version,created_at)
-            VALUES (?,?,?,?,?,?,?,?)''', (version_id, key, _json(definition), definition_hash,
-            program.schemaVersion, program.componentVersion, RUNTIME_VERSION, now))
-        session_id = uuid.uuid4().hex
-        connection.execute('''INSERT INTO activity_program_sessions
-            (id,account_id,kid_id,program_version_id,status,state_json,assistance_json,started_at)
-            VALUES (?,?,?,?,'in_progress',?,'{}',?)''',
-            (session_id, active.account_id, kid_id, version_id, _json(core.initial), now))
-        row = _owned(connection, security, kid_id, session_id, active)
-        _, _, version = _definition(connection, row)
-        response = _project(row, program, core, version, [])
+        response = _create_session(connection, security, kid_id, key, program, active)
         connection.execute('INSERT INTO activity_program_start_requests VALUES (?,?,?,?,?)',
-                           (kid_id, request_id, fingerprint, session_id, _json(response)))
+                           (kid_id, request_id, fingerprint, response['id'], _json(response)))
         return response
+
+
+def _create_session(connection, security, kid_id, key, program, active):
+    """Internal storage primitive; callers admit a fixture or approved candidate."""
+    _authorize(connection, security, kid_id, active)
+    core = ExecutionCore(program)
+    definition = program.model_dump()
+    definition_hash = _hash(definition)
+    now = security.clock.now()
+    version_id = definition_hash
+    connection.execute('''INSERT OR IGNORE INTO activity_program_versions
+        (id,program_key,definition_json,definition_sha256,schema_version,component_version,runtime_version,created_at)
+        VALUES (?,?,?,?,?,?,?,?)''', (version_id, key, _json(definition), definition_hash,
+        program.schemaVersion, program.componentVersion, RUNTIME_VERSION, now))
+    session_id = uuid.uuid4().hex
+    connection.execute('''INSERT INTO activity_program_sessions
+        (id,account_id,kid_id,program_version_id,status,state_json,assistance_json,started_at)
+        VALUES (?,?,?,?,'in_progress',?,'{}',?)''',
+        (session_id, active.account_id, kid_id, version_id, _json(core.initial), now))
+    row = _owned(connection, security, kid_id, session_id, active)
+    _, _, version = _definition(connection, row)
+    return _project(row, program, core, version, [])
+
+
+def start_approved(connection, security, kid_id, approved, active):
+    """No public definition input: start only a hash-bound reviewed generation."""
+    from .preview import validate_runtime_compatibility
+    from .composer import CompositionFailure, validate_review
+    from .validator import validate_program
+    program = approved.program
+    review = approved.review.model_dump(warnings=False) if hasattr(approved.review, 'model_dump') else approved.review
+    expected = _hash(program.model_dump(warnings=False))
+    if (expected != approved.definition_hash or not isinstance(review, dict)
+            or review.get('approved') is not True or review.get('definitionHash') != expected
+            or program.provenance.origin != 'ai_composed'):
+        raise AccountError('approval_integrity_failed', 'The activity approval could not be verified.', 503)
+    try:
+        validate_review(program, expected, review)
+    except (CompositionFailure, ValidationError, ValueError, TypeError):
+        raise AccountError('approval_integrity_failed', 'The activity approval could not be verified.', 503) from None
+    report = validate_program(program, check_witness=True)
+    if not program.witness or not report.valid or report.computational != 'witness_verified':
+        raise AccountError('finish_trace_unverified', 'The activity could not be verified.', 503)
+    validate_runtime_compatibility(program)
+    return _create_session(connection, security, kid_id, 'generated-'+expected, program, active)
 
 
 def session_view(security, kid_id, session_id, active):

@@ -1,5 +1,11 @@
 # Activity Engine V2: trusted development preview
 
+This document records the runtime milestone. The subsequent [live composition
+integration](activity-engine-v2-composition.md) starts reviewed generated programs
+through the same owned runtime, behind the same development flag. Statements
+below about generation being outside the runtime milestone are historical scope;
+the composition document describes the implemented integration and its evidence.
+
 This is a playable preview of the four hand-authored ActivityProgram fixtures.
 It adds a shared trusted execution core, owned SQLite sessions and a React
 workspace renderer. It does not compose AI programs, change uploaded-work skill

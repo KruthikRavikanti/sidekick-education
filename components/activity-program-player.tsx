@@ -103,7 +103,7 @@ function ProgramContent({ sessionId }: { sessionId: string }) {
         <header className="activity-title">
           <p className="account-eyebrow">BUILD · INVESTIGATE · CREATE</p>
           <h1 ref={heading} tabIndex={-1}>{program.title}</h1>
-          <span className="activity-origin">Original Sidekick example · Development preview</span>
+          <span className="activity-origin">{program.origin === "ai_composed" ? "Created for your learning · Development preview" : "Original Sidekick example · Development preview"}</span>
         </header>
         <section className="program-mission" aria-labelledby="program-mission-title">
           <div className="program-mission-heading"><Sparkles size={22} aria-hidden="true" /><h2 id="program-mission-title">Your mission</h2></div>
@@ -121,7 +121,7 @@ function ProgramContent({ sessionId }: { sessionId: string }) {
         <p className="program-live-notice" role="status" aria-live="polite">{busy ? "Saving…" : notice}</p>
         <div className="program-spaces">{program.spaces.map((space) => <section className="program-space" key={space.id} aria-labelledby={`program-space-${space.id}`}>
           <h2 id={`program-space-${space.id}`}>{space.title}</h2>
-          {program.components.filter((component) => component.spaceId === space.id).map((component) => <ActivityProgramControl key={component.id} session={program} component={component} disabled={Boolean(disabled)} onAction={act} />)}
+          {program.components.filter((component) => component.spaceId === space.id).map((component) => <div key={component.id} data-program-component={component.id}><ActivityProgramControl session={program} component={component} disabled={Boolean(disabled)} onAction={act} /></div>)}
         </section>)}</div>
         <aside className="program-help" aria-labelledby="program-help-title">
           <div className="program-help-heading"><Lightbulb size={21} aria-hidden="true" /><h2 id="program-help-title">A little help</h2></div>

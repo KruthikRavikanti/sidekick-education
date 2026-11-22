@@ -53,6 +53,7 @@ export interface ProgramSession {
   id: string;
   programId: string;
   title: string;
+  origin?: "ai_composed" | "original_contract_fixture" | "human_authored";
   definitionHash: string;
   schemaVersion: string;
   componentVersion: string;
@@ -78,4 +79,23 @@ export interface ProgramSession {
     evidence: { id: string; status: "not_observed" | "not_established" | "demonstrated" | "pending_parent_review"; assisted: boolean }[];
   };
   completionFeedback?: string | null;
+}
+
+export type ProgramGenerationStage = "queued" | "context" | "compose" | "validate" | "review" | "repair" | "start" | "ready" | "failed";
+export interface ProgramGeneration {
+  id: string;
+  status: "processing" | "ready" | "failed";
+  stage: ProgramGenerationStage;
+  reasonCode: string | null;
+  sessionId: string | null;
+  canRetry: boolean;
+  title?: string;
+  createdAt?: number;
+  targetSkill?: { id: string; name: string; subject: "math" | "ela" } | null;
+}
+export interface ProgramCompositionSuggestion {
+  available: boolean;
+  reason: string;
+  targetSkill: { id: string; name: string; subject: "math" | "ela" } | null;
+  generation: ProgramGeneration | null;
 }
