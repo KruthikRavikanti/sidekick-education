@@ -2,12 +2,12 @@
 import os
 from typing import Annotated
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, BackgroundTasks, Request
 from fastapi.routing import APIRoute
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 
 from backend.accounts.security import AccountError, get_security, require_session
-from . import service
+from . import generation, service
 
 class PreviewRoute(APIRoute):
     """Bound nesting before the JSON decoder can recurse into private input."""
@@ -89,6 +89,53 @@ def kid_context(request):
 @router.get('/preview')
 def previews(request: Request):
     return service.previews(*kid_context(request))
+
+
+@router.get('/capabilities')
+def capabilities(request: Request):
+    security, kid_id, active = kid_context(request)
+    with security.db.transaction() as connection:
+        service._authorize(connection, security, kid_id, active)
+    from .registry import PREVIEW_OPERATIONS
+    return {'enabled': True, 'operations': sorted(PREVIEW_OPERATIONS)}
+
+
+@router.get('/uploads/{upload_id}/suggestion')
+def composition_suggestion(upload_id: str, request: Request):
+    security, kid_id, active = kid_context(request)
+    return generation.suggestion(security, kid_id, upload_id, active)
+
+
+@router.get('/generations')
+def generations(request: Request):
+    return generation.listing(*kid_context(request))
+
+
+@router.get('/generations/{generation_id}')
+def generation_view(generation_id: str, request: Request):
+    security, kid_id, active = kid_context(request)
+    return generation.view(security, kid_id, generation_id, active)
+
+
+def _enqueue(request, tasks, security, kid_id, upload_id, body, active, *, retry_of=None):
+    result, token = generation.reserve(security, kid_id, upload_id, body.requestId, active, retry_of=retry_of)
+    if token:
+        adapter = getattr(request.app.state, 'program_composition_adapter', None)
+        tasks.add_task(generation.run, security, kid_id, result['id'], token, active, adapter)
+    return result
+
+
+@router.post('/uploads/{upload_id}/generations', status_code=202)
+def compose_upload(upload_id: str, body: StartInput, request: Request, tasks: BackgroundTasks):
+    security, kid_id, active = kid_context(request)
+    return _enqueue(request, tasks, security, kid_id, upload_id, body, active)
+
+
+@router.post('/generations/{generation_id}/retry', status_code=202)
+def retry_generation(generation_id: str, body: StartInput, request: Request, tasks: BackgroundTasks):
+    security, kid_id, active = kid_context(request)
+    upload_id = generation.retry_source(security, kid_id, generation_id, active)
+    return _enqueue(request, tasks, security, kid_id, upload_id, body, active, retry_of=generation_id)
 
 
 @router.post('/preview/{program_key}/sessions')

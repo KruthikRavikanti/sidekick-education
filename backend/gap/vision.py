@@ -51,11 +51,13 @@ def _strict_schema(schema):
     return schema
 
 
-async def structured_call(response_model: type[T], *, task: str, system: str, user, images: list[bytes] | None = None, settings=None) -> T:
+async def structured_call(response_model: type[T], *, task: str, system: str, user, images: list[bytes] | None = None, settings=None, metadata: dict | None = None) -> T:
     """One transport for extraction, mapping, grading, generation and verification."""
     # Lazy import permits provider.extract_with_vision to use this transport too.
     from backend.provider import ExtractionError, VisionSettings
     settings = settings or VisionSettings.from_env()
+    if metadata is not None:
+        metadata['requestedModel'] = settings.model
     user_content = user if isinstance(user, str) else json.dumps(user, ensure_ascii=False, separators=(",", ":"))
     if images:
         content = [{"type": "text", "text": user_content}] + [{"type": "image_url", "image_url": {"url": "data:image/png;base64," + base64.b64encode(data).decode("ascii"), "detail": "high"}} for data in images]
@@ -77,10 +79,14 @@ async def structured_call(response_model: type[T], *, task: str, system: str, us
         raise ExtractionError("provider_timeout", "Reading took too long. Please retry.", 504) from None
     except httpx.RequestError:
         raise ExtractionError("provider_unavailable", "Sidekick couldn't connect to the reader. Please retry.", 503) from None
-    activity_task = task in {'compose_activity', 'repair_activity_scene', 'compose_simpler_activity'}
+    activity_task = task in {'compose_activity', 'repair_activity_scene', 'compose_simpler_activity',
+                             'compose_activity_program', 'repair_activity_program'}
     content = None
     try:
         body = json.loads(chunks)
+        if metadata is not None:
+            returned = body.get('model') if isinstance(body, dict) else None
+            metadata['returnedModel'] = returned if isinstance(returned, str) and re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:/@+\-]{0,199}', returned) else None
         choice = body["choices"][0]
         message = choice["message"]
         if choice.get("finish_reason") != "stop" or message.get("refusal"):

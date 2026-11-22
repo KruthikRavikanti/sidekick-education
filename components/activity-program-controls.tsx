@@ -15,8 +15,20 @@ function materialFor(session: ProgramSession, objects: ProgramObject[]) {
   const ids = new Set(objects.flatMap((object) => object.materialIds));
   return session.materials.filter((material) => ids.has(material.id));
 }
-function prompts(materials: ProgramMaterial[]) {
-  return materials.filter((material) => material.kind === "prompt").map((material) => <p key={material.id} className="program-prompt">{material.text}</p>);
+function ProgramMaterials({ materials }: { materials: ProgramMaterial[] }) {
+  return <>{materials.map((material) => {
+    const identity = { "data-program-material": material.id, "data-material-kind": material.kind };
+    switch (material.kind) {
+      case "prompt":
+        return <p key={material.id} className="program-prompt" {...identity}>{material.text}</p>;
+      case "passage":
+        return <blockquote key={material.id} className="program-passage" aria-label="Reading passage" {...identity}><p>{material.text}</p></blockquote>;
+      case "unit_tiles":
+        return <p key={material.id} className="program-control-note" aria-label="Tile stock" {...identity}>{material.quantity === null ? "Tile stock unavailable." : `${material.quantity} unit-square tiles in your stock.`}</p>;
+      case "words":
+        return <section key={material.id} className="program-passage" aria-label="Word pieces" {...identity}>{material.text ? <p>{material.text}</p> : null}<ul>{material.items.map(item => <li key={item.id}>{item.text}</li>)}</ul></section>;
+    }
+  })}</>;
 }
 function numeric(session: ProgramSession, object: ProgramObject, role: string) {
   const value = session.state[object.bindings[role]];
@@ -86,7 +98,7 @@ function MathWorkspace({ session, component, disabled, onAction }: ControlProps)
   const unsupported = actions.some((action) => !["toggle_tile", "resize_rectangle", "assemble_product"].includes(action.operation));
   if (unsupported) return <UnsupportedControl />;
   return <div className="program-math-workspace">
-    {prompts(materials)}
+    <ProgramMaterials materials={materials} />
     {grid ? <UnitGrid session={session} object={grid} action={tileAction} disabled={disabled} onAction={onAction} /> : null}
     {numberActions.map((action) => {
       const object = action.operation === "resize_rectangle" ? grid : equation;
@@ -110,8 +122,7 @@ function EvidenceWorkspace({ session, component, disabled, onAction }: ControlPr
   const items = passages.flatMap((passage) => passage.items).filter((item) => options.has(item.id));
   const selected = items.find((item) => item.id === selection);
   return <div className="program-evidence-workspace">
-    {prompts(materials)}
-    {passages.map((passage) => <blockquote className="program-passage" key={passage.id}><p>{passage.text}</p></blockquote>)}
+    <ProgramMaterials materials={materials} />
     <fieldset className="program-evidence-options" disabled={disabled}>
       <legend>{action.label}</legend>
       {items.map((item) => <button key={item.id} type="button" className={`program-evidence-option ${item.id === selection ? "program-evidence-selected" : ""}`} aria-pressed={item.id === selection} onClick={() => void onAction(action, { sentence: item.id })}>{item.id === selection ? <Check size={18} aria-hidden="true" /> : <Plus size={18} aria-hidden="true" />}<span>{item.text}</span></button>)}
@@ -139,7 +150,7 @@ function TextWorkspace({ session, component, disabled, onAction }: ControlProps)
   const action = actions.find((item) => item.operation === (savedText ? "revise_text" : "replace_text")) || actions.find((item) => ["replace_text", "revise_text"].includes(item.operation));
   if (!artifact || !action) return <UnsupportedControl />;
   return <div className="program-text-workspace">
-    {prompts(materialFor(session, objects))}
+    <ProgramMaterials materials={materialFor(session, objects)} />
     {savedText ? <p className="program-draft-saved" role="status"><Check size={16} aria-hidden="true" />Your draft is saved. {disabled ? "" : "Make a change to revise it."}</p> : null}
     <DraftEditor key={`${action.id}:${savedText}`} savedText={savedText} action={action} disabled={disabled} onAction={onAction} />
     <p className="program-control-note">Your words and revisions are saved privately. A parent can assess the writing; saving it does not grade its quality.</p>

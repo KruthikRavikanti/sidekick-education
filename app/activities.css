@@ -1728,3 +1728,25 @@ button.area-cell:focus-visible { outline: 3px solid var(--berry); outline-offset
   .balance-beam,
   .vessel-liquid { transition: none; }
 }
+.program-composition-card {
+  margin-top: 24px;
+}
+.program-composition-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 28px;
+}
+.program-generation-status {
+  max-width: 800px;
+  margin: 32px auto;
+}
+.program-generation-status h1 {
+  font-size: clamp(27px, 5vw, 38px);
+  line-height: 1.2;
+  margin-bottom: 18px;
+}
+.program-create-another {
+  display: block;
+  margin-top: 16px;
+}

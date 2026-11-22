@@ -10,6 +10,7 @@ import type {
 } from "@/lib/activity-types";
 import { useAccountSession } from "./account-session";
 import { FormError } from "./account-ui";
+import { ActivityProgramComposition } from "./activity-program-composition";
 
 function SuggestionContent({ uploadId }: { uploadId: string }) {
   const [suggestion, setSuggestion] = useState<ActivitySuggestionData | null>(
@@ -165,10 +166,8 @@ function SuggestionContent({ uploadId }: { uploadId: string }) {
 export function ActivitySuggestion({ uploadId }: { uploadId: string }) {
   const { session } = useAccountSession();
   if (session?.mode !== "kid") return null;
-  return (
-    <SuggestionContent
-      key={`${session.activeKidProfileId}:${uploadId}`}
-      uploadId={uploadId}
-    />
-  );
+  return <>
+    <SuggestionContent key={`${session.activeKidProfileId}:${uploadId}`} uploadId={uploadId} />
+    <ActivityProgramComposition uploadId={uploadId} />
+  </>;
 }

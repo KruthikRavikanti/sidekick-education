@@ -5,7 +5,7 @@ import { ArrowRight, LoaderCircle, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { api, errorMessage } from "@/lib/account-api";
-import type { ProgramPreview, ProgramSession } from "@/lib/activity-program-types";
+import type { ProgramGeneration, ProgramPreview, ProgramSession } from "@/lib/activity-program-types";
 import { RequireMode, useAccountSession } from "./account-session";
 import { AccountShell, FormError } from "./account-ui";
 
@@ -13,6 +13,9 @@ function LibraryContent() {
   const router = useRouter();
   const { session } = useAccountSession();
   const [programs, setPrograms] = useState<ProgramPreview[] | null>(null);
+  const [generations, setGenerations] = useState<ProgramGeneration[]>([]);
+  const [generationError, setGenerationError] = useState<string | null>(null);
+  const [generationReload, setGenerationReload] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const controller = useRef<AbortController | null>(null);
@@ -26,6 +29,23 @@ function LibraryContent() {
       .catch((caught) => { if (!request.signal.aborted) setError(errorMessage(caught)); });
     return () => { request.abort(); controller.current = null; };
   }, []);
+
+  useEffect(() => {
+    const request = new AbortController();
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let polls = 0;
+    async function loadGenerations() {
+      try {
+        const result = await api<{ generations: ProgramGeneration[] }>("/api/activity-programs/generations", { signal: request.signal });
+        if (request.signal.aborted) return;
+        setGenerations(result.generations);
+        setGenerationError(null);
+        if (result.generations.some(item => item.status === "processing") && polls++ < 120) timer = setTimeout(() => void loadGenerations(), 3000);
+      } catch (caught) { if (!request.signal.aborted) setGenerationError(errorMessage(caught)); }
+    }
+    void loadGenerations();
+    return () => { request.abort(); clearTimeout(timer); };
+  }, [generationReload]);
 
   async function start(programId: string) {
     const signal = controller.current?.signal;
@@ -54,9 +74,23 @@ function LibraryContent() {
       <div className="activity-title">
         <p className="account-eyebrow">A LITTLE LEARNING ADVENTURE</p>
         <h1>Make something. Discover something.</h1>
-        <p>Choose a world to explore. Your work and your place are saved.</p>
+        <p>Start with your work, or explore a development example. Your place is saved.</p>
       </div>
-      <p className="program-preview-note">Development preview · Original Sidekick examples</p>
+      <section className="program-generated-history" aria-labelledby="program-generated-title">
+        <h2 id="program-generated-title">Created from your work</h2>
+        <p>Upload schoolwork to create an original activity around your learning goal.</p>
+        <Link className="button primary" href="/kid/homework" prefetch={false}>Upload work<ArrowRight size={17} aria-hidden="true" /></Link>
+        <div className="program-library-grid">{generations.map(job => <article className="program-library-card" key={job.id}>
+          <h3>{job.title || "Your learning activity"}</h3>
+          {job.targetSkill ? <p>{job.targetSkill.name}</p> : null}
+          <p>{job.status === "processing" ? "Creating and checking your activity…" : job.status === "ready" ? "Your saved workspace is ready." : "This attempt needs another try."}</p>
+          <Link className="button secondary" href={job.status === "ready" && job.sessionId ? `/kid/activity-preview/${encodeURIComponent(job.sessionId)}` : `/kid/activity-preview/generations/${encodeURIComponent(job.id)}`} prefetch={false}>{job.status === "processing" ? "Continue creating activity" : job.status === "ready" ? "Open saved activity" : "Review activity attempt"}<ArrowRight size={17} aria-hidden="true" /></Link>
+        </article>)}</div>
+        <FormError message={generationError} />
+        {generationError ? <button className="text-button" onClick={() => setGenerationReload(value => value + 1)}>Reload saved activities</button> : null}
+      </section>
+      <h2 className="program-examples-title">Development examples</h2>
+      <p className="program-preview-note">Hand-authored Sidekick contract examples</p>
       {!programs && !error ? <p role="status" className="program-loading"><LoaderCircle className="spinner" size={22} aria-hidden="true" /> Getting the workspaces ready…</p> : null}
       <div className="program-library-grid">{programs?.map((program) => <article className="program-library-card" key={program.id}>
         <span className="program-library-icon" aria-hidden="true"><Sparkles size={24} /></span>

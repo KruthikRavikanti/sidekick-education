@@ -1,0 +1,269 @@
+{
+  "syntheticEngineeringRun": true,
+  "success": true,
+  "cases": [
+    {
+      "case": "area-first",
+      "generated": true,
+      "reviewed": true,
+      "browserCompleted": true,
+      "assessedSuccess": true,
+      "liveExtraction": true,
+      "generationStage": "ready",
+      "reasonCode": null,
+      "requestedModel": "gpt-6.1-terra",
+      "returnedModels": [
+        "gpt-6.1-terra",
+        "gpt-6.1-terra",
+        "gpt-6.1-terra"
+      ],
+      "modelCalls": [
+        {
+          "requestedModel": "gpt-6.1-terra",
+          "returnedModel": "gpt-6.1-terra",
+          "task": "compose_activity_program"
+        },
+        {
+          "requestedModel": "gpt-6.1-terra",
+          "returnedModel": "gpt-6.1-terra",
+          "task": "repair_activity_program"
+        },
+        {
+          "requestedModel": "gpt-6.1-terra",
+          "returnedModel": "gpt-6.1-terra",
+          "task": "review_activity_program"
+        }
+      ],
+      "repairReasons": [
+        {
+          "attempt": 1,
+          "code": "invalid_goal_reference",
+          "stage": "schema"
+        }
+      ],
+      "providerCalls": 3,
+      "approvalHashBound": true,
+      "separateReviewApproved": true,
+      "targetSkills": [
+        "3.MD.C.7-1"
+      ],
+      "learningGoal": "explore_skill",
+      "observationKinds": [],
+      "savedHistoryCount": 0,
+      "priorAssistanceObserved": false,
+      "definitionHash": "2fef21ca72530d12a19cea1a48fbf238371aceefdb1010434a0260ddabdf1a8a",
+      "operations": [
+        "assemble_product",
+        "toggle_tile"
+      ],
+      "assessment": "demonstrated",
+      "assisted": true,
+      "refreshRestored": true,
+      "replayVerified": true,
+      "finalRendererCaptured": true
+    },
+    {
+      "case": "area-history",
+      "generated": true,
+      "reviewed": true,
+      "browserCompleted": true,
+      "assessedSuccess": true,
+      "liveExtraction": true,
+      "generationStage": "ready",
+      "reasonCode": null,
+      "requestedModel": "gpt-6.1-terra",
+      "returnedModels": [
+        "gpt-6.1-terra",
+        "gpt-6.1-terra",
+        "gpt-6.1-terra"
+      ],
+      "modelCalls": [
+        {
+          "requestedModel": "gpt-6.1-terra",
+          "returnedModel": "gpt-6.1-terra",
+          "task": "compose_activity_program"
+        },
+        {
+          "requestedModel": "gpt-6.1-terra",
+          "returnedModel": "gpt-6.1-terra",
+          "task": "repair_activity_program"
+        },
+        {
+          "requestedModel": "gpt-6.1-terra",
+          "returnedModel": "gpt-6.1-terra",
+          "task": "review_activity_program"
+        }
+      ],
+      "repairReasons": [
+        {
+          "attempt": 1,
+          "code": "invalid_goal_reference",
+          "stage": "schema"
+        }
+      ],
+      "providerCalls": 3,
+      "approvalHashBound": true,
+      "separateReviewApproved": true,
+      "targetSkills": [
+        "3.MD.C.7-1"
+      ],
+      "learningGoal": "explore_skill",
+      "observationKinds": [],
+      "savedHistoryCount": 1,
+      "priorAssistanceObserved": true,
+      "definitionHash": "dbf19279d550d49501c4187b279149f210df291c9c40cbbcef5299571cf951bd",
+      "operations": [
+        "assemble_product",
+        "resize_rectangle",
+        "toggle_tile"
+      ],
+      "assessment": "demonstrated",
+      "assisted": false,
+      "refreshRestored": true,
+      "replayVerified": true,
+      "finalRendererCaptured": true
+    },
+    {
+      "case": "reading",
+      "generated": true,
+      "reviewed": true,
+      "browserCompleted": true,
+      "assessedSuccess": false,
+      "liveExtraction": true,
+      "generationStage": "ready",
+      "reasonCode": null,
+      "priorFailures": [
+        {
+          "stage": "review",
+          "reasonCode": "shortcut_bypasses_skill"
+        },
+        {
+          "stage": "review",
+          "reasonCode": "shortcut_bypasses_skill"
+        }
+      ],
+      "explicitRetryVerified": true,
+      "requestedModel": "gpt-6.1-terra",
+      "returnedModels": [
+        "gpt-6.1-terra",
+        "gpt-6.1-terra",
+        "gpt-6.1-terra",
+        "gpt-6.1-terra"
+      ],
+      "modelCalls": [
+        {
+          "requestedModel": "gpt-6.1-terra",
+          "returnedModel": "gpt-6.1-terra",
+          "task": "compose_activity_program"
+        },
+        {
+          "requestedModel": "gpt-6.1-terra",
+          "returnedModel": "gpt-6.1-terra",
+          "task": "review_activity_program"
+        },
+        {
+          "requestedModel": "gpt-6.1-terra",
+          "returnedModel": "gpt-6.1-terra",
+          "task": "repair_activity_program"
+        },
+        {
+          "requestedModel": "gpt-6.1-terra",
+          "returnedModel": "gpt-6.1-terra",
+          "task": "review_activity_program"
+        }
+      ],
+      "repairReasons": [
+        {
+          "attempt": 1,
+          "code": "invalid_scoring",
+          "stage": "review"
+        }
+      ],
+      "providerCalls": 4,
+      "approvalHashBound": true,
+      "separateReviewApproved": true,
+      "targetSkills": [
+        "RI.3.1-1"
+      ],
+      "learningGoal": "explore_skill",
+      "observationKinds": [],
+      "savedHistoryCount": 0,
+      "priorAssistanceObserved": false,
+      "definitionHash": "54f098b0fe57cfe56eb90dcc87bf141b18a7226e2015acf25d53c7f6eef4b480",
+      "operations": [
+        "replace_text",
+        "revise_text",
+        "select_evidence"
+      ],
+      "assessment": "pending_parent_review",
+      "evidenceOutcomes": [
+        {
+          "status": "pending_parent_review",
+          "assisted": false
+        }
+      ],
+      "assisted": false,
+      "refreshRestored": true,
+      "replayVerified": true,
+      "finalRendererCaptured": true
+    },
+    {
+      "case": "writing",
+      "generated": true,
+      "reviewed": true,
+      "browserCompleted": true,
+      "assessedSuccess": false,
+      "uploadFailures": [
+        "provider_unavailable",
+        "provider_unavailable"
+      ],
+      "liveExtraction": true,
+      "generationStage": "ready",
+      "reasonCode": null,
+      "requestedModel": "gpt-6.1-terra",
+      "returnedModels": [
+        "gpt-6.1-terra",
+        "gpt-6.1-terra"
+      ],
+      "modelCalls": [
+        {
+          "requestedModel": "gpt-6.1-terra",
+          "returnedModel": "gpt-6.1-terra",
+          "task": "compose_activity_program"
+        },
+        {
+          "requestedModel": "gpt-6.1-terra",
+          "returnedModel": "gpt-6.1-terra",
+          "task": "review_activity_program"
+        }
+      ],
+      "repairReasons": [],
+      "providerCalls": 2,
+      "approvalHashBound": true,
+      "separateReviewApproved": true,
+      "targetSkills": [
+        "W.3.3-1"
+      ],
+      "learningGoal": "explore_skill",
+      "observationKinds": [],
+      "savedHistoryCount": 0,
+      "priorAssistanceObserved": false,
+      "definitionHash": "ed6d03f26bf29e04190a04270e04457b0693577bbc57adacf9cb8cd24c679eb9",
+      "operations": [
+        "replace_text",
+        "revise_text"
+      ],
+      "assessment": "pending_parent_review",
+      "evidenceOutcomes": [
+        {
+          "status": "pending_parent_review",
+          "assisted": false
+        }
+      ],
+      "assisted": false,
+      "refreshRestored": true,
+      "replayVerified": true,
+      "finalRendererCaptured": true
+    }
+  ]
+}
