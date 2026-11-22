@@ -1,0 +1,647 @@
+{
+  "id": "controlled-session",
+  "programId": "controlled-branching-construction",
+  "title": "A controlled branching construction world",
+  "definitionHash": "controlled-public-rendering-fixture",
+  "schemaVersion": "2.0-foundation",
+  "componentVersion": "sidekick-program-contract-v1",
+  "runtimeVersion": "sidekick-program-runtime-v1",
+  "revision": 0,
+  "actionCount": 0,
+  "status": "in_progress",
+  "spaces": [
+    {
+      "id": "world",
+      "title": "Lookout crossings"
+    }
+  ],
+  "components": [
+    {
+      "id": "bench",
+      "kind": "math_workspace",
+      "objectIds": [
+        "crossing",
+        "area-product"
+      ],
+      "spaceId": "world"
+    },
+    {
+      "id": "travel-controls",
+      "kind": "world_stage",
+      "objectIds": [
+        "traveler-piece"
+      ],
+      "spaceId": "world"
+    },
+    {
+      "id": "inspection-controls",
+      "kind": "world_stage",
+      "objectIds": [
+        "lookout-map"
+      ],
+      "spaceId": "world"
+    }
+  ],
+  "objects": [
+    {
+      "id": "crossing",
+      "kind": "grid",
+      "bindings": {
+        "cells": "cells",
+        "columns": "columns",
+        "rows": "rows"
+      },
+      "materialIds": [
+        "tiles",
+        "mission"
+      ],
+      "width": 6,
+      "height": 3
+    },
+    {
+      "id": "area-product",
+      "kind": "equation",
+      "bindings": {
+        "left": "left",
+        "result": "result",
+        "right": "right"
+      },
+      "materialIds": [
+        "mission"
+      ],
+      "width": null,
+      "height": null
+    },
+    {
+      "id": "traveler-piece",
+      "kind": "stage_piece",
+      "bindings": {
+        "location": "traveler-location"
+      },
+      "materialIds": [],
+      "width": null,
+      "height": null
+    },
+    {
+      "id": "lookout-map",
+      "kind": "stage_map",
+      "bindings": {
+        "inspected": "inspected"
+      },
+      "materialIds": [],
+      "width": null,
+      "height": null
+    }
+  ],
+  "materials": [
+    {
+      "id": "tiles",
+      "kind": "unit_tiles",
+      "text": null,
+      "items": [],
+      "quantity": 12
+    },
+    {
+      "id": "mission",
+      "kind": "prompt",
+      "text": "Build a crossing to either lookout. At the hub, choose its rows and columns, cover every square, and enter the sides and area as a multiplication. Travel over the fitting crossing and inspect the lookout to finish. Before inspecting, you may return and rebuild for the other lookout; lift tiles outside a smaller shape first.",
+      "items": [],
+      "quantity": null
+    }
+  ],
+  "state": {
+    "left": 0,
+    "rows": 1,
+    "result": 0,
+    "inspected": [],
+    "columns": 1,
+    "right": 0,
+    "traveler-location": "hub",
+    "cells": []
+  },
+  "stateSlots": [
+    {
+      "id": "rows",
+      "kind": "integer",
+      "minimum": 1,
+      "maximum": 3,
+      "unit": "rows"
+    },
+    {
+      "id": "columns",
+      "kind": "integer",
+      "minimum": 1,
+      "maximum": 6,
+      "unit": "columns"
+    },
+    {
+      "id": "cells",
+      "kind": "id_set",
+      "options": [
+        "r0c0",
+        "r0c1",
+        "r0c2",
+        "r0c3",
+        "r0c4",
+        "r0c5",
+        "r1c0",
+        "r1c1",
+        "r1c2",
+        "r1c3",
+        "r1c4",
+        "r1c5",
+        "r2c0",
+        "r2c1",
+        "r2c2",
+        "r2c3",
+        "r2c4",
+        "r2c5"
+      ],
+      "maxItems": 12
+    },
+    {
+      "id": "left",
+      "kind": "integer",
+      "minimum": 0,
+      "maximum": 12
+    },
+    {
+      "id": "right",
+      "kind": "integer",
+      "minimum": 0,
+      "maximum": 12
+    },
+    {
+      "id": "result",
+      "kind": "integer",
+      "minimum": 0,
+      "maximum": 12,
+      "unit": "square units"
+    },
+    {
+      "id": "traveler-location",
+      "kind": "choice",
+      "options": [
+        "hub",
+        "long",
+        "wide"
+      ]
+    },
+    {
+      "id": "inspected",
+      "kind": "id_set",
+      "options": [
+        "hub",
+        "long",
+        "wide"
+      ],
+      "maxItems": 3
+    }
+  ],
+  "actions": [
+    {
+      "id": "reshape",
+      "componentId": "bench",
+      "operation": "resize_rectangle",
+      "inputs": [
+        {
+          "id": "rows",
+          "kind": "integer",
+          "minimum": 1,
+          "maximum": 3,
+          "minLength": null,
+          "maxLength": null,
+          "options": null,
+          "maxItems": null,
+          "mediaKind": null
+        },
+        {
+          "id": "columns",
+          "kind": "integer",
+          "minimum": 1,
+          "maximum": 6,
+          "minLength": null,
+          "maxLength": null,
+          "options": null,
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Choose crossing dimensions"
+    },
+    {
+      "id": "tile",
+      "componentId": "bench",
+      "operation": "toggle_tile",
+      "inputs": [
+        {
+          "id": "cell",
+          "kind": "choice",
+          "minimum": null,
+          "maximum": null,
+          "minLength": null,
+          "maxLength": null,
+          "options": [
+            "r0c0",
+            "r0c1",
+            "r0c2",
+            "r0c3",
+            "r0c4",
+            "r0c5",
+            "r1c0",
+            "r1c1",
+            "r1c2",
+            "r1c3",
+            "r1c4",
+            "r1c5",
+            "r2c0",
+            "r2c1",
+            "r2c2",
+            "r2c3",
+            "r2c4",
+            "r2c5"
+          ],
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Place or lift a tile"
+    },
+    {
+      "id": "product",
+      "componentId": "bench",
+      "operation": "assemble_product",
+      "inputs": [
+        {
+          "id": "left",
+          "kind": "integer",
+          "minimum": 0,
+          "maximum": 12,
+          "minLength": null,
+          "maxLength": null,
+          "options": null,
+          "maxItems": null,
+          "mediaKind": null
+        },
+        {
+          "id": "right",
+          "kind": "integer",
+          "minimum": 0,
+          "maximum": 12,
+          "minLength": null,
+          "maxLength": null,
+          "options": null,
+          "maxItems": null,
+          "mediaKind": null
+        },
+        {
+          "id": "result",
+          "kind": "integer",
+          "minimum": 0,
+          "maximum": 12,
+          "minLength": null,
+          "maxLength": null,
+          "options": null,
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Show the area as a product"
+    },
+    {
+      "id": "travel",
+      "componentId": "travel-controls",
+      "operation": "move_actor",
+      "inputs": [
+        {
+          "id": "destination",
+          "kind": "choice",
+          "minimum": null,
+          "maximum": null,
+          "minLength": null,
+          "maxLength": null,
+          "options": [
+            "hub",
+            "long",
+            "wide"
+          ],
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Travel",
+      "objectIds": [
+        "traveler-piece"
+      ]
+    },
+    {
+      "id": "inspect",
+      "componentId": "inspection-controls",
+      "operation": "inspect_location",
+      "inputs": [
+        {
+          "id": "location",
+          "kind": "choice",
+          "minimum": null,
+          "maximum": null,
+          "minLength": null,
+          "maxLength": null,
+          "options": [
+            "long",
+            "wide"
+          ],
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Inspect this lookout and finish",
+      "objectIds": [
+        "lookout-map"
+      ]
+    }
+  ],
+  "goals": [
+    {
+      "id": "finished-lookout",
+      "description": "Inspect the reached lookout with its crossing fully tiled and its area product shown.",
+      "achieved": false
+    }
+  ],
+  "help": [],
+  "deliveredHelp": [],
+  "assistance": {
+    "received": false,
+    "actionIds": [],
+    "evidenceIds": []
+  },
+  "outcome": {
+    "missionComplete": false,
+    "assessment": "not_assessed",
+    "assisted": false,
+    "evidence": [
+      {
+        "id": "crossing-area",
+        "status": "not_observed",
+        "assisted": false
+      }
+    ]
+  },
+  "completionFeedback": null,
+  "origin": "original_contract_fixture",
+  "stageView": {
+    "locations": [
+      {
+        "id": "hub",
+        "label": "Building hub",
+        "x": 18,
+        "y": 50,
+        "capacity": 3,
+        "accepts": "any",
+        "inspected": false,
+        "actionIds": []
+      },
+      {
+        "id": "long",
+        "label": "Long lookout",
+        "x": 82,
+        "y": 22,
+        "capacity": 2,
+        "accepts": "any",
+        "inspected": false,
+        "actionIds": [
+          "inspect"
+        ]
+      },
+      {
+        "id": "wide",
+        "label": "Wide lookout",
+        "x": 82,
+        "y": 78,
+        "capacity": 2,
+        "accepts": "any",
+        "inspected": false,
+        "actionIds": [
+          "inspect"
+        ]
+      }
+    ],
+    "entities": [
+      {
+        "id": "traveler",
+        "label": "Traveler",
+        "kind": "actor",
+        "asset": "person",
+        "objectId": "traveler-piece",
+        "locationId": "hub",
+        "representationObjectId": null,
+        "currentStatus": "idle",
+        "reactionText": null,
+        "actionIds": [
+          "travel"
+        ],
+        "toolComponentIds": []
+      },
+      {
+        "id": "workbench",
+        "label": "Crossing workbench",
+        "kind": "device",
+        "asset": "gear",
+        "objectId": null,
+        "locationId": "hub",
+        "representationObjectId": "crossing",
+        "currentStatus": "blocked",
+        "reactionText": "The crossing still needs tiles. A route opens only when its footprint is fully covered.",
+        "actionIds": [],
+        "toolComponentIds": [
+          "bench"
+        ]
+      },
+      {
+        "id": "long-destination",
+        "label": "Long lookout",
+        "kind": "destination",
+        "asset": "flag",
+        "objectId": null,
+        "locationId": "long",
+        "representationObjectId": null,
+        "currentStatus": "idle",
+        "reactionText": null,
+        "actionIds": [],
+        "toolComponentIds": []
+      },
+      {
+        "id": "wide-destination",
+        "label": "Wide lookout",
+        "kind": "destination",
+        "asset": "flag",
+        "objectId": null,
+        "locationId": "wide",
+        "representationObjectId": null,
+        "currentStatus": "idle",
+        "reactionText": null,
+        "actionIds": [],
+        "toolComponentIds": []
+      }
+    ],
+    "connections": [
+      {
+        "id": "long-route",
+        "fromLocation": "hub",
+        "toLocation": "long",
+        "bidirectional": true,
+        "open": false,
+        "label": "Long crossing: 2 rows by 6 columns",
+        "blockedLabel": "Fit and cover the 2-by-6 footprint.",
+        "construction": {
+          "objectId": "crossing",
+          "rows": 2,
+          "columns": 6,
+          "requiredCells": 12,
+          "actualRows": 1,
+          "actualColumns": 1,
+          "coveredCells": 0,
+          "dimensionsMatch": false,
+          "complete": false,
+          "fits": false,
+          "sourceVisible": true
+        }
+      },
+      {
+        "id": "wide-route",
+        "fromLocation": "hub",
+        "toLocation": "wide",
+        "bidirectional": true,
+        "open": false,
+        "label": "Wide crossing: 3 rows by 4 columns",
+        "blockedLabel": "Fit and cover the 3-by-4 footprint.",
+        "construction": {
+          "objectId": "crossing",
+          "rows": 3,
+          "columns": 4,
+          "requiredCells": 12,
+          "actualRows": 1,
+          "actualColumns": 1,
+          "coveredCells": 0,
+          "dimensionsMatch": false,
+          "complete": false,
+          "fits": false,
+          "sourceVisible": true
+        }
+      }
+    ],
+    "tools": [
+      {
+        "componentId": "bench",
+        "entityId": "workbench",
+        "label": "Build and show area",
+        "available": true
+      }
+    ],
+    "reactions": [
+      {
+        "id": "need-tiles",
+        "entityId": "workbench",
+        "status": "blocked",
+        "text": "The crossing still needs tiles. A route opens only when its footprint is fully covered."
+      }
+    ],
+    "actionTargets": [
+      {
+        "actionId": "travel",
+        "inputId": "destination",
+        "targets": [
+          {
+            "id": "hub",
+            "allowed": false,
+            "reasonCode": "stage_destination_not_adjacent"
+          },
+          {
+            "id": "long",
+            "allowed": false,
+            "reasonCode": "stage_connection_closed"
+          },
+          {
+            "id": "wide",
+            "allowed": false,
+            "reasonCode": "stage_connection_closed"
+          }
+        ]
+      },
+      {
+        "actionId": "inspect",
+        "inputId": "location",
+        "targets": [
+          {
+            "id": "long",
+            "allowed": false,
+            "reasonCode": "action_guard_unsatisfied"
+          },
+          {
+            "id": "wide",
+            "allowed": false,
+            "reasonCode": "action_guard_unsatisfied"
+          }
+        ]
+      }
+    ],
+    "surfaces": [
+      {
+        "id": "long-mount",
+        "label": "Long footprint",
+        "objectId": "crossing",
+        "kind": "grid",
+        "locationId": null,
+        "connectionId": "long-route",
+        "layout": "object",
+        "cellIds": [
+          "r0c0"
+        ],
+        "actionId": "tile",
+        "inputId": "cell",
+        "cells": [
+          {
+            "id": "r0c0",
+            "selected": false,
+            "allowed": true,
+            "reasonCode": null
+          }
+        ]
+      },
+      {
+        "id": "wide-mount",
+        "label": "Wide footprint",
+        "objectId": "crossing",
+        "kind": "grid",
+        "locationId": null,
+        "connectionId": "wide-route",
+        "layout": "object",
+        "cellIds": [
+          "r0c0"
+        ],
+        "actionId": "tile",
+        "inputId": "cell",
+        "cells": [
+          {
+            "id": "r0c0",
+            "selected": false,
+            "allowed": true,
+            "reasonCode": null
+          }
+        ]
+      },
+      {
+        "id": "product-display",
+        "label": "Area product",
+        "objectId": "area-product",
+        "kind": "equation",
+        "locationId": "hub",
+        "connectionId": null,
+        "layout": "object",
+        "cellIds": [],
+        "actionId": null,
+        "inputId": null,
+        "cells": []
+      }
+    ]
+  }
+}

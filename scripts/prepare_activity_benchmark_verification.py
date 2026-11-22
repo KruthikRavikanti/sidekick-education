@@ -29,6 +29,7 @@ from backend.accounts.database import Database
 from backend.accounts.security import SecurityContext
 from backend.accounts.settings import Settings
 from backend.activity_engine_v2.composer import ApprovedProgram, SemanticReview, validate_review
+from backend.activity_engine_v2.gameplay import GameplayReview
 from backend.activity_engine_v2.models import ActivityProgram
 from backend.activity_engine_v2.service import _hash, start_approved
 
@@ -78,7 +79,13 @@ def source_approval(database, report):
         validate_review(program, expected, review)
         approved = ApprovedProgram(program=program, definition_hash=expected, requested_model=row['requested_model'],
             returned_models=json.loads(row['returned_models_json'] or '[]'), review=review,
-            call_count=row['call_count'], model_calls=json.loads(row['model_calls_json'] or '[]'))
+            call_count=row['call_count'], model_calls=json.loads(row['model_calls_json'] or '[]'),
+            game_design=json.loads(row['game_design_json'] or 'null'),
+            design_evaluations=json.loads(row['design_evaluations_json'] or '[]'),
+            gameplay_review=GameplayReview.model_validate_json(row['gameplay_review_json'])
+                if row['gameplay_review_json'] and row['gameplay_review_json'] != 'null' else None,
+            structural_fingerprint=json.loads(row['structural_fingerprint_json'] or 'null'),
+            render_manifest=json.loads(row['render_manifest_json'] or 'null'))
         context = json.loads(row['context_json'])
         snapshot = dict(actionCount=row['action_count'], revision=row['revision'])
         grade = str(context.get('grade', '3'))

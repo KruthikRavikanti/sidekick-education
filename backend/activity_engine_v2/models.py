@@ -238,7 +238,7 @@ class Material(Closed):
 
 class WorldObject(Closed):
     id: Identifier
-    kind: Literal['quantity_pool', 'grid', 'equation', 'text_artifact', 'evidence_board', 'sequence', 'audio_artifact', 'drawing_artifact', 'progress', 'fraction_strip']
+    kind: Literal['quantity_pool', 'grid', 'equation', 'text_artifact', 'evidence_board', 'sequence', 'audio_artifact', 'drawing_artifact', 'progress', 'fraction_strip', 'stage_piece', 'stage_map']
     bindings: Annotated[dict[Identifier, Identifier], Field(min_length=1, max_length=8)]
     materialIds: Annotated[list[Identifier], Field(max_length=8)] = Field(default_factory=list)
     width: Annotated[int, Field(ge=1, le=12)] | None = None
@@ -280,7 +280,7 @@ class World(Closed):
 
 class Component(Closed):
     id: Identifier
-    kind: Literal['quantity_lab', 'math_workspace', 'text_editor', 'evidence_board', 'tile_order', 'oral_studio', 'drawing_studio', 'fraction_workspace']
+    kind: Literal['quantity_lab', 'math_workspace', 'text_editor', 'evidence_board', 'tile_order', 'oral_studio', 'drawing_studio', 'fraction_workspace', 'world_stage']
     objectIds: Annotated[list[Identifier], Field(min_length=1, max_length=8)]
     spaceId: Identifier
 
@@ -319,7 +319,7 @@ class ActionInput(Closed):
 class Action(Closed):
     id: Identifier
     componentId: Identifier
-    operation: Literal['transfer_quantity', 'toggle_tile', 'resize_rectangle', 'assemble_product', 'replace_text', 'revise_text', 'select_evidence', 'reorder', 'record_voice', 'draw', 'set_fraction_partition', 'toggle_fraction_piece', 'move_fraction_piece']
+    operation: Literal['transfer_quantity', 'toggle_tile', 'resize_rectangle', 'assemble_product', 'replace_text', 'revise_text', 'select_evidence', 'reorder', 'record_voice', 'draw', 'set_fraction_partition', 'toggle_fraction_piece', 'move_fraction_piece', 'move_actor', 'place_piece', 'inspect_location']
     inputs: Annotated[list[ActionInput], Field(min_length=1, max_length=4)]
     label: ShortText
 
@@ -380,11 +380,126 @@ class Space(Closed):
     visibleWhen: Condition | None = None
 
 
+StageAsset = Literal['dot', 'person', 'cart', 'boat', 'parcel', 'lens', 'bridge', 'gate', 'home', 'tree', 'lamp', 'book', 'clue', 'flag', 'flower', 'gear']
+StageStatus = Literal['idle', 'active', 'blocked', 'discovered', 'complete']
+StageLabel = Annotated[str, Field(min_length=1, max_length=100)]
+
+
+class StageLocation(Closed):
+    id: Identifier
+    label: StageLabel
+    x: Annotated[int, Field(ge=0, le=100)]
+    y: Annotated[int, Field(ge=0, le=100)]
+    capacity: Annotated[int, Field(ge=1, le=8)] = 4
+    accepts: Literal['any', 'actor', 'device'] = 'any'
+
+
+class StageEntity(Closed):
+    id: Identifier
+    label: StageLabel
+    kind: Literal['actor', 'device', 'object', 'destination']
+    objectId: Identifier | None = None
+    locationId: Identifier | None = None
+    asset: StageAsset = 'dot'
+    representationObjectId: Identifier | None = None
+
+    @model_validator(mode='after')
+    def one_placement(self):
+        if (self.objectId is None) == (self.locationId is None):
+            raise ValueError('stage_entity_requires_one_placement')
+        if self.kind == 'actor' and self.objectId is None:
+            raise ValueError('stage_actor_requires_object')
+        if self.kind == 'destination' and self.locationId is None:
+            raise ValueError('stage_destination_requires_location')
+        return self
+
+
+class StageConstruction(Closed):
+    objectId: Identifier
+    rows: Annotated[StrictInt, Field(ge=1, le=12)]
+    columns: Annotated[StrictInt, Field(ge=1, le=12)]
+
+
+class StageConnection(Closed):
+    id: Identifier
+    fromLocation: Identifier
+    toLocation: Identifier
+    bidirectional: bool = True
+    when: Condition
+    label: StageLabel
+    blockedLabel: StageLabel
+    construction: StageConstruction | None = None
+
+    @model_serializer(mode='wrap')
+    def preserve_legacy_connection_shape(self, serialize):
+        result = serialize(self)
+        if self.construction is None:
+            result.pop('construction', None)
+        return result
+
+
+class StageTool(Closed):
+    componentId: Identifier
+    entityId: Identifier
+    availableWhen: Condition
+    label: StageLabel
+
+
+class StageReaction(Closed):
+    id: Identifier
+    entityId: Identifier | None = None
+    when: Condition
+    status: StageStatus
+    text: Annotated[str, Field(min_length=1, max_length=180)]
+
+
+class StageSurface(Closed):
+    id: Identifier
+    label: StageLabel
+    objectId: Identifier
+    locationId: Identifier | None = None
+    connectionId: Identifier | None = None
+    cellIds: Annotated[list[Identifier], Field(max_length=24)] = Field(default_factory=list)
+    layout: Literal['object', 'row', 'column'] = 'object'
+    actionId: Identifier | None = None
+    visibleWhen: Condition
+
+    @model_validator(mode='after')
+    def one_anchor(self):
+        if (self.locationId is None) == (self.connectionId is None):
+            raise ValueError('stage_surface_requires_one_anchor')
+        return self
+
+
+class StageDefinition(Closed):
+    locations: Annotated[list[StageLocation], Field(min_length=2, max_length=12)]
+    entities: Annotated[list[StageEntity], Field(min_length=1, max_length=12)]
+    connections: Annotated[list[StageConnection], Field(max_length=24)] = Field(default_factory=list)
+    tools: Annotated[list[StageTool], Field(min_length=1, max_length=12)]
+    reactions: Annotated[list[StageReaction], Field(min_length=1, max_length=24)]
+    surfaces: Annotated[list[StageSurface], Field(max_length=8)] = Field(default_factory=list)
+
+    @model_serializer(mode='wrap')
+    def preserve_legacy_stage_shape(self, serialize):
+        result = serialize(self)
+        if not self.surfaces:
+            result.pop('surfaces', None)
+        return result
+
+
 class Presentation(Closed):
     entrySpace: Identifier
     spaces: Annotated[list[Space], Field(min_length=1,max_length=8)]
     assets: Annotated[list[Identifier], Field(max_length=8)] = Field(default_factory=list)
     theme: Literal['sidekick'] = 'sidekick'
+    stage: StageDefinition | None = None
+
+    @model_serializer(mode='wrap')
+    def preserve_legacy_presentation_shape(self, serialize):
+        result = serialize(self)
+        if self.stage is None:
+            result.pop('stage', None)
+        return result
 
 
 class Provenance(Closed):

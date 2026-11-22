@@ -1,0 +1,1242 @@
+{
+  "schemaVersion": "2.0-foundation",
+  "id": "garden-row-network",
+  "title": "The Garden Walks",
+  "definitionVersion": 1,
+  "componentVersion": "sidekick-program-contract-v1",
+  "intent": {
+    "targets": [
+      {
+        "skillId": "3.MD.C.7-1",
+        "demonstration": "Tile a rectangle and show area = side x side"
+      }
+    ],
+    "observations": [],
+    "misconceptions": [],
+    "successEvidence": [
+      "rectangle-area"
+    ]
+  },
+  "world": {
+    "state": [
+      {
+        "id": "rows",
+        "mutable": false,
+        "kind": "integer",
+        "initial": 2,
+        "minimum": 2,
+        "maximum": 2,
+        "unit": "rows"
+      },
+      {
+        "id": "columns",
+        "mutable": false,
+        "kind": "integer",
+        "initial": 3,
+        "minimum": 3,
+        "maximum": 3,
+        "unit": "columns"
+      },
+      {
+        "id": "cells",
+        "mutable": true,
+        "kind": "id_set",
+        "initial": [],
+        "options": [
+          "r0c0",
+          "r0c1",
+          "r0c2",
+          "r1c0",
+          "r1c1",
+          "r1c2"
+        ],
+        "maxItems": 6
+      },
+      {
+        "id": "left",
+        "mutable": true,
+        "kind": "integer",
+        "initial": 0,
+        "minimum": 0,
+        "maximum": 12,
+        "unit": null
+      },
+      {
+        "id": "right",
+        "mutable": true,
+        "kind": "integer",
+        "initial": 0,
+        "minimum": 0,
+        "maximum": 12,
+        "unit": null
+      },
+      {
+        "id": "result",
+        "mutable": true,
+        "kind": "integer",
+        "initial": 0,
+        "minimum": 0,
+        "maximum": 120,
+        "unit": "square units"
+      },
+      {
+        "id": "walker-location",
+        "mutable": true,
+        "kind": "choice",
+        "initial": "hub",
+        "options": [
+          "hub",
+          "north",
+          "south"
+        ]
+      },
+      {
+        "id": "inspected",
+        "mutable": true,
+        "kind": "id_set",
+        "initial": [],
+        "options": [
+          "hub",
+          "north",
+          "south"
+        ],
+        "maxItems": 3
+      }
+    ],
+    "materials": [
+      {
+        "id": "tiles",
+        "kind": "unit_tiles",
+        "text": null,
+        "items": [],
+        "quantity": 6
+      },
+      {
+        "id": "mission",
+        "kind": "prompt",
+        "text": "Cover the two-row garden walkway with unit tiles. Each complete row opens its own walk. You can test either walk and return. Show the rectangle's side lengths and area as a multiplication, then inspect the hub to finish.",
+        "items": [],
+        "quantity": null
+      }
+    ],
+    "objects": [
+      {
+        "id": "walkway",
+        "kind": "grid",
+        "bindings": {
+          "cells": "cells",
+          "columns": "columns",
+          "rows": "rows"
+        },
+        "materialIds": [
+          "tiles",
+          "mission"
+        ],
+        "width": 3,
+        "height": 2
+      },
+      {
+        "id": "area-equation",
+        "kind": "equation",
+        "bindings": {
+          "left": "left",
+          "result": "result",
+          "right": "right"
+        },
+        "materialIds": [
+          "mission"
+        ],
+        "width": null,
+        "height": null
+      },
+      {
+        "id": "walker-piece",
+        "kind": "stage_piece",
+        "bindings": {
+          "location": "walker-location"
+        },
+        "materialIds": [],
+        "width": null,
+        "height": null
+      },
+      {
+        "id": "garden-map",
+        "kind": "stage_map",
+        "bindings": {
+          "inspected": "inspected"
+        },
+        "materialIds": [],
+        "width": null,
+        "height": null
+      }
+    ],
+    "relationships": [],
+    "invariants": []
+  },
+  "components": [
+    {
+      "id": "workbench",
+      "kind": "math_workspace",
+      "objectIds": [
+        "walkway",
+        "area-equation"
+      ],
+      "spaceId": "garden"
+    },
+    {
+      "id": "walker-controls",
+      "kind": "world_stage",
+      "objectIds": [
+        "walker-piece"
+      ],
+      "spaceId": "garden"
+    },
+    {
+      "id": "map-controls",
+      "kind": "world_stage",
+      "objectIds": [
+        "garden-map"
+      ],
+      "spaceId": "garden"
+    }
+  ],
+  "actions": [
+    {
+      "id": "tile",
+      "componentId": "workbench",
+      "operation": "toggle_tile",
+      "inputs": [
+        {
+          "id": "cell",
+          "kind": "choice",
+          "minimum": null,
+          "maximum": null,
+          "minLength": null,
+          "maxLength": null,
+          "options": [
+            "r0c0",
+            "r0c1",
+            "r0c2",
+            "r1c0",
+            "r1c1",
+            "r1c2"
+          ],
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Place or lift a tile"
+    },
+    {
+      "id": "product",
+      "componentId": "workbench",
+      "operation": "assemble_product",
+      "inputs": [
+        {
+          "id": "left",
+          "kind": "integer",
+          "minimum": 0,
+          "maximum": 12,
+          "minLength": null,
+          "maxLength": null,
+          "options": null,
+          "maxItems": null,
+          "mediaKind": null
+        },
+        {
+          "id": "right",
+          "kind": "integer",
+          "minimum": 0,
+          "maximum": 12,
+          "minLength": null,
+          "maxLength": null,
+          "options": null,
+          "maxItems": null,
+          "mediaKind": null
+        },
+        {
+          "id": "result",
+          "kind": "integer",
+          "minimum": 0,
+          "maximum": 120,
+          "minLength": null,
+          "maxLength": null,
+          "options": null,
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Show the area"
+    },
+    {
+      "id": "walk",
+      "componentId": "walker-controls",
+      "operation": "move_actor",
+      "inputs": [
+        {
+          "id": "destination",
+          "kind": "choice",
+          "minimum": null,
+          "maximum": null,
+          "minLength": null,
+          "maxLength": null,
+          "options": [
+            "hub",
+            "north",
+            "south"
+          ],
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Walk"
+    },
+    {
+      "id": "finish-inspection",
+      "componentId": "map-controls",
+      "operation": "inspect_location",
+      "inputs": [
+        {
+          "id": "location",
+          "kind": "choice",
+          "minimum": null,
+          "maximum": null,
+          "minLength": null,
+          "maxLength": null,
+          "options": [
+            "hub"
+          ],
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Inspect the finished hub"
+    }
+  ],
+  "rules": [
+    {
+      "id": "tile-rule",
+      "onAction": "tile",
+      "when": {
+        "kind": "always"
+      },
+      "effects": [
+        {
+          "kind": "toggle_item",
+          "target": "cells",
+          "item": {
+            "kind": "input",
+            "ref": "cell"
+          }
+        }
+      ]
+    },
+    {
+      "id": "product-rule",
+      "onAction": "product",
+      "when": {
+        "kind": "always"
+      },
+      "effects": [
+        {
+          "kind": "set",
+          "target": "left",
+          "value": {
+            "kind": "input",
+            "ref": "left"
+          }
+        },
+        {
+          "kind": "set",
+          "target": "right",
+          "value": {
+            "kind": "input",
+            "ref": "right"
+          }
+        },
+        {
+          "kind": "set",
+          "target": "result",
+          "value": {
+            "kind": "input",
+            "ref": "result"
+          }
+        }
+      ]
+    },
+    {
+      "id": "walk-rule",
+      "onAction": "walk",
+      "when": {
+        "kind": "always"
+      },
+      "effects": [
+        {
+          "kind": "set",
+          "target": "walker-location",
+          "value": {
+            "kind": "input",
+            "ref": "destination"
+          }
+        }
+      ]
+    },
+    {
+      "id": "inspect-rule",
+      "onAction": "finish-inspection",
+      "when": {
+        "kind": "all",
+        "conditions": [
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "walker-location"
+            },
+            "right": {
+              "kind": "input",
+              "ref": "location"
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "operator",
+              "op": "count",
+              "args": [
+                {
+                  "kind": "state",
+                  "ref": "cells"
+                }
+              ]
+            },
+            "right": {
+              "kind": "literal",
+              "value": 6
+            }
+          },
+          {
+            "kind": "any",
+            "conditions": [
+              {
+                "kind": "all",
+                "conditions": [
+                  {
+                    "kind": "compare",
+                    "op": "eq",
+                    "left": {
+                      "kind": "state",
+                      "ref": "left"
+                    },
+                    "right": {
+                      "kind": "state",
+                      "ref": "rows"
+                    }
+                  },
+                  {
+                    "kind": "compare",
+                    "op": "eq",
+                    "left": {
+                      "kind": "state",
+                      "ref": "right"
+                    },
+                    "right": {
+                      "kind": "state",
+                      "ref": "columns"
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "all",
+                "conditions": [
+                  {
+                    "kind": "compare",
+                    "op": "eq",
+                    "left": {
+                      "kind": "state",
+                      "ref": "left"
+                    },
+                    "right": {
+                      "kind": "state",
+                      "ref": "columns"
+                    }
+                  },
+                  {
+                    "kind": "compare",
+                    "op": "eq",
+                    "left": {
+                      "kind": "state",
+                      "ref": "right"
+                    },
+                    "right": {
+                      "kind": "state",
+                      "ref": "rows"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "result"
+            },
+            "right": {
+              "kind": "literal",
+              "value": 6
+            }
+          }
+        ]
+      },
+      "effects": [
+        {
+          "kind": "add_item",
+          "target": "inspected",
+          "item": {
+            "kind": "input",
+            "ref": "location"
+          }
+        }
+      ]
+    }
+  ],
+  "goals": [
+    {
+      "id": "finished-network",
+      "description": "Cover the rectangle, show its area, and inspect the hub.",
+      "when": {
+        "kind": "all",
+        "conditions": [
+          {
+            "kind": "contains",
+            "collection": {
+              "kind": "state",
+              "ref": "inspected"
+            },
+            "item": {
+              "kind": "literal",
+              "value": "hub"
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "operator",
+              "op": "count",
+              "args": [
+                {
+                  "kind": "state",
+                  "ref": "cells"
+                }
+              ]
+            },
+            "right": {
+              "kind": "literal",
+              "value": 6
+            }
+          },
+          {
+            "kind": "any",
+            "conditions": [
+              {
+                "kind": "all",
+                "conditions": [
+                  {
+                    "kind": "compare",
+                    "op": "eq",
+                    "left": {
+                      "kind": "state",
+                      "ref": "left"
+                    },
+                    "right": {
+                      "kind": "state",
+                      "ref": "rows"
+                    }
+                  },
+                  {
+                    "kind": "compare",
+                    "op": "eq",
+                    "left": {
+                      "kind": "state",
+                      "ref": "right"
+                    },
+                    "right": {
+                      "kind": "state",
+                      "ref": "columns"
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "all",
+                "conditions": [
+                  {
+                    "kind": "compare",
+                    "op": "eq",
+                    "left": {
+                      "kind": "state",
+                      "ref": "left"
+                    },
+                    "right": {
+                      "kind": "state",
+                      "ref": "columns"
+                    }
+                  },
+                  {
+                    "kind": "compare",
+                    "op": "eq",
+                    "left": {
+                      "kind": "state",
+                      "ref": "right"
+                    },
+                    "right": {
+                      "kind": "state",
+                      "ref": "rows"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "result"
+            },
+            "right": {
+              "kind": "literal",
+              "value": 6
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "when": {
+      "kind": "goal",
+      "goalId": "finished-network"
+    },
+    "goalIds": [
+      "finished-network"
+    ],
+    "allowAssisted": true
+  },
+  "help": [
+    {
+      "id": "row-hint",
+      "kind": "hint",
+      "text": "Try covering one whole row to open its walk. When both rows are covered, use the number of rows and the number of tiles in each row as the factors.",
+      "availableWhen": {
+        "kind": "always"
+      },
+      "actionIds": [
+        "tile",
+        "product"
+      ],
+      "maxUses": 3
+    }
+  ],
+  "evidence": [
+    {
+      "id": "rectangle-area",
+      "skillIds": [
+        "3.MD.C.7-1"
+      ],
+      "actionIds": [
+        "tile",
+        "product"
+      ],
+      "stateRefs": [
+        "cells",
+        "rows",
+        "columns",
+        "left",
+        "right",
+        "result"
+      ],
+      "assessment": {
+        "kind": "automatic",
+        "when": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "compare",
+              "op": "eq",
+              "left": {
+                "kind": "state",
+                "ref": "rows"
+              },
+              "right": {
+                "kind": "literal",
+                "value": 2
+              }
+            },
+            {
+              "kind": "compare",
+              "op": "eq",
+              "left": {
+                "kind": "state",
+                "ref": "columns"
+              },
+              "right": {
+                "kind": "literal",
+                "value": 3
+              }
+            },
+            {
+              "kind": "compare",
+              "op": "eq",
+              "left": {
+                "kind": "operator",
+                "op": "count",
+                "args": [
+                  {
+                    "kind": "state",
+                    "ref": "cells"
+                  }
+                ]
+              },
+              "right": {
+                "kind": "literal",
+                "value": 6
+              }
+            },
+            {
+              "kind": "any",
+              "conditions": [
+                {
+                  "kind": "all",
+                  "conditions": [
+                    {
+                      "kind": "compare",
+                      "op": "eq",
+                      "left": {
+                        "kind": "state",
+                        "ref": "left"
+                      },
+                      "right": {
+                        "kind": "state",
+                        "ref": "rows"
+                      }
+                    },
+                    {
+                      "kind": "compare",
+                      "op": "eq",
+                      "left": {
+                        "kind": "state",
+                        "ref": "right"
+                      },
+                      "right": {
+                        "kind": "state",
+                        "ref": "columns"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "kind": "all",
+                  "conditions": [
+                    {
+                      "kind": "compare",
+                      "op": "eq",
+                      "left": {
+                        "kind": "state",
+                        "ref": "left"
+                      },
+                      "right": {
+                        "kind": "state",
+                        "ref": "columns"
+                      }
+                    },
+                    {
+                      "kind": "compare",
+                      "op": "eq",
+                      "left": {
+                        "kind": "state",
+                        "ref": "right"
+                      },
+                      "right": {
+                        "kind": "state",
+                        "ref": "rows"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "compare",
+              "op": "eq",
+              "left": {
+                "kind": "state",
+                "ref": "result"
+              },
+              "right": {
+                "kind": "literal",
+                "value": 6
+              }
+            }
+          ]
+        }
+      },
+      "assistance": "server_event_history"
+    }
+  ],
+  "presentation": {
+    "entrySpace": "garden",
+    "spaces": [
+      {
+        "id": "garden",
+        "title": "Garden walks",
+        "visibleWhen": {
+          "kind": "always"
+        }
+      }
+    ],
+    "assets": [],
+    "theme": "sidekick",
+    "stage": {
+      "locations": [
+        {
+          "id": "hub",
+          "label": "Garden hub",
+          "x": 48,
+          "y": 50,
+          "capacity": 4,
+          "accepts": "any"
+        },
+        {
+          "id": "north",
+          "label": "Flower lookout",
+          "x": 82,
+          "y": 20,
+          "capacity": 2,
+          "accepts": "any"
+        },
+        {
+          "id": "south",
+          "label": "Tree nook",
+          "x": 82,
+          "y": 80,
+          "capacity": 2,
+          "accepts": "any"
+        }
+      ],
+      "entities": [
+        {
+          "id": "walker",
+          "label": "Garden walker",
+          "kind": "actor",
+          "objectId": "walker-piece",
+          "locationId": null,
+          "asset": "person",
+          "representationObjectId": null
+        },
+        {
+          "id": "bench",
+          "label": "Walkway workbench",
+          "kind": "device",
+          "objectId": null,
+          "locationId": "hub",
+          "asset": "gear",
+          "representationObjectId": "walkway"
+        },
+        {
+          "id": "flower-lookout",
+          "label": "Flower lookout",
+          "kind": "destination",
+          "objectId": null,
+          "locationId": "north",
+          "asset": "flower",
+          "representationObjectId": null
+        },
+        {
+          "id": "tree-nook",
+          "label": "Tree nook",
+          "kind": "destination",
+          "objectId": null,
+          "locationId": "south",
+          "asset": "tree",
+          "representationObjectId": null
+        }
+      ],
+      "connections": [
+        {
+          "id": "north-walk",
+          "fromLocation": "hub",
+          "toLocation": "north",
+          "bidirectional": true,
+          "when": {
+            "kind": "all",
+            "conditions": [
+              {
+                "kind": "contains",
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r0c0"
+                }
+              },
+              {
+                "kind": "contains",
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r0c1"
+                }
+              },
+              {
+                "kind": "contains",
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r0c2"
+                }
+              }
+            ]
+          },
+          "label": "Flower walk",
+          "blockedLabel": "Cover the top row to open this walk."
+        },
+        {
+          "id": "south-walk",
+          "fromLocation": "hub",
+          "toLocation": "south",
+          "bidirectional": true,
+          "when": {
+            "kind": "all",
+            "conditions": [
+              {
+                "kind": "contains",
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r1c0"
+                }
+              },
+              {
+                "kind": "contains",
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r1c1"
+                }
+              },
+              {
+                "kind": "contains",
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r1c2"
+                }
+              }
+            ]
+          },
+          "label": "Tree walk",
+          "blockedLabel": "Cover the bottom row to open this walk."
+        }
+      ],
+      "tools": [
+        {
+          "componentId": "workbench",
+          "entityId": "bench",
+          "availableWhen": {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "walker-location"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "hub"
+            }
+          },
+          "label": "Build and count at the hub"
+        }
+      ],
+      "reactions": [
+        {
+          "id": "north-ready",
+          "entityId": "flower-lookout",
+          "when": {
+            "kind": "all",
+            "conditions": [
+              {
+                "kind": "contains",
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r0c0"
+                }
+              },
+              {
+                "kind": "contains",
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r0c1"
+                }
+              },
+              {
+                "kind": "contains",
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r0c2"
+                }
+              }
+            ]
+          },
+          "status": "active",
+          "text": "The flower walk is open."
+        },
+        {
+          "id": "south-ready",
+          "entityId": "tree-nook",
+          "when": {
+            "kind": "all",
+            "conditions": [
+              {
+                "kind": "contains",
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r1c0"
+                }
+              },
+              {
+                "kind": "contains",
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r1c1"
+                }
+              },
+              {
+                "kind": "contains",
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r1c2"
+                }
+              }
+            ]
+          },
+          "status": "active",
+          "text": "The tree walk is open."
+        },
+        {
+          "id": "tiles-ready",
+          "entityId": "bench",
+          "when": {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "operator",
+              "op": "count",
+              "args": [
+                {
+                  "kind": "state",
+                  "ref": "cells"
+                }
+              ]
+            },
+            "right": {
+              "kind": "literal",
+              "value": 6
+            }
+          },
+          "status": "active",
+          "text": "Both rows are covered. Show their area and inspect the hub when ready."
+        }
+      ],
+      "surfaces": [
+        {
+          "id": "north-planks",
+          "label": "Top row",
+          "objectId": "walkway",
+          "locationId": null,
+          "connectionId": "north-walk",
+          "cellIds": [
+            "r0c0",
+            "r0c1",
+            "r0c2"
+          ],
+          "layout": "row",
+          "actionId": "tile",
+          "visibleWhen": {
+            "kind": "always"
+          }
+        },
+        {
+          "id": "south-planks",
+          "label": "Bottom row",
+          "objectId": "walkway",
+          "locationId": null,
+          "connectionId": "south-walk",
+          "cellIds": [
+            "r1c0",
+            "r1c1",
+            "r1c2"
+          ],
+          "layout": "row",
+          "actionId": "tile",
+          "visibleWhen": {
+            "kind": "always"
+          }
+        },
+        {
+          "id": "whole-walkway",
+          "label": "Two-row rectangle",
+          "objectId": "walkway",
+          "locationId": "hub",
+          "connectionId": null,
+          "cellIds": [],
+          "layout": "object",
+          "actionId": "tile",
+          "visibleWhen": {
+            "kind": "always"
+          }
+        },
+        {
+          "id": "area-display",
+          "label": "Area equality",
+          "objectId": "area-equation",
+          "locationId": "hub",
+          "connectionId": null,
+          "cellIds": [],
+          "layout": "object",
+          "actionId": null,
+          "visibleWhen": {
+            "kind": "always"
+          }
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "origin": "ai_composed",
+    "author": "Sidekick AI",
+    "sourceRefs": [],
+    "model": "gpt-6.1-terra",
+    "promptVersion": "sidekick-program-composer-v1"
+  },
+  "limits": {
+    "maxActions": 100,
+    "maxRulesPerAction": 4,
+    "maxEffectsPerAction": 4,
+    "maxExpressionDepth": 8,
+    "maxExpressionNodes": 64
+  },
+  "witness": [
+    {
+      "actionId": "tile",
+      "inputs": {
+        "cell": "r0c0"
+      }
+    },
+    {
+      "actionId": "tile",
+      "inputs": {
+        "cell": "r0c1"
+      }
+    },
+    {
+      "actionId": "tile",
+      "inputs": {
+        "cell": "r0c2"
+      }
+    },
+    {
+      "actionId": "walk",
+      "inputs": {
+        "destination": "north"
+      }
+    },
+    {
+      "actionId": "walk",
+      "inputs": {
+        "destination": "hub"
+      }
+    },
+    {
+      "actionId": "tile",
+      "inputs": {
+        "cell": "r1c0"
+      }
+    },
+    {
+      "actionId": "tile",
+      "inputs": {
+        "cell": "r1c1"
+      }
+    },
+    {
+      "actionId": "tile",
+      "inputs": {
+        "cell": "r1c2"
+      }
+    },
+    {
+      "actionId": "product",
+      "inputs": {
+        "left": 2,
+        "result": 6,
+        "right": 3
+      }
+    },
+    {
+      "actionId": "finish-inspection",
+      "inputs": {
+        "location": "hub"
+      }
+    }
+  ]
+}

@@ -1,0 +1,2385 @@
+{
+  "auditOnly": true,
+  "definitionHash": "0455adab6a2f769908acbe3d4d55a1e3f8a702264c7529e1f58d8cca99b93e62",
+  "semanticReview": {
+    "definitionHash": "0455adab6a2f769908acbe3d4d55a1e3f8a702264c7529e1f58d8cca99b93e62",
+    "approved": true,
+    "targetNecessary": true,
+    "meaningfulConsequences": true,
+    "materialsSuitable": true,
+    "goalAchievable": true,
+    "helpRelevant": true,
+    "scoringCorrectAcrossRoutes": true,
+    "shortcutsPrevented": true,
+    "parentAssessmentAppropriate": true,
+    "requiresParentReview": true,
+    "reasonCode": "approved",
+    "summary": "Every finish route requires a selected clue and a child-written, revised draft. The parent rubric checks the situation, narrator, and characters rather than treating completion as writing-quality success."
+  },
+  "gameplayReview": {
+    "definitionHash": "0455adab6a2f769908acbe3d4d55a1e3f8a702264c7529e1f58d8cca99b93e62",
+    "renderManifestHash": "acfc22041d570253596642218dbc86685c3a90a406fc6d42cb3062bb6b6c692d",
+    "approved": true,
+    "meaningfulChoices": true,
+    "understandableConsequences": true,
+    "recoveryPossible": true,
+    "targetNecessary": true,
+    "briefGoalClear": true,
+    "finishAchievable": true,
+    "finishSatisfying": true,
+    "mainStagePlayable": true,
+    "structuralVariety": true,
+    "renderedAffordancesSuitable": true,
+    "reasonCode": "approved",
+    "summary": "The chosen source sentence and original draft remain visible together; the child can change the clue and revise before visiting the archive. Completion requires a draft and revision, while writing quality remains for parent review."
+  },
+  "renderManifest": {
+    "actualOperations": {
+      "inspect_location": {
+        "automaticAssessment": false,
+        "childAction": "Investigate a selected location and retain the discovery.",
+        "component": "world_stage",
+        "effectKinds": [
+          "add_item"
+        ],
+        "evidence": "Investigation history only; reading assessment still needs the actual evidence selection or artifact.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "location": "choice"
+        },
+        "legacySource": "components/activity-program-stage.tsx",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "stage_map",
+        "previewOnly": true,
+        "visibleChange": "Authoritative discovery state can reveal actual passages, tools or contextual materials."
+      },
+      "move_actor": {
+        "automaticAssessment": false,
+        "childAction": "Move the selected actor through an adjacent usable connection.",
+        "component": "world_stage",
+        "effectKinds": [
+          "set"
+        ],
+        "evidence": "Navigation and choice history only; an arrival is never evidence of conceptual understanding.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "destination": "choice"
+        },
+        "legacySource": "components/activity-program-stage.tsx",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "stage_piece",
+        "previewOnly": true,
+        "visibleChange": "The actor travels between actual locations; conceptual state can make a connection usable or blocked."
+      },
+      "replace_text": {
+        "automaticAssessment": false,
+        "childAction": "Create an original draft.",
+        "component": "text_editor",
+        "effectKinds": [
+          "set"
+        ],
+        "evidence": "Text artifact and process, assessed against a parent rubric.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "text": "text"
+        },
+        "legacySource": "components/activity-families.tsx:TextEditor",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "text_artifact",
+        "previewOnly": true,
+        "visibleChange": "The actual written artifact changes."
+      },
+      "revise_text": {
+        "automaticAssessment": false,
+        "childAction": "Change the existing draft.",
+        "component": "text_editor",
+        "effectKinds": [
+          "set"
+        ],
+        "evidence": "Actual revision and parent-assessed writing quality.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "text": "text"
+        },
+        "legacySource": "components/activity-families.tsx:TextEditor",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "text_artifact",
+        "previewOnly": true,
+        "visibleChange": "Previous and new drafts differ; future events retain both."
+      },
+      "select_evidence": {
+        "automaticAssessment": true,
+        "childAction": "Place a passage sentence on the board.",
+        "component": "evidence_board",
+        "effectKinds": [
+          "set"
+        ],
+        "evidence": "Selection key; factual support still needs semantic review.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "sentence": "choice"
+        },
+        "legacySource": "components/activity-toolkit.tsx:EvidenceBoard",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "evidence_board",
+        "previewOnly": true,
+        "visibleChange": "The selected literal sentence becomes the displayed clue."
+      }
+    },
+    "actualStructure": {
+      "digest": "3e6f5296a3524edd200bdeff5dce3a1e13611447a37ceb075d79087b9544fb59",
+      "features": [
+        "action:inspect_location#1",
+        "action:move_actor#1",
+        "action:replace_text#1",
+        "action:revise_text#1",
+        "action:select_evidence#1",
+        "completion:(goal)#1",
+        "component:evidence_board#1",
+        "component:text_editor#1",
+        "component:world_stage#2",
+        "consequence:active:(compare|eq|left:state:progress.value|right:literal:boolean)#1",
+        "consequence:active:(compare|ne|left:state:evidence_board.selection|right:literal:label)#1",
+        "consequence:discovered:(contains|collection:state:stage_map.inspected|item:literal:label)#1",
+        "edge:True:(all|conditions:[(compare|eq|left:state:progress.value|right:literal:boolean),(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label)])#1",
+        "edge:True:(always)#1",
+        "entity:actor:movable#1",
+        "entity:destination:fixed#1",
+        "entity:device:fixed#2",
+        "goal:(all|conditions:[(compare|eq|left:state:progress.value|right:literal:boolean),(compare|eq|left:state:stage_piece.location|right:literal:label),(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label)])#1",
+        "location:any:in1:out1#2",
+        "location:any:in2:out2#1",
+        "object:evidence_board#1",
+        "object:progress#1",
+        "object:stage_map#1",
+        "object:stage_piece#1",
+        "object:text_artifact#1",
+        "rule:inspect_location:(compare|eq|left:state:stage_piece.location|right:literal:label):[(add_item|item:input|target:stage_map.inspected)]#1",
+        "rule:move_actor:(always):[(set|value:input|target:stage_piece.location)]#1",
+        "rule:replace_text:(all|conditions:[(compare|eq|left:state:progress.value|right:literal:boolean),(compare|eq|left:state:stage_piece.location|right:literal:label),(compare|ne|left:state:evidence_board.selection|right:literal:label)]):[(set|value:input|target:text_artifact.text)]#1",
+        "rule:revise_text:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(compare|ne|left:input|right:literal:label),(compare|ne|left:input|right:state:text_artifact.text),(compare|ne|left:state:text_artifact.text|right:literal:label)]):[(set|value:input|target:text_artifact.text),(set|value:literal:boolean|target:progress.value)]#1",
+        "rule:select_evidence:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(contains|collection:state:stage_map.inspected|item:literal:label)]):[(set|value:input|target:evidence_board.selection)]#1",
+        "surface:evidence_board:location:any:object:whole:read_only:(contains|collection:state:stage_map.inspected|item:literal:label)#1",
+        "surface:text_artifact:location:any:object:whole:read_only:(always)#1",
+        "tool:evidence_board:device:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(contains|collection:state:stage_map.inspected|item:literal:label)])#1",
+        "tool:text_editor:device:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(compare|ne|left:state:evidence_board.selection|right:literal:label)])#1"
+      ],
+      "version": "sidekick-game-structure-v1"
+    },
+    "authoritativeCheckpoints": [
+      {
+        "afterOperation": "inspect_location",
+        "geometry": {
+          "desktopStageHeightPx": 620,
+          "mobileStageHeightPx": 580,
+          "tabletStageHeightPx": 580
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "selection": "none"
+            },
+            "kind": "evidence_board",
+            "materials": [
+              {
+                "id": "sample",
+                "items": [
+                  {
+                    "id": "opening",
+                    "text": "I pushed open the observatory door as a strange humming shook the windows."
+                  },
+                  {
+                    "id": "friend",
+                    "text": "My friend Lio held a lantern and peered past me."
+                  },
+                  {
+                    "id": "staircase",
+                    "text": "Together we followed the sound toward the dark staircase."
+                  }
+                ],
+                "kind": "passage",
+                "quantity": null,
+                "text": "I pushed open the observatory door as a strange humming shook the windows. My friend Lio held a lantern and peered past me. Together we followed the sound toward the dark staircase."
+              },
+              {
+                "id": "clue-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Investigate the opening. Choose a sentence that helps a reader learn who is speaking, who is present, or what is happening."
+              }
+            ],
+            "objectId": "clue-board"
+          },
+          {
+            "boundValues": {
+              "text": ""
+            },
+            "kind": "text_artifact",
+            "materials": [
+              {
+                "id": "draft-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "At the desk, write the opening of a different story. Help your reader understand the situation, the narrator, and the characters. Use the clue as an example, not as words to copy. Compare your opening with the clue, revise it, then take it to the archive."
+              }
+            ],
+            "objectId": "opening-draft"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "investigate-source",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "source",
+                  "reasonCode": "action_has_no_visible_change"
+                }
+              ]
+            },
+            {
+              "actionId": "travel",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "source",
+                  "reasonCode": "stage_destination_not_adjacent"
+                },
+                {
+                  "allowed": true,
+                  "id": "desk",
+                  "reasonCode": null
+                },
+                {
+                  "allowed": false,
+                  "id": "archive",
+                  "reasonCode": "stage_destination_not_adjacent"
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "The path is unavailable.",
+              "fromLocation": "source",
+              "id": "table-to-desk",
+              "label": "Walk between the table and desk",
+              "open": true,
+              "toLocation": "desk"
+            },
+            {
+              "bidirectional": true,
+              "blockedLabel": "Choose a clue, then write and revise an opening before visiting the archive.",
+              "fromLocation": "desk",
+              "id": "desk-to-archive",
+              "label": "Bring the revised opening to the archive",
+              "open": false,
+              "toLocation": "archive"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "travel"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "detective",
+              "kind": "actor",
+              "label": "Opening detective",
+              "locationId": "source",
+              "objectId": "detective-piece",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "book",
+              "currentStatus": "discovered",
+              "id": "source-table",
+              "kind": "device",
+              "label": "Sample opening",
+              "locationId": "source",
+              "objectId": null,
+              "reactionText": "The sample opening is ready to investigate.",
+              "representationObjectId": "clue-board",
+              "toolComponentIds": [
+                "clue-tool"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "lamp",
+              "currentStatus": "idle",
+              "id": "writing-desk",
+              "kind": "device",
+              "label": "Opening desk",
+              "locationId": "desk",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": "opening-draft",
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "home",
+              "currentStatus": "idle",
+              "id": "archive-door",
+              "kind": "destination",
+              "label": "Story archive",
+              "locationId": "archive",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "investigate-source"
+              ],
+              "capacity": 4,
+              "id": "source",
+              "inspected": true,
+              "label": "Source table",
+              "x": 15,
+              "y": 48
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "desk",
+              "inspected": false,
+              "label": "Writing desk",
+              "x": 52,
+              "y": 48
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "archive",
+              "inspected": false,
+              "label": "Archive",
+              "x": 87,
+              "y": 48
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "source-table",
+              "id": "source-discovered",
+              "status": "discovered",
+              "text": "The sample opening is ready to investigate."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "desk-clue",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Chosen source sentence",
+              "layout": "object",
+              "locationId": "desk",
+              "objectId": "clue-board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "desk-draft",
+              "inputId": null,
+              "kind": "text_artifact",
+              "label": "Your opening",
+              "layout": "object",
+              "locationId": "desk",
+              "objectId": "opening-draft"
+            }
+          ],
+          "tools": [
+            {
+              "available": true,
+              "componentId": "clue-tool",
+              "entityId": "source-table",
+              "label": "Read the sample and choose a clue"
+            },
+            {
+              "available": false,
+              "componentId": "writing-tool",
+              "entityId": "writing-desk",
+              "label": "Write and revise"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "select_evidence",
+        "geometry": {
+          "desktopStageHeightPx": 620,
+          "mobileStageHeightPx": 580,
+          "tabletStageHeightPx": 580
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "selection": "opening"
+            },
+            "kind": "evidence_board",
+            "materials": [
+              {
+                "id": "sample",
+                "items": [
+                  {
+                    "id": "opening",
+                    "text": "I pushed open the observatory door as a strange humming shook the windows."
+                  },
+                  {
+                    "id": "friend",
+                    "text": "My friend Lio held a lantern and peered past me."
+                  },
+                  {
+                    "id": "staircase",
+                    "text": "Together we followed the sound toward the dark staircase."
+                  }
+                ],
+                "kind": "passage",
+                "quantity": null,
+                "text": "I pushed open the observatory door as a strange humming shook the windows. My friend Lio held a lantern and peered past me. Together we followed the sound toward the dark staircase."
+              },
+              {
+                "id": "clue-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Investigate the opening. Choose a sentence that helps a reader learn who is speaking, who is present, or what is happening."
+              }
+            ],
+            "objectId": "clue-board"
+          },
+          {
+            "boundValues": {
+              "text": ""
+            },
+            "kind": "text_artifact",
+            "materials": [
+              {
+                "id": "draft-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "At the desk, write the opening of a different story. Help your reader understand the situation, the narrator, and the characters. Use the clue as an example, not as words to copy. Compare your opening with the clue, revise it, then take it to the archive."
+              }
+            ],
+            "objectId": "opening-draft"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "investigate-source",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "source",
+                  "reasonCode": "action_has_no_visible_change"
+                }
+              ]
+            },
+            {
+              "actionId": "travel",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "source",
+                  "reasonCode": "stage_destination_not_adjacent"
+                },
+                {
+                  "allowed": true,
+                  "id": "desk",
+                  "reasonCode": null
+                },
+                {
+                  "allowed": false,
+                  "id": "archive",
+                  "reasonCode": "stage_destination_not_adjacent"
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "The path is unavailable.",
+              "fromLocation": "source",
+              "id": "table-to-desk",
+              "label": "Walk between the table and desk",
+              "open": true,
+              "toLocation": "desk"
+            },
+            {
+              "bidirectional": true,
+              "blockedLabel": "Choose a clue, then write and revise an opening before visiting the archive.",
+              "fromLocation": "desk",
+              "id": "desk-to-archive",
+              "label": "Bring the revised opening to the archive",
+              "open": false,
+              "toLocation": "archive"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "travel"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "detective",
+              "kind": "actor",
+              "label": "Opening detective",
+              "locationId": "source",
+              "objectId": "detective-piece",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "book",
+              "currentStatus": "discovered",
+              "id": "source-table",
+              "kind": "device",
+              "label": "Sample opening",
+              "locationId": "source",
+              "objectId": null,
+              "reactionText": "The sample opening is ready to investigate.",
+              "representationObjectId": "clue-board",
+              "toolComponentIds": [
+                "clue-tool"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "lamp",
+              "currentStatus": "active",
+              "id": "writing-desk",
+              "kind": "device",
+              "label": "Opening desk",
+              "locationId": "desk",
+              "objectId": null,
+              "reactionText": "Your chosen sentence is displayed beside your writing space. You can return to change it.",
+              "representationObjectId": "opening-draft",
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "home",
+              "currentStatus": "idle",
+              "id": "archive-door",
+              "kind": "destination",
+              "label": "Story archive",
+              "locationId": "archive",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "investigate-source"
+              ],
+              "capacity": 4,
+              "id": "source",
+              "inspected": true,
+              "label": "Source table",
+              "x": 15,
+              "y": 48
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "desk",
+              "inspected": false,
+              "label": "Writing desk",
+              "x": 52,
+              "y": 48
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "archive",
+              "inspected": false,
+              "label": "Archive",
+              "x": 87,
+              "y": 48
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "source-table",
+              "id": "source-discovered",
+              "status": "discovered",
+              "text": "The sample opening is ready to investigate."
+            },
+            {
+              "entityId": "writing-desk",
+              "id": "clue-carried",
+              "status": "active",
+              "text": "Your chosen sentence is displayed beside your writing space. You can return to change it."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "desk-clue",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Chosen source sentence",
+              "layout": "object",
+              "locationId": "desk",
+              "objectId": "clue-board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "desk-draft",
+              "inputId": null,
+              "kind": "text_artifact",
+              "label": "Your opening",
+              "layout": "object",
+              "locationId": "desk",
+              "objectId": "opening-draft"
+            }
+          ],
+          "tools": [
+            {
+              "available": true,
+              "componentId": "clue-tool",
+              "entityId": "source-table",
+              "label": "Read the sample and choose a clue"
+            },
+            {
+              "available": false,
+              "componentId": "writing-tool",
+              "entityId": "writing-desk",
+              "label": "Write and revise"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "move_actor",
+        "geometry": {
+          "desktopStageHeightPx": 620,
+          "mobileStageHeightPx": 580,
+          "tabletStageHeightPx": 580
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "selection": "opening"
+            },
+            "kind": "evidence_board",
+            "materials": [
+              {
+                "id": "sample",
+                "items": [
+                  {
+                    "id": "opening",
+                    "text": "I pushed open the observatory door as a strange humming shook the windows."
+                  },
+                  {
+                    "id": "friend",
+                    "text": "My friend Lio held a lantern and peered past me."
+                  },
+                  {
+                    "id": "staircase",
+                    "text": "Together we followed the sound toward the dark staircase."
+                  }
+                ],
+                "kind": "passage",
+                "quantity": null,
+                "text": "I pushed open the observatory door as a strange humming shook the windows. My friend Lio held a lantern and peered past me. Together we followed the sound toward the dark staircase."
+              },
+              {
+                "id": "clue-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Investigate the opening. Choose a sentence that helps a reader learn who is speaking, who is present, or what is happening."
+              }
+            ],
+            "objectId": "clue-board"
+          },
+          {
+            "boundValues": {
+              "text": ""
+            },
+            "kind": "text_artifact",
+            "materials": [
+              {
+                "id": "draft-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "At the desk, write the opening of a different story. Help your reader understand the situation, the narrator, and the characters. Use the clue as an example, not as words to copy. Compare your opening with the clue, revise it, then take it to the archive."
+              }
+            ],
+            "objectId": "opening-draft"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "investigate-source",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "source",
+                  "reasonCode": "action_guard_unsatisfied"
+                }
+              ]
+            },
+            {
+              "actionId": "travel",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": true,
+                  "id": "source",
+                  "reasonCode": null
+                },
+                {
+                  "allowed": false,
+                  "id": "desk",
+                  "reasonCode": "stage_destination_not_adjacent"
+                },
+                {
+                  "allowed": false,
+                  "id": "archive",
+                  "reasonCode": "stage_connection_closed"
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "The path is unavailable.",
+              "fromLocation": "source",
+              "id": "table-to-desk",
+              "label": "Walk between the table and desk",
+              "open": true,
+              "toLocation": "desk"
+            },
+            {
+              "bidirectional": true,
+              "blockedLabel": "Choose a clue, then write and revise an opening before visiting the archive.",
+              "fromLocation": "desk",
+              "id": "desk-to-archive",
+              "label": "Bring the revised opening to the archive",
+              "open": false,
+              "toLocation": "archive"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "travel"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "detective",
+              "kind": "actor",
+              "label": "Opening detective",
+              "locationId": "desk",
+              "objectId": "detective-piece",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "book",
+              "currentStatus": "discovered",
+              "id": "source-table",
+              "kind": "device",
+              "label": "Sample opening",
+              "locationId": "source",
+              "objectId": null,
+              "reactionText": "The sample opening is ready to investigate.",
+              "representationObjectId": "clue-board",
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "lamp",
+              "currentStatus": "active",
+              "id": "writing-desk",
+              "kind": "device",
+              "label": "Opening desk",
+              "locationId": "desk",
+              "objectId": null,
+              "reactionText": "Your chosen sentence is displayed beside your writing space. You can return to change it.",
+              "representationObjectId": "opening-draft",
+              "toolComponentIds": [
+                "writing-tool"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "home",
+              "currentStatus": "idle",
+              "id": "archive-door",
+              "kind": "destination",
+              "label": "Story archive",
+              "locationId": "archive",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "investigate-source"
+              ],
+              "capacity": 4,
+              "id": "source",
+              "inspected": true,
+              "label": "Source table",
+              "x": 15,
+              "y": 48
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "desk",
+              "inspected": false,
+              "label": "Writing desk",
+              "x": 52,
+              "y": 48
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "archive",
+              "inspected": false,
+              "label": "Archive",
+              "x": 87,
+              "y": 48
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "source-table",
+              "id": "source-discovered",
+              "status": "discovered",
+              "text": "The sample opening is ready to investigate."
+            },
+            {
+              "entityId": "writing-desk",
+              "id": "clue-carried",
+              "status": "active",
+              "text": "Your chosen sentence is displayed beside your writing space. You can return to change it."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "desk-clue",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Chosen source sentence",
+              "layout": "object",
+              "locationId": "desk",
+              "objectId": "clue-board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "desk-draft",
+              "inputId": null,
+              "kind": "text_artifact",
+              "label": "Your opening",
+              "layout": "object",
+              "locationId": "desk",
+              "objectId": "opening-draft"
+            }
+          ],
+          "tools": [
+            {
+              "available": false,
+              "componentId": "clue-tool",
+              "entityId": "source-table",
+              "label": "Read the sample and choose a clue"
+            },
+            {
+              "available": true,
+              "componentId": "writing-tool",
+              "entityId": "writing-desk",
+              "label": "Write and revise"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "replace_text",
+        "geometry": {
+          "desktopStageHeightPx": 620,
+          "mobileStageHeightPx": 580,
+          "tabletStageHeightPx": 580
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "selection": "opening"
+            },
+            "kind": "evidence_board",
+            "materials": [
+              {
+                "id": "sample",
+                "items": [
+                  {
+                    "id": "opening",
+                    "text": "I pushed open the observatory door as a strange humming shook the windows."
+                  },
+                  {
+                    "id": "friend",
+                    "text": "My friend Lio held a lantern and peered past me."
+                  },
+                  {
+                    "id": "staircase",
+                    "text": "Together we followed the sound toward the dark staircase."
+                  }
+                ],
+                "kind": "passage",
+                "quantity": null,
+                "text": "I pushed open the observatory door as a strange humming shook the windows. My friend Lio held a lantern and peered past me. Together we followed the sound toward the dark staircase."
+              },
+              {
+                "id": "clue-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Investigate the opening. Choose a sentence that helps a reader learn who is speaking, who is present, or what is happening."
+              }
+            ],
+            "objectId": "clue-board"
+          },
+          {
+            "boundValues": {
+              "text": "I found a tiny door under the bakery counter. My cousin Nia wanted to open it."
+            },
+            "kind": "text_artifact",
+            "materials": [
+              {
+                "id": "draft-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "At the desk, write the opening of a different story. Help your reader understand the situation, the narrator, and the characters. Use the clue as an example, not as words to copy. Compare your opening with the clue, revise it, then take it to the archive."
+              }
+            ],
+            "objectId": "opening-draft"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "investigate-source",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "source",
+                  "reasonCode": "action_guard_unsatisfied"
+                }
+              ]
+            },
+            {
+              "actionId": "travel",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": true,
+                  "id": "source",
+                  "reasonCode": null
+                },
+                {
+                  "allowed": false,
+                  "id": "desk",
+                  "reasonCode": "stage_destination_not_adjacent"
+                },
+                {
+                  "allowed": false,
+                  "id": "archive",
+                  "reasonCode": "stage_connection_closed"
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "The path is unavailable.",
+              "fromLocation": "source",
+              "id": "table-to-desk",
+              "label": "Walk between the table and desk",
+              "open": true,
+              "toLocation": "desk"
+            },
+            {
+              "bidirectional": true,
+              "blockedLabel": "Choose a clue, then write and revise an opening before visiting the archive.",
+              "fromLocation": "desk",
+              "id": "desk-to-archive",
+              "label": "Bring the revised opening to the archive",
+              "open": false,
+              "toLocation": "archive"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "travel"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "detective",
+              "kind": "actor",
+              "label": "Opening detective",
+              "locationId": "desk",
+              "objectId": "detective-piece",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "book",
+              "currentStatus": "discovered",
+              "id": "source-table",
+              "kind": "device",
+              "label": "Sample opening",
+              "locationId": "source",
+              "objectId": null,
+              "reactionText": "The sample opening is ready to investigate.",
+              "representationObjectId": "clue-board",
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "lamp",
+              "currentStatus": "active",
+              "id": "writing-desk",
+              "kind": "device",
+              "label": "Opening desk",
+              "locationId": "desk",
+              "objectId": null,
+              "reactionText": "Your chosen sentence is displayed beside your writing space. You can return to change it.",
+              "representationObjectId": "opening-draft",
+              "toolComponentIds": [
+                "writing-tool"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "home",
+              "currentStatus": "idle",
+              "id": "archive-door",
+              "kind": "destination",
+              "label": "Story archive",
+              "locationId": "archive",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "investigate-source"
+              ],
+              "capacity": 4,
+              "id": "source",
+              "inspected": true,
+              "label": "Source table",
+              "x": 15,
+              "y": 48
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "desk",
+              "inspected": false,
+              "label": "Writing desk",
+              "x": 52,
+              "y": 48
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "archive",
+              "inspected": false,
+              "label": "Archive",
+              "x": 87,
+              "y": 48
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "source-table",
+              "id": "source-discovered",
+              "status": "discovered",
+              "text": "The sample opening is ready to investigate."
+            },
+            {
+              "entityId": "writing-desk",
+              "id": "clue-carried",
+              "status": "active",
+              "text": "Your chosen sentence is displayed beside your writing space. You can return to change it."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "desk-clue",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Chosen source sentence",
+              "layout": "object",
+              "locationId": "desk",
+              "objectId": "clue-board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "desk-draft",
+              "inputId": null,
+              "kind": "text_artifact",
+              "label": "Your opening",
+              "layout": "object",
+              "locationId": "desk",
+              "objectId": "opening-draft"
+            }
+          ],
+          "tools": [
+            {
+              "available": false,
+              "componentId": "clue-tool",
+              "entityId": "source-table",
+              "label": "Read the sample and choose a clue"
+            },
+            {
+              "available": true,
+              "componentId": "writing-tool",
+              "entityId": "writing-desk",
+              "label": "Write and revise"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "revise_text",
+        "geometry": {
+          "desktopStageHeightPx": 620,
+          "mobileStageHeightPx": 580,
+          "tabletStageHeightPx": 580
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "selection": "opening"
+            },
+            "kind": "evidence_board",
+            "materials": [
+              {
+                "id": "sample",
+                "items": [
+                  {
+                    "id": "opening",
+                    "text": "I pushed open the observatory door as a strange humming shook the windows."
+                  },
+                  {
+                    "id": "friend",
+                    "text": "My friend Lio held a lantern and peered past me."
+                  },
+                  {
+                    "id": "staircase",
+                    "text": "Together we followed the sound toward the dark staircase."
+                  }
+                ],
+                "kind": "passage",
+                "quantity": null,
+                "text": "I pushed open the observatory door as a strange humming shook the windows. My friend Lio held a lantern and peered past me. Together we followed the sound toward the dark staircase."
+              },
+              {
+                "id": "clue-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Investigate the opening. Choose a sentence that helps a reader learn who is speaking, who is present, or what is happening."
+              }
+            ],
+            "objectId": "clue-board"
+          },
+          {
+            "boundValues": {
+              "text": "I was sweeping my grandmother's bakery when I found a tiny door under the counter. My cousin Nia knelt beside me, holding the brass key we had found in a flour sack. We could hear a faint tapping behind the door."
+            },
+            "kind": "text_artifact",
+            "materials": [
+              {
+                "id": "draft-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "At the desk, write the opening of a different story. Help your reader understand the situation, the narrator, and the characters. Use the clue as an example, not as words to copy. Compare your opening with the clue, revise it, then take it to the archive."
+              }
+            ],
+            "objectId": "opening-draft"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "investigate-source",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "source",
+                  "reasonCode": "action_guard_unsatisfied"
+                }
+              ]
+            },
+            {
+              "actionId": "travel",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": true,
+                  "id": "source",
+                  "reasonCode": null
+                },
+                {
+                  "allowed": false,
+                  "id": "desk",
+                  "reasonCode": "stage_destination_not_adjacent"
+                },
+                {
+                  "allowed": true,
+                  "id": "archive",
+                  "reasonCode": null
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "The path is unavailable.",
+              "fromLocation": "source",
+              "id": "table-to-desk",
+              "label": "Walk between the table and desk",
+              "open": true,
+              "toLocation": "desk"
+            },
+            {
+              "bidirectional": true,
+              "blockedLabel": "Choose a clue, then write and revise an opening before visiting the archive.",
+              "fromLocation": "desk",
+              "id": "desk-to-archive",
+              "label": "Bring the revised opening to the archive",
+              "open": true,
+              "toLocation": "archive"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "travel"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "detective",
+              "kind": "actor",
+              "label": "Opening detective",
+              "locationId": "desk",
+              "objectId": "detective-piece",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "book",
+              "currentStatus": "discovered",
+              "id": "source-table",
+              "kind": "device",
+              "label": "Sample opening",
+              "locationId": "source",
+              "objectId": null,
+              "reactionText": "The sample opening is ready to investigate.",
+              "representationObjectId": "clue-board",
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "lamp",
+              "currentStatus": "active",
+              "id": "writing-desk",
+              "kind": "device",
+              "label": "Opening desk",
+              "locationId": "desk",
+              "objectId": null,
+              "reactionText": "Your chosen sentence is displayed beside your writing space. You can return to change it.",
+              "representationObjectId": "opening-draft",
+              "toolComponentIds": [
+                "writing-tool"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "home",
+              "currentStatus": "active",
+              "id": "archive-door",
+              "kind": "destination",
+              "label": "Story archive",
+              "locationId": "archive",
+              "objectId": null,
+              "reactionText": "Your revised opening can travel to the archive. Its writing will still need a reader's review.",
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "investigate-source"
+              ],
+              "capacity": 4,
+              "id": "source",
+              "inspected": true,
+              "label": "Source table",
+              "x": 15,
+              "y": 48
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "desk",
+              "inspected": false,
+              "label": "Writing desk",
+              "x": 52,
+              "y": 48
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "archive",
+              "inspected": false,
+              "label": "Archive",
+              "x": 87,
+              "y": 48
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "source-table",
+              "id": "source-discovered",
+              "status": "discovered",
+              "text": "The sample opening is ready to investigate."
+            },
+            {
+              "entityId": "writing-desk",
+              "id": "clue-carried",
+              "status": "active",
+              "text": "Your chosen sentence is displayed beside your writing space. You can return to change it."
+            },
+            {
+              "entityId": "archive-door",
+              "id": "revision-ready",
+              "status": "active",
+              "text": "Your revised opening can travel to the archive. Its writing will still need a reader's review."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "desk-clue",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Chosen source sentence",
+              "layout": "object",
+              "locationId": "desk",
+              "objectId": "clue-board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "desk-draft",
+              "inputId": null,
+              "kind": "text_artifact",
+              "label": "Your opening",
+              "layout": "object",
+              "locationId": "desk",
+              "objectId": "opening-draft"
+            }
+          ],
+          "tools": [
+            {
+              "available": false,
+              "componentId": "clue-tool",
+              "entityId": "source-table",
+              "label": "Read the sample and choose a clue"
+            },
+            {
+              "available": true,
+              "componentId": "writing-tool",
+              "entityId": "writing-desk",
+              "label": "Write and revise"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "move_actor",
+        "geometry": {
+          "desktopStageHeightPx": 620,
+          "mobileStageHeightPx": 580,
+          "tabletStageHeightPx": 580
+        },
+        "missionComplete": true,
+        "representations": [
+          {
+            "boundValues": {
+              "selection": "opening"
+            },
+            "kind": "evidence_board",
+            "materials": [
+              {
+                "id": "sample",
+                "items": [
+                  {
+                    "id": "opening",
+                    "text": "I pushed open the observatory door as a strange humming shook the windows."
+                  },
+                  {
+                    "id": "friend",
+                    "text": "My friend Lio held a lantern and peered past me."
+                  },
+                  {
+                    "id": "staircase",
+                    "text": "Together we followed the sound toward the dark staircase."
+                  }
+                ],
+                "kind": "passage",
+                "quantity": null,
+                "text": "I pushed open the observatory door as a strange humming shook the windows. My friend Lio held a lantern and peered past me. Together we followed the sound toward the dark staircase."
+              },
+              {
+                "id": "clue-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Investigate the opening. Choose a sentence that helps a reader learn who is speaking, who is present, or what is happening."
+              }
+            ],
+            "objectId": "clue-board"
+          },
+          {
+            "boundValues": {
+              "text": "I was sweeping my grandmother's bakery when I found a tiny door under the counter. My cousin Nia knelt beside me, holding the brass key we had found in a flour sack. We could hear a faint tapping behind the door."
+            },
+            "kind": "text_artifact",
+            "materials": [
+              {
+                "id": "draft-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "At the desk, write the opening of a different story. Help your reader understand the situation, the narrator, and the characters. Use the clue as an example, not as words to copy. Compare your opening with the clue, revise it, then take it to the archive."
+              }
+            ],
+            "objectId": "opening-draft"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "investigate-source",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "source",
+                  "reasonCode": "mission_already_complete"
+                }
+              ]
+            },
+            {
+              "actionId": "travel",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "source",
+                  "reasonCode": "mission_already_complete"
+                },
+                {
+                  "allowed": false,
+                  "id": "desk",
+                  "reasonCode": "mission_already_complete"
+                },
+                {
+                  "allowed": false,
+                  "id": "archive",
+                  "reasonCode": "mission_already_complete"
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "The path is unavailable.",
+              "fromLocation": "source",
+              "id": "table-to-desk",
+              "label": "Walk between the table and desk",
+              "open": true,
+              "toLocation": "desk"
+            },
+            {
+              "bidirectional": true,
+              "blockedLabel": "Choose a clue, then write and revise an opening before visiting the archive.",
+              "fromLocation": "desk",
+              "id": "desk-to-archive",
+              "label": "Bring the revised opening to the archive",
+              "open": true,
+              "toLocation": "archive"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "travel"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "detective",
+              "kind": "actor",
+              "label": "Opening detective",
+              "locationId": "archive",
+              "objectId": "detective-piece",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "book",
+              "currentStatus": "discovered",
+              "id": "source-table",
+              "kind": "device",
+              "label": "Sample opening",
+              "locationId": "source",
+              "objectId": null,
+              "reactionText": "The sample opening is ready to investigate.",
+              "representationObjectId": "clue-board",
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "lamp",
+              "currentStatus": "active",
+              "id": "writing-desk",
+              "kind": "device",
+              "label": "Opening desk",
+              "locationId": "desk",
+              "objectId": null,
+              "reactionText": "Your chosen sentence is displayed beside your writing space. You can return to change it.",
+              "representationObjectId": "opening-draft",
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "home",
+              "currentStatus": "active",
+              "id": "archive-door",
+              "kind": "destination",
+              "label": "Story archive",
+              "locationId": "archive",
+              "objectId": null,
+              "reactionText": "Your revised opening can travel to the archive. Its writing will still need a reader's review.",
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "investigate-source"
+              ],
+              "capacity": 4,
+              "id": "source",
+              "inspected": true,
+              "label": "Source table",
+              "x": 15,
+              "y": 48
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "desk",
+              "inspected": false,
+              "label": "Writing desk",
+              "x": 52,
+              "y": 48
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "archive",
+              "inspected": false,
+              "label": "Archive",
+              "x": 87,
+              "y": 48
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "source-table",
+              "id": "source-discovered",
+              "status": "discovered",
+              "text": "The sample opening is ready to investigate."
+            },
+            {
+              "entityId": "writing-desk",
+              "id": "clue-carried",
+              "status": "active",
+              "text": "Your chosen sentence is displayed beside your writing space. You can return to change it."
+            },
+            {
+              "entityId": "archive-door",
+              "id": "revision-ready",
+              "status": "active",
+              "text": "Your revised opening can travel to the archive. Its writing will still need a reader's review."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "desk-clue",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Chosen source sentence",
+              "layout": "object",
+              "locationId": "desk",
+              "objectId": "clue-board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "desk-draft",
+              "inputId": null,
+              "kind": "text_artifact",
+              "label": "Your opening",
+              "layout": "object",
+              "locationId": "desk",
+              "objectId": "opening-draft"
+            }
+          ],
+          "tools": [
+            {
+              "available": false,
+              "componentId": "clue-tool",
+              "entityId": "source-table",
+              "label": "Read the sample and choose a clue"
+            },
+            {
+              "available": false,
+              "componentId": "writing-tool",
+              "entityId": "writing-desk",
+              "label": "Write and revise"
+            }
+          ]
+        }
+      }
+    ],
+    "counterfactual": {
+      "completedWithoutConcept": false,
+      "exhaustedDeclaredWorldOnlySearch": true,
+      "limit": "64 distinct states and 256 attempted world transitions; not general solvability proof",
+      "statesChecked": 4,
+      "transitionsChecked": 16
+    },
+    "initialGeometry": {
+      "desktopStageHeightPx": 620,
+      "mobileStageHeightPx": 580,
+      "tabletStageHeightPx": 580
+    },
+    "initialRepresentations": [
+      {
+        "boundValues": {
+          "text": ""
+        },
+        "kind": "text_artifact",
+        "materials": [
+          {
+            "id": "draft-prompt",
+            "items": [],
+            "kind": "prompt",
+            "quantity": null,
+            "text": "At the desk, write the opening of a different story. Help your reader understand the situation, the narrator, and the characters. Use the clue as an example, not as words to copy. Compare your opening with the clue, revise it, then take it to the archive."
+          }
+        ],
+        "objectId": "opening-draft"
+      }
+    ],
+    "initialStage": {
+      "actionTargets": [
+        {
+          "actionId": "investigate-source",
+          "inputId": "location",
+          "targets": [
+            {
+              "allowed": true,
+              "id": "source",
+              "reasonCode": null
+            }
+          ]
+        },
+        {
+          "actionId": "travel",
+          "inputId": "destination",
+          "targets": [
+            {
+              "allowed": false,
+              "id": "source",
+              "reasonCode": "stage_destination_not_adjacent"
+            },
+            {
+              "allowed": true,
+              "id": "desk",
+              "reasonCode": null
+            },
+            {
+              "allowed": false,
+              "id": "archive",
+              "reasonCode": "stage_destination_not_adjacent"
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "bidirectional": true,
+          "blockedLabel": "The path is unavailable.",
+          "fromLocation": "source",
+          "id": "table-to-desk",
+          "label": "Walk between the table and desk",
+          "open": true,
+          "toLocation": "desk"
+        },
+        {
+          "bidirectional": true,
+          "blockedLabel": "Choose a clue, then write and revise an opening before visiting the archive.",
+          "fromLocation": "desk",
+          "id": "desk-to-archive",
+          "label": "Bring the revised opening to the archive",
+          "open": false,
+          "toLocation": "archive"
+        }
+      ],
+      "entities": [
+        {
+          "actionIds": [
+            "travel"
+          ],
+          "asset": "person",
+          "currentStatus": "idle",
+          "id": "detective",
+          "kind": "actor",
+          "label": "Opening detective",
+          "locationId": "source",
+          "objectId": "detective-piece",
+          "reactionText": null,
+          "representationObjectId": null,
+          "toolComponentIds": []
+        },
+        {
+          "actionIds": [],
+          "asset": "book",
+          "currentStatus": "idle",
+          "id": "source-table",
+          "kind": "device",
+          "label": "Sample opening",
+          "locationId": "source",
+          "objectId": null,
+          "reactionText": null,
+          "representationObjectId": null,
+          "toolComponentIds": []
+        },
+        {
+          "actionIds": [],
+          "asset": "lamp",
+          "currentStatus": "idle",
+          "id": "writing-desk",
+          "kind": "device",
+          "label": "Opening desk",
+          "locationId": "desk",
+          "objectId": null,
+          "reactionText": null,
+          "representationObjectId": "opening-draft",
+          "toolComponentIds": []
+        },
+        {
+          "actionIds": [],
+          "asset": "home",
+          "currentStatus": "idle",
+          "id": "archive-door",
+          "kind": "destination",
+          "label": "Story archive",
+          "locationId": "archive",
+          "objectId": null,
+          "reactionText": null,
+          "representationObjectId": null,
+          "toolComponentIds": []
+        }
+      ],
+      "locations": [
+        {
+          "accepts": "any",
+          "actionIds": [
+            "investigate-source"
+          ],
+          "capacity": 4,
+          "id": "source",
+          "inspected": false,
+          "label": "Source table",
+          "x": 15,
+          "y": 48
+        },
+        {
+          "accepts": "any",
+          "actionIds": [],
+          "capacity": 4,
+          "id": "desk",
+          "inspected": false,
+          "label": "Writing desk",
+          "x": 52,
+          "y": 48
+        },
+        {
+          "accepts": "any",
+          "actionIds": [],
+          "capacity": 4,
+          "id": "archive",
+          "inspected": false,
+          "label": "Archive",
+          "x": 87,
+          "y": 48
+        }
+      ],
+      "reactions": [],
+      "surfaces": [
+        {
+          "actionId": null,
+          "cellIds": [],
+          "cells": [],
+          "connectionId": null,
+          "id": "desk-draft",
+          "inputId": null,
+          "kind": "text_artifact",
+          "label": "Your opening",
+          "layout": "object",
+          "locationId": "desk",
+          "objectId": "opening-draft"
+        }
+      ],
+      "tools": [
+        {
+          "available": false,
+          "componentId": "clue-tool",
+          "entityId": "source-table",
+          "label": "Read the sample and choose a clue"
+        },
+        {
+          "available": false,
+          "componentId": "writing-tool",
+          "entityId": "writing-desk",
+          "label": "Write and revise"
+        }
+      ]
+    },
+    "layout": {
+      "connections": [
+        {
+          "bidirectional": true,
+          "blockedLabel": "The path is unavailable.",
+          "fromLocation": "source",
+          "id": "table-to-desk",
+          "label": "Walk between the table and desk",
+          "toLocation": "desk",
+          "when": {
+            "kind": "always"
+          }
+        },
+        {
+          "bidirectional": true,
+          "blockedLabel": "Choose a clue, then write and revise an opening before visiting the archive.",
+          "fromLocation": "desk",
+          "id": "desk-to-archive",
+          "label": "Bring the revised opening to the archive",
+          "toLocation": "archive",
+          "when": {
+            "conditions": [
+              {
+                "kind": "compare",
+                "left": {
+                  "kind": "state",
+                  "ref": "chosen-clue"
+                },
+                "op": "ne",
+                "right": {
+                  "kind": "literal",
+                  "value": "none"
+                }
+              },
+              {
+                "kind": "compare",
+                "left": {
+                  "kind": "state",
+                  "ref": "revised"
+                },
+                "op": "eq",
+                "right": {
+                  "kind": "literal",
+                  "value": true
+                }
+              },
+              {
+                "kind": "compare",
+                "left": {
+                  "kind": "state",
+                  "ref": "draft"
+                },
+                "op": "ne",
+                "right": {
+                  "kind": "literal",
+                  "value": ""
+                }
+              }
+            ],
+            "kind": "all"
+          }
+        }
+      ],
+      "entities": [
+        {
+          "asset": "person",
+          "id": "detective",
+          "kind": "actor",
+          "label": "Opening detective",
+          "locationId": null,
+          "objectId": "detective-piece",
+          "representationObjectId": null
+        },
+        {
+          "asset": "book",
+          "id": "source-table",
+          "kind": "device",
+          "label": "Sample opening",
+          "locationId": "source",
+          "objectId": null,
+          "representationObjectId": "clue-board"
+        },
+        {
+          "asset": "lamp",
+          "id": "writing-desk",
+          "kind": "device",
+          "label": "Opening desk",
+          "locationId": "desk",
+          "objectId": null,
+          "representationObjectId": "opening-draft"
+        },
+        {
+          "asset": "home",
+          "id": "archive-door",
+          "kind": "destination",
+          "label": "Story archive",
+          "locationId": "archive",
+          "objectId": null,
+          "representationObjectId": null
+        }
+      ],
+      "locations": [
+        {
+          "accepts": "any",
+          "capacity": 4,
+          "id": "source",
+          "label": "Source table",
+          "x": 15,
+          "y": 48
+        },
+        {
+          "accepts": "any",
+          "capacity": 4,
+          "id": "desk",
+          "label": "Writing desk",
+          "x": 52,
+          "y": 48
+        },
+        {
+          "accepts": "any",
+          "capacity": 4,
+          "id": "archive",
+          "label": "Archive",
+          "x": 87,
+          "y": 48
+        }
+      ],
+      "reactions": [
+        {
+          "entityId": "source-table",
+          "id": "source-discovered",
+          "status": "discovered",
+          "text": "The sample opening is ready to investigate.",
+          "when": {
+            "collection": {
+              "kind": "state",
+              "ref": "discoveries"
+            },
+            "item": {
+              "kind": "literal",
+              "value": "source"
+            },
+            "kind": "contains"
+          }
+        },
+        {
+          "entityId": "writing-desk",
+          "id": "clue-carried",
+          "status": "active",
+          "text": "Your chosen sentence is displayed beside your writing space. You can return to change it.",
+          "when": {
+            "kind": "compare",
+            "left": {
+              "kind": "state",
+              "ref": "chosen-clue"
+            },
+            "op": "ne",
+            "right": {
+              "kind": "literal",
+              "value": "none"
+            }
+          }
+        },
+        {
+          "entityId": "archive-door",
+          "id": "revision-ready",
+          "status": "active",
+          "text": "Your revised opening can travel to the archive. Its writing will still need a reader's review.",
+          "when": {
+            "kind": "compare",
+            "left": {
+              "kind": "state",
+              "ref": "revised"
+            },
+            "op": "eq",
+            "right": {
+              "kind": "literal",
+              "value": true
+            }
+          }
+        }
+      ],
+      "surfaces": [
+        {
+          "actionId": null,
+          "cellIds": [],
+          "connectionId": null,
+          "id": "desk-clue",
+          "label": "Chosen source sentence",
+          "layout": "object",
+          "locationId": "desk",
+          "objectId": "clue-board",
+          "visibleWhen": {
+            "collection": {
+              "kind": "state",
+              "ref": "discoveries"
+            },
+            "item": {
+              "kind": "literal",
+              "value": "source"
+            },
+            "kind": "contains"
+          }
+        },
+        {
+          "actionId": null,
+          "cellIds": [],
+          "connectionId": null,
+          "id": "desk-draft",
+          "label": "Your opening",
+          "layout": "object",
+          "locationId": "desk",
+          "objectId": "opening-draft",
+          "visibleWhen": {
+            "kind": "always"
+          }
+        }
+      ],
+      "tools": [
+        {
+          "availableWhen": {
+            "conditions": [
+              {
+                "kind": "compare",
+                "left": {
+                  "kind": "state",
+                  "ref": "detective-location"
+                },
+                "op": "eq",
+                "right": {
+                  "kind": "literal",
+                  "value": "source"
+                }
+              },
+              {
+                "collection": {
+                  "kind": "state",
+                  "ref": "discoveries"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "source"
+                },
+                "kind": "contains"
+              }
+            ],
+            "kind": "all"
+          },
+          "componentId": "clue-tool",
+          "entityId": "source-table",
+          "label": "Read the sample and choose a clue"
+        },
+        {
+          "availableWhen": {
+            "conditions": [
+              {
+                "kind": "compare",
+                "left": {
+                  "kind": "state",
+                  "ref": "detective-location"
+                },
+                "op": "eq",
+                "right": {
+                  "kind": "literal",
+                  "value": "desk"
+                }
+              },
+              {
+                "kind": "compare",
+                "left": {
+                  "kind": "state",
+                  "ref": "chosen-clue"
+                },
+                "op": "ne",
+                "right": {
+                  "kind": "literal",
+                  "value": "none"
+                }
+              }
+            ],
+            "kind": "all"
+          },
+          "componentId": "writing-tool",
+          "entityId": "writing-desk",
+          "label": "Write and revise"
+        }
+      ]
+    },
+    "renderer": {
+      "accessibility": "Keyboard and touch buttons, responsive scrolling/layout and reduced-motion support",
+      "animation": "Accepted world movement animates left/top; reduced motion disables animation",
+      "consequences": "Server-derived from authoritative post-action state, with zero rule cascades",
+      "desktopGeometry": {
+        "bottomInsetPx": 78,
+        "contextualSidebarMinimumViewportPx": 1050,
+        "locationWidthPx": 92,
+        "sideInsetPx": 52,
+        "stageHeightPx": 620,
+        "topInsetPx": 120
+      },
+      "gestures": "Native keyboard/click selection and location targets; drag for movable entities",
+      "mainSurface": "A spatial world stage with actionable locations/entities/connections",
+      "mobileGeometry": {
+        "actorIllustrationPx": 48,
+        "bottomInsetPx": 77,
+        "locationMinimumHeightPx": 62,
+        "locationWidthPx": 80,
+        "sideInsetPx": 45,
+        "stageHeightPx": 580,
+        "topInsetPx": 118
+      },
+      "physicalSurfaces": {
+        "anchors": "Bounded clear-lane placement prefers declared route midpoint/location anchors, then avoids full artifact and native control bounds. A relocated path runs through the actual target footprint entry/exit ports; location mounts retain an anchor connector.",
+        "artifacts": "Actual saved text, literal selected evidence or bound expression",
+        "conditionalCanvasHeights": {
+          "anyVisibleLocationMount": {
+            "desktop": 620,
+            "mobile": 580,
+            "tablet": 580
+          },
+          "desktopMinimumViewportPx": 1050,
+          "mobileMaximumViewportPx": 520,
+          "noVisibleSurfaces": {
+            "desktop": 500,
+            "mobile": 410,
+            "tablet": 440
+          },
+          "pathCounting": "Distinct connection IDs from visible surfaces and all public construction targets, including hidden-source target-only frames",
+          "perAdditionalDistinctPath": {
+            "desktop": 220,
+            "mobile": 400,
+            "tablet": 400
+          },
+          "perVisibleLocationWhenMultiplePaths": {
+            "desktop": 80,
+            "mobile": 160,
+            "tablet": 160
+          },
+          "visiblePathSurfaces": {
+            "desktop": 550,
+            "mobile": 500,
+            "tablet": 500
+          }
+        },
+        "directActions": "Existing server-checked toggle_tile/toggle_fraction_piece with the same source object and input; readonly when no direct action or cells are too small",
+        "fraction": "Complete same-whole strip, fixed base columns and current denominator rows; never a selected-piece subset",
+        "fractionWholePx": {
+          "height": 112,
+          "width": 164
+        },
+        "grid": "Actual source cell IDs, selection and row/column coordinates; declared subset may form the actual route planks",
+        "limitation": "A rendered source-to-route relationship, not an additional physics or client-side scoring engine",
+        "minimumDirectCellPx": 24,
+        "placement": "Preferred anchors plus bounded five-column lanes in 24px vertical steps; overlap with native entity/location safety bounds and prior full artifacts outweighs distance. Bounds include actual/target geometry and headers/feedback.",
+        "visibility": "Display follows server-derived surface.visibleWhen and a bound visible presentation space for mutable sources; current tool availability controls editing separately. Display can persist readonly after travel; immutable references can be visible independently."
+      },
+      "representation": "Actual bound concept objects appear on visible entities and physical stage surfaces; sources are not copies or correctness badges",
+      "scope": "Render-contract and computed-state evidence, not actual child testing or a screenshot-based enjoyment claim",
+      "tools": "Contextual existing controls attached to stage entities; not the universal main layout"
+    },
+    "version": "sidekick-world-render-v1"
+  },
+  "structuralFingerprint": {
+    "digest": "3e6f5296a3524edd200bdeff5dce3a1e13611447a37ceb075d79087b9544fb59",
+    "features": [
+      "action:inspect_location#1",
+      "action:move_actor#1",
+      "action:replace_text#1",
+      "action:revise_text#1",
+      "action:select_evidence#1",
+      "completion:(goal)#1",
+      "component:evidence_board#1",
+      "component:text_editor#1",
+      "component:world_stage#2",
+      "consequence:active:(compare|eq|left:state:progress.value|right:literal:boolean)#1",
+      "consequence:active:(compare|ne|left:state:evidence_board.selection|right:literal:label)#1",
+      "consequence:discovered:(contains|collection:state:stage_map.inspected|item:literal:label)#1",
+      "edge:True:(all|conditions:[(compare|eq|left:state:progress.value|right:literal:boolean),(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label)])#1",
+      "edge:True:(always)#1",
+      "entity:actor:movable#1",
+      "entity:destination:fixed#1",
+      "entity:device:fixed#2",
+      "goal:(all|conditions:[(compare|eq|left:state:progress.value|right:literal:boolean),(compare|eq|left:state:stage_piece.location|right:literal:label),(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label)])#1",
+      "location:any:in1:out1#2",
+      "location:any:in2:out2#1",
+      "object:evidence_board#1",
+      "object:progress#1",
+      "object:stage_map#1",
+      "object:stage_piece#1",
+      "object:text_artifact#1",
+      "rule:inspect_location:(compare|eq|left:state:stage_piece.location|right:literal:label):[(add_item|item:input|target:stage_map.inspected)]#1",
+      "rule:move_actor:(always):[(set|value:input|target:stage_piece.location)]#1",
+      "rule:replace_text:(all|conditions:[(compare|eq|left:state:progress.value|right:literal:boolean),(compare|eq|left:state:stage_piece.location|right:literal:label),(compare|ne|left:state:evidence_board.selection|right:literal:label)]):[(set|value:input|target:text_artifact.text)]#1",
+      "rule:revise_text:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(compare|ne|left:input|right:literal:label),(compare|ne|left:input|right:state:text_artifact.text),(compare|ne|left:state:text_artifact.text|right:literal:label)]):[(set|value:input|target:text_artifact.text),(set|value:literal:boolean|target:progress.value)]#1",
+      "rule:select_evidence:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(contains|collection:state:stage_map.inspected|item:literal:label)]):[(set|value:input|target:evidence_board.selection)]#1",
+      "surface:evidence_board:location:any:object:whole:read_only:(contains|collection:state:stage_map.inspected|item:literal:label)#1",
+      "surface:text_artifact:location:any:object:whole:read_only:(always)#1",
+      "tool:evidence_board:device:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(contains|collection:state:stage_map.inspected|item:literal:label)])#1",
+      "tool:text_editor:device:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(compare|ne|left:state:evidence_board.selection|right:literal:label)])#1"
+    ],
+    "version": "sidekick-game-structure-v1"
+  }
+}

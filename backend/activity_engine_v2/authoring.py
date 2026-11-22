@@ -27,7 +27,7 @@ PROMPT_VERSION = 'sidekick-program-composer-v1'
 
 class BindingEntry(Closed):
     port: Literal['count', 'rows', 'columns', 'cells', 'left', 'right', 'result',
-                  'text', 'selection', 'order', 'artifact', 'value', 'denominator', 'pieces']
+                  'text', 'selection', 'order', 'artifact', 'value', 'denominator', 'pieces', 'location', 'inspected']
     stateRef: Identifier
 
 
@@ -132,6 +132,7 @@ class ActivityAuthoring(Closed):
     formatVersion: Literal['sidekick-program-authoring-v1']
     id: Identifier
     title: ShortText
+    selectedDesignId: Identifier | None = Field(default=None, exclude_if=lambda value: value is None)
     targets: Annotated[list[SkillTarget], Field(min_length=1, max_length=8)]
     successEvidence: Annotated[list[Identifier], Field(min_length=1, max_length=16)]
     world: AuthoringWorld
@@ -165,6 +166,7 @@ def compile_authoring(value, context, *, model, prompt_version=PROMPT_VERSION):
     raw = authored.model_dump()
     raw.pop('formatVersion')
     raw.pop('targets')
+    raw.pop('selectedDesignId', None)
     success = raw.pop('successEvidence')
     for obj in raw['world']['objects']:
         entries = obj['bindings']

@@ -4,6 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import json
 import math
+import re
 
 from backend.accounts.security import AccountError
 from backend.gap.catalog import get_subskill
@@ -30,9 +31,58 @@ class TrustedContext:
     target_view: dict
 
 
+def with_retry_design_feedback(context, source, *, account_id, kid_id, upload_id):
+    """Pin one owned failed design as generated critique, never learner facts.
+
+    The caller has authorized the exact retry source inside its reservation
+    transaction. Defense-in-depth checks keep malformed/stale audit rows out of
+    provider input. Existing source contexts are never rewritten.
+    """
+    private = dict(context.private_sources, retryOfGenerationId=source['id'])
+    unchanged = TrustedContext(dict(context.sanitized), private, context.target_view)
+    pinned = decode(source['context_json'], {})
+    if (source['status'] != 'failed' or source['account_id'] != account_id
+            or source['kid_id'] != kid_id or source['upload_id'] != upload_id
+            or not isinstance(pinned, dict) or pinned.get('targets') != context.sanitized['targets']):
+        return unchanged
+    from pydantic import ValidationError
+    from .game_design import GameDesign
+    from .gameplay import GameplayReview, canonical_hash
+    from .composer import SemanticReview
+    try:
+        design = GameDesign.model_validate(decode(source['game_design_json']), strict=True)
+    except (ValidationError, ValueError, TypeError):
+        return unchanged
+    code, stage = source['reason_code'], source['stage']
+    if not all(isinstance(value, str) and re.fullmatch(r'[a-z][a-z0-9_]{0,79}', value)
+               for value in (code, stage)):
+        return unchanged
+    feedback = dict(source='rejected_generated_design', notLearnerEvidence=True,
+                    selectedDesign=design.model_dump(), stage=stage, reasonCode=code)
+    try:
+        review = GameplayReview.model_validate(decode(source['gameplay_review_json']), strict=True)
+        semantic = SemanticReview.model_validate(decode(source['review_json']), strict=True)
+        manifest = decode(source['render_manifest_json'])
+        if (not review.approved and review.reasonCode != 'approved' and isinstance(manifest, dict)
+                and review.renderManifestHash == canonical_hash(manifest)
+                and review.definitionHash == semantic.definitionHash):
+            checks = ('meaningfulChoices', 'understandableConsequences', 'recoveryPossible',
+                      'targetNecessary', 'briefGoalClear', 'finishAchievable', 'finishSatisfying',
+                      'mainStagePlayable', 'structuralVariety', 'renderedAffordancesSuitable')
+            feedback['gameplayFailure'] = dict(definitionHash=review.definitionHash,
+                renderManifestHash=review.renderManifestHash, reasonCode=review.reasonCode,
+                failedChecks=[name for name in checks if not getattr(review, name)], summary=review.summary)
+    except (ValidationError, ValueError, TypeError):
+        pass
+    return TrustedContext(dict(context.sanitized, generatedDesignFeedback=[feedback]), private, context.target_view)
+
+
 def _history(connection, kid_id, account_id, skill_id):
     history, signatures, references = [], [], []
-    rows = connection.execute('''SELECT s.id,s.status,s.assistance_json,s.completion_snapshot_json,v.definition_json
+    rows = connection.execute('''SELECT s.id,s.status,s.assistance_json,s.completion_snapshot_json,v.definition_json,
+            (SELECT g.game_design_json FROM activity_program_generations g WHERE g.session_id=s.id
+                AND g.account_id=s.account_id AND g.kid_id=s.kid_id AND g.status='ready'
+                AND g.approved_definition_sha256=v.definition_sha256 ORDER BY g.rowid DESC LIMIT 1) AS game_design_json
         FROM activity_program_sessions s JOIN activity_program_versions v ON v.id=s.program_version_id
         WHERE s.kid_id=? AND s.account_id=? ORDER BY s.started_at DESC,s.rowid DESC LIMIT 30''',
         (kid_id, account_id)).fetchall()
@@ -46,8 +96,14 @@ def _history(connection, kid_id, account_id, skill_id):
             assessment=outcome.get('assessment', 'not_assessed'),
             assistanceReceived=bool(delivered), helpDeliveries=sum(item.get('uses', 0) for item in delivered.values()),
             confidence=None))
-        signatures.append(dict(operations=sorted({action['operation'] for action in program.get('actions', [])}),
-                               componentKinds=sorted({item['kind'] for item in program.get('components', [])})))
+        from .game_design import design_signature, structural_signature
+        signature = dict(operations=sorted({action['operation'] for action in program.get('actions', [])}),
+                         componentKinds=sorted({item['kind'] for item in program.get('components', [])}),
+                         structuralSignature=structural_signature(program))
+        plan = decode(row['game_design_json'])
+        if isinstance(plan, dict):
+            signature['designSignature'] = design_signature(plan)
+        signatures.append(signature)
         references.append(dict(source='activity_program', id=row['id']))
         if len(history) >= 6:
             break

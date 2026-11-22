@@ -115,6 +115,7 @@ def _nodes(node,depth=1):
 class Compiler(ExecutionCore):
     def __init__(self,program):
         self.p=program
+        self.stage=program.presentation.stage
         self.slots=_index(program.world.state,'world.state')
         self.materials=_index(program.world.materials,'world.materials')
         self.objects=_index(program.world.objects,'world.objects')
@@ -207,7 +208,7 @@ class Compiler(ExecutionCore):
         # Check goal references before evaluating entry-space visibility. A
         # self-referential goal must never recurse through a presentation guard.
         for goal in self.goals.values():self.condition(goal.when,{},'goals',allow_goal=False)
-        self._components();self._actions_rules();self._goals_evidence();self.check_state(self.initial)
+        self._components();self._stage();self._actions_rules();self._goals_evidence();self.check_state(self.initial)
         if self.evaluate(p.completion.when,self.initial,{}):fail('mission_initially_complete','completion')
         return self
 
@@ -298,6 +299,153 @@ class Compiler(ExecutionCore):
             if not set(component.objectIds)<=set(self.objects) or len(set(component.objectIds))!=len(component.objectIds):fail('unknown_component_object','components')
             if any(self.objects[ref].kind not in COMPONENT_OBJECTS[component.kind] for ref in component.objectIds):fail('incompatible_component_object','components')
 
+    def condition_refs(self, condition):
+        refs={node.ref for node,_ in _nodes(condition) if node.kind=='state'}
+        for node,_ in _nodes(condition):
+            if node.kind=='fraction_equal':
+                refs.update(ref for identifier in (node.leftObject,node.rightObject) for ref in self.objects[identifier].bindings.values())
+            elif node.kind=='goal':
+                refs.update(self.condition_refs(self.goals[node.goalId].when))
+        return refs
+
+    def _stage(self):
+        stage=self.p.presentation.stage
+        stage_objects=[obj for obj in self.objects.values() if obj.kind in {'stage_piece','stage_map'}]
+        if stage is None:
+            if stage_objects or any(component.kind=='world_stage' for component in self.p.components):
+                fail('world_stage_required','presentation.stage')
+            return
+        locations=_index(stage.locations,'presentation.stage.locations')
+        entities=_index(stage.entities,'presentation.stage.entities')
+        _index(stage.connections,'presentation.stage.connections');_index(stage.reactions,'presentation.stage.reactions')
+        stage_refs={ref for obj in stage_objects for ref in obj.bindings.values()}
+        other_refs={ref for obj in self.objects.values() if obj.kind not in {'stage_piece','stage_map'} for ref in obj.bindings.values()}
+        if stage_refs&other_refs:fail('stage_state_must_be_separate','world.objects')
+        if not any(component.kind=='world_stage' for component in self.p.components):fail('world_stage_component_required','components')
+        represented=set()
+        for entity in entities.values():
+            if entity.objectId is not None:
+                if (entity.objectId not in self.objects or self.objects[entity.objectId].kind!='stage_piece'
+                        or entity.objectId in represented):
+                    fail('stage_entity_object_invalid','presentation.stage.entities')
+                represented.add(entity.objectId)
+            elif entity.locationId not in locations:
+                fail('stage_location_unknown','presentation.stage.entities')
+            if entity.representationObjectId is not None:
+                obj=self.objects.get(entity.representationObjectId)
+                if obj is None or obj.kind not in {'fraction_strip','grid','equation','evidence_board','text_artifact'}:
+                    fail('stage_representation_invalid','presentation.stage.entities')
+        if represented!={obj.id for obj in stage_objects if obj.kind=='stage_piece'}:
+            fail('stage_piece_not_represented','presentation.stage.entities')
+        for obj in stage_objects:
+            port='location' if obj.kind=='stage_piece' else 'inspected'
+            slot=self.slots[obj.bindings[port]]
+            if not slot.mutable or not set(slot.options)<=set(locations):fail('stage_state_domain_invalid','world.objects')
+            if obj.kind=='stage_map' and (set(slot.options)!=set(locations) or slot.maxItems!=len(locations)):
+                fail('stage_inspection_domain_incomplete','world.objects')
+        tool_components=set()
+        tool_attachments=set()
+        concept_refs=set()
+        for index,tool in enumerate(stage.tools):
+            path=f'presentation.stage.tools.{index}'
+            if tool.componentId not in self.components:
+                fail('stage_tool_component_unknown',path+'.componentId')
+            if self.components[tool.componentId].kind=='world_stage':
+                fail('stage_tool_world_component_forbidden',path+'.componentId')
+            if tool.entityId not in entities:
+                fail('stage_tool_entity_unknown',path+'.entityId')
+            attachment=(tool.componentId,tool.entityId)
+            if attachment in tool_attachments:
+                fail('stage_tool_attachment_duplicate',path)
+            tool_attachments.add(attachment)
+            tool_components.add(tool.componentId)
+            self.condition(tool.availableWhen,{},path+'.availableWhen')
+            concept_refs.update(ref for identifier in self.components[tool.componentId].objectIds
+                if self.objects[identifier].kind!='progress' for ref in self.objects[identifier].bindings.values()
+                if self.slots[ref].mutable)
+        if {component.id for component in self.p.components if component.kind!='world_stage'}!=tool_components:
+            fail('stage_tools_must_be_contextual','presentation.stage.tools')
+        self.stage_concept_refs=concept_refs
+        visible_construction=False
+        for entity in entities.values():
+            if entity.representationObjectId is None:continue
+            anchored=[tool for tool in stage.tools if tool.entityId==entity.id]
+            if not any(entity.representationObjectId in self.components[tool.componentId].objectIds for tool in anchored):
+                fail('stage_representation_not_bound_to_tool','presentation.stage.entities')
+            if any(self.slots[ref].mutable for ref in self.objects[entity.representationObjectId].bindings.values()):
+                visible_construction=True
+        _index(stage.surfaces,'presentation.stage.surfaces')
+        connection_ids={edge.id for edge in stage.connections}
+        for index,surface in enumerate(stage.surfaces):
+            path=f'presentation.stage.surfaces.{index}'
+            obj=self.objects.get(surface.objectId)
+            if obj is None:fail('stage_surface_object_unknown',path+'.objectId')
+            if obj.kind not in {'grid','fraction_strip','equation','evidence_board','text_artifact'}:
+                fail('stage_surface_object_unsupported',path+'.objectId')
+            if surface.locationId is not None and surface.locationId not in locations:
+                fail('stage_surface_location_unknown',path+'.locationId')
+            if surface.connectionId is not None and surface.connectionId not in connection_ids:
+                fail('stage_surface_connection_unknown',path+'.connectionId')
+            self.condition(surface.visibleWhen,{},path+'.visibleWhen')
+            _distinct(surface.cellIds,path+'.cellIds')
+            mutable=any(self.slots[ref].mutable for ref in obj.bindings.values())
+            if mutable and not any(obj.id in self.components[identifier].objectIds for identifier in tool_components):
+                fail('stage_surface_mutable_requires_tool',path+'.objectId')
+            if mutable:visible_construction=True
+            if obj.kind=='grid':
+                if not set(surface.cellIds)<=set(self.slots[obj.bindings['cells']].options):
+                    fail('stage_surface_cells_outside_object',path+'.cellIds')
+                if surface.actionId is not None and not surface.cellIds:
+                    if self.slots[obj.bindings['rows']].maximum*self.slots[obj.bindings['columns']].maximum>24:
+                        fail('stage_surface_direct_cell_budget_exceeded',path+'.cellIds')
+            elif surface.cellIds:
+                fail('stage_surface_subset_requires_grid',path+'.cellIds')
+            if obj.kind=='fraction_strip' and surface.layout!='object':
+                fail('stage_surface_fraction_whole_layout_required',path+'.layout')
+            if surface.actionId is not None:
+                action=self.actions.get(surface.actionId)
+                if action is None:fail('stage_surface_action_unknown',path+'.actionId')
+                expected={'grid':'toggle_tile','fraction_strip':'toggle_fraction_piece'}.get(obj.kind)
+                if action.operation!=expected:
+                    fail('stage_surface_action_unsupported',path+'.actionId')
+                if not mutable:fail('stage_surface_readonly_action_forbidden',path+'.actionId')
+                component=self.components.get(action.componentId)
+                port='cells' if obj.kind=='grid' else 'pieces'
+                if (component is None or obj.id not in component.objectIds
+                        or not any(effect.target==obj.bindings[port] for rule in self.p.rules if rule.onAction==action.id for effect in rule.effects)):
+                    fail('stage_surface_action_wrong_object',path+'.actionId')
+        if not visible_construction:fail('stage_requires_actual_construction_representation','presentation.stage.entities')
+        conceptual_consequence=False
+        for index,edge in enumerate(stage.connections):
+            path=f'presentation.stage.connections.{index}'
+            if edge.fromLocation not in locations or edge.toLocation not in locations or edge.fromLocation==edge.toLocation:
+                fail('stage_connection_endpoint_invalid','presentation.stage.connections')
+            self.condition(edge.when,{},'presentation.stage.connections')
+            conceptual_consequence|=bool(self.condition_refs(edge.when)&concept_refs)
+            if edge.construction is not None:
+                mount=edge.construction
+                obj=self.objects.get(mount.objectId)
+                if obj is None:fail('stage_construction_object_unknown',path+'.construction.objectId')
+                if obj.kind!='grid':fail('stage_construction_requires_grid',path+'.construction.objectId')
+                if mount.rows*mount.columns>120:
+                    fail('stage_construction_area_budget_exceeded',path+'.construction')
+                rows=self.slots[obj.bindings['rows']];columns=self.slots[obj.bindings['columns']]
+                if (mount.rows>obj.height or mount.columns>obj.width
+                        or not rows.minimum<=mount.rows<=rows.maximum
+                        or not columns.minimum<=mount.columns<=columns.maximum):
+                    fail('stage_construction_outside_source_bounds',path+'.construction')
+                if not any(surface.connectionId==edge.id and surface.objectId==obj.id
+                           and surface.layout=='object' and not surface.cellIds for surface in stage.surfaces):
+                    fail('stage_construction_whole_surface_required',path+'.construction')
+                conceptual_consequence|=bool(set(obj.bindings.values())&concept_refs)
+        for reaction in stage.reactions:
+            if reaction.entityId is not None and reaction.entityId not in entities:
+                fail('stage_reaction_entity_unknown','presentation.stage.reactions')
+            self.condition(reaction.when,{},'presentation.stage.reactions')
+            conceptual_consequence|=bool(self.condition_refs(reaction.when)&concept_refs)
+        if not conceptual_consequence:
+            fail('stage_requires_conceptual_consequences','presentation.stage')
+
     def _actions_rules(self):
         _index(self.p.rules,'rules')
         for rule in self.p.rules:
@@ -322,6 +470,7 @@ class Compiler(ExecutionCore):
                 'record_voice':{'artifact'},'draw':{'artifact'},
                 'set_fraction_partition':{'denominator','pieces'},'toggle_fraction_piece':{'pieces'},
                 'move_fraction_piece':{'pieces'},
+                'move_actor':{'location'},'place_piece':{'location'},'inspect_location':{'inspected'},
             }[action.operation]
             writable={obj.bindings[role] for obj in relevant for role in operation_roles}
             if 'set' in cap['effectKinds']:
@@ -341,6 +490,9 @@ class Compiler(ExecutionCore):
                     if targets.intersection(fraction_refs) and action.operation not in {
                             'set_fraction_partition','toggle_fraction_piece','move_fraction_piece'}:
                         fail('fraction_state_requires_fraction_operation','rules.effects')
+                    stage_refs={ref for obj in self.objects.values() if obj.kind in {'stage_piece','stage_map'} for ref in obj.bindings.values()}
+                    if targets&stage_refs and action.operation not in {'move_actor','place_piece','inspect_location'}:
+                        fail('stage_state_requires_world_operation','rules.effects')
                     for ref in targets:
                         if not self.slot(ref,'rules.effects').mutable:fail('immutable_state_write','rules.effects')
                         if ref in local:fail('conflicting_effects','rules.effects')
@@ -397,6 +549,7 @@ class Compiler(ExecutionCore):
             'replace_text':{'text':'text'},'revise_text':{'text':'text'},
             'select_evidence':{'selection':'sentence'},'reorder':{'order':'order'},
             'record_voice':{'artifact':'artifact'},'draw':{'artifact':'artifact'},
+            'move_actor':{'location':'destination'},'place_piece':{'location':'destination'},
         }.get(action.operation,{})
         for rule in rules:
             for obj in objects:
@@ -415,6 +568,21 @@ class Compiler(ExecutionCore):
             if any(effect.kind!='toggle_item' or effect.target!=bindings['cells'] or effect.item.kind!='input' or effect.item.ref!='cell' for effect in effects):fail('operation_must_use_child_input','rules.effects')
             input_domain=set(action.inputs[0].options)
             if not input_domain<=set(self.slots[bindings['cells']].options):fail('tile_input_outside_board','actions.inputs')
+        if action.operation in {'move_actor','place_piece','inspect_location'}:
+            stage=self.p.presentation.stage
+            if stage is None:fail('world_stage_required','presentation.stage')
+            locations={item.id for item in stage.locations}
+            if not set(action.inputs[0].options)<=locations:fail('stage_action_location_unknown','actions.inputs')
+            if action.operation=='inspect_location':
+                if any(effect.kind!='add_item' or effect.target!=bindings['inspected'] or effect.item.kind!='input'
+                       or effect.item.ref!='location' for effect in effects):
+                    fail('operation_must_use_child_input','rules.effects')
+            else:
+                entity=next((item for item in stage.entities if item.objectId==objects[0].id),None)
+                if entity is None or (action.operation=='move_actor')!=(entity.kind=='actor'):
+                    fail('stage_action_entity_mismatch','actions')
+                if not set(action.inputs[0].options)<=set(self.slots[bindings['location']].options):
+                    fail('stage_action_outside_entity_domain','actions.inputs')
         if action.operation=='set_fraction_partition':
             parameter=next(item for item in action.inputs if item.id=='denominator')
             slot=self.slots[bindings['denominator']]
@@ -493,10 +661,15 @@ class Compiler(ExecutionCore):
             covered.update(item.skillIds)
             action_state={ref for action_id in item.actionIds for obj_id in self.components[self.actions[action_id].componentId].objectIds for ref in self.objects[obj_id].bindings.values()}
             if not set(item.stateRefs)<=action_state:fail('evidence_not_observable_from_actions','evidence')
+            if self.stage is not None and item.assessment.kind=='parent_review':
+                if (not set(item.stateRefs)&self.stage_concept_refs or not any(
+                        self.actions[identifier].operation not in {'move_actor','place_piece','inspect_location'}
+                        for identifier in item.actionIds)):
+                    fail('world_success_is_not_learning_evidence','evidence.assessment')
             if item.assessment.kind=='automatic':
                 if any(not CAPABILITIES[self.actions[ref].operation]['automaticAssessment'] for ref in item.actionIds):fail('unsupported_automatic_assessment','evidence.assessment')
                 self.condition(item.assessment.when,{},'evidence.assessment',allow_goal=False)
-                refs={node.ref for node,_ in _nodes(item.assessment.when) if node.kind=='state'}
+                refs=self.condition_refs(item.assessment.when)
                 fraction_conditions=[node for node,_ in _nodes(item.assessment.when) if node.kind=='fraction_equal']
                 for condition in fraction_conditions:
                     refs.update(ref for identifier in (condition.leftObject,condition.rightObject)
@@ -504,6 +677,8 @@ class Compiler(ExecutionCore):
                 fraction_refs={ref for obj in self.objects.values() if obj.kind=='fraction_strip' for ref in obj.bindings.values()}
                 if set(item.stateRefs)&fraction_refs and not fraction_conditions:
                     fail('fraction_assessment_requires_same_whole_comparison','evidence.assessment')
+                stage_refs={ref for obj in self.objects.values() if obj.kind in {'stage_piece','stage_map'} for ref in obj.bindings.values()}
+                if refs&stage_refs:fail('world_success_is_not_learning_evidence','evidence.assessment')
                 context={ref for ref,slot in self.slots.items() if not slot.mutable}
                 if not refs or not refs<=set(item.stateRefs)|context or not refs.intersection(set(item.stateRefs)-context) or refs&tainted:fail('automatic_assessment_requires_checkable_state','evidence.assessment')
         if covered!=targets:fail('target_skill_evidence_missing','evidence')

@@ -46,6 +46,65 @@ export interface ProgramFractionComparison {
   equalAmount: boolean;
   comparison?: "less" | "equal" | "greater" | null;
 }
+export type ProgramStageAsset = "dot" | "person" | "cart" | "boat" | "parcel" | "lens" | "bridge" | "gate" | "home" | "tree" | "lamp" | "book" | "clue" | "flag" | "flower" | "gear";
+export interface ProgramStageLocation {
+  id: string;
+  label: string;
+  x: number;
+  y: number;
+  capacity: number;
+  accepts: "any" | "actor" | "device";
+  inspected: boolean;
+  actionIds: string[];
+}
+export interface ProgramStageEntity {
+  id: string;
+  label: string;
+  kind: "actor" | "device" | "object" | "destination";
+  asset: ProgramStageAsset;
+  objectId: string | null;
+  representationObjectId: string | null;
+  locationId: string;
+  currentStatus: "idle" | "active" | "blocked" | "discovered" | "complete";
+  reactionText: string | null;
+  actionIds: string[];
+  toolComponentIds: string[];
+}
+export interface ProgramStageConstruction {
+  objectId: string;
+  rows: number;
+  columns: number;
+  requiredCells: number;
+  actualRows: number | null;
+  actualColumns: number | null;
+  coveredCells: number | null;
+  dimensionsMatch: boolean | null;
+  complete: boolean | null;
+  fits: boolean | null;
+  sourceVisible: boolean;
+}
+export interface ProgramStageView {
+  locations: ProgramStageLocation[];
+  entities: ProgramStageEntity[];
+  connections: { id: string; fromLocation: string; toLocation: string; bidirectional: boolean; open: boolean; label: string; blockedLabel: string; construction?: ProgramStageConstruction }[];
+  tools: { componentId: string; entityId: string; label: string; available: boolean }[];
+  reactions: { id: string; entityId: string | null; status: string; text: string }[];
+  actionTargets: { actionId: string; inputId: string; targets: { id: string; allowed: boolean; reasonCode: string | null }[] }[];
+  surfaces?: ProgramStageSurface[];
+}
+export interface ProgramStageSurface {
+  id: string;
+  label: string;
+  objectId: string;
+  locationId: string | null;
+  connectionId: string | null;
+  kind: string;
+  layout: "object" | "row" | "column";
+  cellIds: string[];
+  actionId: string | null;
+  inputId: "cell" | "piece" | null;
+  cells: { id: string; selected: boolean; allowed: boolean; reasonCode: string | null }[];
+}
 export interface ProgramMaterial {
   id: string;
   kind: "unit_tiles" | "passage" | "words" | "prompt";
@@ -100,9 +159,10 @@ export interface ProgramSession {
   completionFeedback?: string | null;
   fractionViews?: ProgramFractionView[];
   fractionComparisons?: ProgramFractionComparison[];
+  stageView?: ProgramStageView;
 }
 
-export type ProgramGenerationStage = "queued" | "context" | "compose" | "validate" | "review" | "repair" | "start" | "ready" | "failed";
+export type ProgramGenerationStage = "queued" | "context" | "design" | "design_review" | "compose" | "validate" | "review" | "gameplay_review" | "repair" | "start" | "ready" | "failed";
 export interface ProgramGeneration {
   id: string;
   status: "processing" | "ready" | "failed";

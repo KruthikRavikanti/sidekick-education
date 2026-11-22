@@ -1,2 +1,4 @@
-# Keep the supplied source export byte-for-byte, including its BOM and CRLF.
-data/activities/sources.csv -text whitespace=cr-at-eol
+# Keep generated benchmark audits available without crowding the implementation diff.
+docs/activity-engine-v2-game-design/*.json linguist-generated=true
+docs/activity-engine-v2-game-design/*.png -diff
+docs/activity-engine-v2-game-design/*.webm -diff

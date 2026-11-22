@@ -1,0 +1,3203 @@
+{
+  "auditOnly": true,
+  "definitionHash": "fe45ec756dcebee4f1f6a078becf4bcd9d6083de1e292e54addac2659493a519",
+  "semanticReview": {
+    "definitionHash": "fe45ec756dcebee4f1f6a078becf4bcd9d6083de1e292e54addac2659493a519",
+    "approved": true,
+    "targetNecessary": true,
+    "meaningfulConsequences": true,
+    "materialsSuitable": true,
+    "goalAchievable": true,
+    "helpRelevant": true,
+    "scoringCorrectAcrossRoutes": true,
+    "shortcutsPrevented": true,
+    "parentAssessmentAppropriate": true,
+    "requiresParentReview": false,
+    "reasonCode": "approved",
+    "summary": "Completion and assessment require all six tiles and a child-entered 2 × 3 or 3 × 2 equality with result 6. Completed rows visibly open their respective walks; parent review is not needed for these numeric checks."
+  },
+  "gameplayReview": {
+    "definitionHash": "fe45ec756dcebee4f1f6a078becf4bcd9d6083de1e292e54addac2659493a519",
+    "renderManifestHash": "16013e5290d17868d7efdc312adaa4879d1c6c2ea02c1c1d329b2e9f01fcf4a0",
+    "approved": true,
+    "meaningfulChoices": true,
+    "understandableConsequences": true,
+    "recoveryPossible": true,
+    "targetNecessary": true,
+    "briefGoalClear": true,
+    "finishAchievable": true,
+    "finishSatisfying": true,
+    "mainStagePlayable": true,
+    "structuralVariety": true,
+    "renderedAffordancesSuitable": true,
+    "reasonCode": "approved",
+    "summary": "Each visible row opens its own walk before the rectangle is complete, allowing testing and revision before inspection. The finish requires the full tiled rectangle and matching product. This incremental two-route construction differs from the recent footprint-fit crossing loop."
+  },
+  "renderManifest": {
+    "actualOperations": {
+      "assemble_product": {
+        "automaticAssessment": true,
+        "childAction": "Construct a product equality.",
+        "component": "math_workspace",
+        "effectKinds": [
+          "set"
+        ],
+        "evidence": "Implemented typed V2 input adapter: exact integer left/right/result facts. Automatic inline predicates can check multiplication and compare factors/product with the actual bound construction and target; no parser or parent judgment is needed for those exact numeric checks. This does not assess an unobserved explanation or mastery.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "left": "integer",
+          "result": "integer",
+          "right": "integer"
+        },
+        "legacySource": "components/activity-area-workspace.tsx:AreaWorkspace",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "equation",
+        "previewOnly": true,
+        "visibleChange": "The child-authored integer factors and result change; wrong values are preserved."
+      },
+      "inspect_location": {
+        "automaticAssessment": false,
+        "childAction": "Investigate a selected location and retain the discovery.",
+        "component": "world_stage",
+        "effectKinds": [
+          "add_item"
+        ],
+        "evidence": "Investigation history only; reading assessment still needs the actual evidence selection or artifact.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "location": "choice"
+        },
+        "legacySource": "components/activity-program-stage.tsx",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "stage_map",
+        "previewOnly": true,
+        "visibleChange": "Authoritative discovery state can reveal actual passages, tools or contextual materials."
+      },
+      "move_actor": {
+        "automaticAssessment": false,
+        "childAction": "Move the selected actor through an adjacent usable connection.",
+        "component": "world_stage",
+        "effectKinds": [
+          "set"
+        ],
+        "evidence": "Navigation and choice history only; an arrival is never evidence of conceptual understanding.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "destination": "choice"
+        },
+        "legacySource": "components/activity-program-stage.tsx",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "stage_piece",
+        "previewOnly": true,
+        "visibleChange": "The actor travels between actual locations; conceptual state can make a connection usable or blocked."
+      },
+      "toggle_tile": {
+        "automaticAssessment": true,
+        "childAction": "Place or lift a unit tile in a real cell.",
+        "component": "math_workspace",
+        "effectKinds": [
+          "toggle_item"
+        ],
+        "evidence": "Actual unit-square coverage, not a submitted count. Stock is bounded PER GRID; sharing a material reference does not create a conserved stock across different grids.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "cell": "choice"
+        },
+        "legacySource": "components/activity-area-workspace.tsx:AreaWorkspace",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "grid",
+        "previewOnly": true,
+        "visibleChange": "The corresponding cell fills or clears; lifting frees that grid's stock. The core enforces its own unit_tiles.quantity limit."
+      }
+    },
+    "actualStructure": {
+      "digest": "7c29398a4b4990d42db7d71353c9c0e7f945e2be1ce32ab172dec4497dd7cc64",
+      "features": [
+        "action:assemble_product#1",
+        "action:inspect_location#1",
+        "action:move_actor#1",
+        "action:toggle_tile#1",
+        "completion:(goal)#1",
+        "component:math_workspace#1",
+        "component:world_stage#2",
+        "consequence:active:(all|conditions:[(contains|collection:state:grid.cells|item:literal:label),(contains|collection:state:grid.cells|item:literal:label),(contains|collection:state:grid.cells|item:literal:label)])#2",
+        "consequence:active:(compare|eq|left:(operator|count|args:[state:grid.cells])|right:literal:number)#1",
+        "edge:True:(all|conditions:[(contains|collection:state:grid.cells|item:literal:label),(contains|collection:state:grid.cells|item:literal:label),(contains|collection:state:grid.cells|item:literal:label)])#2",
+        "entity:actor:movable#1",
+        "entity:destination:fixed#2",
+        "entity:device:fixed#1",
+        "goal:(all|conditions:[(any|conditions:[(all|conditions:[(compare|eq|left:state:equation.left|right:state:grid.columns),(compare|eq|left:state:equation.right|right:state:grid.rows)]),(all|conditions:[(compare|eq|left:state:equation.left|right:state:grid.rows),(compare|eq|left:state:equation.right|right:state:grid.columns)])]),(compare|eq|left:(operator|count|args:[state:grid.cells])|right:literal:number),(compare|eq|left:state:equation.result|right:literal:number),(contains|collection:state:stage_map.inspected|item:literal:label)])#1",
+        "location:any:in1:out1#2",
+        "location:any:in2:out2#1",
+        "object:equation#1",
+        "object:grid#1",
+        "object:stage_map#1",
+        "object:stage_piece#1",
+        "rule:assemble_product:(always):[(set|value:input|target:equation.left),(set|value:input|target:equation.result),(set|value:input|target:equation.right)]#1",
+        "rule:inspect_location:(all|conditions:[(any|conditions:[(all|conditions:[(compare|eq|left:state:equation.left|right:state:grid.columns),(compare|eq|left:state:equation.right|right:state:grid.rows)]),(all|conditions:[(compare|eq|left:state:equation.left|right:state:grid.rows),(compare|eq|left:state:equation.right|right:state:grid.columns)])]),(compare|eq|left:(operator|count|args:[state:grid.cells])|right:literal:number),(compare|eq|left:state:equation.result|right:literal:number),(compare|eq|left:state:stage_piece.location|right:input)]):[(add_item|item:input|target:stage_map.inspected)]#1",
+        "rule:move_actor:(always):[(set|value:input|target:stage_piece.location)]#1",
+        "rule:toggle_tile:(always):[(toggle_item|item:input|target:grid.cells)]#1",
+        "surface:equation:location:any:object:whole:read_only:(always)#1",
+        "surface:grid:connection:True:(all|conditions:[(contains|collection:state:grid.cells|item:literal:label),(contains|collection:state:grid.cells|item:literal:label),(contains|collection:state:grid.cells|item:literal:label)]):row:subset:toggle_tile:(always)#2",
+        "surface:grid:location:any:object:whole:toggle_tile:(always)#1",
+        "tool:math_workspace:device:(compare|eq|left:state:stage_piece.location|right:literal:label)#1"
+      ],
+      "version": "sidekick-game-structure-v1"
+    },
+    "authoritativeCheckpoints": [
+      {
+        "afterOperation": "toggle_tile",
+        "geometry": {
+          "desktopStageHeightPx": 1000,
+          "mobileStageHeightPx": 1300,
+          "tabletStageHeightPx": 1300
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "cells": [
+                "r0c0"
+              ],
+              "columns": 3,
+              "rows": 2
+            },
+            "kind": "grid",
+            "materials": [
+              {
+                "id": "tiles",
+                "items": [],
+                "kind": "unit_tiles",
+                "quantity": 6,
+                "text": null
+              },
+              {
+                "id": "mission",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Cover the two-row garden walkway with unit tiles. Each complete row opens its own walk. You can test either walk and return. Show the rectangle's side lengths and area as a multiplication, then inspect the hub to finish."
+              }
+            ],
+            "objectId": "walkway"
+          },
+          {
+            "boundValues": {
+              "left": 0,
+              "result": 0,
+              "right": 0
+            },
+            "kind": "equation",
+            "materials": [
+              {
+                "id": "mission",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Cover the two-row garden walkway with unit tiles. Each complete row opens its own walk. You can test either walk and return. Show the rectangle's side lengths and area as a multiplication, then inspect the hub to finish."
+              }
+            ],
+            "objectId": "area-equation"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "walk",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "hub",
+                  "reasonCode": "stage_destination_not_adjacent"
+                },
+                {
+                  "allowed": false,
+                  "id": "north",
+                  "reasonCode": "stage_connection_closed"
+                },
+                {
+                  "allowed": false,
+                  "id": "south",
+                  "reasonCode": "stage_connection_closed"
+                }
+              ]
+            },
+            {
+              "actionId": "finish-inspection",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "hub",
+                  "reasonCode": "action_guard_unsatisfied"
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "Cover the top row to open this walk.",
+              "fromLocation": "hub",
+              "id": "north-walk",
+              "label": "Flower walk",
+              "open": false,
+              "toLocation": "north"
+            },
+            {
+              "bidirectional": true,
+              "blockedLabel": "Cover the bottom row to open this walk.",
+              "fromLocation": "hub",
+              "id": "south-walk",
+              "label": "Tree walk",
+              "open": false,
+              "toLocation": "south"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "walk"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "walker",
+              "kind": "actor",
+              "label": "Garden walker",
+              "locationId": "hub",
+              "objectId": "walker-piece",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "gear",
+              "currentStatus": "idle",
+              "id": "bench",
+              "kind": "device",
+              "label": "Walkway workbench",
+              "locationId": "hub",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": "walkway",
+              "toolComponentIds": [
+                "workbench"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "flower",
+              "currentStatus": "idle",
+              "id": "flower-lookout",
+              "kind": "destination",
+              "label": "Flower lookout",
+              "locationId": "north",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "tree",
+              "currentStatus": "idle",
+              "id": "tree-nook",
+              "kind": "destination",
+              "label": "Tree nook",
+              "locationId": "south",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "finish-inspection"
+              ],
+              "capacity": 4,
+              "id": "hub",
+              "inspected": false,
+              "label": "Garden hub",
+              "x": 48,
+              "y": 50
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 2,
+              "id": "north",
+              "inspected": false,
+              "label": "Flower lookout",
+              "x": 82,
+              "y": 20
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 2,
+              "id": "south",
+              "inspected": false,
+              "label": "Tree nook",
+              "x": 82,
+              "y": 80
+            }
+          ],
+          "reactions": [],
+          "surfaces": [
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r0c0",
+                "r0c1",
+                "r0c2"
+              ],
+              "cells": [
+                {
+                  "allowed": true,
+                  "id": "r0c0",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c1",
+                  "reasonCode": null,
+                  "selected": false
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c2",
+                  "reasonCode": null,
+                  "selected": false
+                }
+              ],
+              "connectionId": "north-walk",
+              "id": "north-planks",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Top row",
+              "layout": "row",
+              "locationId": null,
+              "objectId": "walkway"
+            },
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r1c0",
+                "r1c1",
+                "r1c2"
+              ],
+              "cells": [
+                {
+                  "allowed": true,
+                  "id": "r1c0",
+                  "reasonCode": null,
+                  "selected": false
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c1",
+                  "reasonCode": null,
+                  "selected": false
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c2",
+                  "reasonCode": null,
+                  "selected": false
+                }
+              ],
+              "connectionId": "south-walk",
+              "id": "south-planks",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Bottom row",
+              "layout": "row",
+              "locationId": null,
+              "objectId": "walkway"
+            },
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r0c0",
+                "r0c1",
+                "r0c2",
+                "r1c0",
+                "r1c1",
+                "r1c2"
+              ],
+              "cells": [
+                {
+                  "allowed": true,
+                  "id": "r0c0",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c1",
+                  "reasonCode": null,
+                  "selected": false
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c2",
+                  "reasonCode": null,
+                  "selected": false
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c0",
+                  "reasonCode": null,
+                  "selected": false
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c1",
+                  "reasonCode": null,
+                  "selected": false
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c2",
+                  "reasonCode": null,
+                  "selected": false
+                }
+              ],
+              "connectionId": null,
+              "id": "whole-walkway",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Two-row rectangle",
+              "layout": "object",
+              "locationId": "hub",
+              "objectId": "walkway"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "area-display",
+              "inputId": null,
+              "kind": "equation",
+              "label": "Area equality",
+              "layout": "object",
+              "locationId": "hub",
+              "objectId": "area-equation"
+            }
+          ],
+          "tools": [
+            {
+              "available": true,
+              "componentId": "workbench",
+              "entityId": "bench",
+              "label": "Build and count at the hub"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "toggle_tile",
+        "geometry": {
+          "desktopStageHeightPx": 1000,
+          "mobileStageHeightPx": 1300,
+          "tabletStageHeightPx": 1300
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "cells": [
+                "r0c0",
+                "r0c1",
+                "r0c2"
+              ],
+              "columns": 3,
+              "rows": 2
+            },
+            "kind": "grid",
+            "materials": [
+              {
+                "id": "tiles",
+                "items": [],
+                "kind": "unit_tiles",
+                "quantity": 6,
+                "text": null
+              },
+              {
+                "id": "mission",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Cover the two-row garden walkway with unit tiles. Each complete row opens its own walk. You can test either walk and return. Show the rectangle's side lengths and area as a multiplication, then inspect the hub to finish."
+              }
+            ],
+            "objectId": "walkway"
+          },
+          {
+            "boundValues": {
+              "left": 0,
+              "result": 0,
+              "right": 0
+            },
+            "kind": "equation",
+            "materials": [
+              {
+                "id": "mission",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Cover the two-row garden walkway with unit tiles. Each complete row opens its own walk. You can test either walk and return. Show the rectangle's side lengths and area as a multiplication, then inspect the hub to finish."
+              }
+            ],
+            "objectId": "area-equation"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "walk",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "hub",
+                  "reasonCode": "stage_destination_not_adjacent"
+                },
+                {
+                  "allowed": true,
+                  "id": "north",
+                  "reasonCode": null
+                },
+                {
+                  "allowed": false,
+                  "id": "south",
+                  "reasonCode": "stage_connection_closed"
+                }
+              ]
+            },
+            {
+              "actionId": "finish-inspection",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "hub",
+                  "reasonCode": "action_guard_unsatisfied"
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "Cover the top row to open this walk.",
+              "fromLocation": "hub",
+              "id": "north-walk",
+              "label": "Flower walk",
+              "open": true,
+              "toLocation": "north"
+            },
+            {
+              "bidirectional": true,
+              "blockedLabel": "Cover the bottom row to open this walk.",
+              "fromLocation": "hub",
+              "id": "south-walk",
+              "label": "Tree walk",
+              "open": false,
+              "toLocation": "south"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "walk"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "walker",
+              "kind": "actor",
+              "label": "Garden walker",
+              "locationId": "hub",
+              "objectId": "walker-piece",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "gear",
+              "currentStatus": "idle",
+              "id": "bench",
+              "kind": "device",
+              "label": "Walkway workbench",
+              "locationId": "hub",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": "walkway",
+              "toolComponentIds": [
+                "workbench"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "flower",
+              "currentStatus": "active",
+              "id": "flower-lookout",
+              "kind": "destination",
+              "label": "Flower lookout",
+              "locationId": "north",
+              "objectId": null,
+              "reactionText": "The flower walk is open.",
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "tree",
+              "currentStatus": "idle",
+              "id": "tree-nook",
+              "kind": "destination",
+              "label": "Tree nook",
+              "locationId": "south",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "finish-inspection"
+              ],
+              "capacity": 4,
+              "id": "hub",
+              "inspected": false,
+              "label": "Garden hub",
+              "x": 48,
+              "y": 50
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 2,
+              "id": "north",
+              "inspected": false,
+              "label": "Flower lookout",
+              "x": 82,
+              "y": 20
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 2,
+              "id": "south",
+              "inspected": false,
+              "label": "Tree nook",
+              "x": 82,
+              "y": 80
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "flower-lookout",
+              "id": "north-ready",
+              "status": "active",
+              "text": "The flower walk is open."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r0c0",
+                "r0c1",
+                "r0c2"
+              ],
+              "cells": [
+                {
+                  "allowed": true,
+                  "id": "r0c0",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c1",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c2",
+                  "reasonCode": null,
+                  "selected": true
+                }
+              ],
+              "connectionId": "north-walk",
+              "id": "north-planks",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Top row",
+              "layout": "row",
+              "locationId": null,
+              "objectId": "walkway"
+            },
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r1c0",
+                "r1c1",
+                "r1c2"
+              ],
+              "cells": [
+                {
+                  "allowed": true,
+                  "id": "r1c0",
+                  "reasonCode": null,
+                  "selected": false
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c1",
+                  "reasonCode": null,
+                  "selected": false
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c2",
+                  "reasonCode": null,
+                  "selected": false
+                }
+              ],
+              "connectionId": "south-walk",
+              "id": "south-planks",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Bottom row",
+              "layout": "row",
+              "locationId": null,
+              "objectId": "walkway"
+            },
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r0c0",
+                "r0c1",
+                "r0c2",
+                "r1c0",
+                "r1c1",
+                "r1c2"
+              ],
+              "cells": [
+                {
+                  "allowed": true,
+                  "id": "r0c0",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c1",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c2",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c0",
+                  "reasonCode": null,
+                  "selected": false
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c1",
+                  "reasonCode": null,
+                  "selected": false
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c2",
+                  "reasonCode": null,
+                  "selected": false
+                }
+              ],
+              "connectionId": null,
+              "id": "whole-walkway",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Two-row rectangle",
+              "layout": "object",
+              "locationId": "hub",
+              "objectId": "walkway"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "area-display",
+              "inputId": null,
+              "kind": "equation",
+              "label": "Area equality",
+              "layout": "object",
+              "locationId": "hub",
+              "objectId": "area-equation"
+            }
+          ],
+          "tools": [
+            {
+              "available": true,
+              "componentId": "workbench",
+              "entityId": "bench",
+              "label": "Build and count at the hub"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "toggle_tile",
+        "geometry": {
+          "desktopStageHeightPx": 1000,
+          "mobileStageHeightPx": 1300,
+          "tabletStageHeightPx": 1300
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "cells": [
+                "r0c0",
+                "r0c1",
+                "r0c2",
+                "r1c0"
+              ],
+              "columns": 3,
+              "rows": 2
+            },
+            "kind": "grid",
+            "materials": [
+              {
+                "id": "tiles",
+                "items": [],
+                "kind": "unit_tiles",
+                "quantity": 6,
+                "text": null
+              },
+              {
+                "id": "mission",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Cover the two-row garden walkway with unit tiles. Each complete row opens its own walk. You can test either walk and return. Show the rectangle's side lengths and area as a multiplication, then inspect the hub to finish."
+              }
+            ],
+            "objectId": "walkway"
+          },
+          {
+            "boundValues": {
+              "left": 0,
+              "result": 0,
+              "right": 0
+            },
+            "kind": "equation",
+            "materials": [
+              {
+                "id": "mission",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Cover the two-row garden walkway with unit tiles. Each complete row opens its own walk. You can test either walk and return. Show the rectangle's side lengths and area as a multiplication, then inspect the hub to finish."
+              }
+            ],
+            "objectId": "area-equation"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "walk",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "hub",
+                  "reasonCode": "stage_destination_not_adjacent"
+                },
+                {
+                  "allowed": true,
+                  "id": "north",
+                  "reasonCode": null
+                },
+                {
+                  "allowed": false,
+                  "id": "south",
+                  "reasonCode": "stage_connection_closed"
+                }
+              ]
+            },
+            {
+              "actionId": "finish-inspection",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "hub",
+                  "reasonCode": "action_guard_unsatisfied"
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "Cover the top row to open this walk.",
+              "fromLocation": "hub",
+              "id": "north-walk",
+              "label": "Flower walk",
+              "open": true,
+              "toLocation": "north"
+            },
+            {
+              "bidirectional": true,
+              "blockedLabel": "Cover the bottom row to open this walk.",
+              "fromLocation": "hub",
+              "id": "south-walk",
+              "label": "Tree walk",
+              "open": false,
+              "toLocation": "south"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "walk"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "walker",
+              "kind": "actor",
+              "label": "Garden walker",
+              "locationId": "hub",
+              "objectId": "walker-piece",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "gear",
+              "currentStatus": "idle",
+              "id": "bench",
+              "kind": "device",
+              "label": "Walkway workbench",
+              "locationId": "hub",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": "walkway",
+              "toolComponentIds": [
+                "workbench"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "flower",
+              "currentStatus": "active",
+              "id": "flower-lookout",
+              "kind": "destination",
+              "label": "Flower lookout",
+              "locationId": "north",
+              "objectId": null,
+              "reactionText": "The flower walk is open.",
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "tree",
+              "currentStatus": "idle",
+              "id": "tree-nook",
+              "kind": "destination",
+              "label": "Tree nook",
+              "locationId": "south",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "finish-inspection"
+              ],
+              "capacity": 4,
+              "id": "hub",
+              "inspected": false,
+              "label": "Garden hub",
+              "x": 48,
+              "y": 50
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 2,
+              "id": "north",
+              "inspected": false,
+              "label": "Flower lookout",
+              "x": 82,
+              "y": 20
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 2,
+              "id": "south",
+              "inspected": false,
+              "label": "Tree nook",
+              "x": 82,
+              "y": 80
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "flower-lookout",
+              "id": "north-ready",
+              "status": "active",
+              "text": "The flower walk is open."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r0c0",
+                "r0c1",
+                "r0c2"
+              ],
+              "cells": [
+                {
+                  "allowed": true,
+                  "id": "r0c0",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c1",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c2",
+                  "reasonCode": null,
+                  "selected": true
+                }
+              ],
+              "connectionId": "north-walk",
+              "id": "north-planks",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Top row",
+              "layout": "row",
+              "locationId": null,
+              "objectId": "walkway"
+            },
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r1c0",
+                "r1c1",
+                "r1c2"
+              ],
+              "cells": [
+                {
+                  "allowed": true,
+                  "id": "r1c0",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c1",
+                  "reasonCode": null,
+                  "selected": false
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c2",
+                  "reasonCode": null,
+                  "selected": false
+                }
+              ],
+              "connectionId": "south-walk",
+              "id": "south-planks",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Bottom row",
+              "layout": "row",
+              "locationId": null,
+              "objectId": "walkway"
+            },
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r0c0",
+                "r0c1",
+                "r0c2",
+                "r1c0",
+                "r1c1",
+                "r1c2"
+              ],
+              "cells": [
+                {
+                  "allowed": true,
+                  "id": "r0c0",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c1",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c2",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c0",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c1",
+                  "reasonCode": null,
+                  "selected": false
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c2",
+                  "reasonCode": null,
+                  "selected": false
+                }
+              ],
+              "connectionId": null,
+              "id": "whole-walkway",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Two-row rectangle",
+              "layout": "object",
+              "locationId": "hub",
+              "objectId": "walkway"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "area-display",
+              "inputId": null,
+              "kind": "equation",
+              "label": "Area equality",
+              "layout": "object",
+              "locationId": "hub",
+              "objectId": "area-equation"
+            }
+          ],
+          "tools": [
+            {
+              "available": true,
+              "componentId": "workbench",
+              "entityId": "bench",
+              "label": "Build and count at the hub"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "toggle_tile",
+        "geometry": {
+          "desktopStageHeightPx": 1000,
+          "mobileStageHeightPx": 1300,
+          "tabletStageHeightPx": 1300
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "cells": [
+                "r0c0",
+                "r0c1",
+                "r0c2",
+                "r1c0",
+                "r1c1",
+                "r1c2"
+              ],
+              "columns": 3,
+              "rows": 2
+            },
+            "kind": "grid",
+            "materials": [
+              {
+                "id": "tiles",
+                "items": [],
+                "kind": "unit_tiles",
+                "quantity": 6,
+                "text": null
+              },
+              {
+                "id": "mission",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Cover the two-row garden walkway with unit tiles. Each complete row opens its own walk. You can test either walk and return. Show the rectangle's side lengths and area as a multiplication, then inspect the hub to finish."
+              }
+            ],
+            "objectId": "walkway"
+          },
+          {
+            "boundValues": {
+              "left": 0,
+              "result": 0,
+              "right": 0
+            },
+            "kind": "equation",
+            "materials": [
+              {
+                "id": "mission",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Cover the two-row garden walkway with unit tiles. Each complete row opens its own walk. You can test either walk and return. Show the rectangle's side lengths and area as a multiplication, then inspect the hub to finish."
+              }
+            ],
+            "objectId": "area-equation"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "walk",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "hub",
+                  "reasonCode": "stage_destination_not_adjacent"
+                },
+                {
+                  "allowed": true,
+                  "id": "north",
+                  "reasonCode": null
+                },
+                {
+                  "allowed": true,
+                  "id": "south",
+                  "reasonCode": null
+                }
+              ]
+            },
+            {
+              "actionId": "finish-inspection",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "hub",
+                  "reasonCode": "action_guard_unsatisfied"
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "Cover the top row to open this walk.",
+              "fromLocation": "hub",
+              "id": "north-walk",
+              "label": "Flower walk",
+              "open": true,
+              "toLocation": "north"
+            },
+            {
+              "bidirectional": true,
+              "blockedLabel": "Cover the bottom row to open this walk.",
+              "fromLocation": "hub",
+              "id": "south-walk",
+              "label": "Tree walk",
+              "open": true,
+              "toLocation": "south"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "walk"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "walker",
+              "kind": "actor",
+              "label": "Garden walker",
+              "locationId": "hub",
+              "objectId": "walker-piece",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "gear",
+              "currentStatus": "active",
+              "id": "bench",
+              "kind": "device",
+              "label": "Walkway workbench",
+              "locationId": "hub",
+              "objectId": null,
+              "reactionText": "Both rows are covered. Show their area and inspect the hub when ready.",
+              "representationObjectId": "walkway",
+              "toolComponentIds": [
+                "workbench"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "flower",
+              "currentStatus": "active",
+              "id": "flower-lookout",
+              "kind": "destination",
+              "label": "Flower lookout",
+              "locationId": "north",
+              "objectId": null,
+              "reactionText": "The flower walk is open.",
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "tree",
+              "currentStatus": "active",
+              "id": "tree-nook",
+              "kind": "destination",
+              "label": "Tree nook",
+              "locationId": "south",
+              "objectId": null,
+              "reactionText": "The tree walk is open.",
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "finish-inspection"
+              ],
+              "capacity": 4,
+              "id": "hub",
+              "inspected": false,
+              "label": "Garden hub",
+              "x": 48,
+              "y": 50
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 2,
+              "id": "north",
+              "inspected": false,
+              "label": "Flower lookout",
+              "x": 82,
+              "y": 20
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 2,
+              "id": "south",
+              "inspected": false,
+              "label": "Tree nook",
+              "x": 82,
+              "y": 80
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "flower-lookout",
+              "id": "north-ready",
+              "status": "active",
+              "text": "The flower walk is open."
+            },
+            {
+              "entityId": "tree-nook",
+              "id": "south-ready",
+              "status": "active",
+              "text": "The tree walk is open."
+            },
+            {
+              "entityId": "bench",
+              "id": "tiles-ready",
+              "status": "active",
+              "text": "Both rows are covered. Show their area and inspect the hub when ready."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r0c0",
+                "r0c1",
+                "r0c2"
+              ],
+              "cells": [
+                {
+                  "allowed": true,
+                  "id": "r0c0",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c1",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c2",
+                  "reasonCode": null,
+                  "selected": true
+                }
+              ],
+              "connectionId": "north-walk",
+              "id": "north-planks",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Top row",
+              "layout": "row",
+              "locationId": null,
+              "objectId": "walkway"
+            },
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r1c0",
+                "r1c1",
+                "r1c2"
+              ],
+              "cells": [
+                {
+                  "allowed": true,
+                  "id": "r1c0",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c1",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c2",
+                  "reasonCode": null,
+                  "selected": true
+                }
+              ],
+              "connectionId": "south-walk",
+              "id": "south-planks",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Bottom row",
+              "layout": "row",
+              "locationId": null,
+              "objectId": "walkway"
+            },
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r0c0",
+                "r0c1",
+                "r0c2",
+                "r1c0",
+                "r1c1",
+                "r1c2"
+              ],
+              "cells": [
+                {
+                  "allowed": true,
+                  "id": "r0c0",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c1",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c2",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c0",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c1",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c2",
+                  "reasonCode": null,
+                  "selected": true
+                }
+              ],
+              "connectionId": null,
+              "id": "whole-walkway",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Two-row rectangle",
+              "layout": "object",
+              "locationId": "hub",
+              "objectId": "walkway"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "area-display",
+              "inputId": null,
+              "kind": "equation",
+              "label": "Area equality",
+              "layout": "object",
+              "locationId": "hub",
+              "objectId": "area-equation"
+            }
+          ],
+          "tools": [
+            {
+              "available": true,
+              "componentId": "workbench",
+              "entityId": "bench",
+              "label": "Build and count at the hub"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "assemble_product",
+        "geometry": {
+          "desktopStageHeightPx": 1000,
+          "mobileStageHeightPx": 1300,
+          "tabletStageHeightPx": 1300
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "cells": [
+                "r0c0",
+                "r0c1",
+                "r0c2",
+                "r1c0",
+                "r1c1",
+                "r1c2"
+              ],
+              "columns": 3,
+              "rows": 2
+            },
+            "kind": "grid",
+            "materials": [
+              {
+                "id": "tiles",
+                "items": [],
+                "kind": "unit_tiles",
+                "quantity": 6,
+                "text": null
+              },
+              {
+                "id": "mission",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Cover the two-row garden walkway with unit tiles. Each complete row opens its own walk. You can test either walk and return. Show the rectangle's side lengths and area as a multiplication, then inspect the hub to finish."
+              }
+            ],
+            "objectId": "walkway"
+          },
+          {
+            "boundValues": {
+              "left": 2,
+              "result": 6,
+              "right": 3
+            },
+            "kind": "equation",
+            "materials": [
+              {
+                "id": "mission",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Cover the two-row garden walkway with unit tiles. Each complete row opens its own walk. You can test either walk and return. Show the rectangle's side lengths and area as a multiplication, then inspect the hub to finish."
+              }
+            ],
+            "objectId": "area-equation"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "walk",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "hub",
+                  "reasonCode": "stage_destination_not_adjacent"
+                },
+                {
+                  "allowed": true,
+                  "id": "north",
+                  "reasonCode": null
+                },
+                {
+                  "allowed": true,
+                  "id": "south",
+                  "reasonCode": null
+                }
+              ]
+            },
+            {
+              "actionId": "finish-inspection",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": true,
+                  "id": "hub",
+                  "reasonCode": null
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "Cover the top row to open this walk.",
+              "fromLocation": "hub",
+              "id": "north-walk",
+              "label": "Flower walk",
+              "open": true,
+              "toLocation": "north"
+            },
+            {
+              "bidirectional": true,
+              "blockedLabel": "Cover the bottom row to open this walk.",
+              "fromLocation": "hub",
+              "id": "south-walk",
+              "label": "Tree walk",
+              "open": true,
+              "toLocation": "south"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "walk"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "walker",
+              "kind": "actor",
+              "label": "Garden walker",
+              "locationId": "hub",
+              "objectId": "walker-piece",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "gear",
+              "currentStatus": "active",
+              "id": "bench",
+              "kind": "device",
+              "label": "Walkway workbench",
+              "locationId": "hub",
+              "objectId": null,
+              "reactionText": "Both rows are covered. Show their area and inspect the hub when ready.",
+              "representationObjectId": "walkway",
+              "toolComponentIds": [
+                "workbench"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "flower",
+              "currentStatus": "active",
+              "id": "flower-lookout",
+              "kind": "destination",
+              "label": "Flower lookout",
+              "locationId": "north",
+              "objectId": null,
+              "reactionText": "The flower walk is open.",
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "tree",
+              "currentStatus": "active",
+              "id": "tree-nook",
+              "kind": "destination",
+              "label": "Tree nook",
+              "locationId": "south",
+              "objectId": null,
+              "reactionText": "The tree walk is open.",
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "finish-inspection"
+              ],
+              "capacity": 4,
+              "id": "hub",
+              "inspected": false,
+              "label": "Garden hub",
+              "x": 48,
+              "y": 50
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 2,
+              "id": "north",
+              "inspected": false,
+              "label": "Flower lookout",
+              "x": 82,
+              "y": 20
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 2,
+              "id": "south",
+              "inspected": false,
+              "label": "Tree nook",
+              "x": 82,
+              "y": 80
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "flower-lookout",
+              "id": "north-ready",
+              "status": "active",
+              "text": "The flower walk is open."
+            },
+            {
+              "entityId": "tree-nook",
+              "id": "south-ready",
+              "status": "active",
+              "text": "The tree walk is open."
+            },
+            {
+              "entityId": "bench",
+              "id": "tiles-ready",
+              "status": "active",
+              "text": "Both rows are covered. Show their area and inspect the hub when ready."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r0c0",
+                "r0c1",
+                "r0c2"
+              ],
+              "cells": [
+                {
+                  "allowed": true,
+                  "id": "r0c0",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c1",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c2",
+                  "reasonCode": null,
+                  "selected": true
+                }
+              ],
+              "connectionId": "north-walk",
+              "id": "north-planks",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Top row",
+              "layout": "row",
+              "locationId": null,
+              "objectId": "walkway"
+            },
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r1c0",
+                "r1c1",
+                "r1c2"
+              ],
+              "cells": [
+                {
+                  "allowed": true,
+                  "id": "r1c0",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c1",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c2",
+                  "reasonCode": null,
+                  "selected": true
+                }
+              ],
+              "connectionId": "south-walk",
+              "id": "south-planks",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Bottom row",
+              "layout": "row",
+              "locationId": null,
+              "objectId": "walkway"
+            },
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r0c0",
+                "r0c1",
+                "r0c2",
+                "r1c0",
+                "r1c1",
+                "r1c2"
+              ],
+              "cells": [
+                {
+                  "allowed": true,
+                  "id": "r0c0",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c1",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r0c2",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c0",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c1",
+                  "reasonCode": null,
+                  "selected": true
+                },
+                {
+                  "allowed": true,
+                  "id": "r1c2",
+                  "reasonCode": null,
+                  "selected": true
+                }
+              ],
+              "connectionId": null,
+              "id": "whole-walkway",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Two-row rectangle",
+              "layout": "object",
+              "locationId": "hub",
+              "objectId": "walkway"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "area-display",
+              "inputId": null,
+              "kind": "equation",
+              "label": "Area equality",
+              "layout": "object",
+              "locationId": "hub",
+              "objectId": "area-equation"
+            }
+          ],
+          "tools": [
+            {
+              "available": true,
+              "componentId": "workbench",
+              "entityId": "bench",
+              "label": "Build and count at the hub"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "inspect_location",
+        "geometry": {
+          "desktopStageHeightPx": 1000,
+          "mobileStageHeightPx": 1300,
+          "tabletStageHeightPx": 1300
+        },
+        "missionComplete": true,
+        "representations": [
+          {
+            "boundValues": {
+              "cells": [
+                "r0c0",
+                "r0c1",
+                "r0c2",
+                "r1c0",
+                "r1c1",
+                "r1c2"
+              ],
+              "columns": 3,
+              "rows": 2
+            },
+            "kind": "grid",
+            "materials": [
+              {
+                "id": "tiles",
+                "items": [],
+                "kind": "unit_tiles",
+                "quantity": 6,
+                "text": null
+              },
+              {
+                "id": "mission",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Cover the two-row garden walkway with unit tiles. Each complete row opens its own walk. You can test either walk and return. Show the rectangle's side lengths and area as a multiplication, then inspect the hub to finish."
+              }
+            ],
+            "objectId": "walkway"
+          },
+          {
+            "boundValues": {
+              "left": 2,
+              "result": 6,
+              "right": 3
+            },
+            "kind": "equation",
+            "materials": [
+              {
+                "id": "mission",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Cover the two-row garden walkway with unit tiles. Each complete row opens its own walk. You can test either walk and return. Show the rectangle's side lengths and area as a multiplication, then inspect the hub to finish."
+              }
+            ],
+            "objectId": "area-equation"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "walk",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "hub",
+                  "reasonCode": "mission_already_complete"
+                },
+                {
+                  "allowed": false,
+                  "id": "north",
+                  "reasonCode": "mission_already_complete"
+                },
+                {
+                  "allowed": false,
+                  "id": "south",
+                  "reasonCode": "mission_already_complete"
+                }
+              ]
+            },
+            {
+              "actionId": "finish-inspection",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "hub",
+                  "reasonCode": "mission_already_complete"
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "Cover the top row to open this walk.",
+              "fromLocation": "hub",
+              "id": "north-walk",
+              "label": "Flower walk",
+              "open": true,
+              "toLocation": "north"
+            },
+            {
+              "bidirectional": true,
+              "blockedLabel": "Cover the bottom row to open this walk.",
+              "fromLocation": "hub",
+              "id": "south-walk",
+              "label": "Tree walk",
+              "open": true,
+              "toLocation": "south"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "walk"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "walker",
+              "kind": "actor",
+              "label": "Garden walker",
+              "locationId": "hub",
+              "objectId": "walker-piece",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "gear",
+              "currentStatus": "active",
+              "id": "bench",
+              "kind": "device",
+              "label": "Walkway workbench",
+              "locationId": "hub",
+              "objectId": null,
+              "reactionText": "Both rows are covered. Show their area and inspect the hub when ready.",
+              "representationObjectId": "walkway",
+              "toolComponentIds": [
+                "workbench"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "flower",
+              "currentStatus": "active",
+              "id": "flower-lookout",
+              "kind": "destination",
+              "label": "Flower lookout",
+              "locationId": "north",
+              "objectId": null,
+              "reactionText": "The flower walk is open.",
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "tree",
+              "currentStatus": "active",
+              "id": "tree-nook",
+              "kind": "destination",
+              "label": "Tree nook",
+              "locationId": "south",
+              "objectId": null,
+              "reactionText": "The tree walk is open.",
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "finish-inspection"
+              ],
+              "capacity": 4,
+              "id": "hub",
+              "inspected": true,
+              "label": "Garden hub",
+              "x": 48,
+              "y": 50
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 2,
+              "id": "north",
+              "inspected": false,
+              "label": "Flower lookout",
+              "x": 82,
+              "y": 20
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 2,
+              "id": "south",
+              "inspected": false,
+              "label": "Tree nook",
+              "x": 82,
+              "y": 80
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "flower-lookout",
+              "id": "north-ready",
+              "status": "active",
+              "text": "The flower walk is open."
+            },
+            {
+              "entityId": "tree-nook",
+              "id": "south-ready",
+              "status": "active",
+              "text": "The tree walk is open."
+            },
+            {
+              "entityId": "bench",
+              "id": "tiles-ready",
+              "status": "active",
+              "text": "Both rows are covered. Show their area and inspect the hub when ready."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r0c0",
+                "r0c1",
+                "r0c2"
+              ],
+              "cells": [
+                {
+                  "allowed": false,
+                  "id": "r0c0",
+                  "reasonCode": "mission_already_complete",
+                  "selected": true
+                },
+                {
+                  "allowed": false,
+                  "id": "r0c1",
+                  "reasonCode": "mission_already_complete",
+                  "selected": true
+                },
+                {
+                  "allowed": false,
+                  "id": "r0c2",
+                  "reasonCode": "mission_already_complete",
+                  "selected": true
+                }
+              ],
+              "connectionId": "north-walk",
+              "id": "north-planks",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Top row",
+              "layout": "row",
+              "locationId": null,
+              "objectId": "walkway"
+            },
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r1c0",
+                "r1c1",
+                "r1c2"
+              ],
+              "cells": [
+                {
+                  "allowed": false,
+                  "id": "r1c0",
+                  "reasonCode": "mission_already_complete",
+                  "selected": true
+                },
+                {
+                  "allowed": false,
+                  "id": "r1c1",
+                  "reasonCode": "mission_already_complete",
+                  "selected": true
+                },
+                {
+                  "allowed": false,
+                  "id": "r1c2",
+                  "reasonCode": "mission_already_complete",
+                  "selected": true
+                }
+              ],
+              "connectionId": "south-walk",
+              "id": "south-planks",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Bottom row",
+              "layout": "row",
+              "locationId": null,
+              "objectId": "walkway"
+            },
+            {
+              "actionId": "tile",
+              "cellIds": [
+                "r0c0",
+                "r0c1",
+                "r0c2",
+                "r1c0",
+                "r1c1",
+                "r1c2"
+              ],
+              "cells": [
+                {
+                  "allowed": false,
+                  "id": "r0c0",
+                  "reasonCode": "mission_already_complete",
+                  "selected": true
+                },
+                {
+                  "allowed": false,
+                  "id": "r0c1",
+                  "reasonCode": "mission_already_complete",
+                  "selected": true
+                },
+                {
+                  "allowed": false,
+                  "id": "r0c2",
+                  "reasonCode": "mission_already_complete",
+                  "selected": true
+                },
+                {
+                  "allowed": false,
+                  "id": "r1c0",
+                  "reasonCode": "mission_already_complete",
+                  "selected": true
+                },
+                {
+                  "allowed": false,
+                  "id": "r1c1",
+                  "reasonCode": "mission_already_complete",
+                  "selected": true
+                },
+                {
+                  "allowed": false,
+                  "id": "r1c2",
+                  "reasonCode": "mission_already_complete",
+                  "selected": true
+                }
+              ],
+              "connectionId": null,
+              "id": "whole-walkway",
+              "inputId": "cell",
+              "kind": "grid",
+              "label": "Two-row rectangle",
+              "layout": "object",
+              "locationId": "hub",
+              "objectId": "walkway"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "area-display",
+              "inputId": null,
+              "kind": "equation",
+              "label": "Area equality",
+              "layout": "object",
+              "locationId": "hub",
+              "objectId": "area-equation"
+            }
+          ],
+          "tools": [
+            {
+              "available": true,
+              "componentId": "workbench",
+              "entityId": "bench",
+              "label": "Build and count at the hub"
+            }
+          ]
+        }
+      }
+    ],
+    "counterfactual": {
+      "completedWithoutConcept": false,
+      "exhaustedDeclaredWorldOnlySearch": true,
+      "limit": "64 distinct states and 256 attempted world transitions; not general solvability proof",
+      "statesChecked": 1,
+      "transitionsChecked": 4
+    },
+    "initialGeometry": {
+      "desktopStageHeightPx": 1000,
+      "mobileStageHeightPx": 1300,
+      "tabletStageHeightPx": 1300
+    },
+    "initialRepresentations": [
+      {
+        "boundValues": {
+          "cells": [],
+          "columns": 3,
+          "rows": 2
+        },
+        "kind": "grid",
+        "materials": [
+          {
+            "id": "tiles",
+            "items": [],
+            "kind": "unit_tiles",
+            "quantity": 6,
+            "text": null
+          },
+          {
+            "id": "mission",
+            "items": [],
+            "kind": "prompt",
+            "quantity": null,
+            "text": "Cover the two-row garden walkway with unit tiles. Each complete row opens its own walk. You can test either walk and return. Show the rectangle's side lengths and area as a multiplication, then inspect the hub to finish."
+          }
+        ],
+        "objectId": "walkway"
+      },
+      {
+        "boundValues": {
+          "left": 0,
+          "result": 0,
+          "right": 0
+        },
+        "kind": "equation",
+        "materials": [
+          {
+            "id": "mission",
+            "items": [],
+            "kind": "prompt",
+            "quantity": null,
+            "text": "Cover the two-row garden walkway with unit tiles. Each complete row opens its own walk. You can test either walk and return. Show the rectangle's side lengths and area as a multiplication, then inspect the hub to finish."
+          }
+        ],
+        "objectId": "area-equation"
+      }
+    ],
+    "initialStage": {
+      "actionTargets": [
+        {
+          "actionId": "walk",
+          "inputId": "destination",
+          "targets": [
+            {
+              "allowed": false,
+              "id": "hub",
+              "reasonCode": "stage_destination_not_adjacent"
+            },
+            {
+              "allowed": false,
+              "id": "north",
+              "reasonCode": "stage_connection_closed"
+            },
+            {
+              "allowed": false,
+              "id": "south",
+              "reasonCode": "stage_connection_closed"
+            }
+          ]
+        },
+        {
+          "actionId": "finish-inspection",
+          "inputId": "location",
+          "targets": [
+            {
+              "allowed": false,
+              "id": "hub",
+              "reasonCode": "action_guard_unsatisfied"
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "bidirectional": true,
+          "blockedLabel": "Cover the top row to open this walk.",
+          "fromLocation": "hub",
+          "id": "north-walk",
+          "label": "Flower walk",
+          "open": false,
+          "toLocation": "north"
+        },
+        {
+          "bidirectional": true,
+          "blockedLabel": "Cover the bottom row to open this walk.",
+          "fromLocation": "hub",
+          "id": "south-walk",
+          "label": "Tree walk",
+          "open": false,
+          "toLocation": "south"
+        }
+      ],
+      "entities": [
+        {
+          "actionIds": [
+            "walk"
+          ],
+          "asset": "person",
+          "currentStatus": "idle",
+          "id": "walker",
+          "kind": "actor",
+          "label": "Garden walker",
+          "locationId": "hub",
+          "objectId": "walker-piece",
+          "reactionText": null,
+          "representationObjectId": null,
+          "toolComponentIds": []
+        },
+        {
+          "actionIds": [],
+          "asset": "gear",
+          "currentStatus": "idle",
+          "id": "bench",
+          "kind": "device",
+          "label": "Walkway workbench",
+          "locationId": "hub",
+          "objectId": null,
+          "reactionText": null,
+          "representationObjectId": "walkway",
+          "toolComponentIds": [
+            "workbench"
+          ]
+        },
+        {
+          "actionIds": [],
+          "asset": "flower",
+          "currentStatus": "idle",
+          "id": "flower-lookout",
+          "kind": "destination",
+          "label": "Flower lookout",
+          "locationId": "north",
+          "objectId": null,
+          "reactionText": null,
+          "representationObjectId": null,
+          "toolComponentIds": []
+        },
+        {
+          "actionIds": [],
+          "asset": "tree",
+          "currentStatus": "idle",
+          "id": "tree-nook",
+          "kind": "destination",
+          "label": "Tree nook",
+          "locationId": "south",
+          "objectId": null,
+          "reactionText": null,
+          "representationObjectId": null,
+          "toolComponentIds": []
+        }
+      ],
+      "locations": [
+        {
+          "accepts": "any",
+          "actionIds": [
+            "finish-inspection"
+          ],
+          "capacity": 4,
+          "id": "hub",
+          "inspected": false,
+          "label": "Garden hub",
+          "x": 48,
+          "y": 50
+        },
+        {
+          "accepts": "any",
+          "actionIds": [],
+          "capacity": 2,
+          "id": "north",
+          "inspected": false,
+          "label": "Flower lookout",
+          "x": 82,
+          "y": 20
+        },
+        {
+          "accepts": "any",
+          "actionIds": [],
+          "capacity": 2,
+          "id": "south",
+          "inspected": false,
+          "label": "Tree nook",
+          "x": 82,
+          "y": 80
+        }
+      ],
+      "reactions": [],
+      "surfaces": [
+        {
+          "actionId": "tile",
+          "cellIds": [
+            "r0c0",
+            "r0c1",
+            "r0c2"
+          ],
+          "cells": [
+            {
+              "allowed": true,
+              "id": "r0c0",
+              "reasonCode": null,
+              "selected": false
+            },
+            {
+              "allowed": true,
+              "id": "r0c1",
+              "reasonCode": null,
+              "selected": false
+            },
+            {
+              "allowed": true,
+              "id": "r0c2",
+              "reasonCode": null,
+              "selected": false
+            }
+          ],
+          "connectionId": "north-walk",
+          "id": "north-planks",
+          "inputId": "cell",
+          "kind": "grid",
+          "label": "Top row",
+          "layout": "row",
+          "locationId": null,
+          "objectId": "walkway"
+        },
+        {
+          "actionId": "tile",
+          "cellIds": [
+            "r1c0",
+            "r1c1",
+            "r1c2"
+          ],
+          "cells": [
+            {
+              "allowed": true,
+              "id": "r1c0",
+              "reasonCode": null,
+              "selected": false
+            },
+            {
+              "allowed": true,
+              "id": "r1c1",
+              "reasonCode": null,
+              "selected": false
+            },
+            {
+              "allowed": true,
+              "id": "r1c2",
+              "reasonCode": null,
+              "selected": false
+            }
+          ],
+          "connectionId": "south-walk",
+          "id": "south-planks",
+          "inputId": "cell",
+          "kind": "grid",
+          "label": "Bottom row",
+          "layout": "row",
+          "locationId": null,
+          "objectId": "walkway"
+        },
+        {
+          "actionId": "tile",
+          "cellIds": [
+            "r0c0",
+            "r0c1",
+            "r0c2",
+            "r1c0",
+            "r1c1",
+            "r1c2"
+          ],
+          "cells": [
+            {
+              "allowed": true,
+              "id": "r0c0",
+              "reasonCode": null,
+              "selected": false
+            },
+            {
+              "allowed": true,
+              "id": "r0c1",
+              "reasonCode": null,
+              "selected": false
+            },
+            {
+              "allowed": true,
+              "id": "r0c2",
+              "reasonCode": null,
+              "selected": false
+            },
+            {
+              "allowed": true,
+              "id": "r1c0",
+              "reasonCode": null,
+              "selected": false
+            },
+            {
+              "allowed": true,
+              "id": "r1c1",
+              "reasonCode": null,
+              "selected": false
+            },
+            {
+              "allowed": true,
+              "id": "r1c2",
+              "reasonCode": null,
+              "selected": false
+            }
+          ],
+          "connectionId": null,
+          "id": "whole-walkway",
+          "inputId": "cell",
+          "kind": "grid",
+          "label": "Two-row rectangle",
+          "layout": "object",
+          "locationId": "hub",
+          "objectId": "walkway"
+        },
+        {
+          "actionId": null,
+          "cellIds": [],
+          "cells": [],
+          "connectionId": null,
+          "id": "area-display",
+          "inputId": null,
+          "kind": "equation",
+          "label": "Area equality",
+          "layout": "object",
+          "locationId": "hub",
+          "objectId": "area-equation"
+        }
+      ],
+      "tools": [
+        {
+          "available": true,
+          "componentId": "workbench",
+          "entityId": "bench",
+          "label": "Build and count at the hub"
+        }
+      ]
+    },
+    "layout": {
+      "connections": [
+        {
+          "bidirectional": true,
+          "blockedLabel": "Cover the top row to open this walk.",
+          "fromLocation": "hub",
+          "id": "north-walk",
+          "label": "Flower walk",
+          "toLocation": "north",
+          "when": {
+            "conditions": [
+              {
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r0c0"
+                },
+                "kind": "contains"
+              },
+              {
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r0c1"
+                },
+                "kind": "contains"
+              },
+              {
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r0c2"
+                },
+                "kind": "contains"
+              }
+            ],
+            "kind": "all"
+          }
+        },
+        {
+          "bidirectional": true,
+          "blockedLabel": "Cover the bottom row to open this walk.",
+          "fromLocation": "hub",
+          "id": "south-walk",
+          "label": "Tree walk",
+          "toLocation": "south",
+          "when": {
+            "conditions": [
+              {
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r1c0"
+                },
+                "kind": "contains"
+              },
+              {
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r1c1"
+                },
+                "kind": "contains"
+              },
+              {
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r1c2"
+                },
+                "kind": "contains"
+              }
+            ],
+            "kind": "all"
+          }
+        }
+      ],
+      "entities": [
+        {
+          "asset": "person",
+          "id": "walker",
+          "kind": "actor",
+          "label": "Garden walker",
+          "locationId": null,
+          "objectId": "walker-piece",
+          "representationObjectId": null
+        },
+        {
+          "asset": "gear",
+          "id": "bench",
+          "kind": "device",
+          "label": "Walkway workbench",
+          "locationId": "hub",
+          "objectId": null,
+          "representationObjectId": "walkway"
+        },
+        {
+          "asset": "flower",
+          "id": "flower-lookout",
+          "kind": "destination",
+          "label": "Flower lookout",
+          "locationId": "north",
+          "objectId": null,
+          "representationObjectId": null
+        },
+        {
+          "asset": "tree",
+          "id": "tree-nook",
+          "kind": "destination",
+          "label": "Tree nook",
+          "locationId": "south",
+          "objectId": null,
+          "representationObjectId": null
+        }
+      ],
+      "locations": [
+        {
+          "accepts": "any",
+          "capacity": 4,
+          "id": "hub",
+          "label": "Garden hub",
+          "x": 48,
+          "y": 50
+        },
+        {
+          "accepts": "any",
+          "capacity": 2,
+          "id": "north",
+          "label": "Flower lookout",
+          "x": 82,
+          "y": 20
+        },
+        {
+          "accepts": "any",
+          "capacity": 2,
+          "id": "south",
+          "label": "Tree nook",
+          "x": 82,
+          "y": 80
+        }
+      ],
+      "reactions": [
+        {
+          "entityId": "flower-lookout",
+          "id": "north-ready",
+          "status": "active",
+          "text": "The flower walk is open.",
+          "when": {
+            "conditions": [
+              {
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r0c0"
+                },
+                "kind": "contains"
+              },
+              {
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r0c1"
+                },
+                "kind": "contains"
+              },
+              {
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r0c2"
+                },
+                "kind": "contains"
+              }
+            ],
+            "kind": "all"
+          }
+        },
+        {
+          "entityId": "tree-nook",
+          "id": "south-ready",
+          "status": "active",
+          "text": "The tree walk is open.",
+          "when": {
+            "conditions": [
+              {
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r1c0"
+                },
+                "kind": "contains"
+              },
+              {
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r1c1"
+                },
+                "kind": "contains"
+              },
+              {
+                "collection": {
+                  "kind": "state",
+                  "ref": "cells"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "r1c2"
+                },
+                "kind": "contains"
+              }
+            ],
+            "kind": "all"
+          }
+        },
+        {
+          "entityId": "bench",
+          "id": "tiles-ready",
+          "status": "active",
+          "text": "Both rows are covered. Show their area and inspect the hub when ready.",
+          "when": {
+            "kind": "compare",
+            "left": {
+              "args": [
+                {
+                  "kind": "state",
+                  "ref": "cells"
+                }
+              ],
+              "kind": "operator",
+              "op": "count"
+            },
+            "op": "eq",
+            "right": {
+              "kind": "literal",
+              "value": 6
+            }
+          }
+        }
+      ],
+      "surfaces": [
+        {
+          "actionId": "tile",
+          "cellIds": [
+            "r0c0",
+            "r0c1",
+            "r0c2"
+          ],
+          "connectionId": "north-walk",
+          "id": "north-planks",
+          "label": "Top row",
+          "layout": "row",
+          "locationId": null,
+          "objectId": "walkway",
+          "visibleWhen": {
+            "kind": "always"
+          }
+        },
+        {
+          "actionId": "tile",
+          "cellIds": [
+            "r1c0",
+            "r1c1",
+            "r1c2"
+          ],
+          "connectionId": "south-walk",
+          "id": "south-planks",
+          "label": "Bottom row",
+          "layout": "row",
+          "locationId": null,
+          "objectId": "walkway",
+          "visibleWhen": {
+            "kind": "always"
+          }
+        },
+        {
+          "actionId": "tile",
+          "cellIds": [],
+          "connectionId": null,
+          "id": "whole-walkway",
+          "label": "Two-row rectangle",
+          "layout": "object",
+          "locationId": "hub",
+          "objectId": "walkway",
+          "visibleWhen": {
+            "kind": "always"
+          }
+        },
+        {
+          "actionId": null,
+          "cellIds": [],
+          "connectionId": null,
+          "id": "area-display",
+          "label": "Area equality",
+          "layout": "object",
+          "locationId": "hub",
+          "objectId": "area-equation",
+          "visibleWhen": {
+            "kind": "always"
+          }
+        }
+      ],
+      "tools": [
+        {
+          "availableWhen": {
+            "kind": "compare",
+            "left": {
+              "kind": "state",
+              "ref": "walker-location"
+            },
+            "op": "eq",
+            "right": {
+              "kind": "literal",
+              "value": "hub"
+            }
+          },
+          "componentId": "workbench",
+          "entityId": "bench",
+          "label": "Build and count at the hub"
+        }
+      ]
+    },
+    "renderer": {
+      "accessibility": "Keyboard and touch buttons, responsive scrolling/layout and reduced-motion support",
+      "animation": "Accepted world movement animates left/top; reduced motion disables animation",
+      "consequences": "Server-derived from authoritative post-action state, with zero rule cascades",
+      "desktopGeometry": {
+        "bottomInsetPx": 78,
+        "contextualSidebarMinimumViewportPx": 1050,
+        "locationWidthPx": 92,
+        "sideInsetPx": 52,
+        "stageHeightPx": 1000,
+        "topInsetPx": 120
+      },
+      "gestures": "Native keyboard/click selection and location targets; drag for movable entities",
+      "mainSurface": "A spatial world stage with actionable locations/entities/connections",
+      "mobileGeometry": {
+        "actorIllustrationPx": 48,
+        "bottomInsetPx": 77,
+        "locationMinimumHeightPx": 62,
+        "locationWidthPx": 80,
+        "sideInsetPx": 45,
+        "stageHeightPx": 1300,
+        "topInsetPx": 118
+      },
+      "physicalSurfaces": {
+        "anchors": "Bounded clear-lane placement prefers declared route midpoint/location anchors, then avoids full artifact and native control bounds. A relocated path runs through the actual target footprint entry/exit ports; location mounts retain an anchor connector.",
+        "artifacts": "Actual saved text, literal selected evidence or bound expression",
+        "conditionalCanvasHeights": {
+          "anyVisibleLocationMount": {
+            "desktop": 620,
+            "mobile": 580,
+            "tablet": 580
+          },
+          "desktopMinimumViewportPx": 1050,
+          "mobileMaximumViewportPx": 520,
+          "noVisibleSurfaces": {
+            "desktop": 500,
+            "mobile": 410,
+            "tablet": 440
+          },
+          "pathCounting": "Distinct connection IDs from visible surfaces and all public construction targets, including hidden-source target-only frames",
+          "perAdditionalDistinctPath": {
+            "desktop": 220,
+            "mobile": 400,
+            "tablet": 400
+          },
+          "perVisibleLocationWhenMultiplePaths": {
+            "desktop": 80,
+            "mobile": 160,
+            "tablet": 160
+          },
+          "visiblePathSurfaces": {
+            "desktop": 550,
+            "mobile": 500,
+            "tablet": 500
+          }
+        },
+        "directActions": "Existing server-checked toggle_tile/toggle_fraction_piece with the same source object and input; readonly when no direct action or cells are too small",
+        "fraction": "Complete same-whole strip, fixed base columns and current denominator rows; never a selected-piece subset",
+        "fractionWholePx": {
+          "height": 112,
+          "width": 164
+        },
+        "grid": "Actual source cell IDs, selection and row/column coordinates; declared subset may form the actual route planks",
+        "limitation": "A rendered source-to-route relationship, not an additional physics or client-side scoring engine",
+        "minimumDirectCellPx": 24,
+        "placement": "Preferred anchors plus bounded five-column lanes in 24px vertical steps; overlap with native entity/location safety bounds and prior full artifacts outweighs distance. Bounds include actual/target geometry and headers/feedback.",
+        "visibility": "Display follows server-derived surface.visibleWhen and a bound visible presentation space for mutable sources; current tool availability controls editing separately. Display can persist readonly after travel; immutable references can be visible independently."
+      },
+      "representation": "Actual bound concept objects appear on visible entities and physical stage surfaces; sources are not copies or correctness badges",
+      "scope": "Render-contract and computed-state evidence, not actual child testing or a screenshot-based enjoyment claim",
+      "tools": "Contextual existing controls attached to stage entities; not the universal main layout"
+    },
+    "version": "sidekick-world-render-v1"
+  },
+  "structuralFingerprint": {
+    "digest": "7c29398a4b4990d42db7d71353c9c0e7f945e2be1ce32ab172dec4497dd7cc64",
+    "features": [
+      "action:assemble_product#1",
+      "action:inspect_location#1",
+      "action:move_actor#1",
+      "action:toggle_tile#1",
+      "completion:(goal)#1",
+      "component:math_workspace#1",
+      "component:world_stage#2",
+      "consequence:active:(all|conditions:[(contains|collection:state:grid.cells|item:literal:label),(contains|collection:state:grid.cells|item:literal:label),(contains|collection:state:grid.cells|item:literal:label)])#2",
+      "consequence:active:(compare|eq|left:(operator|count|args:[state:grid.cells])|right:literal:number)#1",
+      "edge:True:(all|conditions:[(contains|collection:state:grid.cells|item:literal:label),(contains|collection:state:grid.cells|item:literal:label),(contains|collection:state:grid.cells|item:literal:label)])#2",
+      "entity:actor:movable#1",
+      "entity:destination:fixed#2",
+      "entity:device:fixed#1",
+      "goal:(all|conditions:[(any|conditions:[(all|conditions:[(compare|eq|left:state:equation.left|right:state:grid.columns),(compare|eq|left:state:equation.right|right:state:grid.rows)]),(all|conditions:[(compare|eq|left:state:equation.left|right:state:grid.rows),(compare|eq|left:state:equation.right|right:state:grid.columns)])]),(compare|eq|left:(operator|count|args:[state:grid.cells])|right:literal:number),(compare|eq|left:state:equation.result|right:literal:number),(contains|collection:state:stage_map.inspected|item:literal:label)])#1",
+      "location:any:in1:out1#2",
+      "location:any:in2:out2#1",
+      "object:equation#1",
+      "object:grid#1",
+      "object:stage_map#1",
+      "object:stage_piece#1",
+      "rule:assemble_product:(always):[(set|value:input|target:equation.left),(set|value:input|target:equation.result),(set|value:input|target:equation.right)]#1",
+      "rule:inspect_location:(all|conditions:[(any|conditions:[(all|conditions:[(compare|eq|left:state:equation.left|right:state:grid.columns),(compare|eq|left:state:equation.right|right:state:grid.rows)]),(all|conditions:[(compare|eq|left:state:equation.left|right:state:grid.rows),(compare|eq|left:state:equation.right|right:state:grid.columns)])]),(compare|eq|left:(operator|count|args:[state:grid.cells])|right:literal:number),(compare|eq|left:state:equation.result|right:literal:number),(compare|eq|left:state:stage_piece.location|right:input)]):[(add_item|item:input|target:stage_map.inspected)]#1",
+      "rule:move_actor:(always):[(set|value:input|target:stage_piece.location)]#1",
+      "rule:toggle_tile:(always):[(toggle_item|item:input|target:grid.cells)]#1",
+      "surface:equation:location:any:object:whole:read_only:(always)#1",
+      "surface:grid:connection:True:(all|conditions:[(contains|collection:state:grid.cells|item:literal:label),(contains|collection:state:grid.cells|item:literal:label),(contains|collection:state:grid.cells|item:literal:label)]):row:subset:toggle_tile:(always)#2",
+      "surface:grid:location:any:object:whole:toggle_tile:(always)#1",
+      "tool:math_workspace:device:(compare|eq|left:state:stage_piece.location|right:literal:label)#1"
+    ],
+    "version": "sidekick-game-structure-v1"
+  }
+}

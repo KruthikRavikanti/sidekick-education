@@ -29,12 +29,13 @@ def validate_runtime_compatibility(program):
         raise AccountError('runtime_adapter_unavailable', 'This activity needs a control that is not available in the preview.', 422)
     core = ExecutionCore(program)
     rendered = {'math_workspace': {'grid', 'equation'}, 'evidence_board': {'evidence_board'},
-                'text_editor': {'text_artifact'}, 'fraction_workspace': {'fraction_strip'}}
+                'text_editor': {'text_artifact'}, 'fraction_workspace': {'fraction_strip'},
+                'world_stage': {'stage_piece', 'stage_map'}}
     for component in program.components:
         if component.kind not in rendered:
             raise AccountError('runtime_adapter_unavailable', 'This activity needs a control that is not available in the preview.', 422)
         for kind in rendered[component.kind]:
-            maximum=2 if component.kind=='fraction_workspace' else 1
+            maximum=8 if component.kind=='world_stage' else 2 if component.kind=='fraction_workspace' else 1
             if sum(core.objects[ref].kind == kind for ref in component.objectIds) > maximum:
                 raise AccountError('runtime_adapter_unavailable', 'This activity needs an unsupported shared-object control.', 422)
         if component.kind=='fraction_workspace':
@@ -48,7 +49,10 @@ def validate_runtime_compatibility(program):
                 raise AccountError('runtime_adapter_unavailable', 'This workspace needs a fixed reference and construction of the same whole.', 422)
         operations = [action.operation for action in program.actions if action.componentId == component.id]
         if len(operations) != len(set(operations)):
-            raise AccountError('runtime_adapter_unavailable', 'This activity needs an unsupported action control.', 422)
+            actions=[action for action in program.actions if action.componentId==component.id]
+            bindings=[(action.operation,tuple(obj.id for obj in core.action_objects(action.id))) for action in actions]
+            if component.kind!='world_stage' or len(bindings)!=len(set(bindings)):
+                raise AccountError('runtime_adapter_unavailable', 'This activity needs an unsupported action control.', 422)
     if any(len(core.action_objects(action.id)) != 1 for action in program.actions):
         raise AccountError('runtime_adapter_unavailable', 'This activity needs an unsupported shared-object control.', 422)
     return program

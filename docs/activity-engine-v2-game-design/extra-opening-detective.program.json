@@ -1,0 +1,989 @@
+{
+  "schemaVersion": "2.0-foundation",
+  "id": "observatory-opening-detective",
+  "title": "The Opening Detective",
+  "definitionVersion": 1,
+  "componentVersion": "sidekick-program-contract-v1",
+  "intent": {
+    "targets": [
+      {
+        "skillId": "W.4.3-1",
+        "demonstration": "Orient the reader with a situation, narrator, and characters"
+      }
+    ],
+    "observations": [],
+    "misconceptions": [],
+    "successEvidence": [
+      "opening-review"
+    ]
+  },
+  "world": {
+    "state": [
+      {
+        "id": "detective-location",
+        "mutable": true,
+        "kind": "choice",
+        "initial": "source",
+        "options": [
+          "source",
+          "desk",
+          "archive"
+        ]
+      },
+      {
+        "id": "discoveries",
+        "mutable": true,
+        "kind": "id_set",
+        "initial": [],
+        "options": [
+          "source",
+          "desk",
+          "archive"
+        ],
+        "maxItems": 3
+      },
+      {
+        "id": "chosen-clue",
+        "mutable": true,
+        "kind": "choice",
+        "initial": "none",
+        "options": [
+          "none",
+          "opening",
+          "friend",
+          "staircase"
+        ]
+      },
+      {
+        "id": "draft",
+        "mutable": true,
+        "kind": "text",
+        "initial": "",
+        "maxLength": 2000
+      },
+      {
+        "id": "revised",
+        "mutable": true,
+        "kind": "boolean",
+        "initial": false
+      }
+    ],
+    "materials": [
+      {
+        "id": "sample",
+        "kind": "passage",
+        "text": "I pushed open the observatory door as a strange humming shook the windows. My friend Lio held a lantern and peered past me. Together we followed the sound toward the dark staircase.",
+        "items": [
+          {
+            "id": "opening",
+            "text": "I pushed open the observatory door as a strange humming shook the windows."
+          },
+          {
+            "id": "friend",
+            "text": "My friend Lio held a lantern and peered past me."
+          },
+          {
+            "id": "staircase",
+            "text": "Together we followed the sound toward the dark staircase."
+          }
+        ],
+        "quantity": null
+      },
+      {
+        "id": "clue-prompt",
+        "kind": "prompt",
+        "text": "Investigate the opening. Choose a sentence that helps a reader learn who is speaking, who is present, or what is happening.",
+        "items": [],
+        "quantity": null
+      },
+      {
+        "id": "draft-prompt",
+        "kind": "prompt",
+        "text": "At the desk, write the opening of a different story. Help your reader understand the situation, the narrator, and the characters. Use the clue as an example, not as words to copy. Compare your opening with the clue, revise it, then take it to the archive.",
+        "items": [],
+        "quantity": null
+      }
+    ],
+    "objects": [
+      {
+        "id": "detective-piece",
+        "kind": "stage_piece",
+        "bindings": {
+          "location": "detective-location"
+        },
+        "materialIds": [],
+        "width": null,
+        "height": null
+      },
+      {
+        "id": "investigation-map",
+        "kind": "stage_map",
+        "bindings": {
+          "inspected": "discoveries"
+        },
+        "materialIds": [],
+        "width": null,
+        "height": null
+      },
+      {
+        "id": "clue-board",
+        "kind": "evidence_board",
+        "bindings": {
+          "selection": "chosen-clue"
+        },
+        "materialIds": [
+          "sample",
+          "clue-prompt"
+        ],
+        "width": null,
+        "height": null
+      },
+      {
+        "id": "opening-draft",
+        "kind": "text_artifact",
+        "bindings": {
+          "text": "draft"
+        },
+        "materialIds": [
+          "draft-prompt"
+        ],
+        "width": null,
+        "height": null
+      },
+      {
+        "id": "revision-progress",
+        "kind": "progress",
+        "bindings": {
+          "value": "revised"
+        },
+        "materialIds": [],
+        "width": null,
+        "height": null
+      }
+    ],
+    "relationships": [],
+    "invariants": []
+  },
+  "components": [
+    {
+      "id": "detective-controls",
+      "kind": "world_stage",
+      "objectIds": [
+        "detective-piece"
+      ],
+      "spaceId": "investigation"
+    },
+    {
+      "id": "inspection-controls",
+      "kind": "world_stage",
+      "objectIds": [
+        "investigation-map"
+      ],
+      "spaceId": "investigation"
+    },
+    {
+      "id": "clue-tool",
+      "kind": "evidence_board",
+      "objectIds": [
+        "clue-board"
+      ],
+      "spaceId": "investigation"
+    },
+    {
+      "id": "writing-tool",
+      "kind": "text_editor",
+      "objectIds": [
+        "opening-draft",
+        "revision-progress"
+      ],
+      "spaceId": "investigation"
+    }
+  ],
+  "actions": [
+    {
+      "id": "investigate-source",
+      "componentId": "inspection-controls",
+      "operation": "inspect_location",
+      "inputs": [
+        {
+          "id": "location",
+          "kind": "choice",
+          "minimum": null,
+          "maximum": null,
+          "minLength": null,
+          "maxLength": null,
+          "options": [
+            "source"
+          ],
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Investigate the source table"
+    },
+    {
+      "id": "choose-clue",
+      "componentId": "clue-tool",
+      "operation": "select_evidence",
+      "inputs": [
+        {
+          "id": "sentence",
+          "kind": "choice",
+          "minimum": null,
+          "maximum": null,
+          "minLength": null,
+          "maxLength": null,
+          "options": [
+            "opening",
+            "friend",
+            "staircase"
+          ],
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Choose a sentence"
+    },
+    {
+      "id": "travel",
+      "componentId": "detective-controls",
+      "operation": "move_actor",
+      "inputs": [
+        {
+          "id": "destination",
+          "kind": "choice",
+          "minimum": null,
+          "maximum": null,
+          "minLength": null,
+          "maxLength": null,
+          "options": [
+            "source",
+            "desk",
+            "archive"
+          ],
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Travel"
+    },
+    {
+      "id": "write-opening",
+      "componentId": "writing-tool",
+      "operation": "replace_text",
+      "inputs": [
+        {
+          "id": "text",
+          "kind": "text",
+          "minimum": null,
+          "maximum": null,
+          "minLength": null,
+          "maxLength": 2000,
+          "options": null,
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Write your opening"
+    },
+    {
+      "id": "revise-opening",
+      "componentId": "writing-tool",
+      "operation": "revise_text",
+      "inputs": [
+        {
+          "id": "text",
+          "kind": "text",
+          "minimum": null,
+          "maximum": null,
+          "minLength": null,
+          "maxLength": 2000,
+          "options": null,
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Revise your opening"
+    }
+  ],
+  "rules": [
+    {
+      "id": "inspect-at-table",
+      "onAction": "investigate-source",
+      "when": {
+        "kind": "compare",
+        "op": "eq",
+        "left": {
+          "kind": "state",
+          "ref": "detective-location"
+        },
+        "right": {
+          "kind": "literal",
+          "value": "source"
+        }
+      },
+      "effects": [
+        {
+          "kind": "add_item",
+          "target": "discoveries",
+          "item": {
+            "kind": "input",
+            "ref": "location"
+          }
+        }
+      ]
+    },
+    {
+      "id": "select-at-table",
+      "onAction": "choose-clue",
+      "when": {
+        "kind": "all",
+        "conditions": [
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "detective-location"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "source"
+            }
+          },
+          {
+            "kind": "contains",
+            "collection": {
+              "kind": "state",
+              "ref": "discoveries"
+            },
+            "item": {
+              "kind": "literal",
+              "value": "source"
+            }
+          }
+        ]
+      },
+      "effects": [
+        {
+          "kind": "set",
+          "target": "chosen-clue",
+          "value": {
+            "kind": "input",
+            "ref": "sentence"
+          }
+        }
+      ]
+    },
+    {
+      "id": "move-detective",
+      "onAction": "travel",
+      "when": {
+        "kind": "always"
+      },
+      "effects": [
+        {
+          "kind": "set",
+          "target": "detective-location",
+          "value": {
+            "kind": "input",
+            "ref": "destination"
+          }
+        }
+      ]
+    },
+    {
+      "id": "write-at-desk",
+      "onAction": "write-opening",
+      "when": {
+        "kind": "all",
+        "conditions": [
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "detective-location"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "desk"
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "ne",
+            "left": {
+              "kind": "state",
+              "ref": "chosen-clue"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "none"
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "revised"
+            },
+            "right": {
+              "kind": "literal",
+              "value": false
+            }
+          }
+        ]
+      },
+      "effects": [
+        {
+          "kind": "set",
+          "target": "draft",
+          "value": {
+            "kind": "input",
+            "ref": "text"
+          }
+        }
+      ]
+    },
+    {
+      "id": "revise-at-desk",
+      "onAction": "revise-opening",
+      "when": {
+        "kind": "all",
+        "conditions": [
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "detective-location"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "desk"
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "ne",
+            "left": {
+              "kind": "state",
+              "ref": "draft"
+            },
+            "right": {
+              "kind": "literal",
+              "value": ""
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "ne",
+            "left": {
+              "kind": "input",
+              "ref": "text"
+            },
+            "right": {
+              "kind": "state",
+              "ref": "draft"
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "ne",
+            "left": {
+              "kind": "input",
+              "ref": "text"
+            },
+            "right": {
+              "kind": "literal",
+              "value": ""
+            }
+          }
+        ]
+      },
+      "effects": [
+        {
+          "kind": "set",
+          "target": "draft",
+          "value": {
+            "kind": "input",
+            "ref": "text"
+          }
+        },
+        {
+          "kind": "set",
+          "target": "revised",
+          "value": {
+            "kind": "literal",
+            "value": true
+          }
+        }
+      ]
+    }
+  ],
+  "goals": [
+    {
+      "id": "archive-opening",
+      "description": "Choose a clue, write and revise an opening, and bring it to the archive.",
+      "when": {
+        "kind": "all",
+        "conditions": [
+          {
+            "kind": "compare",
+            "op": "ne",
+            "left": {
+              "kind": "state",
+              "ref": "chosen-clue"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "none"
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "ne",
+            "left": {
+              "kind": "state",
+              "ref": "draft"
+            },
+            "right": {
+              "kind": "literal",
+              "value": ""
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "revised"
+            },
+            "right": {
+              "kind": "literal",
+              "value": true
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "detective-location"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "archive"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "when": {
+      "kind": "goal",
+      "goalId": "archive-opening"
+    },
+    "goalIds": [
+      "archive-opening"
+    ],
+    "allowAssisted": true
+  },
+  "help": [
+    {
+      "id": "opening-hint",
+      "kind": "hint",
+      "text": "Look for a sentence that tells the reader who is speaking, who is present, or what is happening. At the desk, check whether your own opening gives a reader those anchors.",
+      "availableWhen": {
+        "kind": "always"
+      },
+      "actionIds": [
+        "choose-clue",
+        "write-opening",
+        "revise-opening"
+      ],
+      "maxUses": 4
+    }
+  ],
+  "evidence": [
+    {
+      "id": "opening-review",
+      "skillIds": [
+        "W.4.3-1"
+      ],
+      "actionIds": [
+        "choose-clue",
+        "write-opening",
+        "revise-opening"
+      ],
+      "stateRefs": [
+        "chosen-clue",
+        "draft"
+      ],
+      "assessment": {
+        "kind": "parent_review",
+        "rubric": [
+          "Check whether the selected literal sentence offers a useful example of introducing the situation, narrator, or characters.",
+          "Read the child's original, revised opening. Does it orient a reader to a situation, establish who is narrating, and introduce the characters clearly enough to follow the beginning?",
+          "Use the draft and revision history to consider the child's own writing; choosing a clue or reaching the archive alone does not establish the target."
+        ]
+      },
+      "assistance": "server_event_history"
+    }
+  ],
+  "presentation": {
+    "entrySpace": "investigation",
+    "spaces": [
+      {
+        "id": "investigation",
+        "title": "Opening investigation",
+        "visibleWhen": null
+      }
+    ],
+    "assets": [],
+    "theme": "sidekick",
+    "stage": {
+      "locations": [
+        {
+          "id": "source",
+          "label": "Source table",
+          "x": 15,
+          "y": 48,
+          "capacity": 4,
+          "accepts": "any"
+        },
+        {
+          "id": "desk",
+          "label": "Writing desk",
+          "x": 52,
+          "y": 48,
+          "capacity": 4,
+          "accepts": "any"
+        },
+        {
+          "id": "archive",
+          "label": "Archive",
+          "x": 87,
+          "y": 48,
+          "capacity": 4,
+          "accepts": "any"
+        }
+      ],
+      "entities": [
+        {
+          "id": "detective",
+          "label": "Opening detective",
+          "kind": "actor",
+          "objectId": "detective-piece",
+          "locationId": null,
+          "asset": "person",
+          "representationObjectId": null
+        },
+        {
+          "id": "source-table",
+          "label": "Sample opening",
+          "kind": "device",
+          "objectId": null,
+          "locationId": "source",
+          "asset": "book",
+          "representationObjectId": "clue-board"
+        },
+        {
+          "id": "writing-desk",
+          "label": "Opening desk",
+          "kind": "device",
+          "objectId": null,
+          "locationId": "desk",
+          "asset": "lamp",
+          "representationObjectId": "opening-draft"
+        },
+        {
+          "id": "archive-door",
+          "label": "Story archive",
+          "kind": "destination",
+          "objectId": null,
+          "locationId": "archive",
+          "asset": "home",
+          "representationObjectId": null
+        }
+      ],
+      "connections": [
+        {
+          "id": "table-to-desk",
+          "fromLocation": "source",
+          "toLocation": "desk",
+          "bidirectional": true,
+          "when": {
+            "kind": "always"
+          },
+          "label": "Walk between the table and desk",
+          "blockedLabel": "The path is unavailable."
+        },
+        {
+          "id": "desk-to-archive",
+          "fromLocation": "desk",
+          "toLocation": "archive",
+          "bidirectional": true,
+          "when": {
+            "kind": "all",
+            "conditions": [
+              {
+                "kind": "compare",
+                "op": "ne",
+                "left": {
+                  "kind": "state",
+                  "ref": "chosen-clue"
+                },
+                "right": {
+                  "kind": "literal",
+                  "value": "none"
+                }
+              },
+              {
+                "kind": "compare",
+                "op": "eq",
+                "left": {
+                  "kind": "state",
+                  "ref": "revised"
+                },
+                "right": {
+                  "kind": "literal",
+                  "value": true
+                }
+              },
+              {
+                "kind": "compare",
+                "op": "ne",
+                "left": {
+                  "kind": "state",
+                  "ref": "draft"
+                },
+                "right": {
+                  "kind": "literal",
+                  "value": ""
+                }
+              }
+            ]
+          },
+          "label": "Bring the revised opening to the archive",
+          "blockedLabel": "Choose a clue, then write and revise an opening before visiting the archive."
+        }
+      ],
+      "tools": [
+        {
+          "componentId": "clue-tool",
+          "entityId": "source-table",
+          "availableWhen": {
+            "kind": "all",
+            "conditions": [
+              {
+                "kind": "compare",
+                "op": "eq",
+                "left": {
+                  "kind": "state",
+                  "ref": "detective-location"
+                },
+                "right": {
+                  "kind": "literal",
+                  "value": "source"
+                }
+              },
+              {
+                "kind": "contains",
+                "collection": {
+                  "kind": "state",
+                  "ref": "discoveries"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "source"
+                }
+              }
+            ]
+          },
+          "label": "Read the sample and choose a clue"
+        },
+        {
+          "componentId": "writing-tool",
+          "entityId": "writing-desk",
+          "availableWhen": {
+            "kind": "all",
+            "conditions": [
+              {
+                "kind": "compare",
+                "op": "eq",
+                "left": {
+                  "kind": "state",
+                  "ref": "detective-location"
+                },
+                "right": {
+                  "kind": "literal",
+                  "value": "desk"
+                }
+              },
+              {
+                "kind": "compare",
+                "op": "ne",
+                "left": {
+                  "kind": "state",
+                  "ref": "chosen-clue"
+                },
+                "right": {
+                  "kind": "literal",
+                  "value": "none"
+                }
+              }
+            ]
+          },
+          "label": "Write and revise"
+        }
+      ],
+      "reactions": [
+        {
+          "id": "source-discovered",
+          "entityId": "source-table",
+          "when": {
+            "kind": "contains",
+            "collection": {
+              "kind": "state",
+              "ref": "discoveries"
+            },
+            "item": {
+              "kind": "literal",
+              "value": "source"
+            }
+          },
+          "status": "discovered",
+          "text": "The sample opening is ready to investigate."
+        },
+        {
+          "id": "clue-carried",
+          "entityId": "writing-desk",
+          "when": {
+            "kind": "compare",
+            "op": "ne",
+            "left": {
+              "kind": "state",
+              "ref": "chosen-clue"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "none"
+            }
+          },
+          "status": "active",
+          "text": "Your chosen sentence is displayed beside your writing space. You can return to change it."
+        },
+        {
+          "id": "revision-ready",
+          "entityId": "archive-door",
+          "when": {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "revised"
+            },
+            "right": {
+              "kind": "literal",
+              "value": true
+            }
+          },
+          "status": "active",
+          "text": "Your revised opening can travel to the archive. Its writing will still need a reader's review."
+        }
+      ],
+      "surfaces": [
+        {
+          "id": "desk-clue",
+          "label": "Chosen source sentence",
+          "objectId": "clue-board",
+          "locationId": "desk",
+          "connectionId": null,
+          "cellIds": [],
+          "layout": "object",
+          "actionId": null,
+          "visibleWhen": {
+            "kind": "contains",
+            "collection": {
+              "kind": "state",
+              "ref": "discoveries"
+            },
+            "item": {
+              "kind": "literal",
+              "value": "source"
+            }
+          }
+        },
+        {
+          "id": "desk-draft",
+          "label": "Your opening",
+          "objectId": "opening-draft",
+          "locationId": "desk",
+          "connectionId": null,
+          "cellIds": [],
+          "layout": "object",
+          "actionId": null,
+          "visibleWhen": {
+            "kind": "always"
+          }
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "origin": "ai_composed",
+    "author": "Sidekick AI",
+    "sourceRefs": [],
+    "model": "gpt-6.1-terra",
+    "promptVersion": "sidekick-program-composer-v1"
+  },
+  "limits": {
+    "maxActions": 100,
+    "maxRulesPerAction": 4,
+    "maxEffectsPerAction": 4,
+    "maxExpressionDepth": 8,
+    "maxExpressionNodes": 64
+  },
+  "witness": [
+    {
+      "actionId": "investigate-source",
+      "inputs": {
+        "location": "source"
+      }
+    },
+    {
+      "actionId": "choose-clue",
+      "inputs": {
+        "sentence": "opening"
+      }
+    },
+    {
+      "actionId": "travel",
+      "inputs": {
+        "destination": "desk"
+      }
+    },
+    {
+      "actionId": "write-opening",
+      "inputs": {
+        "text": "I found a tiny door under the bakery counter. My cousin Nia wanted to open it."
+      }
+    },
+    {
+      "actionId": "revise-opening",
+      "inputs": {
+        "text": "I was sweeping my grandmother's bakery when I found a tiny door under the counter. My cousin Nia knelt beside me, holding the brass key we had found in a flour sack. We could hear a faint tapping behind the door."
+      }
+    },
+    {
+      "actionId": "travel",
+      "inputs": {
+        "destination": "archive"
+      }
+    }
+  ]
+}

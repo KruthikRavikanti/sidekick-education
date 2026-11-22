@@ -9,8 +9,8 @@ from pydantic import ValidationError
 
 from backend.activity_engine_v2.authoring import ActivityAuthoring, compile_authoring, to_authoring
 from backend.activity_engine_v2.core import ExecutionCore, ProgramInvalid
-from backend.gap.vision import _strict_schema, structured_call
-from backend.provider import VisionSettings
+from backend.gap.vision import _strict_schema, activity_schema_diagnostic, structured_call
+from backend.provider import ExtractionError, VisionSettings
 from backend.tests.program_composition_examples import context_for, make_program
 
 
@@ -169,3 +169,80 @@ def test_provider_automatic_assessment_uses_same_goal_free_recursive_predicate_s
     automatic=schema['$defs']['AuthoringAutomaticAssessment']['properties']['when']
     assert automatic==schema['$defs']['AuthoringGoal']['properties']['when']
     assert {'$ref':'#/$defs/GoalCondition'} not in automatic['anyOf']
+
+
+@pytest.mark.parametrize('code,change',[
+    ('stage_entity_requires_one_placement',dict(kind='device',objectId=None,locationId=None)),
+    ('stage_actor_requires_object',dict(kind='actor',objectId=None,locationId='work')),
+    ('stage_destination_requires_location',dict(kind='destination',objectId='world-movable',locationId=None)),
+])
+def test_stage_entity_diagnostics_forward_only_known_model_codes_and_owned_paths(code,change):
+    from backend.tests.program_world_examples import world_program
+    raw=to_authoring(world_program('tile')).model_dump()
+    entity=raw['presentation']['stage']['entities'][1]
+    entity.update(change,label='private-value-must-never-be-diagnostic')
+    with pytest.raises(ValidationError) as captured:ActivityAuthoring.model_validate(raw)
+    diagnostic=activity_schema_diagnostic(captured.value,ActivityAuthoring)
+    assert diagnostic==dict(stage='schema',code=code,sceneIndex=None,field='presentation.stage.entities.1')
+    assert 'private-value' not in json.dumps(diagnostic)
+
+
+def test_fixed_device_is_representable_without_inventing_movement_state():
+    from backend.tests.program_world_examples import world_program
+    raw=to_authoring(world_program('tile')).model_dump()
+    raw['presentation']['stage']['entities'][1]['kind']='device'
+    assert ActivityAuthoring.model_validate(raw).presentation.stage.entities[1].locationId=='work'
+
+
+def test_actual_provider_schema_failure_carries_safe_stage_entity_reason(monkeypatch):
+    from backend.tests.program_world_examples import world_program
+    content=to_authoring(world_program('tile')).model_dump()
+    content['presentation']['stage']['entities'][1].update(kind='actor',label='private-generated-entity-content')
+    original=httpx.AsyncClient
+    def handler(request):
+        return httpx.Response(200,json=dict(model='synthetic',choices=[dict(finish_reason='stop',message=dict(content=json.dumps(content)))]))
+    monkeypatch.setattr(httpx,'AsyncClient',lambda **kwargs:original(transport=httpx.MockTransport(handler),**kwargs))
+    with pytest.raises(ExtractionError) as captured:
+        asyncio.run(structured_call(ActivityAuthoring,task='compose_activity_game',system='Synthetic test.',user={},
+            settings=VisionSettings('synthetic-secret','synthetic','https://vision.example.test/v1',5)))
+    assert captured.value.diagnostic['code']=='stage_actor_requires_object'
+    assert captured.value.diagnostic['field']=='presentation.stage.entities.1'
+    assert 'private-generated' not in str(captured.value)+json.dumps(captured.value.diagnostic)
+
+
+def test_physical_surface_authoring_preserves_actual_object_route_and_direct_action():
+    from backend.tests.program_world_examples import world_program
+    original=world_program('tile')
+    raw=to_authoring(original).model_dump()
+    surface=dict(id='actual-planks',label='Constructed panels on the route',objectId='board',
+        locationId=None,connectionId='concept-route',cellIds=['r0c0','r1c0'],layout='row',
+        actionId='place',visibleWhen=dict(kind='always'))
+    raw['presentation']['stage']['surfaces']=[surface]
+    authored=ActivityAuthoring.model_validate(raw)
+    compiled=compile_authoring(authored,context_for(original),model='synthetic')
+    assert compiled.presentation.stage.surfaces[0].model_dump()==surface
+    authored.presentation.stage.surfaces[0].locationId='work'
+    with pytest.raises(ValidationError) as captured:ActivityAuthoring.model_validate(authored.model_dump())
+    diagnostic=activity_schema_diagnostic(captured.value,ActivityAuthoring)
+    assert diagnostic['code']=='stage_surface_requires_one_anchor'
+    assert diagnostic['field']=='presentation.stage.surfaces.0'
+
+
+def test_construction_mount_roundtrip_keeps_closed_actual_grid_constraint_and_legacy_shape():
+    from backend.tests.program_world_examples import world_program
+    original=world_program('tile')
+    raw=to_authoring(original).model_dump()
+    assert 'construction' not in raw['presentation']['stage']['connections'][1]
+    construction=dict(objectId='board',rows=2,columns=3)
+    raw['presentation']['stage']['connections'][1].update(construction=construction,when=dict(kind='always'))
+    raw['presentation']['stage']['surfaces']=[dict(id='actual-deck',label='Actual deck footprint',objectId='board',
+        locationId=None,connectionId='concept-route',cellIds=[],layout='object',actionId='place',visibleWhen=dict(kind='always'))]
+    authored=ActivityAuthoring.model_validate(raw)
+    compiled=compile_authoring(authored,context_for(original),model='synthetic')
+    assert compiled.presentation.stage.connections[1].construction.model_dump()==construction
+    from backend.activity_engine_v2.validator import validate_program
+    assert validate_program(compiled).valid
+    schema=_strict_schema(ActivityAuthoring.model_json_schema());inspect_schema(schema)
+    assert set(schema['$defs']['StageConstruction']['properties'])=={'objectId','rows','columns'}
+    raw['presentation']['stage']['connections'][1]['construction']['rows']=True
+    with pytest.raises(ValidationError):ActivityAuthoring.model_validate(raw)

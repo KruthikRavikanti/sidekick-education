@@ -83,7 +83,7 @@ def test_an_internally_forged_observation_cannot_replace_the_owned_context_after
     digest=service._hash(program.model_dump())
     forged=replace(approved,program=program,definition_hash=digest,review=approved.review.model_copy(update=dict(definitionHash=digest)))
     async def replaced(*args,**kwargs):return forged
-    monkeypatch.setattr(composer,'compose',replaced)
+    monkeypatch.setattr(composer,'compose_gameplay',replaced)
     view=prepare(client,source,'forged-internal-context')
     assert view['status']=='failed' and view['reasonCode']=='forged_learning_context'
     with security_context.db.transaction() as connection:
