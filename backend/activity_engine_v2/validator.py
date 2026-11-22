@@ -155,6 +155,16 @@ class Compiler(ExecutionCore):
         if len(nodes)>self.p.limits.maxExpressionNodes or max(depth for _,depth in nodes)>self.p.limits.maxExpressionDepth:
             fail('expression_budget_exceeded',path)
         if node.kind=='always':return
+        if node.kind=='fraction_equal':
+            left=self.objects.get(node.leftObject);right=self.objects.get(node.rightObject)
+            if (left is None or right is None or left.kind!=right.kind or left.kind!='fraction_strip'
+                    or left.id==right.id or left.wholeId is None or left.wholeId!=right.wholeId or left.width!=right.width
+                    or not any(relation.kind=='same_whole' and {relation.source,relation.target}=={left.id,right.id}
+                               for relation in self.p.world.relationships)):
+                fail('fraction_comparison_requires_same_whole',path)
+            if {self.slots[left.bindings['denominator']].mutable,self.slots[right.bindings['denominator']].mutable}!={False,True}:
+                fail('fraction_comparison_requires_fixed_reference',path)
+            return
         if node.kind=='goal':
             if not allow_goal or node.goalId not in self.goals:fail('invalid_goal_reference',path)
             return
@@ -236,7 +246,20 @@ class Compiler(ExecutionCore):
                 for cell in cells.options:
                     match=re.fullmatch(r'r(\d{1,2})c(\d{1,2})',cell)
                     if not match or int(match[1])>=obj.height or int(match[2])>=obj.width:fail('grid_cell_reference_invalid','world.objects')
+            elif obj.kind=='fraction_strip':
+                if obj.wholeId is None or obj.width is None or obj.height is not None:
+                    fail('fraction_whole_geometry_required','world.objects')
+                denominator=self.slots[obj.bindings['denominator']];pieces=self.slots[obj.bindings['pieces']]
+                if (denominator.minimum<2 or denominator.maximum>24
+                        or denominator.initial%obj.width or denominator.mutable!=pieces.mutable):
+                    fail('fraction_partition_domain_invalid','world.objects')
+                expected={f'p{index}' for index in range(denominator.maximum)}
+                if set(pieces.options)!=expected or pieces.maxItems!=denominator.maximum:
+                    fail('fraction_piece_domain_invalid','world.objects')
+                if not any(material.kind=='prompt' for material in materials):
+                    fail('fraction_prompt_material_required','world.objects')
             elif obj.width is not None or obj.height is not None:fail('bounds_only_apply_to_grid','world.objects')
+            if obj.kind!='fraction_strip' and obj.wholeId is not None:fail('whole_identity_only_applies_to_fractions','world.objects')
             if obj.kind=='quantity_pool' and self.slots[obj.bindings['count']].minimum<0:fail('negative_quantity_domain','world.objects')
             if obj.kind=='evidence_board' and not any(item.kind=='passage' for item in materials):fail('evidence_passage_required','world.objects')
             if obj.kind=='sequence' and not any(item.kind=='words' for item in materials):fail('sequence_material_required','world.objects')
@@ -250,8 +273,13 @@ class Compiler(ExecutionCore):
         for relation in self.p.world.relationships:
             if relation.source not in self.objects or relation.target not in self.objects or relation.source==relation.target:
                 fail('invalid_relationship_reference','world.relationships')
-            if relation.kind=='same_whole' and (self.objects[relation.source].kind!='grid' or self.objects[relation.target].kind!='grid'):
-                fail('same_whole_requires_grids','world.relationships')
+            if relation.kind=='same_whole':
+                source=self.objects[relation.source];target=self.objects[relation.target]
+                if source.kind==target.kind=='fraction_strip':
+                    if source.wholeId!=target.wholeId or source.width!=target.width:
+                        fail('fraction_same_whole_mismatch','world.relationships')
+                elif source.kind!='grid' or target.kind!='grid':
+                    fail('same_whole_requires_grids','world.relationships')
         for invariant in self.p.world.invariants:
             slots=[self.slot(ref,'world.invariants') for ref in invariant.stateRefs]
             if len(set(invariant.stateRefs))!=len(slots) or any(slot.kind!='integer' or slot.minimum<0 or slot.unit!=invariant.unit for slot in slots):
@@ -292,6 +320,8 @@ class Compiler(ExecutionCore):
                 'assemble_product':{'left','right','result'},'replace_text':{'text'},'revise_text':{'text'},
                 'transfer_quantity':{'count'},'select_evidence':{'selection'},'reorder':{'order'},
                 'record_voice':{'artifact'},'draw':{'artifact'},
+                'set_fraction_partition':{'denominator','pieces'},'toggle_fraction_piece':{'pieces'},
+                'move_fraction_piece':{'pieces'},
             }[action.operation]
             writable={obj.bindings[role] for obj in relevant for role in operation_roles}
             if 'set' in cap['effectKinds']:
@@ -304,8 +334,13 @@ class Compiler(ExecutionCore):
                     if effect.kind not in cap['effectKinds']:fail('operation_effect_not_supported','rules.effects')
                     nodes=list(_nodes(effect))
                     if len(nodes)>self.p.limits.maxExpressionNodes or max(depth for _,depth in nodes)>self.p.limits.maxExpressionDepth:fail('expression_budget_exceeded','rules.effects')
-                    targets={effect.source,effect.target} if effect.kind=='transfer' else {effect.target}
+                    targets=({effect.source,effect.target} if effect.kind=='transfer' else
+                             {effect.target,effect.piecesTarget} if effect.kind=='repartition' else {effect.target})
                     if not targets<=writable:fail('effect_outside_component_state','rules.effects')
+                    fraction_refs={ref for obj in self.objects.values() if obj.kind=='fraction_strip' for ref in obj.bindings.values()}
+                    if targets.intersection(fraction_refs) and action.operation not in {
+                            'set_fraction_partition','toggle_fraction_piece','move_fraction_piece'}:
+                        fail('fraction_state_requires_fraction_operation','rules.effects')
                     for ref in targets:
                         if not self.slot(ref,'rules.effects').mutable:fail('immutable_state_write','rules.effects')
                         if ref in local:fail('conflicting_effects','rules.effects')
@@ -328,6 +363,14 @@ class Compiler(ExecutionCore):
                             fail('state_write_provably_out_of_bounds','rules.effects')
                     elif effect.kind in {'toggle_item','add_item','remove_item'}:
                         if self.slots[effect.target].kind!='id_set' or self.term_type(effect.item,inputs,'rules.effects')!='text':fail('collection_effect_type_mismatch','rules.effects')
+                    elif effect.kind=='move_item':
+                        if (self.slots[effect.target].kind!='id_set' or self.term_type(effect.fromItem,inputs,'rules.effects')!='text'
+                                or self.term_type(effect.toItem,inputs,'rules.effects')!='text'):
+                            fail('collection_effect_type_mismatch','rules.effects')
+                    elif effect.kind=='repartition':
+                        if (self.slots[effect.target].kind!='integer' or self.slots[effect.piecesTarget].kind!='id_set'
+                                or self.term_type(effect.value,inputs,'rules.effects')!='integer'):
+                            fail('fraction_partition_binding_invalid','rules.effects')
                     else:
                         source=self.slots[effect.source];target=self.slots[effect.target]
                         if (source.kind!='integer' or target.kind!='integer' or source.unit!=target.unit
@@ -339,6 +382,7 @@ class Compiler(ExecutionCore):
 
     def _action_objects(self,action,objects,rules):
         targets={effect.target for rule in rules for effect in rule.effects}
+        targets.update(effect.piecesTarget for rule in rules for effect in rule.effects if effect.kind=='repartition')
         touched=[obj for obj in objects if targets.intersection(obj.bindings.values())]
         if action.operation=='transfer_quantity':return touched
         if not touched or (len(touched)>1 and action.operation!='replace_text'):
@@ -371,6 +415,31 @@ class Compiler(ExecutionCore):
             if any(effect.kind!='toggle_item' or effect.target!=bindings['cells'] or effect.item.kind!='input' or effect.item.ref!='cell' for effect in effects):fail('operation_must_use_child_input','rules.effects')
             input_domain=set(action.inputs[0].options)
             if not input_domain<=set(self.slots[bindings['cells']].options):fail('tile_input_outside_board','actions.inputs')
+        if action.operation=='set_fraction_partition':
+            parameter=next(item for item in action.inputs if item.id=='denominator')
+            slot=self.slots[bindings['denominator']]
+            if parameter.minimum<slot.minimum or parameter.maximum>slot.maximum:
+                fail('fraction_input_outside_partition_domain','actions.inputs')
+            if any(effect.kind!='repartition' or effect.target!=bindings['denominator']
+                   or effect.piecesTarget!=bindings['pieces'] or effect.value.kind!='input'
+                   or effect.value.ref!='denominator' for effect in effects):
+                fail('operation_must_use_child_input','rules.effects')
+        if action.operation=='toggle_fraction_piece':
+            if any(effect.kind!='toggle_item' or effect.target!=bindings['pieces']
+                   or effect.item.kind!='input' or effect.item.ref!='piece' for effect in effects):
+                fail('operation_must_use_child_input','rules.effects')
+            if not set(action.inputs[0].options)<=set(self.slots[bindings['pieces']].options):
+                fail('fraction_input_outside_piece_domain','actions.inputs')
+        if action.operation=='move_fraction_piece':
+            primary=[effect for effect in effects if effect.target==bindings['pieces']]
+            if not primary or any(effect.kind!='move_item' or effect.fromItem.kind!='input' or effect.fromItem.ref!='from'
+                    or effect.toItem.kind!='input' or effect.toItem.ref!='to' for effect in primary):
+                fail('operation_must_use_child_input','rules.effects')
+            for rule in rules:
+                if not any(effect.kind=='move_item' and effect.target==bindings['pieces'] for effect in rule.effects):
+                    fail('operation_must_use_child_input','rules.effects')
+            if any(not set(parameter.options)<=set(self.slots[bindings['pieces']].options) for parameter in action.inputs):
+                fail('fraction_input_outside_piece_domain','actions.inputs')
         if action.operation=='transfer_quantity':
             if any(effect.kind!='transfer' or effect.amount.kind!='input' or effect.amount.ref!='amount' for effect in effects):fail('operation_must_use_child_input','rules.effects')
             if action.inputs[0].minimum<1:fail('positive_transfer_required','actions.inputs')
@@ -428,6 +497,13 @@ class Compiler(ExecutionCore):
                 if any(not CAPABILITIES[self.actions[ref].operation]['automaticAssessment'] for ref in item.actionIds):fail('unsupported_automatic_assessment','evidence.assessment')
                 self.condition(item.assessment.when,{},'evidence.assessment',allow_goal=False)
                 refs={node.ref for node,_ in _nodes(item.assessment.when) if node.kind=='state'}
+                fraction_conditions=[node for node,_ in _nodes(item.assessment.when) if node.kind=='fraction_equal']
+                for condition in fraction_conditions:
+                    refs.update(ref for identifier in (condition.leftObject,condition.rightObject)
+                                for ref in self.objects[identifier].bindings.values())
+                fraction_refs={ref for obj in self.objects.values() if obj.kind=='fraction_strip' for ref in obj.bindings.values()}
+                if set(item.stateRefs)&fraction_refs and not fraction_conditions:
+                    fail('fraction_assessment_requires_same_whole_comparison','evidence.assessment')
                 context={ref for ref,slot in self.slots.items() if not slot.mutable}
                 if not refs or not refs<=set(item.stateRefs)|context or not refs.intersection(set(item.stateRefs)-context) or refs&tainted:fail('automatic_assessment_requires_checkable_state','evidence.assessment')
         if covered!=targets:fail('target_skill_evidence_missing','evidence')
@@ -490,6 +566,11 @@ class Compiler(ExecutionCore):
 
     def truth_domain(self,node,inputs):
         if node.kind=='always':return {True}
+        if node.kind=='fraction_equal':
+            objects=[self.objects[node.leftObject],self.objects[node.rightObject]]
+            if all(not self.slots[ref].mutable for obj in objects for ref in obj.bindings.values()):
+                return {self.evaluate(node,self.initial,{})}
+            return {False,True}
         if node.kind=='goal':return self.truth_domain(self.goals[node.goalId].when,{})
         if node.kind=='not':return {not value for value in self.truth_domain(node.condition,inputs)}
         if node.kind in {'all','any'}:

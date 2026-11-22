@@ -2,6 +2,8 @@
 
 The [ActivityProgram v2 foundation](docs/activity-engine-v2-spec.md) has an opt-in [playable development preview](docs/activity-engine-v2-runtime.md) and [live AI composition from uploaded work](docs/activity-engine-v2-composition.md). One Python execution core drives private finish-trace validation and owned shared-workspace sessions. V1 uploads, activities, histories and learner observations keep their existing behavior. The preview is disabled by default and unavailable in production. Generated activity admission is distinct from catalog coverage, child testing and learning effectiveness.
 
+The [fraction-window quality benchmark](docs/activity-engine-v2-fraction-benchmark.md) extends that same language with visible fraction pieces, exact repartitioning and conserved rearrangement. Its saved AI-generated activity and browser evidence are recorded separately from the original hand-authored examples.
+
 ## Activity Engine V2 development preview
 
 Run the new migration, then launch with the explicit backend feature flag:

@@ -14,7 +14,7 @@ from pydantic import Field, StrictBool, StrictInt
 
 from .models import (
     Action, ActivityProgram, AlwaysCondition, Closed, CompareCondition, Completion,
-    Component, ContainsCondition, Evidence, Goal, Help, MaterialItem, ParentAssessment,
+    Component, ContainsCondition, Evidence, FractionEqualCondition, Goal, Help, MaterialItem, ParentAssessment,
     Identifier, LearningIntent, Limits, Presentation, Rule, ShortText, SkillTarget,
     Text, World, WorldObject,
 )
@@ -27,7 +27,7 @@ PROMPT_VERSION = 'sidekick-program-composer-v1'
 
 class BindingEntry(Closed):
     port: Literal['count', 'rows', 'columns', 'cells', 'left', 'right', 'result',
-                  'text', 'selection', 'order', 'artifact', 'value']
+                  'text', 'selection', 'order', 'artifact', 'value', 'denominator', 'pieces']
     stateRef: Identifier
 
 
@@ -88,7 +88,7 @@ class AuthoringNotCondition(Closed):
 # Goal references are supported only outside goal definitions. This recursive
 # provider subset forbids a goal reference at every depth rather than relying on
 # an instruction that models can accidentally violate. It compiles unchanged.
-AuthoringGoalCondition = (AlwaysCondition | CompareCondition | ContainsCondition
+AuthoringGoalCondition = (AlwaysCondition | CompareCondition | ContainsCondition | FractionEqualCondition
                           | AuthoringLogicCondition | AuthoringNotCondition)
 
 

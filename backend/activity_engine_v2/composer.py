@@ -28,6 +28,7 @@ from .validator import validate_program
 MAX_CANDIDATES = 3
 MAX_MODEL_CALLS = 6
 TOTAL_BUDGET_SECONDS = 360
+MAX_DESIGN_BRIEF_LENGTH = 2000
 
 
 class SemanticReview(Closed):
@@ -92,10 +93,27 @@ def capabilities():
     return dict(
         operations={name: value for name, value in component_contracts().items() if name in PREVIEW_OPERATIONS},
         objectPorts={name: ports for name, ports in OBJECT_PORTS.items()
-                     if name in {'grid', 'equation', 'evidence_board', 'text_artifact', 'progress'}},
+                     if name in {'grid', 'equation', 'evidence_board', 'text_artifact', 'progress', 'fraction_strip'}},
         unavailableOperations=sorted(set(component_contracts()) - PREVIEW_OPERATIONS),
-        rendererConstraints=dict(onePrimaryObjectPerOperation=True, oneObjectOfEachKindPerComponent=True,
-                                 oneActionOfEachOperationPerComponent=True, maxBoardCells=120),
+        rendererConstraints=dict(onePrimaryObjectPerOperation=True, otherComponentsOneObjectOfEachKind=True,
+            oneActionOfEachOperationPerComponent=True, maxBoardCells=120,
+            fractionWorkspace=dict(immutableReferenceStrips=1, mutableWorkingStrips=1,
+                recommendedInitialWorkingPiecesEmpty=True, matchingWholeIdAndWidth=True,
+                denominatorMinimum=2, denominatorMaximum=24, denominatorMultipleOfWidth=True,
+                fixedBaseColumnsMinimum=1, fixedBaseColumnsMaximum=12,
+                pieceIds='p0 through p23; only indices below current denominator are visible',
+                pieceIndex='column * (denominator / width) + row',
+                repartitionPreservesExactSpatialShading=True, mixedCellRepartitionRejected=True,
+                comparison='fraction_equal compares trusted counts by cross-multiplication on the same whole',
+                visibleAffordances=['Direct placement/removal and movement of shaded pieces',
+                    'Partition buttons show common-integer refinement factors when applicable',
+                    'Both numerator/denominator count readouts update with the actual visible divisions',
+                    'For a constructed equal amount under integer refinement, linked numerator-times-factor and denominator-times-factor equations explain the displayed counts; no answer is filled into an empty construction',
+                    'Equal-sized whole geometry and aligned covered-area comparison remain visible'],
+                assessableEvidence=['Child-created shaded construction',
+                    'Child-requested common-integer refinement of an already constructed amount',
+                    'Server-verified unchanged shaded region with numerator and denominator scaled together'],
+                unsupportedClaims=['Unaided arithmetic recall', 'Unobserved verbal explanation', 'Mastery'])),
     )
 
 
@@ -150,6 +168,17 @@ def _model_name(value):
     return value if isinstance(value, str) and re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:/@+\-]{0,99}', value) else 'configured-model'
 
 
+def _design_brief(value):
+    """Optional curated development direction, never browser/learner evidence."""
+    if value is None:
+        return None
+    if (type(value) is not str or not 1 <= len(value) <= MAX_DESIGN_BRIEF_LENGTH or not value.strip()
+            or re.search(r'<\s*(?:/\s*)?[A-Za-z][^<>]*>|javascript\s*:|data\s*:\s*text/html', value, re.I)
+            or re.search(r'[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}|https?://|file://|/Users/|/home/', value, re.I)):
+        raise CompositionFailure('context', 'design_brief_invalid')
+    return value.strip()
+
+
 def repair_guidance(code, path=''):
     """Static code-owned advice; no interpolation of private validation input."""
     if code == 'invalid_tile_material':
@@ -163,6 +192,8 @@ def repair_guidance(code, path=''):
         return 'Each grid object must reference exactly one unit_tiles material by its materialIds. That material has null text, empty items and positive integer quantity; attach a separate prompt for instructions.'
     if code == 'witness_action_budget_exceeded':
         return 'Set limits.maxActions to 100 and ensure it is at least the number of individual witness steps. This budget counts every tile placement, not the number of action definitions. Keep the mission and witness short.'
+    if code == 'fraction_piece_domain_invalid':
+        return 'For EACH fraction_strip, read the maximum of its bound denominator slot. Its pieces slot options must be EXACTLY p0 through p(maximum-1), in order, and maxItems must EQUAL that denominator maximum. This applies to immutable references as well as mutable or initially empty working strips. The initial selected pieces are only a subset of this full declared domain; do not shrink the options or maxItems to the current numerator, initial denominator or selected-piece count.'
     return 'Correct the identified declared-contract constraint, preserving the learning goal. Produce a fully valid new candidate and finish witness; no rule or assessment is normalized by the server.'
 
 
@@ -186,12 +217,16 @@ def validate_review(program, digest, review):
     return result
 
 
-async def compose(context, *, adapter=None, progress=None, budget_seconds=TOTAL_BUDGET_SECONDS):
+async def compose(context, *, adapter=None, progress=None, budget_seconds=TOTAL_BUDGET_SECONDS, design_brief=None):
     """Compose at most three candidates/six calls inside one total deadline.
 
     ``context`` is built only by trusted ownership-checked server code. It is
-    not an accepted browser request body. Test adapters implement ``call``.
+    not an accepted browser request body. ``design_brief`` is optional curated
+    server-only development direction, separate from the learner's evidence and
+    subordinate to its exact targets and all admission gates. It has no HTTP
+    input route. Test adapters implement ``call``.
     """
+    design_brief = _design_brief(design_brief)
     try:
         adapter = adapter or ConfiguredComposerAdapter()
     except ExtractionError as error:
@@ -223,6 +258,10 @@ async def compose(context, *, adapter=None, progress=None, budget_seconds=TOTAL_
                                generationVariation=uuid.uuid4().hex,
                                requirements=dict(original=True, privateNonemptyWitness=True,
                                    preserveTrustedTargets=True, noFinishedActivityLibrary=True))
+                if design_brief is not None:
+                    payload['designBrief'] = design_brief
+                    payload['requirements']['designBriefIsNotLearnerEvidence'] = True
+                    payload['requirements']['designBriefCannotChangeTargetsOrAdmission'] = True
                 if attempt:
                     payload['repair'] = dict(stage=last.stage, reasonCode=last.code,
                         path=last.path, guidance=repair_guidance(last.code, last.path),
@@ -242,8 +281,10 @@ async def compose(context, *, adapter=None, progress=None, budget_seconds=TOTAL_
                     await _progress(progress, 'reviewing')
                     calls += 1
                     call_phase = 'review'
-                    review = await adapter.call(SemanticReview, 'review_activity_program', REVIEW_INSTRUCTION,
-                        dict(context=context, definitionHash=digest, definition=program.model_dump()))
+                    review_data = dict(context=context, capabilities=capabilities(), definitionHash=digest, definition=program.model_dump())
+                    if design_brief is not None:
+                        review_data['designBrief'] = design_brief
+                    review = await adapter.call(SemanticReview, 'review_activity_program', REVIEW_INSTRUCTION, review_data)
                     review = validate_review(program, digest, review)
                     metadata = safe_calls()
                     returned = [item['returnedModel'] for item in metadata if item.get('returnedModel')]

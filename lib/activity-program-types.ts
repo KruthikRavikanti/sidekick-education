@@ -18,6 +18,7 @@ export interface ProgramAction {
   operation: string;
   inputs: ProgramInput[];
   label: string;
+  objectIds?: string[];
 }
 export interface ProgramObject {
   id: string;
@@ -26,6 +27,24 @@ export interface ProgramObject {
   materialIds: string[];
   width?: number | null;
   height?: number | null;
+  wholeId?: string | null;
+}
+export interface ProgramFractionView {
+  objectId: string;
+  wholeId: string;
+  numerator: number;
+  denominator: number;
+  pieces: string[];
+  editable: boolean;
+  width: number;
+  allowedDenominators: number[];
+}
+export interface ProgramFractionComparison {
+  leftObject: string;
+  rightObject: string;
+  sameWhole: boolean;
+  equalAmount: boolean;
+  comparison?: "less" | "equal" | "greater" | null;
 }
 export interface ProgramMaterial {
   id: string;
@@ -79,6 +98,8 @@ export interface ProgramSession {
     evidence: { id: string; status: "not_observed" | "not_established" | "demonstrated" | "pending_parent_review"; assisted: boolean }[];
   };
   completionFeedback?: string | null;
+  fractionViews?: ProgramFractionView[];
+  fractionComparisons?: ProgramFractionComparison[];
 }
 
 export type ProgramGenerationStage = "queued" | "context" | "compose" | "validate" | "review" | "repair" | "start" | "ready" | "failed";

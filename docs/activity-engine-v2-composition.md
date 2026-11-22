@@ -159,6 +159,10 @@ apply; parent PIN protection is unchanged.
 
 The implemented preview actions are unit tiling, rectangle reshaping, multiplication
 construction, literal passage-evidence placement and actual text creation/revision.
+The subsequent [fraction-window benchmark](activity-engine-v2-fraction-benchmark.md)
+adds three reusable fraction actions: constructing pieces, repartitioning the same
+whole and moving pieces without changing their amount. The generator and reviewer
+both receive these actual operation and renderer contracts.
 Adapters accept the existing bounded shared-object shapes. Other registry operations
 and arbitrary component combinations remain unavailable. A mapped skill without a
 truthful supported interaction fails admission; no decorative card or finished

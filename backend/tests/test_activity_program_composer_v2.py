@@ -65,6 +65,45 @@ def test_supported_context_changes_prompt_emphasis_and_is_injected_without_model
     assert 'not just' in adapter.calls[0]['system']
 
 
+def test_server_only_design_brief_stays_separate_from_trusted_context_and_preserves_hash_review():
+    program=make_program('design'); context=context_for(program); before=copy.deepcopy(context)
+    adapter=Stub([program]); brief='Create a visible workshop mission with more than one valid construction.'
+    result=asyncio.run(compose(context,adapter=adapter,design_brief=brief))
+    assert context==before
+    for call in adapter.calls:
+        assert call['data']['context']==before
+        assert call['data']['designBrief']==brief
+    assert adapter.calls[0]['data']['requirements']['designBriefIsNotLearnerEvidence']
+    assert adapter.calls[0]['data']['requirements']['designBriefCannotChangeTargetsOrAdmission']
+    assert result.program.intent.observations==[] and result.program.intent.misconceptions==[]
+    assert result.program.intent.targets==program.intent.targets
+    assert result.review.definitionHash==result.definition_hash
+    assert 'designBrief' not in result.program.model_dump()
+
+
+def test_semantic_review_receives_the_same_real_capabilities_as_the_composer():
+    program=make_program('design'); adapter=Stub([program])
+    result=asyncio.run(compose(context_for(program),adapter=adapter))
+    composing,reviewing=adapter.calls
+    assert reviewing['data']['capabilities']==composing['data']['capabilities']
+    semantics=reviewing['data']['capabilities']['rendererConstraints']['fractionWorkspace']
+    assert semantics['repartitionPreservesExactSpatialShading']
+    assert 'Child-requested common-integer refinement of an already constructed amount' in semantics['assessableEvidence']
+    assert 'Unaided arithmetic recall' in semantics['unsupportedClaims']
+    assert 'not authorize approval by default' in reviewing['system']
+    assert 'without a typed multiplication note or essay' in reviewing['system']
+    assert result.review.definitionHash==result.definition_hash
+
+
+@pytest.mark.parametrize('brief',['',123,'x'*2001,'<script>execute()</script>','Contact parent@example.com','Read /Users/private/work.json'])
+def test_invalid_or_private_design_brief_is_safe_and_makes_no_provider_call(brief):
+    program=make_program(); adapter=Stub([program])
+    with pytest.raises(CompositionFailure) as captured:
+        asyncio.run(compose(context_for(program),adapter=adapter,design_brief=brief))
+    assert captured.value.stage=='context' and captured.value.code=='design_brief_invalid'
+    assert not adapter.calls
+
+
 def test_failed_trace_is_repaired_as_new_candidate_and_only_final_hash_is_reviewed():
     bad=to_authoring(make_program('design')).model_dump()
     bad['witness'][0]['inputs'][0]['value']=1

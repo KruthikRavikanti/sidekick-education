@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import copy
 from dataclasses import dataclass
+from fractions import Fraction
 import re
 from typing import Any
 
@@ -95,6 +96,8 @@ class ExecutionCore:
             return True
         if node.kind == 'goal':
             return self.evaluate(self.goals[node.goalId].when, state, {})
+        if node.kind == 'fraction_equal':
+            return self.fraction_comparison(state, node.leftObject, node.rightObject)['equalAmount']
         if node.kind == 'all':
             return all(self.evaluate(child, state, inputs) for child in node.conditions)
         if node.kind == 'any':
@@ -143,6 +146,15 @@ class ExecutionCore:
             if sum(state[ref] for ref in invariant.stateRefs) != invariant.total:
                 fail('quantity_conservation_violated', 'world.invariants')
         for obj in self.objects.values():
+            if obj.kind == 'fraction_strip':
+                denominator = state[obj.bindings['denominator']]
+                pieces = state[obj.bindings['pieces']]
+                if not 2 <= denominator <= 24 or not obj.width or denominator % obj.width:
+                    fail('fraction_partition_invalid', 'world.objects')
+                if any(not re.fullmatch(r'p(?:[0-9]|1[0-9]|2[0-3])', piece)
+                       or int(piece[1:]) >= denominator for piece in pieces):
+                    fail('fraction_piece_outside_whole', 'world.objects')
+                continue
             if obj.kind != 'grid':
                 continue
             rows = state[obj.bindings['rows']]
@@ -156,6 +168,85 @@ class ExecutionCore:
             tiles = next(self.materials[ref] for ref in obj.materialIds if self.materials[ref].kind == 'unit_tiles')
             if len(cells) > tiles.quantity:
                 fail('tile_stock_exceeded', 'world.objects')
+
+    def fraction_comparison(self, state, left_id, right_id):
+        left, right = self.objects[left_id], self.objects[right_id]
+        same = (left.kind == right.kind == 'fraction_strip' and left_id != right_id
+                and left.wholeId == right.wholeId and left.wholeId is not None and left.width == right.width
+                and any(relation.kind == 'same_whole' and {relation.source, relation.target} == {left_id, right_id}
+                        for relation in self.p.world.relationships))
+        left_amount = len(state[left.bindings['pieces']]) * state[right.bindings['denominator']] if same else None
+        right_amount = len(state[right.bindings['pieces']]) * state[left.bindings['denominator']] if same else None
+        equal = same and left_amount == right_amount
+        comparison = ('equal' if equal else 'less' if left_amount < right_amount else 'greater') if same else None
+        return dict(leftObject=left_id, rightObject=right_id, sameWhole=bool(same), equalAmount=bool(equal), comparison=comparison)
+
+    def repartition_fraction(self, state, obj, denominator):
+        """Exact spatial resampling: a new cell must be wholly shaded or clear.
+
+        Each immutable base column is split into rows. Column-major indexes
+        preserve the same geometry as these normalized rational intervals.
+        No rounding or a client-provided numerator participates in the result.
+        """
+        slot = self.slots[obj.bindings['denominator']]
+        if (type(denominator) is not int or not slot.minimum <= denominator <= slot.maximum
+                or not 2 <= denominator <= 24 or denominator % obj.width):
+            fail('fraction_partition_invalid', 'actions.inputs')
+        old_denominator = state[obj.bindings['denominator']]
+        if denominator == old_denominator:
+            fail('fraction_partition_unchanged', 'actions.inputs')
+        selected = state[obj.bindings['pieces']]
+        intervals = [(Fraction(int(piece[1:]), old_denominator), Fraction(int(piece[1:]) + 1, old_denominator))
+                     for piece in selected]
+        pieces = []
+        for index in range(denominator):
+            start, end = Fraction(index, denominator), Fraction(index + 1, denominator)
+            covered = sum((max(Fraction(0), min(end, right) - max(start, left)) for left, right in intervals), Fraction(0))
+            if covered == end - start:
+                pieces.append(f'p{index}')
+            elif covered:
+                fail('fraction_partition_cuts_shaded_piece', 'actions.inputs')
+        if len(selected) * denominator != len(pieces) * old_denominator:
+            fail('fraction_amount_not_preserved', 'rules.effects')
+        return pieces
+
+    def fraction_views(self, state, object_ids=None):
+        visible = set(object_ids) if object_ids is not None else set(self.objects)
+        spaces = set(self.visible_spaces(state))
+        views = []
+        for obj in self.objects.values():
+            if obj.kind != 'fraction_strip' or obj.id not in visible:
+                continue
+            actions = [action for action in self.p.actions if action.operation in {
+                'set_fraction_partition', 'toggle_fraction_piece', 'move_fraction_piece'}
+                and self.components[action.componentId].spaceId in spaces
+                and obj.id in {item.id for item in self.action_objects(action.id)}]
+            allowed = []
+            for action in actions:
+                if action.operation != 'set_fraction_partition':
+                    continue
+                parameter = next(item for item in action.inputs if item.id == 'denominator')
+                for denominator in range(parameter.minimum, parameter.maximum + 1):
+                    try:
+                        if self.completed(state):
+                            # Finished workspaces are frozen by the host. Keep
+                            # their historical projection/cache shape while
+                            # active choices use the exact execution semantics.
+                            self.repartition_fraction(state, obj, denominator)
+                        else:
+                            self.transition(state, action.id, {'denominator': denominator}, action_count=0)
+                        allowed.append(denominator)
+                    except ProgramInvalid:
+                        pass
+            pieces = list(state[obj.bindings['pieces']])
+            views.append(dict(objectId=obj.id, wholeId=obj.wholeId, numerator=len(pieces),
+                denominator=state[obj.bindings['denominator']], pieces=pieces, width=obj.width,
+                editable=bool(actions), allowedDenominators=sorted(set(allowed))))
+        comparisons = [self.fraction_comparison(state, relation.source, relation.target)
+            for relation in self.p.world.relationships if relation.kind == 'same_whole'
+            and relation.source in visible and relation.target in visible
+            and self.objects[relation.source].kind == self.objects[relation.target].kind == 'fraction_strip']
+        return views, comparisons
 
     def visible_spaces(self, state):
         return tuple(space.id for space in self.p.presentation.spaces
@@ -174,6 +265,7 @@ class ExecutionCore:
         action = self.actions[action_id]
         cap = CAPABILITIES[action.operation]
         targets = {effect.target for rule in self.rules[action_id] for effect in rule.effects}
+        targets.update(effect.piecesTarget for rule in self.rules[action_id] for effect in rule.effects if effect.kind == 'repartition')
         return tuple(self.objects[ref] for ref in self.components[action.componentId].objectIds
                      if self.objects[ref].kind == cap['objectKind']
                      and targets.intersection(self.objects[ref].bindings.values()))
@@ -239,7 +331,8 @@ class ExecutionCore:
         written = set()
         for rule in active:
             for effect in rule.effects:
-                targets = {effect.source, effect.target} if effect.kind == 'transfer' else {effect.target}
+                targets = ({effect.source, effect.target} if effect.kind == 'transfer' else
+                           {effect.target, effect.piecesTarget} if effect.kind == 'repartition' else {effect.target})
                 if targets.intersection(written):
                     fail('conflicting_effects', 'rules.effects')
                 if any(not self.slots[ref].mutable for ref in targets):
@@ -247,6 +340,21 @@ class ExecutionCore:
                 written.update(targets)
                 if effect.kind == 'set':
                     next_state[effect.target] = copy.deepcopy(self.term(effect.value, state, inputs))
+                elif effect.kind == 'repartition':
+                    objects = [obj for obj in self.action_objects(action_id) if obj.kind == 'fraction_strip'
+                               and obj.bindings['denominator'] == effect.target and obj.bindings['pieces'] == effect.piecesTarget]
+                    if len(objects) != 1:
+                        fail('fraction_partition_binding_invalid', 'rules.effects')
+                    denominator = self.term(effect.value, state, inputs)
+                    next_state[effect.piecesTarget] = self.repartition_fraction(state, objects[0], denominator)
+                    next_state[effect.target] = denominator
+                elif effect.kind == 'move_item':
+                    source, destination = self.term(effect.fromItem, state, inputs), self.term(effect.toItem, state, inputs)
+                    if source == destination or source not in state[effect.target] or destination in state[effect.target]:
+                        fail('fraction_move_requires_filled_and_empty_places', 'actions.inputs')
+                    collection = next_state[effect.target]
+                    collection.remove(source)
+                    collection.append(destination)
                 elif effect.kind == 'transfer':
                     amount = self.term(effect.amount, state, inputs)
                     if amount <= 0:

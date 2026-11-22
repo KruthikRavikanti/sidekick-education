@@ -1,0 +1,120 @@
+{
+  "success": true,
+  "title": "Lantern Filter Window",
+  "localUrl": "http://localhost:3000/kid/activity-preview/1060d1bd9db24e208c05a0bacf898874",
+  "definitionHash": "379df440bfa1160910091738e238615b4f15ebd5ae62f8577c30df780baa7030",
+  "requestedModel": "gpt-6.1-terra",
+  "returnedModels": [
+    "gpt-6.1-terra",
+    "gpt-6.1-terra",
+    "gpt-6.1-terra",
+    "gpt-6.1-terra"
+  ],
+  "modelCalls": [
+    {
+      "requestedModel": "gpt-6.1-terra",
+      "returnedModel": "gpt-6.1-terra",
+      "task": "compose_activity_program"
+    },
+    {
+      "requestedModel": "gpt-6.1-terra",
+      "returnedModel": "gpt-6.1-terra",
+      "task": "repair_activity_program"
+    },
+    {
+      "requestedModel": "gpt-6.1-terra",
+      "returnedModel": "gpt-6.1-terra",
+      "task": "repair_activity_program"
+    },
+    {
+      "requestedModel": "gpt-6.1-terra",
+      "returnedModel": "gpt-6.1-terra",
+      "task": "review_activity_program"
+    }
+  ],
+  "repairReasons": [
+    {
+      "attempt": 1,
+      "code": "fraction_piece_domain_invalid",
+      "path": "world.objects",
+      "stage": "schema"
+    },
+    {
+      "attempt": 2,
+      "code": "fraction_piece_domain_invalid",
+      "path": "world.objects",
+      "stage": "schema"
+    }
+  ],
+  "providerCalls": 4,
+  "separateReviewApproved": true,
+  "reviewHashBound": true,
+  "witnessSteps": 4,
+  "targets": [
+    "4.NF.A.1-1"
+  ],
+  "initialActionCount": 0,
+  "initialRevision": 0,
+  "operations": [
+    "move_fraction_piece",
+    "set_fraction_partition",
+    "toggle_fraction_piece"
+  ],
+  "verificationAttempts": [
+    {
+      "id": "e83ae11b32dc4b488e32991a0a442b93",
+      "initialActionCount": 0
+    },
+    {
+      "id": "30503a9f5b5348f3a7902a2e4e6aefa1",
+      "initialActionCount": 0
+    }
+  ],
+  "browserVerified": true,
+  "verificationIsolation": "synthetic_separate_database",
+  "verificationPristineId": "30e3cd6b26734ddf85cf33a056ba4129",
+  "evaluationPreparationSnapshot": {
+    "actionCount": 0,
+    "revision": 0
+  },
+  "evaluationPreparationUnchanged": true,
+  "verificationPristineUntouched": true,
+  "verificationOutcomes": [
+    {
+      "denominator": 10,
+      "numerator": 4,
+      "actions": 5,
+      "assisted": true,
+      "assessment": "demonstrated",
+      "refreshVerified": true,
+      "replayVerified": true,
+      "differentLayoutsAndPartitions": true,
+      "matchingWholeDimensionsVerified": true,
+      "refinementGuardVerified": true,
+      "shadedAreaPreserved": true,
+      "touchAndKeyboardMoveVerified": true
+    },
+    {
+      "denominator": 15,
+      "numerator": 6,
+      "actions": 3,
+      "assisted": false,
+      "assessment": "demonstrated",
+      "refreshVerified": true,
+      "replayVerified": true,
+      "differentLayoutsAndPartitions": true,
+      "matchingWholeDimensionsVerified": true,
+      "refinementGuardVerified": true
+    }
+  ],
+  "evaluationAfterVerificationSnapshot": {
+    "actionCount": 0,
+    "revision": 0
+  },
+  "pristineAttemptUntouched": true,
+  "qualityIteration": {
+    "earlierDraftRejectedForBenchmark": "unnecessary_writing_task",
+    "selectedGenerationProviderCalls": 4,
+    "totalBenchmarkProviderCalls": 8
+  }
+}
