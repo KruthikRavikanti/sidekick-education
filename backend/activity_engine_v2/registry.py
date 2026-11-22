@@ -8,6 +8,7 @@ COMPONENT_VERSION = 'sidekick-program-contract-v1'
 PREVIEW_OPERATIONS = frozenset({
     'toggle_tile', 'resize_rectangle', 'assemble_product',
     'select_evidence', 'replace_text', 'revise_text',
+    'set_fraction_partition', 'toggle_fraction_piece', 'move_fraction_piece',
 })
 
 OBJECT_PORTS = {
@@ -20,6 +21,7 @@ OBJECT_PORTS = {
     'audio_artifact': {'artifact': 'artifact'},
     'drawing_artifact': {'artifact': 'artifact'},
     'progress': {'value': 'boolean'},
+    'fraction_strip': {'denominator': 'integer', 'pieces': 'id_set'},
 }
 
 COMPONENT_OBJECTS = {
@@ -30,6 +32,7 @@ COMPONENT_OBJECTS = {
     'tile_order': {'sequence', 'progress'},
     'oral_studio': {'audio_artifact', 'progress'},
     'drawing_studio': {'drawing_artifact', 'progress'},
+    'fraction_workspace': {'fraction_strip', 'progress'},
 }
 
 
@@ -42,6 +45,15 @@ def _cap(component, object_kind, inputs, effects, auto, source, action, change, 
 
 
 CAPABILITIES = {
+    'set_fraction_partition': _cap('fraction_workspace','fraction_strip',{'denominator':'integer'}, {'repartition'},True,
+        'components/activity-program-fractions.tsx', 'Divide the same whole into a chosen number of equal parts.',
+        'Each column splits into equal rows; the exact shaded region and amount are preserved.', 'A changed denominator with a server-derived equivalent numerator.'),
+    'toggle_fraction_piece': _cap('fraction_workspace','fraction_strip',{'piece':'choice'}, {'toggle_item'},True,
+        'components/activity-program-fractions.tsx', 'Place or remove one equal fraction piece.',
+        'An actual part of the construction fills or clears.', 'The selected pieces determine the fraction; no submitted numerator is trusted.'),
+    'move_fraction_piece': _cap('fraction_workspace','fraction_strip',{'from':'choice','to':'choice'}, {'move_item','set'},True,
+        'components/activity-program-fractions.tsx', 'Move one shaded piece to an empty place in the same whole.',
+        'The layout changes while the shaded amount remains exactly the same.', 'Conserved rearrangement and same-whole comparison.'),
     'transfer_quantity': _cap('quantity_lab','quantity_pool',{'amount':'integer'}, {'transfer'},True,
         'components/activity-families.tsx:QuantityLab', 'Move units between displayed pools.',
         'Source loses exactly the amount the destination gains.', 'Conserved allocation and exact counts.'),

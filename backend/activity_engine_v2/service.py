@@ -134,6 +134,11 @@ def _project(row, program, core, version, events):
     # generated sessions can be honestly labeled without rewriting old events.
     if program.provenance.origin == 'ai_composed':
         result['origin'] = 'ai_composed'
+    if any(obj.kind=='fraction_strip' for obj in objects):
+        result['fractionViews'],result['fractionComparisons']=core.fraction_views(state,object_ids)
+        for action in result['actions']:
+            if action['operation'] in {'set_fraction_partition','toggle_fraction_piece','move_fraction_piece'}:
+                action['objectIds']=[obj.id for obj in core.action_objects(action['id'])]
     return result
 
 

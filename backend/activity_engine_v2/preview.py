@@ -29,13 +29,23 @@ def validate_runtime_compatibility(program):
         raise AccountError('runtime_adapter_unavailable', 'This activity needs a control that is not available in the preview.', 422)
     core = ExecutionCore(program)
     rendered = {'math_workspace': {'grid', 'equation'}, 'evidence_board': {'evidence_board'},
-                'text_editor': {'text_artifact'}}
+                'text_editor': {'text_artifact'}, 'fraction_workspace': {'fraction_strip'}}
     for component in program.components:
         if component.kind not in rendered:
             raise AccountError('runtime_adapter_unavailable', 'This activity needs a control that is not available in the preview.', 422)
         for kind in rendered[component.kind]:
-            if sum(core.objects[ref].kind == kind for ref in component.objectIds) > 1:
+            maximum=2 if component.kind=='fraction_workspace' else 1
+            if sum(core.objects[ref].kind == kind for ref in component.objectIds) > maximum:
                 raise AccountError('runtime_adapter_unavailable', 'This activity needs an unsupported shared-object control.', 422)
+        if component.kind=='fraction_workspace':
+            strips=[core.objects[ref] for ref in component.objectIds if core.objects[ref].kind=='fraction_strip']
+            fixed=[obj for obj in strips if not core.slots[obj.bindings['denominator']].mutable]
+            working=[obj for obj in strips if core.slots[obj.bindings['denominator']].mutable]
+            if (len(strips)!=2 or len(fixed)!=1 or len(working)!=1 or fixed[0].wholeId!=working[0].wholeId
+                    or fixed[0].width!=working[0].width
+                    or not any(relation.kind=='same_whole' and {relation.source,relation.target}=={fixed[0].id,working[0].id}
+                               for relation in program.world.relationships)):
+                raise AccountError('runtime_adapter_unavailable', 'This workspace needs a fixed reference and construction of the same whole.', 422)
         operations = [action.operation for action in program.actions if action.componentId == component.id]
         if len(operations) != len(set(operations)):
             raise AccountError('runtime_adapter_unavailable', 'This activity needs an unsupported action control.', 422)

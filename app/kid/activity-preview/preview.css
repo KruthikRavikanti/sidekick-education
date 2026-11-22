@@ -464,3 +464,321 @@
     transition: none;
   }
 }
+.program-fraction-workspace {
+  display: grid;
+  gap: 18px;
+  container-type: inline-size;
+}
+.program-fraction-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.program-fraction-tools button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 10px 13px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--cream);
+  color: var(--forest);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.program-fraction-tools button[aria-pressed="true"] {
+  border-color: var(--forest);
+  background: #edf2df;
+  box-shadow: inset 0 0 0 1px var(--forest);
+}
+.program-fraction-tools button:disabled,
+.program-fraction-partitions button:disabled {
+  cursor: default;
+}
+.program-fraction-tools .program-fraction-compare {
+  margin-left: auto;
+}
+.program-fraction-instruction {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+  min-height: 22px;
+}
+.program-fraction-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 4px 0 8px;
+}
+.program-fraction-figures {
+  display: grid;
+  gap: 24px;
+  min-width: var(--fraction-min-width);
+  padding: 2px 3px 6px;
+}
+.program-fraction-figure {
+  margin: 0;
+  min-width: var(--fraction-min-width);
+}
+.program-fraction-figure figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 800;
+}
+.program-fraction-figure figcaption > strong {
+  padding: 4px 14px;
+  border: 1px solid #d3debc;
+  border-radius: 14px;
+  background: #f0f4e5;
+  font-size: 23px;
+  letter-spacing: 0.02em;
+}
+.program-fraction-whole {
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(var(--fraction-columns), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--fraction-rows), minmax(0, 1fr));
+  height: var(--fraction-height);
+  overflow: hidden;
+  border: 3px solid var(--forest);
+  border-radius: 20px;
+  background: var(--cream);
+  box-shadow: 0 4px 0 #d9dfc9;
+}
+.program-fraction-piece {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
+  min-height: 0;
+  padding: 4px 2px;
+  border: 0;
+  border-radius: 0;
+  background: #fffaf0;
+  color: var(--forest);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  transition: background-color 180ms ease, box-shadow 180ms ease;
+}
+.program-fraction-piece::after {
+  position: absolute;
+  inset: 0;
+  border-right: 1px solid #79965d;
+  border-bottom: 1px solid #79965d;
+  content: "";
+  pointer-events: none;
+  animation: program-fraction-cut 330ms ease both;
+}
+.program-fraction-working button.program-fraction-piece {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.program-fraction-piece-shaded {
+  background: var(--lime);
+}
+.program-fraction-target .program-fraction-piece-shaded {
+  background: #d5e4ae;
+}
+.program-fraction-piece-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.program-fraction-working button.program-fraction-piece:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 3px #91ab6a;
+}
+.program-fraction-piece-moving,
+.program-fraction-working button.program-fraction-piece:focus-visible {
+  z-index: 1;
+  outline: 3px solid var(--forest);
+  outline-offset: -5px;
+}
+.program-fraction-working button.program-fraction-piece:disabled {
+  cursor: default;
+  opacity: 1;
+}
+.program-fraction-partitions {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+.program-fraction-partitions legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 800;
+}
+.program-fraction-partitions > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.program-fraction-partitions button {
+  display: flex;
+  flex: 1 0 60px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 64px;
+  max-width: 105px;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--cream);
+  color: var(--forest);
+  font: inherit;
+  cursor: pointer;
+}
+.program-fraction-partitions button > strong {
+  font-size: 23px;
+}
+.program-fraction-partitions button > span {
+  color: var(--muted);
+  font-size: 11px;
+}
+.program-fraction-partitions button > small {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  font-size: 10px;
+  font-weight: 800;
+}
+.program-fraction-partitions button[aria-pressed="true"] {
+  border: 2px solid var(--forest);
+  background: #edf2df;
+}
+.program-fraction-partitions button:disabled:not([aria-pressed="true"]) {
+  opacity: 0.45;
+}
+.program-fraction-partitions > p {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.program-fraction-feedback {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--cream);
+}
+.program-fraction-feedback > strong {
+  font-size: 21px;
+}
+.program-fraction-feedback > span {
+  color: var(--muted);
+  font-size: 12px;
+}
+.program-fraction-feedback-match {
+  background: #edf2df;
+  border-color: #b6c996;
+}
+.program-fraction-counts {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid #cbd8a8;
+  border-radius: 18px;
+  background: #f0f4e5;
+}
+.program-fraction-counts > p {
+  color: var(--muted);
+  font-size: 12px;
+}
+.program-fraction-counts > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.program-fraction-counts > div > span {
+  flex: 1 0 115px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #fff;
+  text-align: center;
+  font-size: 19px;
+  font-weight: 800;
+}
+@container (min-width: 700px) {
+  .program-fraction-figures {
+    grid-template-columns: repeat(2, minmax(var(--fraction-min-width), 1fr));
+    align-items: start;
+  }
+}
+.program-fraction-coverage {
+  display: grid;
+  gap: 13px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--cream);
+}
+.program-fraction-coverage h3 {
+  font-size: 18px;
+}
+.program-fraction-coverage > p {
+  margin-top: -5px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.program-fraction-coverage-row {
+  display: grid;
+  gap: 6px;
+}
+.program-fraction-coverage-row > span {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+.program-fraction-coverage-bar {
+  overflow: hidden;
+  height: 25px;
+  border: 1px solid var(--forest);
+  border-radius: 7px;
+  background: #fffaf0;
+}
+.program-fraction-coverage-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--lime);
+  transform-origin: left center;
+  animation: program-fraction-coverage-show 280ms ease both;
+  transition: width 220ms ease;
+}
+@keyframes program-fraction-cut {
+  from { opacity: 0; transform: scaleX(0.55); }
+  to { opacity: 1; transform: scaleX(1); }
+}
+@keyframes program-fraction-coverage-show {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .program-fraction-piece,
+  .program-fraction-piece::after,
+  .program-fraction-coverage-bar > span {
+    animation: none;
+    transition: none;
+  }
+}

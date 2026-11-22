@@ -4,7 +4,7 @@ from __future__ import annotations
 import re
 from typing import Annotated, Literal, Union
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, model_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, model_serializer, model_validator
 
 SCHEMA_VERSION = '2.0-foundation'
 COMPONENT_VERSION = 'sidekick-program-contract-v1'
@@ -150,7 +150,13 @@ class GoalCondition(Closed):
     goalId: Identifier
 
 
-Condition = Annotated[Union[AlwaysCondition, CompareCondition, LogicCondition, NotCondition, ContainsCondition, GoalCondition], Field(discriminator='kind')]
+class FractionEqualCondition(Closed):
+    kind: Literal['fraction_equal']
+    leftObject: Identifier
+    rightObject: Identifier
+
+
+Condition = Annotated[Union[AlwaysCondition, CompareCondition, LogicCondition, NotCondition, ContainsCondition, GoalCondition, FractionEqualCondition], Field(discriminator='kind')]
 
 
 class SetEffect(Closed):
@@ -172,7 +178,21 @@ class TransferEffect(Closed):
     amount: Term
 
 
-Effect = Annotated[Union[SetEffect, ItemEffect, TransferEffect], Field(discriminator='kind')]
+class RepartitionEffect(Closed):
+    kind: Literal['repartition']
+    target: Identifier
+    piecesTarget: Identifier
+    value: Term
+
+
+class MoveItemEffect(Closed):
+    kind: Literal['move_item']
+    target: Identifier
+    fromItem: Term
+    toItem: Term
+
+
+Effect = Annotated[Union[SetEffect, ItemEffect, TransferEffect, RepartitionEffect, MoveItemEffect], Field(discriminator='kind')]
 
 
 class SkillTarget(Closed):
@@ -218,11 +238,22 @@ class Material(Closed):
 
 class WorldObject(Closed):
     id: Identifier
-    kind: Literal['quantity_pool', 'grid', 'equation', 'text_artifact', 'evidence_board', 'sequence', 'audio_artifact', 'drawing_artifact', 'progress']
+    kind: Literal['quantity_pool', 'grid', 'equation', 'text_artifact', 'evidence_board', 'sequence', 'audio_artifact', 'drawing_artifact', 'progress', 'fraction_strip']
     bindings: Annotated[dict[Identifier, Identifier], Field(min_length=1, max_length=8)]
     materialIds: Annotated[list[Identifier], Field(max_length=8)] = Field(default_factory=list)
     width: Annotated[int, Field(ge=1, le=12)] | None = None
     height: Annotated[int, Field(ge=1, le=12)] | None = None
+    wholeId: Identifier | None = None
+
+    @model_serializer(mode='wrap')
+    def preserve_legacy_object_shape(self, serialize):
+        # model_serializer is available throughout the declared Pydantic 2.x
+        # range; Field(exclude_if=...) requires a newer release. Omitting only
+        # this newly added null field preserves historical definition hashes.
+        result = serialize(self)
+        if self.wholeId is None:
+            result.pop('wholeId', None)
+        return result
 
 
 class Relationship(Closed):
@@ -249,7 +280,7 @@ class World(Closed):
 
 class Component(Closed):
     id: Identifier
-    kind: Literal['quantity_lab', 'math_workspace', 'text_editor', 'evidence_board', 'tile_order', 'oral_studio', 'drawing_studio']
+    kind: Literal['quantity_lab', 'math_workspace', 'text_editor', 'evidence_board', 'tile_order', 'oral_studio', 'drawing_studio', 'fraction_workspace']
     objectIds: Annotated[list[Identifier], Field(min_length=1, max_length=8)]
     spaceId: Identifier
 
@@ -288,7 +319,7 @@ class ActionInput(Closed):
 class Action(Closed):
     id: Identifier
     componentId: Identifier
-    operation: Literal['transfer_quantity', 'toggle_tile', 'resize_rectangle', 'assemble_product', 'replace_text', 'revise_text', 'select_evidence', 'reorder', 'record_voice', 'draw']
+    operation: Literal['transfer_quantity', 'toggle_tile', 'resize_rectangle', 'assemble_product', 'replace_text', 'revise_text', 'select_evidence', 'reorder', 'record_voice', 'draw', 'set_fraction_partition', 'toggle_fraction_piece', 'move_fraction_piece']
     inputs: Annotated[list[ActionInput], Field(min_length=1, max_length=4)]
     label: ShortText
 

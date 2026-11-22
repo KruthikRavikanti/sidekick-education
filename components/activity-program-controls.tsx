@@ -3,6 +3,7 @@
 import { Check, Pencil, Plus } from "lucide-react";
 import { useState, type CSSProperties } from "react";
 import type { ProgramAction, ProgramComponent, ProgramInputs, ProgramMaterial, ProgramObject, ProgramSession } from "@/lib/activity-program-types";
+import { ActivityProgramFractions } from "./activity-program-fractions";
 
 type ControlProps = {
   session: ProgramSession;
@@ -163,6 +164,7 @@ function UnsupportedControl() {
 
 export function ActivityProgramControl(props: ControlProps) {
   switch (props.component.kind) {
+    case "fraction_workspace": return <><ProgramMaterials materials={materialFor(props.session, props.session.objects.filter(object => props.component.objectIds.includes(object.id)))} /><ActivityProgramFractions {...props} /></>;
     case "math_workspace": return <MathWorkspace {...props} />;
     case "evidence_board": return <EvidenceWorkspace {...props} />;
     case "text_editor": return <TextWorkspace {...props} />;

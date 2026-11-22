@@ -163,7 +163,7 @@ def _fail(security, generation_id, token, code, stage='failed', metadata=None):
             _diagnostics(connection, generation_id, getattr(metadata, 'diagnostic_events', []))
 
 
-async def run(security, kid_id, generation_id, token, active, adapter=None):
+async def run(security, kid_id, generation_id, token, active, adapter=None, *, design_brief=None):
     """A bounded in-process worker. A stopped process leaves a recoverable expiring lease."""
     from .composer import compose, CompositionFailure
 
@@ -186,8 +186,12 @@ async def run(security, kid_id, generation_id, token, active, adapter=None):
             row = _owned(connection, security, kid_id, generation_id, active)
             context = json.loads(row['context_json'])
         # All provider calls and the review/repair loop occur after the transaction.
-        approved = await asyncio.wait_for(compose(context, adapter=adapter, progress=progress,
-                                                   budget_seconds=GENERATION_TIMEOUT_SECONDS), GENERATION_TIMEOUT_SECONDS)
+        options = dict(adapter=adapter, progress=progress, budget_seconds=GENERATION_TIMEOUT_SECONDS)
+        # Trusted development tooling can supply a creative brief. It is not an
+        # HTTP input, learner observation, finished definition or admission bypass.
+        if design_brief is not None:
+            options['design_brief'] = design_brief
+        approved = await asyncio.wait_for(compose(context, **options), GENERATION_TIMEOUT_SECONDS)
         await progress('start')
         with security.db.transaction() as connection:
             row = _owned(connection, security, kid_id, generation_id, active)
