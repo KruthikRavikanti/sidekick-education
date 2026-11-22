@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Isolated browser checks can run beside the ordinary local app.
+  distDir: process.env.SIDEKICK_NEXT_DIST_DIR || ".next",
+  typescript: { tsconfigPath: process.env.SIDEKICK_NEXT_TSCONFIG || "tsconfig.json" },
   poweredByHeader: false,
   devIndicators: false,
   experimental: {

@@ -1,7 +1,8 @@
 """Export reviewed synthetic curriculum only after the public browser proof.
 
-Audit artifacts are never registered with an activity loader or fallback. The
-synthetic source database is opened read-only; no provider or app is started.
+The explicit development gallery may admit its four whitelisted reviewed
+exports. Live composition never searches these files or uses them as a fallback.
+The synthetic source database is opened read-only; no provider or app is started.
 """
 from __future__ import annotations
 

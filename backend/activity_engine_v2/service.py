@@ -209,8 +209,8 @@ def _create_session(connection, security, kid_id, key, program, active):
     return _project(row, program, core, version, [])
 
 
-def start_approved(connection, security, kid_id, approved, active):
-    """No public definition input: start only a hash-bound reviewed generation."""
+def validate_approved(approved):
+    """Shared admission for server-owned reviewed definitions; no persistence."""
     from .preview import validate_runtime_compatibility
     from .composer import CompositionFailure, validate_review
     from .validator import validate_program
@@ -232,9 +232,17 @@ def start_approved(connection, security, kid_id, approved, active):
     if program.presentation.stage is not None:
         from .composer import validate_gameplay_review
         try:
-            validate_gameplay_review(program,expected,getattr(approved,'gameplay_review',None))
+            validate_gameplay_review(program,expected,getattr(approved,'gameplay_review',None),
+                                     getattr(approved,'render_manifest',None))
         except (CompositionFailure,ValidationError,ValueError,TypeError):
             raise AccountError('gameplay_approval_integrity_failed','The activity play approval could not be verified.',503) from None
+    return program
+
+
+def start_approved(connection, security, kid_id, approved, active):
+    """No public definition input: start only a hash-bound reviewed generation."""
+    program=validate_approved(approved)
+    expected=approved.definition_hash
     return _create_session(connection, security, kid_id, 'generated-'+expected, program, active)
 
 

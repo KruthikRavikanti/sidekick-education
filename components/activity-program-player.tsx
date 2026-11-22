@@ -133,7 +133,12 @@ function ProgramContent({ sessionId }: { sessionId: string }) {
         <p className="program-save-note">Your workspace and any help are saved for this profile.</p>
         {program.status === "completed" ? <Link className="button primary program-back" href="/kid/activity-preview" prefetch={false}>Explore another workspace</Link> : null}
       </> : null}
-      {!program && !loading ? <><FormError message={error} /><button className="button secondary" onClick={() => { const signal = controller.current?.signal; if (signal) void load(signal).catch((caught) => setError(errorMessage(caught))); }}>Reload saved workspace</button></> : null}
+      {!program && !loading ? <>
+        <FormError message={error} />
+        <p>Browse activities to choose an example or resume one saved for this profile.</p>
+        <Link className="button primary" href="/kid/activity-preview" prefetch={false}>Browse activities</Link>
+        <button className="button secondary" onClick={() => { const signal = controller.current?.signal; if (signal) void load(signal).catch((caught) => setError(errorMessage(caught))); }}>Reload saved workspace</button>
+      </> : null}
     </section>
   </AccountShell>;
 }

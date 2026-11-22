@@ -1,6 +1,7 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { SessionView } from "./account-types";
+import { ACTIVITY_RETURN_HEADER, activityEntry, safeActivityReturn } from "./activity-return";
 
 export async function serverSession(): Promise<SessionView | null> {
   const cookie = (await cookies()).toString();
@@ -19,13 +20,15 @@ export async function serverSession(): Promise<SessionView | null> {
   }
 }
 
-export async function requireAccount(mode?: SessionView["mode"]) {
+export async function requireAccount(mode?: SessionView["mode"], returnTo?: string | null) {
   const session = await serverSession();
-  if (!session) redirect("/login");
+  const target = safeActivityReturn(returnTo)
+    || (mode === "kid" ? safeActivityReturn((await headers()).get(ACTIVITY_RETURN_HEADER)) : null);
+  if (!session) redirect(activityEntry("/login", target));
   if (mode === "parent" && session.mode !== "parent")
     redirect("/parent/unlock");
   if (mode === "kid" && (session.mode !== "kid" || !session.activeKid))
-    redirect("/profiles");
+    redirect(activityEntry("/profiles", target));
   if (mode === "picker" && session.mode !== "picker")
     redirect(session.mode === "kid" ? "/kid" : "/parent/dashboard");
   return session;

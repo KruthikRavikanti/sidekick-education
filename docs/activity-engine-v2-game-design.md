@@ -28,6 +28,23 @@ production even when its flag is enabled. The existing `backend/.env` supplies
 `VISION_API_KEY`, `VISION_MODEL` and `VISION_BASE_URL`; no new credential is needed.
 Do not replace that file when updating the repository.
 
+To play the four saved examples, sign in, choose a child, and select **Saved activities**
+on the child's home, or open **http://localhost:3000/kid/activity-preview**. The reviewed examples are
+available to every signed-in child in this development preview. Starting one
+creates that child's own private attempt; **Continue** resumes their latest
+attempt with the same approved definition. These examples need no new provider
+call or upload. Original evaluator URLs remain private to their original profile.
+Opening an activity link while signed out now returns to that link after sign-in
+and child selection. A link owned by another profile offers **Browse activities**
+instead of exposing that profile's attempt.
+
+The saved-example access regression is covered by
+`backend/tests/test_activity_program_benchmarks_v2.py` and
+`npx playwright test --config playwright.activity-v2-benchmarks.config.ts`.
+The browser suite uses separate ports, database, upload storage and Next cache;
+it verifies login/profile return, all four example cards, a real action and
+refresh, Continue/fresh attempts, parent-to-child navigation and account isolation.
+
 Sign in, choose a child, and open **http://localhost:3000/kid/homework**. Upload
 schoolwork, select **Read my work**, then **Create an activity** in the development
 preview. The server derives the learning goal from the owned upload, supported
@@ -278,7 +295,8 @@ Requested and returned model: **gpt-6.1-terra**. The
 contains the five-candidate plans, judgments, safe call/timing metadata, rejected
 attempts, public-play decisions, hashes and final checks.
 
-Each link below opens a separately saved, **zero-action** evaluator attempt in the
+The Activities gallery above starts a private copy for the current child. Each
+original link below opens a separately saved, **zero-action** evaluator attempt in the
 existing local account/child used for the Lantern benchmark. Select that profile
 before opening a link. The recorded engineering attempts used isolated synthetic
 storage. Only reviewed curriculum definitions were copied to the local account;
@@ -295,6 +313,9 @@ attributed to a real child. Existing attempts were preserved.
 These local account/session IDs are not portable to a clean clone. The exact
 synthetic [programs and reviews](activity-engine-v2-game-design/report.json) are
 exported beside the report for audit. They are never loaded as runtime fallbacks.
+The explicit development gallery validates the four whitelisted program and
+review exports through the same approval gate before starting an owned attempt;
+it does not alter upload routing, live generation or another child's history.
 
 ### Choose a Crossing
 

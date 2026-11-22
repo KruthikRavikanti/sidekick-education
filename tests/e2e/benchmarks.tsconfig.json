@@ -1,0 +1,6 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": { "incremental": false },
+  "include": ["../../next-env.d.ts", "../../**/*.ts", "../../**/*.tsx", "../../node_modules/.cache/sidekick-benchmark-e2e-next/types/**/*.ts", "../../node_modules/.cache/sidekick-benchmark-e2e-next/dev/types/**/*.ts"],
+  "exclude": ["../../node_modules", "../../.next"]
+}

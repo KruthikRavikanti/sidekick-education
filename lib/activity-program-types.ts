@@ -123,9 +123,14 @@ export interface ProgramPreview {
   title: string;
   description: string;
   available?: boolean;
-  reasonCode?: string;
+  reasonCode?: string | null;
   sessionId?: string | null;
   status?: "in_progress" | "completed" | null;
+}
+export interface ProgramBenchmark extends ProgramPreview {
+  subject: "math" | "ela";
+  skillIds: string[];
+  definitionHash: string | null;
 }
 export interface ProgramSession {
   id: string;

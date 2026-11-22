@@ -7,7 +7,7 @@ from fastapi.routing import APIRoute
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 
 from backend.accounts.security import AccountError, get_security, require_session
-from . import generation, service
+from . import benchmarks, generation, service
 
 class PreviewRoute(APIRoute):
     """Bound nesting before the JSON decoder can recurse into private input."""
@@ -89,6 +89,17 @@ def kid_context(request):
 @router.get('/preview')
 def previews(request: Request):
     return service.previews(*kid_context(request))
+
+
+@router.get('/benchmarks')
+def reviewed_benchmarks(request: Request):
+    return benchmarks.listing(*kid_context(request))
+
+
+@router.post('/benchmarks/{benchmark_key}/sessions')
+def start_benchmark(benchmark_key: str,body: StartInput,request: Request):
+    security,kid_id,active=kid_context(request)
+    return benchmarks.start(security,kid_id,benchmark_key,body.requestId,active)
 
 
 @router.get('/capabilities')
