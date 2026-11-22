@@ -84,14 +84,16 @@ export async function apiFetch(path: string, init: RequestInit = {}) {
 
 export async function api<T>(
   path: string,
-  options: { method?: string; body?: unknown; signal?: AbortSignal } = {},
+  options: { method?: string; body?: unknown; signal?: AbortSignal; headers?: HeadersInit } = {},
 ): Promise<T> {
+  const headers = new Headers(options.headers);
+  if (options.body !== undefined) headers.set("Content-Type", "application/json");
   const response = await apiFetch(path, {
     method: options.method,
     signal: options.signal,
+    headers,
     ...(options.body !== undefined
       ? {
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(options.body),
         }
       : {}),

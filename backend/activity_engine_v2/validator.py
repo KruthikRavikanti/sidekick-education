@@ -1,7 +1,7 @@
 """Content-safe offline compiler and optional bounded witness checker.
 
-The witness interpreter is a verification helper, not the application runtime:
-it does not accept live sessions, persist events, grade children, or run assets.
+Authoring checks are separate from execution. Optional fixture witnesses use
+the exact same pure execution core as owned preview sessions.
 """
 from __future__ import annotations
 
@@ -16,19 +16,9 @@ from pydantic import ValidationError
 
 from .models import ActivityProgram, MAX_JSON_DEPTH, MAX_JSON_NODES, MAX_PROGRAM_BYTES, ValidationIssue, ValidationReport
 from .registry import ASSETS, CAPABILITIES, COMPONENT_OBJECTS, OBJECT_PORTS
+from .core import ExecutionCore, ProgramInvalid, fail
 
 ROOT = Path(__file__).resolve().parents[2]
-
-
-class ProgramInvalid(ValueError):
-    """Fixed code/path only: no validation inputs, provider text or child content."""
-    def __init__(self, code, path=''):
-        self.code, self.path = code, path
-        super().__init__(code)
-
-
-def fail(code, path=''):
-    raise ProgramInvalid(code,path)
 
 
 @lru_cache(maxsize=1)
@@ -122,7 +112,7 @@ def _nodes(node,depth=1):
                     if hasattr(child,'model_dump'): yield from _nodes(child,depth+1)
 
 
-class Compiler:
+class Compiler(ExecutionCore):
     def __init__(self,program):
         self.p=program
         self.slots=_index(program.world.state,'world.state')
@@ -537,95 +527,29 @@ class Compiler:
             if node.op=='ne':return {a!=b for a in left for b in right}
         return {True,False}
 
-    def term(self,node,state,inputs):
-        if node.kind=='literal':return node.value
-        if node.kind=='state':return state[node.ref]
-        if node.kind=='input':return inputs[node.ref]
-        values=[self.term(arg,state,inputs) for arg in node.args]
-        if node.op=='add':result=values[0]+values[1]
-        elif node.op=='subtract':result=values[0]-values[1]
-        elif node.op=='multiply':result=values[0]*values[1]
-        elif node.op=='count':return len(values[0])
-        elif node.op=='word_count':return len(values[0].split())
-        else:return values[0] is not None
-        if abs(result)>1000000000000:fail('arithmetic_budget_exceeded')
-        return result
-
-    def evaluate(self,node,state,inputs):
-        if node.kind=='always':return True
-        if node.kind=='goal':return self.evaluate(self.goals[node.goalId].when,state,{})
-        if node.kind=='all':return all(self.evaluate(child,state,inputs) for child in node.conditions)
-        if node.kind=='any':return any(self.evaluate(child,state,inputs) for child in node.conditions)
-        if node.kind=='not':return not self.evaluate(node.condition,state,inputs)
-        if node.kind=='contains':return self.term(node.item,state,inputs) in self.term(node.collection,state,inputs)
-        left=self.term(node.left,state,inputs);right=self.term(node.right,state,inputs)
-        if node.left.kind=='state' and self.slots[node.left.ref].kind=='id_set':
-            left,right=set(left),set(right)
-        return {'eq':lambda:left==right,'ne':lambda:left!=right,'lt':lambda:left<right,
-                'lte':lambda:left<=right,'gt':lambda:left>right,'gte':lambda:left>=right}[node.op]()
-
-    def check_state(self,state):
-        for ref,value in state.items():
-            slot=self.slots[ref]
-            if slot.kind=='integer' and (type(value) is not int or not slot.minimum<=value<=slot.maximum):fail('state_integer_bounds_violated','world.state')
-            if slot.kind=='boolean' and type(value) is not bool:fail('state_type_violated','world.state')
-            if slot.kind=='text' and (not isinstance(value,str) or len(value)>slot.maxLength):fail('state_text_bounds_violated','world.state')
-            if slot.kind=='choice' and value not in slot.options:fail('state_choice_domain_violated','world.state')
-            if slot.kind in {'id_set','id_list'} and (not isinstance(value,list) or len(value)>slot.maxItems or len(set(value))!=len(value) or not set(value)<=set(slot.options)):
-                fail('state_collection_bounds_violated','world.state')
-        for invariant in self.p.world.invariants:
-            if sum(state[ref] for ref in invariant.stateRefs)!=invariant.total:fail('quantity_conservation_violated','world.invariants')
-        for obj in self.objects.values():
-            if obj.kind=='grid':
-                rows=state[obj.bindings['rows']];columns=state[obj.bindings['columns']];cells=state[obj.bindings['cells']]
-                if rows*columns>120:fail('grid_area_budget_exceeded','world.objects')
-                if any(int(re.fullmatch(r'r(\d{1,2})c(\d{1,2})',cell)[1])>=rows or int(re.fullmatch(r'r(\d{1,2})c(\d{1,2})',cell)[2])>=columns for cell in cells):fail('tile_outside_current_rectangle','world.objects')
-                tiles=next(self.materials[ref] for ref in obj.materialIds if self.materials[ref].kind=='unit_tiles')
-                if len(cells)>tiles.quantity:fail('tile_stock_exceeded','world.objects')
-
     def witness(self):
         if self.p.witness is None:return [],0
         if len(self.p.witness)>self.p.limits.maxActions:fail('witness_action_budget_exceeded','witness')
         state=copy.deepcopy(self.initial);used=set()
-        for step in self.p.witness:
-            if step.actionId not in self.actions:fail('unknown_witness_action','witness')
-            action=self.actions[step.actionId];component=self.components[action.componentId]
-            space=self.spaces[component.spaceId]
-            if space.visibleWhen and not self.evaluate(space.visibleWhen,state,{}):fail('witness_space_unavailable','witness')
-            params={item.id:item for item in action.inputs}
-            if set(params)!=set(step.inputs):fail('witness_input_signature_invalid','witness')
-            for ref,param in params.items():
-                value=step.inputs[ref]
-                if param.kind=='integer' and (type(value) is not int or not param.minimum<=value<=param.maximum):fail('witness_integer_input_invalid','witness')
-                if param.kind=='text' and (not isinstance(value,str) or not (param.minLength or 1)<=len(value.strip())<=param.maxLength):fail('witness_text_input_invalid','witness')
-                if param.kind=='choice' and value not in param.options:fail('witness_choice_input_invalid','witness')
-                if param.kind=='id_list' and (not isinstance(value,list) or len(value)!=len(param.options) or set(value)!=set(param.options)):fail('witness_order_input_invalid','witness')
-                if param.kind=='artifact' and (not isinstance(value,str) or not re.fullmatch(r'[A-Za-z][A-Za-z0-9_.-]{0,79}',value)):fail('witness_artifact_reference_invalid','witness')
-            active=[rule for rule in self.rules[action.id] if self.evaluate(rule.when,state,step.inputs)]
-            if not active:fail('witness_action_guard_unsatisfied','witness')
-            if action.operation=='revise_text':
-                objs=[self.objects[ref] for ref in component.objectIds if self.objects[ref].kind=='text_artifact']
-                obj=self._action_objects(action,objs,self.rules[action.id])[0]
-                if not state[obj.bindings['text']] or state[obj.bindings['text']]==step.inputs['text']:fail('revision_requires_changed_existing_draft','witness')
-            next_state=copy.deepcopy(state)
-            for rule in active:
-                for effect in rule.effects:
-                    if effect.kind=='set':next_state[effect.target]=self.term(effect.value,state,step.inputs)
-                    elif effect.kind=='transfer':
-                        amount=self.term(effect.amount,state,step.inputs)
-                        if amount<=0:fail('positive_transfer_required','witness')
-                        next_state[effect.source]-=amount;next_state[effect.target]+=amount
-                    else:
-                        item=self.term(effect.item,state,step.inputs);collection=next_state[effect.target]
-                        if effect.kind=='toggle_item':
-                            collection.remove(item) if item in collection else collection.append(item)
-                        elif effect.kind=='add_item':
-                            if item not in collection:collection.append(item)
-                        elif item in collection:collection.remove(item)
-            self.check_state(next_state)
-            if next_state==state:fail('witness_action_has_no_visible_change','witness')
-            state=next_state;used.add(action.id)
-        if not self.evaluate(self.p.completion.when,state,{}):fail('witness_does_not_finish_mission','witness')
+        legacy_codes={
+            'unknown_action':'unknown_witness_action',
+            'action_space_unavailable':'witness_space_unavailable',
+            'action_input_signature_invalid':'witness_input_signature_invalid',
+            'action_integer_input_invalid':'witness_integer_input_invalid',
+            'action_text_input_invalid':'witness_text_input_invalid',
+            'action_choice_input_invalid':'witness_choice_input_invalid',
+            'action_order_input_invalid':'witness_order_input_invalid',
+            'action_artifact_reference_invalid':'witness_artifact_reference_invalid',
+            'action_guard_unsatisfied':'witness_action_guard_unsatisfied',
+            'action_has_no_visible_change':'witness_action_has_no_visible_change',
+        }
+        for count,step in enumerate(self.p.witness):
+            try:
+                transition=self.transition(state,step.actionId,step.inputs,action_count=count)
+            except ProgramInvalid as error:
+                fail(legacy_codes.get(error.code,error.code),'witness')
+            state=transition.state;used.add(step.actionId)
+        if not self.completed(state):fail('witness_does_not_finish_mission','witness')
         for target in self.p.intent.targets:
             relevant=[self.evidence[ref] for ref in self.p.intent.successEvidence if target.skillId in self.evidence[ref].skillIds]
             if not any(used.intersection(item.actionIds) for item in relevant):fail('witness_missing_target_action','witness')

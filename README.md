@@ -1,6 +1,27 @@
 # Sidekick
 
-The [ActivityProgram v2 foundation](docs/activity-engine-v2-spec.md) is an isolated architecture/schema milestone. Its [original contract fixtures](data/activity_engine_v2/examples/README.md), [validator](backend/activity_engine_v2) and [K–5 capability audit](docs/activity-engine-v2-capability-gaps.md) do not replace the current player, connect to live sessions or update learning state. No new migration, provider key or dependency is needed. Run `npm run activities:v2:examples`, `npm run activities:v2:validate -- path/to/program.json`, `npm run activities:v2:schema -- --output /tmp/activity-program.schema.json`, or `npm run activities:v2:gaps:check`. Validation and checked fixture traces are distinct from semantic review, working runtime adapters and actual child testing.
+The [ActivityProgram v2 foundation](docs/activity-engine-v2-spec.md) now has an opt-in [playable development preview](docs/activity-engine-v2-runtime.md) for its four original contract examples. One Python execution core drives offline witnesses and owned shared-workspace sessions. V1 uploads, activities, histories and learner observations keep their existing behavior. The preview is disabled by default and never enabled in production; it does not generate V2 activities or establish catalog readiness or learning effectiveness.
+
+## Activity Engine V2 development preview
+
+Run the new migration, then launch with the explicit backend feature flag:
+
+```sh
+npm run db:migrate
+SIDEKICK_ACTIVITY_V2_PREVIEW=true npm run dev:all
+```
+
+Open **http://localhost:3000/kid/activity-preview** after signing in and choosing a child. `APP_ENV` must be `development` or `test` (the local setup below uses `development`). Alternatively, set `SIDEKICK_ACTIVITY_V2_PREVIEW=true` in the existing `backend/.env` and restart. No AI key or new dependency is needed for these hand-authored examples. Without the flag, the preview URL and API are unavailable. The regular upload-to-activity route continues using V1.
+
+The four workspaces let a child tile a floor and build its multiplication expression, reshape a fixed-stock habitat with different valid factor pairs, place literal evidence on either trail investigation board, and save/revise an actual story opening. Help is recorded and survives refresh. Mission completion, assessment and assistance are separate; writing quality remains **pending parent review**. This milestone retains the draft revisions privately but does not add the V2 parent review UI, learner-state updates or next-activity selection.
+
+Use **Continue** on the preview list, or refresh `/kid/activity-preview/{sessionId}`, to resume the exact saved world. Completed workspaces remain visible and frozen. [Runtime details and screenshots](docs/activity-engine-v2-runtime.md) describe the boundaries and verification. To run the isolated real-browser preview suite, first stop local servers using ports 3000/8000:
+
+```sh
+npx playwright test --config playwright.activity-v2.config.ts
+```
+
+The browser suite uses disposable accounts/database and actual APIs; it makes no model calls. Offline contract tools remain available: `npm run activities:v2:examples`, `npm run activities:v2:validate -- path/to/program.json`, `npm run activities:v2:schema -- --output /tmp/activity-program.schema.json`, and `npm run activities:v2:gaps:check`. Their checks are distinct from semantic review and actual child testing.
 
 Sidekick is a local K–5 family prototype built with Next.js/TypeScript, FastAPI/Pydantic, and SQLite. Parents create profiles, unlock a PIN-protected dashboard, and review uploaded student work. Children upload a photo or PDF of a worksheet, quiz, test, or other Math/ELA work and review the verbatim extraction. A reliably identified catalog skill leads to an activity composed on demand from reusable controls, followed by a fresh independent challenge. Each new live request composes an original activity; saved definitions preserve exact attempts and resume existing sessions. The former standalone Practice section and diagnostic quizzes remain retired. The existing [Sidekick design kit](https://preview--sidekick-colorway-studio.lovable.app/?__lovable_receipt=mat_6nx4bc71428r69zqdx974t1cnk), colors, components, and locally hosted fonts are retained.
 
@@ -56,7 +77,7 @@ npm run catalog:seed -- --report /tmp/sidekick-catalog-report.json
 npm run catalog:seed -- --path /path/to/reviewed-catalog.json
 ```
 
-Migrations `001`–`004` add accounts, the catalog, learning records, and private student work storage. Migration `005` retires the former check/practice workflow and preserves its historical attempts/evidence. Migration `006` adds versioned activities, child-owned sessions, attempts and retry reservations. Migration `007` adds assessment status, private voice recordings and append-only parent reviews. These do not restore retired endpoints. Already-applied migrations are skipped. `DATABASE_URL` defaults to `sqlite:///backend/data/sidekick.db`; relative SQLite paths resolve from the repository root. Back up the database and private uploads together before moving this local prototype.
+Migrations `001`–`004` add accounts, the catalog, learning records, and private student work storage. Migration `005` retires the former check/practice workflow and preserves its historical attempts/evidence. Migration `006` adds versioned activities, child-owned sessions, attempts and retry reservations. Migration `007` adds assessment status, private voice recordings and append-only parent reviews. Migration `008` adds separate immutable ActivityProgram versions, owned V2 sessions, accepted action/help events, idempotency records and completion snapshots. These do not restore retired endpoints or convert V1 histories. Already-applied migrations are skipped. `DATABASE_URL` defaults to `sqlite:///backend/data/sidekick.db`; relative SQLite paths resolve from the repository root. Back up the database and private uploads together before moving this local prototype.
 
 `data/sidekick_skill_map_v2.json` is the supplied, unchanged draft. Its SHA-256 is `7c7b3a98cdf51bb48b53bcef4c4d5e2c0015fc0845e40f6345a4962eeab1be23`. It contains **779 skills, 1,533 subskills, and 3,066 populated seed pairs**: 867 Math, 666 Reading/ELA, and 795 K–5 subskills. K–8 grades have explicit ordering; high-school math courses and ELA bands retain their separate string labels. Profiles remain K–5.
 

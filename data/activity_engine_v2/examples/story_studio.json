@@ -55,7 +55,7 @@
       {
         "id": "journal-prompt",
         "kind": "prompt",
-        "text": "Create a rescue-journal opening. Help a new reader meet the narrator or characters, understand the situation, and follow what happens first. Then revise your own opening so the setup and event order are clearer. Many different stories can work.",
+        "text": "Create a rescue-journal opening of at least eight words. Help a new reader meet the narrator or characters, understand the situation, and follow what happens first. Then revise your own opening, keeping at least eight words, so the setup and event order are clearer. Many different stories can work.",
         "items": [],
         "quantity": null
       }
@@ -265,7 +265,7 @@
   "goals": [
     {
       "id": "journal-saved",
-      "description": "Save an original opening and a changed revision for a parent to read.",
+      "description": "Save an original opening and a changed revision, each at least eight words, for a parent to read.",
       "when": {
         "kind": "all",
         "conditions": [

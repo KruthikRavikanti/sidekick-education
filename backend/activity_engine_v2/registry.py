@@ -1,9 +1,14 @@
 """Closed semantic operations grounded in current Sidekick controls.
 
-This is an OFFLINE contract registry, not a claim that a v2 React/runtime adapter
-exists. No entry contains a skill-family gate, code callback, or import string.
+Only PREVIEW_OPERATIONS have development-preview shared-state adapters. Other
+operations remain contract-only. No skill gate, callback, or import string exists.
 """
 COMPONENT_VERSION = 'sidekick-program-contract-v1'
+
+PREVIEW_OPERATIONS = frozenset({
+    'toggle_tile', 'resize_rectangle', 'assemble_product',
+    'select_evidence', 'replace_text', 'revise_text',
+})
 
 OBJECT_PORTS = {
     'quantity_pool': {'count': 'integer'},
@@ -76,4 +81,9 @@ ASSETS = {'coin_penny', 'coin_nickel', 'coin_dime', 'coin_quarter'}
 
 def component_contracts():
     """Inspectable JSON-compatible operation contracts; no executable bindings."""
-    return {name: {**value, 'effectKinds': sorted(value['effectKinds'])} for name,value in CAPABILITIES.items()}
+    return {name: {**value, 'effectKinds': sorted(value['effectKinds']),
+        'implementationStatus': ('development_preview_adapter' if name in PREVIEW_OPERATIONS
+            else value['implementationStatus']),
+        'liveV2AdapterImplemented': name in PREVIEW_OPERATIONS,
+        'previewOnly': name in PREVIEW_OPERATIONS,
+    } for name,value in CAPABILITIES.items()}

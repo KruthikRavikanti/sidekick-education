@@ -3,8 +3,9 @@
 These are original, explicitly authored Sidekick contract fixtures created for
 this implementation task. Their observations, missions, passages and artifacts
 are synthetic. They were not produced by Sidekick's live activity generator,
-played by a child, or connected to the live application. Passing the isolated
-validator establishes only the checks named in its report.
+or played by a child. They can now be played through the opt-in development
+preview at `/kid/activity-preview`; they do not replace regular V1 activities.
+Passing the isolated validator establishes only the checks named in its report.
 
 The examples are fixtures for an open composition contract, rather than a list
 of approved games or a permanent skill-to-mechanic mapping.
@@ -31,7 +32,9 @@ Semantic review and child testing have **not been performed** for these fixtures
 Their observation source categories describe hypothetical evidence snapshots,
 not real uploads, children, parent reports, or private source identifiers.
 
-The writing fixture uses one persistent editable artifact. A future session event
-record must retain the previous and next text for each revision so a parent can
-compare the drafts. The isolated witness checks the text-change condition; it
-does not implement event storage or inspect the quality of the revision.
+The writing fixture uses one persistent editable artifact. Owned preview events
+retain every accepted draft/revision and its resulting state privately; the
+prior event or initial state supplies the previous text. The isolated witness
+checks the same text-change condition through the shared Python core. Neither
+the witness nor the preview inspects writing quality. V2 parent review UI and
+learning-state integration remain future work.

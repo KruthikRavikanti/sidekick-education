@@ -1,4 +1,4 @@
-"""The foundation stays offline and cannot replace the live activity contract."""
+"""Authoring stays offline; the preview never replaces the live V1 contract."""
 import json
 from pathlib import Path
 import subprocess
@@ -33,14 +33,15 @@ assert not any(name in sys.modules for name in (
     assert result.returncode == 0, result.stderr
 
 
-def test_live_app_does_not_import_or_register_the_new_engine():
+def test_live_app_keeps_v1_routes_separate_from_gated_preview():
     code = '''
-import sys
 from backend import main
-assert not any(name.startswith("backend.activity_engine_v2") for name in sys.modules)
-assert not any(getattr(route, "endpoint", None) and
-    route.endpoint.__module__.startswith("backend.activity_engine_v2")
-    for route in main.app.routes)
+routes = {route.path: route for route in main.app.routes if hasattr(route, "path")}
+for included in main.app.routes:
+    if hasattr(included, "original_router"):
+        routes.update({route.path: route for route in included.original_router.routes})
+assert routes["/api/activities/kid/sessions/{session_id}"].endpoint.__module__ == "backend.activities.api"
+assert routes["/api/activity-programs/sessions/{session_id}"].endpoint.__module__ == "backend.activity_engine_v2.routes"
 '''
     result = subprocess.run([sys.executable, '-c', code], cwd=ROOT,
                             capture_output=True, text=True, timeout=15)
