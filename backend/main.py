@@ -30,6 +30,7 @@ from .accounts.security import AccountError, require_kid_context, assert_kid_con
 from .gap.api import router as learning_router
 from .gap.uploads import router as homework_router
 from .activities.api import router as activities_router
+from .activity_engine_v2.routes import router as activity_program_router
 from .gap.homework import persist_ingest, resume_upload
 from .gap.storage import max_upload_bytes
 MAX_IMAGE_BYTES = 10 * 1024 * 1024
@@ -98,13 +99,14 @@ app.include_router(accounts_router)
 app.include_router(learning_router)
 app.include_router(homework_router)
 app.include_router(activities_router)
+app.include_router(activity_program_router)
 app.add_middleware(BoundedBodyMiddleware)
 app.add_middleware(SessionSecurityMiddleware)
 app.add_middleware(CORSMiddleware,
                    allow_origins=[os.getenv("FRONTEND_ORIGIN", "http://localhost:3000")],
                    allow_credentials=True,
                    allow_methods=["GET", "POST", "PATCH", "DELETE"],
-                   allow_headers=["Content-Type", "X-CSRF-Token", "Idempotency-Key"])
+                   allow_headers=["Content-Type", "X-CSRF-Token", "Idempotency-Key", "X-Sidekick-Profile-Version"])
 
 
 @app.exception_handler(AccountError)

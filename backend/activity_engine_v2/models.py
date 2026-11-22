@@ -1,4 +1,4 @@
-"""Versioned offline ActivityProgram contract; never imported by live sessions."""
+"""Versioned ActivityProgram contract shared by offline checks and the opt-in preview."""
 from __future__ import annotations
 
 import re

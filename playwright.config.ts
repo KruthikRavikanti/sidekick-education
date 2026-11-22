@@ -6,6 +6,8 @@ process.env.SIDEKICK_E2E_DATABASE_URL ||= `sqlite:///${path.join(os.tmpdir(), `s
 
 export default defineConfig({
   testDir: "./tests/e2e",
+  // The opt-in V2 preview has its own flag-enabled server configuration.
+  testIgnore: "**/activity-program-v2.spec.ts",
   fullyParallel: false,
   workers: 1,
   timeout: 45_000,

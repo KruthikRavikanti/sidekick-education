@@ -1,5 +1,7 @@
 # Sidekick ActivityProgram foundation
 
+This document records the foundation contract and its original milestone boundary. The subsequent [trusted runtime development preview](activity-engine-v2-runtime.md) implements owned persistence and six shared-workspace adapters behind a disabled-by-default development flag. Sections describing later runtime work below remain the original architecture plan; the runtime document identifies what is now implemented and verified. V1 remains the default engine.
+
 Status: architecture and isolated contract implementation. The current Next.js/FastAPI application continues to run `ActivitySpec` 1.0–1.3. No `ActivityProgram` is served to a child, no current session is converted, and no learning-state policy or database migration changes in this task.
 
 ## 1. Product contract and boundaries
