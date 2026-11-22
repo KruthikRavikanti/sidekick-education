@@ -5,11 +5,39 @@ import { mkdtemp, readFile, writeFile, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
-import type { ProgramSession } from "../../lib/activity-program-types";
+import type { ProgramSession, ProgramStageEntity } from "../../lib/activity-program-types";
 import { csrf, ORIGIN } from "./helpers";
 
 const execute = promisify(execFile);
 export type PublicMove = { actionId: string; inputs: { name: string; kind: "integer" | "text"; integer: number | null; text: string | null }[] };
+
+function dataSelector(attribute: string, value: string) {
+  return `[${attribute}=${JSON.stringify(value)}]`;
+}
+
+async function cancelWorldMove(page: Page) {
+  const cancel = page.getByRole("region", { name: "Playable world", exact: true })
+    .locator(".world-instruction").getByRole("button", { name: "Cancel move", exact: true });
+  if (await cancel.count() && await cancel.isVisible()) await cancel.click();
+}
+
+async function chooseWorldEntity(page: Page, current: ProgramSession, entity: ProgramStageEntity) {
+  const onMap = page.locator(dataSelector("data-world-entity", entity.id));
+  if (await onMap.count() && await onMap.isVisible()) {
+    await onMap.click();
+    return;
+  }
+  // A bounded map can show the primary occupants while retaining every public
+  // object in the location's native inventory. Never mistake opening that
+  // inventory for a pending actor move to the same place.
+  await cancelWorldMove(page);
+  const location = current.stageView?.locations.find(value => value.id === entity.locationId);
+  expect(location, "The public object needs an accessible public location").toBeTruthy();
+  await page.locator(dataSelector("data-world-location", location!.id)).click();
+  const inventoryObject = page.locator(dataSelector("data-world-inventory-entity", entity.id));
+  await expect(inventoryObject).toBeVisible();
+  await inventoryObject.click();
+}
 
 export async function world(page: Page, id: string): Promise<ProgramSession> {
   const response = await page.request.get(`/api/activity-programs/sessions/${id}`);
@@ -54,7 +82,32 @@ export async function visibleMove(page: Page, current: ProgramSession, move: Pub
   const action = current.actions.find(value => value.id === move.actionId);
   expect(action, "Synthetic driver can only use a currently declared public action").toBeTruthy();
   const inputs = Object.fromEntries(move.inputs.map(value => [value.name, value.kind === "integer" ? value.integer : value.text]));
+  const surfaces = current.stageView?.surfaces?.filter(item => item.actionId === action!.id && item.cells.some(cell => cell.id === (inputs.cell ?? inputs.piece) && cell.allowed)) || [];
+  if (["toggle_tile", "toggle_fraction_piece"].includes(action!.operation)) {
+    for (const surface of surfaces) {
+      const direct = page.locator(`[data-world-surface=${JSON.stringify(surface.id)}] button[data-surface-cell=${JSON.stringify(inputs.cell ?? inputs.piece)}]`);
+      if (await direct.count() && await direct.isVisible() && await direct.isEnabled()) {
+        await direct.click({ timeout: 5000 });
+        await expect.poll(async () => (await world(page, current.id)).revision, { timeout: 10_000 }).toBeGreaterThan(current.revision);
+        return world(page, current.id);
+      }
+    }
+  }
   const tool = page.locator(`[data-program-component=${JSON.stringify(action!.componentId)}]`);
+  if (current.stageView && !["move_actor", "place_piece", "inspect_location"].includes(action!.operation) && !await tool.isVisible()) {
+    const contextual = current.stageView.tools.find(item => item.componentId === action!.componentId && item.available);
+    const entity = current.stageView.entities.find(item => item.id === contextual?.entityId);
+    expect(entity, "The declared control must have a visible contextual world object").toBeTruthy();
+    await chooseWorldEntity(page, current, entity!);
+    if (contextual) {
+      const siblings = current.stageView.tools.filter(item => item.entityId === entity!.id);
+      const index = siblings.findIndex(item => item.componentId === action!.componentId);
+      expect(index, "The selected public object must expose this component's tool").toBeGreaterThanOrEqual(0);
+      const choose = page.getByRole("group", { name: "Object tools", exact: true }).getByRole("button").nth(index);
+      await expect(choose).toBeEnabled();
+      await choose.click();
+    }
+  }
   switch (action!.operation) {
     case "toggle_tile": {
       const cell = /^r(\d+)c(\d+)$/.exec(String(inputs.cell));
@@ -84,6 +137,40 @@ export async function visibleMove(page: Page, current: ProgramSession, move: Pub
       await tool.getByRole("textbox").fill(String(inputs.text));
       await tool.getByRole("button", { name: action!.label, exact: true }).click();
       break;
+    case "move_actor":
+    case "place_piece": {
+      const entity = current.stageView?.entities.find(item => item.actionIds.includes(action!.id));
+      const location = current.stageView?.locations.find(item => item.id === inputs.destination);
+      expect(entity && location).toBeTruthy();
+      await chooseWorldEntity(page, current, entity!);
+      const arm = page.locator(`[data-world-action=${JSON.stringify(action!.id)}]`);
+      if (await arm.count()) await arm.click();
+      await page.locator(dataSelector("data-world-location", location!.id)).click();
+      break;
+    }
+    case "inspect_location": {
+      const location = current.stageView?.locations.find(item => item.id === inputs.location);
+      expect(location).toBeTruthy();
+      await cancelWorldMove(page);
+      await page.locator(dataSelector("data-world-location", location!.id)).click();
+      await page.locator(`[data-world-action=${JSON.stringify(action!.id)}]`).click();
+      break;
+    }
+    case "toggle_fraction_piece": {
+      await tool.getByRole("button", { name: "Build pieces", exact: true }).click();
+      const index = Number(String(inputs.piece).slice(1)) + 1;
+      await tool.getByRole("button", { name: new RegExp(`^(Place|Lift) piece ${index}$`) }).click();
+      break;
+    }
+    case "set_fraction_partition":
+      await tool.getByRole("button", { name: `Make ${inputs.denominator} equal parts`, exact: true }).click();
+      break;
+    case "move_fraction_piece": {
+      await tool.getByRole("button", { name: "Move pieces", exact: true }).click();
+      await tool.getByRole("button", { name: `Select piece ${Number(String(inputs.from).slice(1)) + 1} to move`, exact: true }).click();
+      await tool.getByRole("button", { name: `Place piece ${Number(String(inputs.to).slice(1)) + 1} here`, exact: true }).click();
+      break;
+    }
     default: throw new Error("Unsupported synthetic browser action");
   }
   await expect.poll(async () => (await world(page, current.id)).revision, { timeout: 10_000 }).toBeGreaterThan(current.revision);

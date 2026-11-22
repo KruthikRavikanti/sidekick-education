@@ -6,6 +6,12 @@ workspace. The normal V1 activity path remains separate and unchanged. This is
 an opt-in development feature, not full-catalog readiness or evidence of learning
 effectiveness.
 
+This report records the original live-composition milestone. The subsequent
+[game-design and world-composition guide](activity-engine-v2-game-design.md) is the
+current reference for five-design planning, the playable stage, construction
+mounts, eight-call/480-second bounds and render-specific gameplay review. The
+plain-workspace scope, budgets and evidence below retain their historical context.
+
 ## Local entry points
 
 Keep the existing provider configuration in `backend/.env`:

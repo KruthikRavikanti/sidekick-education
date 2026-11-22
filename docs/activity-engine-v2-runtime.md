@@ -6,6 +6,20 @@ through the same owned runtime, behind the same development flag. Statements
 below about generation being outside the runtime milestone are historical scope;
 the composition document describes the implemented integration and its evidence.
 
+The later [game-design and world-composition milestone](activity-engine-v2-game-design.md)
+adds five candidate designs, independent pre-authoring review, reusable world
+actions and exact-hash gameplay review. Its document is the current guide for
+upload-driven generation, migration 010 and verification status. The four-fixture
+and fixture-only startup boundaries below remain this runtime milestone's
+historical scope; older definitions and sessions retain their behavior.
+
+The current stage can display actual source surfaces and exact grid-footprint
+construction mounts. Discovered sources can persist read-only away from their
+editing location; hidden sources remain hidden. Adaptive placement and routes
+through actual mount ports are renderer behavior over the same authoritative
+state. The current guide records their render-manifest contract and the bounded
+operator re-review required when that contract changes.
+
 This is a playable preview of the four hand-authored ActivityProgram fixtures.
 It adds a shared trusted execution core, owned SQLite sessions and a React
 workspace renderer. It does not compose AI programs, change uploaded-work skill

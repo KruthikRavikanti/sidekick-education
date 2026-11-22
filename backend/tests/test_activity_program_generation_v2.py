@@ -2,7 +2,6 @@
 import copy
 import asyncio
 import json
-from pathlib import Path
 import uuid
 
 import pytest
@@ -11,14 +10,17 @@ from backend import main
 from backend.activity_engine_v2 import generation, preview, service
 from backend.activity_engine_v2.authoring import ActivityAuthoring, to_authoring
 from backend.activity_engine_v2.composer import SemanticReview
+from backend.activity_engine_v2.game_design import GameDesignBatch, GameDesignReview
+from backend.activity_engine_v2.gameplay import GameplayReview
 from backend.activity_engine_v2.models import ActivityProgram
 from backend.accounts.security import AccountError
 from backend.gap.catalog import seed_catalog
 from backend.provider import ExtractionError
+from backend.tests.gameplay_examples import design_batch, design_review_approval, gameplay_approval
+from backend.tests.program_world_examples import world_program
 from backend.tests.account_helpers import create_child, mutate, picker, select_child, setup_pin, signup, unlock
 
 BASE = '/api/activity-programs'
-EXAMPLES = Path(__file__).resolve().parents[2] / 'data/activity_engine_v2/examples'
 
 
 class Composer:
@@ -33,11 +35,24 @@ class Composer:
             self.callback()
         if self.failure:
             raise ExtractionError('provider_unavailable', 'Synthetic failure')
+        context = data['context']
+        target = context['targets'][0]['skillId']
+        kind = 'writing' if target == 'W.3.3-1' else 'reading' if target == 'RL.3.1-1' else 'design'
+        raw = world_program(kind, loop='attach').model_dump()
+        raw['intent']['targets'] = copy.deepcopy(context['targets'])
+        for item in raw['evidence']:
+            item['skillIds'] = [value['skillId'] for value in context['targets']]
+        program = ActivityProgram.model_validate(raw)
+        if response_model is GameDesignBatch:
+            return design_batch(program, context)
+        if response_model is GameDesignReview:
+            return design_review_approval(data)
+        if response_model is GameplayReview:
+            return gameplay_approval(data)
         if response_model is ActivityAuthoring:
-            target = data['context']['targets'][0]['skillId']
-            key = 'story_studio' if target == 'W.3.3-1' else 'trail_evidence' if target == 'RL.3.1-1' else 'habitat_designer'
-            program = ActivityProgram.model_validate_json((EXAMPLES / f'{key}.json').read_bytes())
-            return to_authoring(program)
+            authored = to_authoring(program)
+            authored.selectedDesignId = data['gameDesign']['id']
+            return authored
         assert response_model is SemanticReview
         return SemanticReview(definitionHash=data['definitionHash'], approved=True,
             targetNecessary=True, meaningfulConsequences=True, materialsSuitable=True, goalAchievable=True,
@@ -155,7 +170,7 @@ def test_idempotency_survives_ready_and_conflicting_upload_reuse(family, securit
     identifier = upload(security_context, child)
     view = prepare(client, identifier, 'same-request')
     duplicate = prepare(client, identifier, 'same-request')
-    assert duplicate == view and len(adapter.calls) == 2
+    assert duplicate == view and len(adapter.calls) == 5
     other = upload(security_context, child)
     conflict = post(client, f'/uploads/{other}/generations', dict(requestId='same-request'))
     assert conflict.status_code == 409
@@ -258,6 +273,98 @@ def test_provider_profile_switch_prevents_saving_generated_session(family, secur
         assert connection.execute('SELECT COUNT(*) FROM activity_program_sessions').fetchone()[0] == 0
 
 
+def test_revocation_after_live_design_preserves_one_safe_call_audit_and_still_denies_access(family,security_context,monkeypatch):
+    child,client,_=family
+    identifier=upload(security_context,child)
+    class RevokeAfterDesign(Composer):
+        def __init__(self):
+            super().__init__()
+            self.metadata=[]
+        async def call(self,response_model,task,system,data):
+            value=await super().call(response_model,task,system,data)
+            self.metadata.append(dict(task=task,requestedModel=self.model,returnedModel='synthetic-returned',
+                elapsedMs=1,rawProviderPayload='PRIVATE_PROVIDER_CONTENT_MUST_NOT_BE_PERSISTED'))
+            if response_model is GameDesignBatch:
+                with security_context.db.transaction() as connection:
+                    connection.execute('UPDATE sessions SET revoked_at=? WHERE active_kid_profile_id=?',
+                                       (security_context.clock.now(),child['id']))
+            return value
+    adapter=RevokeAfterDesign()
+    monkeypatch.setitem(main.app.state._state,'program_composition_adapter',adapter)
+    response=post(client,f'/uploads/{identifier}/generations',dict(requestId='revoke-after-design'))
+    assert response.status_code==202
+    assert client.get(BASE+'/generations/'+response.json()['id']).status_code==401
+    assert len(adapter.calls)==1
+    with security_context.db.transaction() as connection:
+        row=connection.execute('SELECT * FROM activity_program_generations WHERE id=?',
+                               (response.json()['id'],)).fetchone()
+        assert row['status']=='failed' and row['reason_code']=='unauthenticated'
+        assert row['session_id'] is None and row['call_count']==1
+        assert row['requested_model']==adapter.model
+        assert json.loads(row['returned_models_json'])==['synthetic-returned']
+        assert json.loads(row['model_calls_json'])==[dict(task='design_activity_game',requestedModel=adapter.model,
+            returnedModel='synthetic-returned',elapsedMs=1)]
+        assert 'PRIVATE_PROVIDER_CONTENT' not in row['model_calls_json']+row['private_sources_json']
+        assert connection.execute('SELECT COUNT(*) FROM activity_program_sessions').fetchone()[0]==0
+
+
+def test_ownership_change_after_all_reviews_preserves_approved_call_audit_without_starting_session(family,security_context,monkeypatch):
+    child,client,_=family
+    identifier=upload(security_context,child)
+    class ChangeAfterApproval(Composer):
+        def __init__(self):
+            super().__init__();self.metadata=[]
+        async def call(self,response_model,task,system,data):
+            value=await super().call(response_model,task,system,data)
+            self.metadata.append(dict(task=task,requestedModel=self.model,returnedModel='synthetic-returned',elapsedMs=1))
+            if response_model is GameplayReview:
+                with security_context.db.transaction() as connection:
+                    connection.execute('UPDATE sessions SET version=version+1 WHERE active_kid_profile_id=?',(child['id'],))
+            return value
+    adapter=ChangeAfterApproval()
+    monkeypatch.setitem(main.app.state._state,'program_composition_adapter',adapter)
+    view=prepare(client,identifier,'change-after-all-reviews')
+    assert view['status']=='failed' and view['reasonCode']=='profile_changed' and view['sessionId'] is None
+    assert len(adapter.calls)==5
+    with security_context.db.transaction() as connection:
+        row=connection.execute('SELECT * FROM activity_program_generations WHERE id=?',(view['id'],)).fetchone()
+        assert row['call_count']==5 and len(json.loads(row['model_calls_json']))==5
+        assert json.loads(row['returned_models_json'])==['synthetic-returned']*5
+        assert json.loads(row['review_json'])['approved'] is True
+        assert json.loads(row['gameplay_review_json'])['approved'] is True
+        assert row['session_id'] is None and row['lease_token'] is None
+        assert connection.execute('SELECT COUNT(*) FROM activity_program_sessions').fetchone()[0]==0
+
+
+def test_internal_deadline_preserves_completed_and_inflight_safe_accounting_before_outer_cancel(family,security_context,monkeypatch):
+    child,client,_=family
+    identifier=upload(security_context,child)
+    class DelayReview(Composer):
+        def __init__(self):
+            super().__init__();self.metadata=[]
+        async def call(self,response_model,task,system,data):
+            entry=dict(task=task,requestedModel=self.model,returnedModel=None,elapsedMs=0)
+            self.metadata.append(entry)
+            if response_model is GameDesignReview:await asyncio.sleep(1)
+            value=await super().call(response_model,task,system,data)
+            entry['returnedModel']='synthetic-returned'
+            return value
+    adapter=DelayReview()
+    monkeypatch.setitem(main.app.state._state,'program_composition_adapter',adapter)
+    monkeypatch.setattr(generation,'GENERATION_TIMEOUT_SECONDS',.2)
+    view=prepare(client,identifier,'timeout-after-design')
+    assert view['status']=='failed' and view['reasonCode']=='generation_deadline_exceeded'
+    with security_context.db.transaction() as connection:
+        row=connection.execute('SELECT * FROM activity_program_generations WHERE id=?',(view['id'],)).fetchone()
+        assert row['call_count']==2
+        calls=json.loads(row['model_calls_json'])
+        assert [item['task'] for item in calls]==['design_activity_game','review_activity_game_design']
+        assert calls[0]['returnedModel']=='synthetic-returned' and calls[1]['returnedModel'] is None
+        assert json.loads(row['returned_models_json'])==['synthetic-returned']
+        assert row['lease_token'] is None and row['session_id'] is None
+        assert connection.execute('SELECT COUNT(*) FROM activity_program_sessions').fetchone()[0]==0
+
+
 def test_other_child_cannot_read_or_retry_generation_or_owned_upload(family, security_context):
     child, client, adapter = family
     identifier = upload(security_context, child)
@@ -307,12 +414,14 @@ def test_saved_help_dependence_informs_next_context_without_claiming_mastery(fam
     assert view['outcome']['assisted']
     second = prepare(client, upload(security_context, child, correctness='correct'))
     assert second['status'] == 'ready'
-    context = [data['context'] for task, data in adapter.calls if task == 'compose_activity_program'][-1]
+    context = [data['context'] for task, data in adapter.calls if task == 'compose_activity_game'][-1]
     assert context['learningGoal'] == 'reinforce_correct_work'
     assert context['observations'][0]['kind'] == 'correct_response'
     assert context['history'][0]['assistanceReceived'] and context['history'][0]['helpDeliveries'] == 1
     assert context['history'][0]['assessment'] == 'demonstrated' and context['history'][0]['confidence'] is None
-    assert context['previousSignatures'][0]['operations'] == ['assemble_product', 'resize_rectangle']
+    assert context['previousSignatures'][0]['operations'] == ['assemble_product', 'inspect_location', 'place_piece', 'resize_rectangle']
+    assert context['previousSignatures'][0]['structuralSignature']['features']
+    assert context['previousSignatures'][0]['designSignature']['features']
     assert 'mastered' not in json.dumps(context)
     with security_context.db.transaction() as connection:
         assert connection.execute('SELECT COUNT(*) FROM skill_states').fetchone()[0] == 0

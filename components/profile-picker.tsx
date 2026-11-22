@@ -8,7 +8,7 @@ import type { PickerProfile } from "@/lib/account-types";
 import { AccountShell, Avatar, FormError, LogoutButton } from "./account-ui";
 import { RequireMode, useAccountSession } from "./account-session";
 
-function PickerContent() {
+function PickerContent({ returnTo }: { returnTo?: string | null }) {
   const { session, chooseKid } = useAccountSession();
   const [profiles, setProfiles] = useState<PickerProfile[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -40,7 +40,7 @@ function PickerContent() {
     setBusy(true);
     setError(null);
     try {
-      await chooseKid(id);
+      await chooseKid(id, returnTo);
     } catch (caught) {
       setError(errorMessage(caught));
       setBusy(false);
@@ -51,7 +51,7 @@ function PickerContent() {
       <section className="picker-intro">
         <p className="account-eyebrow">ONE FAMILY. EVERY LITTLE LEARNER.</p>
         <h1>Who’s learning today?</h1>
-        <p>Pick a profile and take the next little step.</p>
+        <p>{returnTo ? "Choose a child to open the saved activity." : "Pick a profile and take the next little step."}</p>
       </section>
       <FormError message={error} />
       <div className="profile-grid">
@@ -98,10 +98,10 @@ function PickerContent() {
   );
 }
 
-export function ProfilePicker() {
+export function ProfilePicker({ returnTo }: { returnTo?: string | null }) {
   return (
-    <RequireMode mode="picker">
-      <PickerContent />
+    <RequireMode mode="picker" returnTo={returnTo}>
+      <PickerContent returnTo={returnTo} />
     </RequireMode>
   );
 }

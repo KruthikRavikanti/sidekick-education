@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, ChevronLeft, MessageCircle, Users } from "lucide-react";
+import { useEffect, useState } from "react";
+import { BookOpen, ChevronLeft, MessageCircle, Sparkles, Users } from "lucide-react";
+import { api } from "@/lib/account-api";
 import { AccountShell, Avatar } from "./account-ui";
 import { RequireMode, useAccountSession } from "./account-session";
 import { WorksheetReader } from "./worksheet-reader";
@@ -9,6 +11,14 @@ import { WorksheetReader } from "./worksheet-reader";
 function KidContent() {
   const { session } = useAccountSession();
   const child = session!.activeKid!;
+  const [activitiesAvailable, setActivitiesAvailable] = useState(false);
+  useEffect(() => {
+    const controller = new AbortController();
+    void api<{ enabled: boolean }>("/api/activity-programs/capabilities", { signal: controller.signal })
+      .then(value => { if (!controller.signal.aborted) setActivitiesAvailable(value.enabled); })
+      .catch(() => { if (!controller.signal.aborted) setActivitiesAvailable(false); });
+    return () => controller.abort();
+  }, [session?.activeKidProfileId, session?.version]);
   return (
     <AccountShell kind="kid">
       <section className="kid-welcome">
@@ -32,6 +42,12 @@ function KidContent() {
             ↗
           </span>
         </Link>
+        {activitiesAvailable ? <Link className="kid-action-card" href="/kid/activity-preview" prefetch={false}>
+          <span className="kid-action-icon"><Sparkles size={29} aria-hidden="true" /></span>
+          <h2>Saved activities</h2>
+          <p>Continue an activity or try a new adventure.</p>
+          <span className="kid-action-arrow" aria-hidden="true">↗</span>
+        </Link> : null}
       </div>
       <section className="kid-chat-placeholder">
         <MessageCircle size={20} aria-hidden="true" />

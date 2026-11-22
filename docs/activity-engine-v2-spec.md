@@ -4,6 +4,10 @@ This document records the foundation contract and its original milestone boundar
 
 The [live composition integration](activity-engine-v2-composition.md) adds owned-upload learning context, closed provider authoring, bounded repair, hash-bound review and admission into that runtime. Its verification report separates live results, stubbed checks and external provider limitations.
 
+The subsequent [game-design and world-composition milestone](activity-engine-v2-game-design.md) adds five proposed concepts, independent design review, a shared playable stage and exact-hash gameplay admission. The status and future-work statements below describe this foundation's original scope; use that milestone document for the current development entrypoint, migration 010, budgets and verification status.
+
+That extension uses the same language and execution core for optional exact grid-footprint construction mounts, source surfaces, separate display/edit availability and derived world consequences. Adaptive renderer placement does not create another rule interpreter. Generic render changes require a new manifest-bound gameplay receipt; they do not rewrite the immutable program or semantic approval.
+
 Status: architecture and isolated contract implementation. The current Next.js/FastAPI application continues to run `ActivitySpec` 1.0–1.3. No `ActivityProgram` is served to a child, no current session is converted, and no learning-state policy or database migration changes in this task.
 
 ## 1. Product contract and boundaries

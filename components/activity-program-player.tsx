@@ -8,6 +8,7 @@ import type { ProgramAction, ProgramInputs, ProgramSession } from "@/lib/activit
 import { RequireMode, useAccountSession } from "./account-session";
 import { AccountShell, FormError } from "./account-ui";
 import { ActivityProgramControl } from "./activity-program-controls";
+import { ActivityProgramStage } from "./activity-program-stage";
 
 type PendingRequest = { path: "actions" | "help"; body: Record<string, unknown>; fingerprint: string };
 
@@ -97,7 +98,7 @@ function ProgramContent({ sessionId }: { sessionId: string }) {
   const disabled = busy || uncertain || program?.status === "completed";
 
   return <AccountShell kind="kid" backHref="/kid/activity-preview">
-    <section className="program-player" aria-busy={loading || busy}>
+    <section className={`program-player ${program?.stageView ? "program-player-world" : ""}`} aria-busy={loading || busy}>
       {loading ? <p className="program-loading" role="status"><LoaderCircle className="spinner" size={24} aria-hidden="true" />Opening your workspace…</p> : null}
       {program ? <>
         <header className="activity-title">
@@ -105,11 +106,11 @@ function ProgramContent({ sessionId }: { sessionId: string }) {
           <h1 ref={heading} tabIndex={-1}>{program.title}</h1>
           <span className="activity-origin">{program.origin === "ai_composed" ? "Created for your learning · Development preview" : "Original Sidekick example · Development preview"}</span>
         </header>
-        <section className="program-mission" aria-labelledby="program-mission-title">
+        <section className={program.stageView ? "program-world-mission" : "program-mission"} aria-labelledby="program-mission-title">
           <div className="program-mission-heading"><Sparkles size={22} aria-hidden="true" /><h2 id="program-mission-title">Your mission</h2></div>
           <ul>{program.goals.map((goal) => <li key={goal.id} data-achieved={goal.achieved}>{goal.achieved ? <Check size={20} aria-label="Reached" /> : <Circle size={18} aria-label="In progress" />}<span>{goal.description}</span></li>)}</ul>
         </section>
-        {program.status === "completed" ? <section className="program-completion" aria-labelledby="program-completion-title" role="status">
+        {program.status === "completed" && !program.stageView ? <section className="program-completion" aria-labelledby="program-completion-title" role="status">
           <Sparkles size={27} aria-hidden="true" />
           <div><h2 id="program-completion-title">Mission complete</h2><p>{program.completionFeedback || "Your finished workspace is saved. Take a look at what you made."}</p>
             {program.outcome.evidence.some((item) => item.status === "pending_parent_review") ? <p className="program-outcome"><strong>Pending parent review</strong> · Your writing is saved. Its quality has not been scored.</p> : <p className="program-outcome">Activity evidence recorded.</p>}
@@ -119,11 +120,11 @@ function ProgramContent({ sessionId }: { sessionId: string }) {
         <FormError message={error} />
         {uncertain ? <button className="button primary program-retry" disabled={busy} onClick={() => { if (pending.current) void send(pending.current); }}>Retry saving the same move</button> : null}
         <p className="program-live-notice" role="status" aria-live="polite">{busy ? "Saving…" : notice}</p>
-        <div className="program-spaces">{program.spaces.map((space) => <section className="program-space" key={space.id} aria-labelledby={`program-space-${space.id}`}>
+        {program.stageView ? <ActivityProgramStage session={program} disabled={Boolean(disabled)} onAction={act} /> : <div className="program-spaces">{program.spaces.map((space) => <section className="program-space" key={space.id} aria-labelledby={`program-space-${space.id}`}>
           <h2 id={`program-space-${space.id}`}>{space.title}</h2>
           {program.components.filter((component) => component.spaceId === space.id).map((component) => <div key={component.id} data-program-component={component.id}><ActivityProgramControl session={program} component={component} disabled={Boolean(disabled)} onAction={act} /></div>)}
-        </section>)}</div>
-        <aside className="program-help" aria-labelledby="program-help-title">
+        </section>)}</div>}
+        <aside className={`program-help ${program.stageView ? "program-help-world" : ""}`} aria-labelledby="program-help-title">
           <div className="program-help-heading"><Lightbulb size={21} aria-hidden="true" /><h2 id="program-help-title">A little help</h2></div>
           {program.help.length && program.status !== "completed" ? <div className="program-help-actions">{program.help.map((help) => <button key={help.id} className="button secondary" disabled={Boolean(disabled) || help.remainingUses < 1} onClick={() => void perform("help", { helpId: help.id })}>{help.kind === "hint" ? "Get a hint" : help.kind === "demonstration" ? "Show me an example" : "Give me a cue"}</button>)}</div> : null}
           {program.deliveredHelp.map((help) => <div className="program-delivered-help" key={help.id}><p>{help.text}</p><span>Help received · Saved with your activity</span></div>)}
@@ -132,7 +133,12 @@ function ProgramContent({ sessionId }: { sessionId: string }) {
         <p className="program-save-note">Your workspace and any help are saved for this profile.</p>
         {program.status === "completed" ? <Link className="button primary program-back" href="/kid/activity-preview" prefetch={false}>Explore another workspace</Link> : null}
       </> : null}
-      {!program && !loading ? <><FormError message={error} /><button className="button secondary" onClick={() => { const signal = controller.current?.signal; if (signal) void load(signal).catch((caught) => setError(errorMessage(caught))); }}>Reload saved workspace</button></> : null}
+      {!program && !loading ? <>
+        <FormError message={error} />
+        <p>Browse activities to choose an example or resume one saved for this profile.</p>
+        <Link className="button primary" href="/kid/activity-preview" prefetch={false}>Browse activities</Link>
+        <button className="button secondary" onClick={() => { const signal = controller.current?.signal; if (signal) void load(signal).catch((caught) => setError(errorMessage(caught))); }}>Reload saved workspace</button>
+      </> : null}
     </section>
   </AccountShell>;
 }

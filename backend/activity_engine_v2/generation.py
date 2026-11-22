@@ -4,16 +4,17 @@ from __future__ import annotations
 import asyncio
 import json
 import re
+import time
 import uuid
 
 from backend.accounts.security import AccountError
-from .context import build_context
+from .context import build_context, with_retry_design_feedback
 from .service import _authorize, _json, start_approved
 
-GENERATION_TIMEOUT_SECONDS = 360
-GENERATION_LEASE_SECONDS = 420
+GENERATION_TIMEOUT_SECONDS = 480
+GENERATION_LEASE_SECONDS = 540
 STAGES = {'queued', 'context', 'compose', 'validate', 'review', 'repair', 'start', 'ready', 'failed',
-          'provider', 'schema', 'capability', 'witness', 'scoring'}
+          'design', 'design_review', 'gameplay_review', 'provider', 'schema', 'capability', 'witness', 'scoring'}
 
 
 def _owned(connection, security, kid_id, generation_id, active):
@@ -113,6 +114,9 @@ def reserve(security, kid_id, upload_id, request_id, active, *, retry_of=None):
                                        (kid_id, request_id, upload_id, candidate['id']))
                     return _view(candidate), None
         context = build_context(connection, security, kid_id, upload_id, active)
+        if original is not None:
+            context = with_retry_design_feedback(context, original,
+                account_id=active.account_id, kid_id=kid_id, upload_id=upload_id)
         running = connection.execute('''SELECT * FROM activity_program_generations
             WHERE kid_id=? AND account_id=? AND upload_id=? AND status='processing'
             ORDER BY created_at DESC,rowid DESC LIMIT 1''', (kid_id, active.account_id, upload_id)).fetchone()
@@ -145,6 +149,23 @@ def _diagnostics(connection, generation_id, events):
                            (_json(sources), generation_id))
 
 
+def _design_audit(connection, generation_id, metadata):
+    semantic = getattr(metadata, 'semantic_review', None) or getattr(metadata, 'review', None)
+    if semantic is not None:
+        if hasattr(semantic, 'model_dump'):
+            semantic = semantic.model_dump(warnings=False)
+        connection.execute('UPDATE activity_program_generations SET review_json=? WHERE id=?',
+                           (_json(semantic), generation_id))
+    gameplay = getattr(metadata, 'gameplay_review', None)
+    if hasattr(gameplay, 'model_dump'):
+        gameplay = gameplay.model_dump(warnings=False)
+    connection.execute('''UPDATE activity_program_generations SET game_design_json=?,design_evaluations_json=?,
+        gameplay_review_json=?,structural_fingerprint_json=?,render_manifest_json=? WHERE id=?''',
+        (_json(getattr(metadata, 'game_design', None)), _json(getattr(metadata, 'design_evaluations', [])),
+         _json(gameplay), _json(getattr(metadata, 'structural_fingerprint', None)),
+         _json(getattr(metadata, 'render_manifest', None)), generation_id))
+
+
 def _fail(security, generation_id, token, code, stage='failed', metadata=None):
     # Only fixed content-safe identifiers leave an error; no exception strings.
     code = code if isinstance(code, str) and re.fullmatch(r'[a-z][a-z0-9_]{0,79}', code) else 'generation_failed'
@@ -161,14 +182,19 @@ def _fail(security, generation_id, token, code, stage='failed', metadata=None):
                 (getattr(metadata, 'requested_model', None), _json(calls), _json(returned),
                  getattr(metadata, 'call_count', 0), generation_id))
             _diagnostics(connection, generation_id, getattr(metadata, 'diagnostic_events', []))
+            _design_audit(connection, generation_id, metadata)
 
 
 async def run(security, kid_id, generation_id, token, active, adapter=None, *, design_brief=None):
     """A bounded in-process worker. A stopped process leaves a recoverable expiring lease."""
-    from .composer import compose, CompositionFailure
+    from .composer import compose_gameplay, CompositionFailure
+    started = time.monotonic()
+    approved = None
 
     async def progress(stage):
-        stage = {'composing': 'compose', 'validating': 'validate', 'reviewing': 'review', 'repairing': 'repair'}.get(stage, stage)
+        stage = {'composing': 'compose', 'validating': 'validate', 'reviewing': 'review', 'repairing': 'repair',
+                 'designing': 'design', 'evaluating_designs': 'design_review',
+                 'reviewing_gameplay': 'gameplay_review'}.get(stage, stage)
         with security.db.transaction() as connection:
             row = _owned(connection, security, kid_id, generation_id, active)
             if row['status'] != 'processing' or row['lease_token'] != token or row['lease_until'] <= security.clock.now():
@@ -186,12 +212,16 @@ async def run(security, kid_id, generation_id, token, active, adapter=None, *, d
             row = _owned(connection, security, kid_id, generation_id, active)
             context = json.loads(row['context_json'])
         # All provider calls and the review/repair loop occur after the transaction.
-        options = dict(adapter=adapter, progress=progress, budget_seconds=GENERATION_TIMEOUT_SECONDS)
+        # Let the composer's deadline finish its safe accounting before the
+        # absolute worker deadline cancels it. Scale slack for tiny test caps.
+        outer_budget=float(GENERATION_TIMEOUT_SECONDS)
+        inner_budget=max(0.0,outer_budget-min(1.0,outer_budget/10))
+        options = dict(adapter=adapter, progress=progress, budget_seconds=inner_budget)
         # Trusted development tooling can supply a creative brief. It is not an
         # HTTP input, learner observation, finished definition or admission bypass.
         if design_brief is not None:
             options['design_brief'] = design_brief
-        approved = await asyncio.wait_for(compose(context, **options), GENERATION_TIMEOUT_SECONDS)
+        approved = await asyncio.wait_for(compose_gameplay(context, **options), GENERATION_TIMEOUT_SECONDS)
         await progress('start')
         with security.db.transaction() as connection:
             row = _owned(connection, security, kid_id, generation_id, active)
@@ -215,10 +245,11 @@ async def run(security, kid_id, generation_id, token, active, adapter=None, *, d
                 lease_token=NULL,lease_until=NULL,updated_at=? WHERE id=? AND lease_token=?''',
                 (session['id'], approved.requested_model, _json(list(approved.returned_models)), _json(approved.model_calls), _json(review),
                  approved.definition_hash, approved.call_count, security.clock.now(), generation_id, token))
+            _design_audit(connection, generation_id, approved)
     except CompositionFailure as error:
         _fail(security, generation_id, token, error.code, error.stage, error)
     except AccountError as error:
-        _fail(security, generation_id, token, error.code)
+        _fail(security, generation_id, token, error.code, metadata=approved if approved is not None else error)
     except (asyncio.TimeoutError, TimeoutError):
         _fail(security, generation_id, token, 'generation_timeout')
     except asyncio.CancelledError:
@@ -226,3 +257,7 @@ async def run(security, kid_id, generation_id, token, active, adapter=None, *, d
         raise
     except Exception:
         _fail(security, generation_id, token, 'generation_failed')
+    finally:
+        with security.db.transaction() as connection:
+            connection.execute('UPDATE activity_program_generations SET duration_ms=? WHERE id=?',
+                               (max(0, int((time.monotonic() - started) * 1000)), generation_id))

@@ -14,8 +14,10 @@ import {
   APIError,
   clearCSRF,
   clearPrivateRequests,
+  errorMessage,
 } from "@/lib/account-api";
 import type { SessionView } from "@/lib/account-types";
+import { activityEntry, browserActivityReturn, safeActivityReturn } from "@/lib/activity-return";
 
 interface SessionContextValue {
   session: SessionView | null;
@@ -28,8 +30,8 @@ interface SessionContextValue {
     destination?: string,
   ) => void;
   refresh: (lockParent?: boolean) => Promise<void>;
-  toPicker: () => Promise<void>;
-  chooseKid: (id: string) => Promise<void>;
+  toPicker: (returnTo?: string | null) => Promise<void>;
+  chooseKid: (id: string, returnTo?: string | null) => Promise<void>;
   logout: () => Promise<void>;
   activity: () => void;
 }
@@ -234,29 +236,33 @@ export function AccountSessionProvider({
     return () => clearTimeout(timeout);
   }, [session?.mode, session?.parentExpiresAt, synchronize]);
 
-  const toPicker = useCallback(async () => {
+  const toPicker = useCallback(async (returnTo?: string | null) => {
     setChecking(true);
     clearPrivateRequests();
     try {
-      accept(await api<SessionView>("/api/session/picker", { method: "POST" }));
-      router.replace("/profiles");
+      const target = activityEntry("/profiles", safeActivityReturn(returnTo));
+      accept(await api<SessionView>("/api/session/picker", { method: "POST" }), false, target);
+      router.replace(target);
     } catch (error) {
       setChecking(false);
       throw error;
     }
   }, [accept, router]);
   const chooseKid = useCallback(
-    async (id: string) => {
+    async (id: string, returnTo?: string | null) => {
       setChecking(true);
       clearPrivateRequests();
       try {
+        const target = safeActivityReturn(returnTo) || browserActivityReturn() || "/kid";
         accept(
           await api<SessionView>("/api/session/kid", {
             method: "POST",
             body: { profileId: id },
           }),
+          false,
+          target,
         );
-        router.replace("/kid");
+        router.replace(target);
       } catch (error) {
         setChecking(false);
         throw error;
@@ -326,18 +332,35 @@ export function SessionLoading() {
 
 export function RequireMode({
   mode,
+  returnTo,
   children,
 }: {
   mode?: SessionView["mode"];
+  returnTo?: string | null;
   children: React.ReactNode;
 }) {
-  const { session, checking, connectionError, destination, refresh } =
+  const { session, checking, connectionError, destination, refresh, toPicker } =
     useAccountSession();
   const router = useRouter();
+  const [transitionError, setTransitionError] = useState<string | null>(null);
+  const switchingToPicker = useRef(false);
   useEffect(() => {
-    if (checking || connectionError) return;
-    if (!session) router.replace("/login");
-    else if (mode && session.mode !== mode)
+    if (checking || connectionError || transitionError) return;
+    const target = safeActivityReturn(returnTo) || browserActivityReturn();
+    if (!session) router.replace(activityEntry("/login", target));
+    else if (mode && session.mode !== mode) {
+      if (target && mode === "picker" && session.mode === "parent") {
+        if (switchingToPicker.current) return;
+        switchingToPicker.current = true;
+        void toPicker(target)
+          .catch(error => setTransitionError(errorMessage(error)))
+          .finally(() => { switchingToPicker.current = false; });
+        return;
+      }
+      if (target && (mode === "kid" || mode === "picker")) {
+        router.replace(session.mode === "kid" ? target : activityEntry("/profiles", target));
+        return;
+      }
       router.replace(
         destination ||
           (session.mode === "parent"
@@ -346,7 +369,12 @@ export function RequireMode({
               ? "/kid"
               : "/profiles"),
       );
-  }, [checking, connectionError, session, mode, router, destination]);
+    }
+  }, [checking, connectionError, session, mode, router, destination, returnTo, toPicker, transitionError]);
+  if (transitionError) return <div className="account-loading">
+    <p role="alert">{transitionError}</p>
+    <button className="button primary" onClick={() => setTransitionError(null)}>Try again</button>
+  </div>;
   if (connectionError)
     return (
       <div className="account-loading">

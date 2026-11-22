@@ -6,16 +6,18 @@ import { useState } from "react";
 import { ArrowRight, LockKeyhole, ShieldCheck } from "lucide-react";
 import { api, errorMessage } from "@/lib/account-api";
 import type { SessionView } from "@/lib/account-types";
+import { activityEntry, safeActivityReturn } from "@/lib/activity-return";
 import { useAccountSession } from "./account-session";
 import { AccountShell, FormError } from "./account-ui";
 
-export function AuthPage({ signup = false }: { signup?: boolean }) {
+export function AuthPage({ signup = false, returnTo }: { signup?: boolean; returnTo?: string | null }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { accept } = useAccountSession();
   const router = useRouter();
+  const target = safeActivityReturn(returnTo);
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     setBusy(true);
@@ -25,8 +27,9 @@ export function AuthPage({ signup = false }: { signup?: boolean }) {
         `/api/auth/${signup ? "signup" : "login"}`,
         { method: "POST", body: { email, password } },
       );
-      accept(session, true);
-      router.replace("/profiles");
+      const destination = activityEntry("/profiles", target);
+      accept(session, true, destination);
+      router.replace(destination);
     } catch (caught) {
       setError(errorMessage(caught));
     } finally {
@@ -105,7 +108,7 @@ export function AuthPage({ signup = false }: { signup?: boolean }) {
           )}
           <p className="auth-switch">
             {signup ? "Already have an account?" : "New to Sidekick?"}{" "}
-            <Link href={signup ? "/login" : "/signup"} prefetch={false}>
+            <Link href={activityEntry(signup ? "/login" : "/signup", target)} prefetch={false}>
               {signup ? "Log in" : "Create an account"}
             </Link>
           </p>

@@ -12,9 +12,12 @@ import { RequireMode, useAccountSession } from "./account-session";
 export const generationProgress: Record<ProgramGenerationStage, string> = {
   queued: "Getting your learning goal ready…",
   context: "Looking at the skills in your work…",
+  design: "Imagining a few ways to play…",
+  design_review: "Choosing an adventure for your learning…",
   compose: "Creating a learning adventure…",
   validate: "Checking that your activity works…",
   review: "Reviewing the learning and feedback…",
+  gameplay_review: "Checking the choices and discoveries…",
   repair: "Making a small improvement…",
   start: "Saving your workspace…",
   ready: "Your activity is ready.",
@@ -142,7 +145,7 @@ function GenerationContent({ generationId }: { generationId: string }) {
         setError(null);
         if (result.status === "ready" && result.sessionId) router.replace(`/kid/activity-preview/${encodeURIComponent(result.sessionId)}`);
         else if (result.status === "processing") {
-          if (polls++ < 240) timer = setTimeout(() => void poll(), 1500);
+          if (polls++ < 360) timer = setTimeout(() => void poll(), 1500);
           else setPaused(true);
         }
       } catch (caught) { if (!request.signal.aborted) { setError(errorMessage(caught)); setPaused(true); } }

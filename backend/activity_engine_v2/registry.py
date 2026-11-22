@@ -9,6 +9,7 @@ PREVIEW_OPERATIONS = frozenset({
     'toggle_tile', 'resize_rectangle', 'assemble_product',
     'select_evidence', 'replace_text', 'revise_text',
     'set_fraction_partition', 'toggle_fraction_piece', 'move_fraction_piece',
+    'move_actor', 'place_piece', 'inspect_location',
 })
 
 OBJECT_PORTS = {
@@ -22,6 +23,8 @@ OBJECT_PORTS = {
     'drawing_artifact': {'artifact': 'artifact'},
     'progress': {'value': 'boolean'},
     'fraction_strip': {'denominator': 'integer', 'pieces': 'id_set'},
+    'stage_piece': {'location': 'choice'},
+    'stage_map': {'inspected': 'id_set'},
 }
 
 COMPONENT_OBJECTS = {
@@ -33,6 +36,7 @@ COMPONENT_OBJECTS = {
     'oral_studio': {'audio_artifact', 'progress'},
     'drawing_studio': {'drawing_artifact', 'progress'},
     'fraction_workspace': {'fraction_strip', 'progress'},
+    'world_stage': {'stage_piece', 'stage_map'},
 }
 
 
@@ -45,6 +49,18 @@ def _cap(component, object_kind, inputs, effects, auto, source, action, change, 
 
 
 CAPABILITIES = {
+    'move_actor': _cap('world_stage','stage_piece',{'destination':'choice'}, {'set'},False,
+        'components/activity-program-stage.tsx', 'Move the selected actor through an adjacent usable connection.',
+        'The actor travels between actual locations; conceptual state can make a connection usable or blocked.',
+        'Navigation and choice history only; an arrival is never evidence of conceptual understanding.'),
+    'place_piece': _cap('world_stage','stage_piece',{'destination':'choice'}, {'set'},False,
+        'components/activity-program-stage.tsx', 'Place or reattach one device or object at a chosen location.',
+        'The physical configuration changes; a single object remains in exactly one capacity-limited location.',
+        'Configuration history only; learning evidence must reference the actual linked construction or artifact.'),
+    'inspect_location': _cap('world_stage','stage_map',{'location':'choice'}, {'add_item'},False,
+        'components/activity-program-stage.tsx', 'Investigate a selected location and retain the discovery.',
+        'Authoritative discovery state can reveal actual passages, tools or contextual materials.',
+        'Investigation history only; reading assessment still needs the actual evidence selection or artifact.'),
     'set_fraction_partition': _cap('fraction_workspace','fraction_strip',{'denominator':'integer'}, {'repartition'},True,
         'components/activity-program-fractions.tsx', 'Divide the same whole into a chosen number of equal parts.',
         'Each column splits into equal rows; the exact shaded region and amount are preserved.', 'A changed denominator with a server-derived equivalent numerator.'),
@@ -59,13 +75,15 @@ CAPABILITIES = {
         'Source loses exactly the amount the destination gains.', 'Conserved allocation and exact counts.'),
     'toggle_tile': _cap('math_workspace','grid',{'cell':'choice'}, {'toggle_item'},True,
         'components/activity-area-workspace.tsx:AreaWorkspace', 'Place or lift a unit tile in a real cell.',
-        'The corresponding cell fills or clears.', 'Actual unit-square coverage, not a submitted count.'),
+        'The corresponding cell fills or clears; lifting frees that grid\'s stock. The core enforces its own unit_tiles.quantity limit.',
+        'Actual unit-square coverage, not a submitted count. Stock is bounded PER GRID; sharing a material reference does not create a conserved stock across different grids.'),
     'resize_rectangle': _cap('math_workspace','grid',{'rows':'integer','columns':'integer'}, {'set'},True,
         'components/activity-area-workspace.tsx:AreaWorkspace', 'Change rows and columns.',
         'The rectangle reshapes using the declared equal units.', 'Dimensions, area, and factor-pair state.'),
     'assemble_product': _cap('math_workspace','equation',{'left':'integer','right':'integer','result':'integer'}, {'set'},True,
         'components/activity-area-workspace.tsx:AreaWorkspace', 'Construct a product equality.',
-        'The child-authored factors and result change.', 'Typed factor/result facts, requiring a future trusted parser/adapter.'),
+        'The child-authored integer factors and result change; wrong values are preserved.',
+        'Implemented typed V2 input adapter: exact integer left/right/result facts. Automatic inline predicates can check multiplication and compare factors/product with the actual bound construction and target; no parser or parent judgment is needed for those exact numeric checks. This does not assess an unobserved explanation or mastery.'),
     'replace_text': _cap('text_editor','text_artifact',{'text':'text'}, {'set'},False,
         'components/activity-families.tsx:TextEditor', 'Create an original draft.',
         'The actual written artifact changes.', 'Text artifact and process, assessed against a parent rubric.'),
@@ -88,7 +106,8 @@ CAPABILITIES = {
 
 # Asset references are opaque IDs resolved by trusted host code. No URLs, paths,
 # generated HTML/SVG or remote fetching are accepted in a program.
-ASSETS = {'coin_penny', 'coin_nickel', 'coin_dime', 'coin_quarter'}
+STAGE_ASSETS = {'dot', 'person', 'cart', 'boat', 'parcel', 'lens', 'bridge', 'gate', 'home', 'tree', 'lamp', 'book', 'clue', 'flag', 'flower', 'gear'}
+ASSETS = {'coin_penny', 'coin_nickel', 'coin_dime', 'coin_quarter'} | STAGE_ASSETS
 
 
 def component_contracts():

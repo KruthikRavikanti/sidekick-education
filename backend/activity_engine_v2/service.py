@@ -91,8 +91,12 @@ def _project(row, program, core, version, events):
     state = json.loads(row['state_json'])
     delivered = json.loads(row['assistance_json'])
     visible = set(core.visible_spaces(state))
-    components = [item for item in program.components if item.spaceId in visible]
+    visible_components=core.stage_component_ids(state,{item.id for item in program.components if item.spaceId in visible})
+    components = [item for item in program.components if item.id in visible_components]
     object_ids = {ref for item in components for ref in item.objectIds}
+    stage_view=core.stage_view(state,visible_components) if program.presentation.stage is not None else None
+    if stage_view is not None:
+        object_ids.update(surface['objectId'] for surface in stage_view.get('surfaces',[]))
     objects = [item for item in program.world.objects if item.id in object_ids]
     material_ids = {ref for item in objects for ref in item.materialIds}
     state_ids = {ref for item in objects for ref in item.bindings.values()}
@@ -138,6 +142,11 @@ def _project(row, program, core, version, events):
         result['fractionViews'],result['fractionComparisons']=core.fraction_views(state,object_ids)
         for action in result['actions']:
             if action['operation'] in {'set_fraction_partition','toggle_fraction_piece','move_fraction_piece'}:
+                action['objectIds']=[obj.id for obj in core.action_objects(action['id'])]
+    if program.presentation.stage is not None:
+        result['stageView']=stage_view
+        for action in result['actions']:
+            if action['operation'] in {'move_actor','place_piece','inspect_location'}:
                 action['objectIds']=[obj.id for obj in core.action_objects(action['id'])]
     return result
 
@@ -200,8 +209,8 @@ def _create_session(connection, security, kid_id, key, program, active):
     return _project(row, program, core, version, [])
 
 
-def start_approved(connection, security, kid_id, approved, active):
-    """No public definition input: start only a hash-bound reviewed generation."""
+def validate_approved(approved):
+    """Shared admission for server-owned reviewed definitions; no persistence."""
     from .preview import validate_runtime_compatibility
     from .composer import CompositionFailure, validate_review
     from .validator import validate_program
@@ -220,6 +229,20 @@ def start_approved(connection, security, kid_id, approved, active):
     if not program.witness or not report.valid or report.computational != 'witness_verified':
         raise AccountError('finish_trace_unverified', 'The activity could not be verified.', 503)
     validate_runtime_compatibility(program)
+    if program.presentation.stage is not None:
+        from .composer import validate_gameplay_review
+        try:
+            validate_gameplay_review(program,expected,getattr(approved,'gameplay_review',None),
+                                     getattr(approved,'render_manifest',None))
+        except (CompositionFailure,ValidationError,ValueError,TypeError):
+            raise AccountError('gameplay_approval_integrity_failed','The activity play approval could not be verified.',503) from None
+    return program
+
+
+def start_approved(connection, security, kid_id, approved, active):
+    """No public definition input: start only a hash-bound reviewed generation."""
+    program=validate_approved(approved)
+    expected=approved.definition_hash
     return _create_session(connection, security, kid_id, 'generated-'+expected, program, active)
 
 
@@ -238,9 +261,9 @@ def _deliver_help(program, core, state, delivered, help_id):
     item = next((item for item in program.help if item.id == help_id), None)
     if item is None:
         raise AccountError('unknown_help', 'That help is not available.', 400)
-    visible = set(core.visible_spaces(state))
+    visible = core.stage_component_ids(state)
     action_ids = {action.id for action in program.actions
-                  if core.components[action.componentId].spaceId in visible}
+                  if action.componentId in visible}
     uses = delivered.get(help_id, {}).get('uses', 0)
     if (core.completed(state) or uses >= item.maxUses
             or not set(item.actionIds).intersection(action_ids)

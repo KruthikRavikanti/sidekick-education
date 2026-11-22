@@ -7,7 +7,7 @@ const servers = Array.isArray(base.webServer) ? base.webServer : [base.webServer
 
 export default defineConfig({
   ...base,
-  testMatch: ["activity-program-v2.spec.ts", "activity-program-v2-materials.spec.ts"],
+  testMatch: ["activity-program-v2.spec.ts", "activity-program-v2-materials.spec.ts", "activity-program-v2-world-stage.spec.ts"],
   testIgnore: [],
   webServer: servers.map((server, index) => ({
     ...server,

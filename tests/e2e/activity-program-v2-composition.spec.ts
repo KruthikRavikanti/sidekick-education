@@ -61,6 +61,8 @@ test("normal upload composes an admitted new program, refreshes progress and pla
     current = await visibleMove(page, current, step("place", { cell: `r${row}c${column}` }));
   }
   current = await visibleMove(page, current, step("multiply", { left: 2, right: 3, result: 6 }));
+  expect(current.status).toBe("in_progress");
+  current = await visibleMove(page, current, step("world-move", { destination: "work" }));
   expect(current.outcome.assessment).toBe("demonstrated");
   expect(current.outcome.assisted).toBe(true);
   await page.reload();
@@ -99,12 +101,16 @@ test("stubbed writing composition saves actual drafts and completes with quality
   const revised = "Before school, Tari folded a paper boat beside the quiet gate. A tiny robot tapped her shoulder and held out a lost blue button.";
   current = await visibleMove(page, current, step("write", { text: draft }));
   await page.reload();
+  const editor = current.components.find(item => item.kind === "text_editor")!;
+  const holder = current.stageView!.entities.find(item => item.toolComponentIds.includes(editor.id))!;
+  await page.getByRole("button", { name: `Explore ${holder.label}`, exact: true }).click();
   await expect(page.getByRole("textbox")).toHaveValue(draft);
   current = await visibleMove(page, current, step("revise", { text: revised }));
+  current = await visibleMove(page, current, step("world-move", { destination: "work" }));
   expect(current.outcome.assessment).toBe("pending_parent_review");
-  expect(current.actionCount).toBe(2);
+  expect(current.actionCount).toBe(3);
   await expect(page.getByRole("heading", { name: "Mission complete", exact: true })).toBeVisible();
-  await expect(page.getByText("Pending parent review", { exact: true })).toBeVisible();
+  await expect(page.getByText(/^Pending parent review · Your creation has not been scored for quality\.$/)).toBeVisible();
   await expect(page.getByRole("textbox")).toHaveValue(revised);
   if (process.env.SIDEKICK_CAPTURE_V2_STUB_SCREENSHOT === "true") {
     const folder = path.join(process.cwd(), "docs/activity-engine-v2-composition");

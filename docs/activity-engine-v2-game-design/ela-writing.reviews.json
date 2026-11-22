@@ -1,0 +1,1540 @@
+{
+  "auditOnly": true,
+  "definitionHash": "b71b6a66709fbcfca4297200eab6243b5c4e6c563f4cbbbb64804f23e5ad6b7b",
+  "semanticReview": {
+    "definitionHash": "b71b6a66709fbcfca4297200eab6243b5c4e6c563f4cbbbb64804f23e5ad6b7b",
+    "approved": true,
+    "targetNecessary": true,
+    "meaningfulConsequences": true,
+    "materialsSuitable": true,
+    "goalAchievable": true,
+    "helpRelevant": true,
+    "scoringCorrectAcrossRoutes": true,
+    "shortcutsPrevented": true,
+    "parentAssessmentAppropriate": true,
+    "requiresParentReview": true,
+    "reasonCode": "approved",
+    "summary": "Every finish route requires a child-written opening and a selected next line. The parent rubric assesses the situation, narrator, characters, and connection to the line rather than treating completion as writing quality."
+  },
+  "gameplayReview": {
+    "definitionHash": "b71b6a66709fbcfca4297200eab6243b5c4e6c563f4cbbbb64804f23e5ad6b7b",
+    "renderManifestHash": "d3d79c80dc0c90ab7a0268b827f1fd2a4dac7a596ab7bb6cb15dd13bfbe78474",
+    "approved": true,
+    "meaningfulChoices": true,
+    "understandableConsequences": true,
+    "recoveryPossible": true,
+    "targetNecessary": true,
+    "briefGoalClear": true,
+    "finishAchievable": true,
+    "finishSatisfying": true,
+    "mainStagePlayable": true,
+    "structuralVariety": true,
+    "renderedAffordancesSuitable": true,
+    "reasonCode": "approved",
+    "summary": "The child chooses a continuation, writes and can revise an opening beside it, then displays both together. The creative presentation differs from the prior investigation loop; writing quality remains for parent review."
+  },
+  "renderManifest": {
+    "actualOperations": {
+      "place_piece": {
+        "automaticAssessment": false,
+        "childAction": "Place or reattach one device or object at a chosen location.",
+        "component": "world_stage",
+        "effectKinds": [
+          "set"
+        ],
+        "evidence": "Configuration history only; learning evidence must reference the actual linked construction or artifact.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "destination": "choice"
+        },
+        "legacySource": "components/activity-program-stage.tsx",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "stage_piece",
+        "previewOnly": true,
+        "visibleChange": "The physical configuration changes; a single object remains in exactly one capacity-limited location."
+      },
+      "replace_text": {
+        "automaticAssessment": false,
+        "childAction": "Create an original draft.",
+        "component": "text_editor",
+        "effectKinds": [
+          "set"
+        ],
+        "evidence": "Text artifact and process, assessed against a parent rubric.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "text": "text"
+        },
+        "legacySource": "components/activity-families.tsx:TextEditor",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "text_artifact",
+        "previewOnly": true,
+        "visibleChange": "The actual written artifact changes."
+      },
+      "revise_text": {
+        "automaticAssessment": false,
+        "childAction": "Change the existing draft.",
+        "component": "text_editor",
+        "effectKinds": [
+          "set"
+        ],
+        "evidence": "Actual revision and parent-assessed writing quality.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "text": "text"
+        },
+        "legacySource": "components/activity-families.tsx:TextEditor",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "text_artifact",
+        "previewOnly": true,
+        "visibleChange": "Previous and new drafts differ; future events retain both."
+      },
+      "select_evidence": {
+        "automaticAssessment": true,
+        "childAction": "Place a passage sentence on the board.",
+        "component": "evidence_board",
+        "effectKinds": [
+          "set"
+        ],
+        "evidence": "Selection key; factual support still needs semantic review.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "sentence": "choice"
+        },
+        "legacySource": "components/activity-toolkit.tsx:EvidenceBoard",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "evidence_board",
+        "previewOnly": true,
+        "visibleChange": "The selected literal sentence becomes the displayed clue."
+      }
+    },
+    "actualStructure": {
+      "digest": "9f7421a935c1a53d0f6d5c6db2b38a4b318d52c06cc4d722d091706aff873815",
+      "features": [
+        "action:place_piece#1",
+        "action:replace_text#1",
+        "action:revise_text#1",
+        "action:select_evidence#1",
+        "completion:(goal)#1",
+        "component:evidence_board#1",
+        "component:text_editor#1",
+        "component:world_stage#1",
+        "consequence:active:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label)])#1",
+        "consequence:active:(compare|ne|left:state:evidence_board.selection|right:literal:label)#1",
+        "edge:True:(always)#1",
+        "entity:destination:fixed#1",
+        "entity:device:fixed#1",
+        "entity:object:movable#1",
+        "goal:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label)])#1",
+        "location:any:in1:out1#2",
+        "object:evidence_board#1",
+        "object:stage_piece#1",
+        "object:text_artifact#1",
+        "relation:text_artifact:derived_from:evidence_board#1",
+        "rule:place_piece:(all|conditions:[(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label)]):[(set|value:input|target:stage_piece.location)]#1",
+        "rule:replace_text:(compare|eq|left:state:stage_piece.location|right:literal:label):[(set|value:input|target:text_artifact.text)]#1",
+        "rule:revise_text:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(compare|ne|left:input|right:literal:label),(compare|ne|left:input|right:state:text_artifact.text),(compare|ne|left:state:text_artifact.text|right:literal:label)]):[(set|value:input|target:text_artifact.text)]#1",
+        "rule:select_evidence:(compare|eq|left:state:stage_piece.location|right:literal:label):[(set|value:input|target:evidence_board.selection)]#1",
+        "surface:evidence_board:location:any:object:whole:read_only:(always)#1",
+        "surface:evidence_board:location:any:object:whole:read_only:(compare|eq|left:state:stage_piece.location|right:literal:label)#1",
+        "surface:text_artifact:location:any:object:whole:read_only:(compare|eq|left:state:stage_piece.location|right:literal:label)#2",
+        "tool:evidence_board:device:(compare|eq|left:state:stage_piece.location|right:literal:label)#1",
+        "tool:text_editor:object:(compare|eq|left:state:stage_piece.location|right:literal:label)#1"
+      ],
+      "version": "sidekick-game-structure-v1"
+    },
+    "authoritativeCheckpoints": [
+      {
+        "afterOperation": "select_evidence",
+        "geometry": {
+          "desktopStageHeightPx": 620,
+          "mobileStageHeightPx": 580,
+          "tabletStageHeightPx": 580
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "selection": "map_line"
+            },
+            "kind": "evidence_board",
+            "materials": [
+              {
+                "id": "next_lines",
+                "items": [
+                  {
+                    "id": "map_line",
+                    "text": "Then the map began to glow."
+                  },
+                  {
+                    "id": "train_line",
+                    "text": "That was when the last train stopped."
+                  }
+                ],
+                "kind": "passage",
+                "quantity": null,
+                "text": "Then the map began to glow. That was when the last train stopped."
+              },
+              {
+                "id": "line_prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Choose either sentence as the next line of your story."
+              }
+            ],
+            "objectId": "line_board"
+          },
+          {
+            "boundValues": {
+              "text": ""
+            },
+            "kind": "text_artifact",
+            "materials": [
+              {
+                "id": "opening_prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Write an opening that comes before your chosen next line. Introduce the narrator, characters, and situation so a reader can follow what happens. You can switch lines or revise at the workbench. When ready, place your opening on the display."
+              }
+            ],
+            "objectId": "opening"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "display_card",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "display",
+                  "reasonCode": "action_guard_unsatisfied"
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "The display is not ready.",
+              "fromLocation": "workbench",
+              "id": "studio_path",
+              "label": "To the story display",
+              "open": true,
+              "toLocation": "display"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [],
+              "asset": "book",
+              "currentStatus": "active",
+              "id": "line_board_entity",
+              "kind": "device",
+              "label": "Next-line board",
+              "locationId": "workbench",
+              "objectId": null,
+              "reactionText": "Your chosen next line is shown beside the opening.",
+              "representationObjectId": "line_board",
+              "toolComponentIds": [
+                "line_tool"
+              ]
+            },
+            {
+              "actionIds": [
+                "display_card"
+              ],
+              "asset": "parcel",
+              "currentStatus": "idle",
+              "id": "opening_card_entity",
+              "kind": "object",
+              "label": "Opening card",
+              "locationId": "workbench",
+              "objectId": "card_piece",
+              "reactionText": null,
+              "representationObjectId": "opening",
+              "toolComponentIds": [
+                "opening_tool"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "flag",
+              "currentStatus": "idle",
+              "id": "display_entity",
+              "kind": "destination",
+              "label": "Story display",
+              "locationId": "display",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "workbench",
+              "inspected": false,
+              "label": "Workbench",
+              "x": 25,
+              "y": 50
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "display",
+              "inspected": false,
+              "label": "Story display",
+              "x": 78,
+              "y": 50
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "line_board_entity",
+              "id": "line_selected",
+              "status": "active",
+              "text": "Your chosen next line is shown beside the opening."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "bench_line",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Next line",
+              "layout": "object",
+              "locationId": "workbench",
+              "objectId": "line_board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "bench_opening",
+              "inputId": null,
+              "kind": "text_artifact",
+              "label": "Opening",
+              "layout": "object",
+              "locationId": "workbench",
+              "objectId": "opening"
+            }
+          ],
+          "tools": [
+            {
+              "available": true,
+              "componentId": "line_tool",
+              "entityId": "line_board_entity",
+              "label": "Choose or switch the next line"
+            },
+            {
+              "available": true,
+              "componentId": "opening_tool",
+              "entityId": "opening_card_entity",
+              "label": "Write or revise the opening"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "replace_text",
+        "geometry": {
+          "desktopStageHeightPx": 620,
+          "mobileStageHeightPx": 580,
+          "tabletStageHeightPx": 580
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "selection": "map_line"
+            },
+            "kind": "evidence_board",
+            "materials": [
+              {
+                "id": "next_lines",
+                "items": [
+                  {
+                    "id": "map_line",
+                    "text": "Then the map began to glow."
+                  },
+                  {
+                    "id": "train_line",
+                    "text": "That was when the last train stopped."
+                  }
+                ],
+                "kind": "passage",
+                "quantity": null,
+                "text": "Then the map began to glow. That was when the last train stopped."
+              },
+              {
+                "id": "line_prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Choose either sentence as the next line of your story."
+              }
+            ],
+            "objectId": "line_board"
+          },
+          {
+            "boundValues": {
+              "text": "I found a map in the attic. My cousin Jo came upstairs to see it."
+            },
+            "kind": "text_artifact",
+            "materials": [
+              {
+                "id": "opening_prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Write an opening that comes before your chosen next line. Introduce the narrator, characters, and situation so a reader can follow what happens. You can switch lines or revise at the workbench. When ready, place your opening on the display."
+              }
+            ],
+            "objectId": "opening"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "display_card",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": true,
+                  "id": "display",
+                  "reasonCode": null
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "The display is not ready.",
+              "fromLocation": "workbench",
+              "id": "studio_path",
+              "label": "To the story display",
+              "open": true,
+              "toLocation": "display"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [],
+              "asset": "book",
+              "currentStatus": "active",
+              "id": "line_board_entity",
+              "kind": "device",
+              "label": "Next-line board",
+              "locationId": "workbench",
+              "objectId": null,
+              "reactionText": "Your chosen next line is shown beside the opening.",
+              "representationObjectId": "line_board",
+              "toolComponentIds": [
+                "line_tool"
+              ]
+            },
+            {
+              "actionIds": [
+                "display_card"
+              ],
+              "asset": "parcel",
+              "currentStatus": "active",
+              "id": "opening_card_entity",
+              "kind": "object",
+              "label": "Opening card",
+              "locationId": "workbench",
+              "objectId": "card_piece",
+              "reactionText": "You can revise or switch the line, or place the card when you are ready.",
+              "representationObjectId": "opening",
+              "toolComponentIds": [
+                "opening_tool"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "flag",
+              "currentStatus": "idle",
+              "id": "display_entity",
+              "kind": "destination",
+              "label": "Story display",
+              "locationId": "display",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "workbench",
+              "inspected": false,
+              "label": "Workbench",
+              "x": 25,
+              "y": 50
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "display",
+              "inspected": false,
+              "label": "Story display",
+              "x": 78,
+              "y": 50
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "line_board_entity",
+              "id": "line_selected",
+              "status": "active",
+              "text": "Your chosen next line is shown beside the opening."
+            },
+            {
+              "entityId": "opening_card_entity",
+              "id": "ready_to_place",
+              "status": "active",
+              "text": "You can revise or switch the line, or place the card when you are ready."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "bench_line",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Next line",
+              "layout": "object",
+              "locationId": "workbench",
+              "objectId": "line_board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "bench_opening",
+              "inputId": null,
+              "kind": "text_artifact",
+              "label": "Opening",
+              "layout": "object",
+              "locationId": "workbench",
+              "objectId": "opening"
+            }
+          ],
+          "tools": [
+            {
+              "available": true,
+              "componentId": "line_tool",
+              "entityId": "line_board_entity",
+              "label": "Choose or switch the next line"
+            },
+            {
+              "available": true,
+              "componentId": "opening_tool",
+              "entityId": "opening_card_entity",
+              "label": "Write or revise the opening"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "revise_text",
+        "geometry": {
+          "desktopStageHeightPx": 620,
+          "mobileStageHeightPx": 580,
+          "tabletStageHeightPx": 580
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "selection": "map_line"
+            },
+            "kind": "evidence_board",
+            "materials": [
+              {
+                "id": "next_lines",
+                "items": [
+                  {
+                    "id": "map_line",
+                    "text": "Then the map began to glow."
+                  },
+                  {
+                    "id": "train_line",
+                    "text": "That was when the last train stopped."
+                  }
+                ],
+                "kind": "passage",
+                "quantity": null,
+                "text": "Then the map began to glow. That was when the last train stopped."
+              },
+              {
+                "id": "line_prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Choose either sentence as the next line of your story."
+              }
+            ],
+            "objectId": "line_board"
+          },
+          {
+            "boundValues": {
+              "text": "I was searching Grandma's attic for a missing kite when I found a folded map. My cousin Jo held the flashlight while I spread it across a dusty trunk."
+            },
+            "kind": "text_artifact",
+            "materials": [
+              {
+                "id": "opening_prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Write an opening that comes before your chosen next line. Introduce the narrator, characters, and situation so a reader can follow what happens. You can switch lines or revise at the workbench. When ready, place your opening on the display."
+              }
+            ],
+            "objectId": "opening"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "display_card",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": true,
+                  "id": "display",
+                  "reasonCode": null
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "The display is not ready.",
+              "fromLocation": "workbench",
+              "id": "studio_path",
+              "label": "To the story display",
+              "open": true,
+              "toLocation": "display"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [],
+              "asset": "book",
+              "currentStatus": "active",
+              "id": "line_board_entity",
+              "kind": "device",
+              "label": "Next-line board",
+              "locationId": "workbench",
+              "objectId": null,
+              "reactionText": "Your chosen next line is shown beside the opening.",
+              "representationObjectId": "line_board",
+              "toolComponentIds": [
+                "line_tool"
+              ]
+            },
+            {
+              "actionIds": [
+                "display_card"
+              ],
+              "asset": "parcel",
+              "currentStatus": "active",
+              "id": "opening_card_entity",
+              "kind": "object",
+              "label": "Opening card",
+              "locationId": "workbench",
+              "objectId": "card_piece",
+              "reactionText": "You can revise or switch the line, or place the card when you are ready.",
+              "representationObjectId": "opening",
+              "toolComponentIds": [
+                "opening_tool"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "flag",
+              "currentStatus": "idle",
+              "id": "display_entity",
+              "kind": "destination",
+              "label": "Story display",
+              "locationId": "display",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "workbench",
+              "inspected": false,
+              "label": "Workbench",
+              "x": 25,
+              "y": 50
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "display",
+              "inspected": false,
+              "label": "Story display",
+              "x": 78,
+              "y": 50
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "line_board_entity",
+              "id": "line_selected",
+              "status": "active",
+              "text": "Your chosen next line is shown beside the opening."
+            },
+            {
+              "entityId": "opening_card_entity",
+              "id": "ready_to_place",
+              "status": "active",
+              "text": "You can revise or switch the line, or place the card when you are ready."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "bench_line",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Next line",
+              "layout": "object",
+              "locationId": "workbench",
+              "objectId": "line_board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "bench_opening",
+              "inputId": null,
+              "kind": "text_artifact",
+              "label": "Opening",
+              "layout": "object",
+              "locationId": "workbench",
+              "objectId": "opening"
+            }
+          ],
+          "tools": [
+            {
+              "available": true,
+              "componentId": "line_tool",
+              "entityId": "line_board_entity",
+              "label": "Choose or switch the next line"
+            },
+            {
+              "available": true,
+              "componentId": "opening_tool",
+              "entityId": "opening_card_entity",
+              "label": "Write or revise the opening"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "place_piece",
+        "geometry": {
+          "desktopStageHeightPx": 620,
+          "mobileStageHeightPx": 580,
+          "tabletStageHeightPx": 580
+        },
+        "missionComplete": true,
+        "representations": [
+          {
+            "boundValues": {
+              "selection": "map_line"
+            },
+            "kind": "evidence_board",
+            "materials": [
+              {
+                "id": "next_lines",
+                "items": [
+                  {
+                    "id": "map_line",
+                    "text": "Then the map began to glow."
+                  },
+                  {
+                    "id": "train_line",
+                    "text": "That was when the last train stopped."
+                  }
+                ],
+                "kind": "passage",
+                "quantity": null,
+                "text": "Then the map began to glow. That was when the last train stopped."
+              },
+              {
+                "id": "line_prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Choose either sentence as the next line of your story."
+              }
+            ],
+            "objectId": "line_board"
+          },
+          {
+            "boundValues": {
+              "text": "I was searching Grandma's attic for a missing kite when I found a folded map. My cousin Jo held the flashlight while I spread it across a dusty trunk."
+            },
+            "kind": "text_artifact",
+            "materials": [
+              {
+                "id": "opening_prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Write an opening that comes before your chosen next line. Introduce the narrator, characters, and situation so a reader can follow what happens. You can switch lines or revise at the workbench. When ready, place your opening on the display."
+              }
+            ],
+            "objectId": "opening"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "display_card",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "display",
+                  "reasonCode": "mission_already_complete"
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "The display is not ready.",
+              "fromLocation": "workbench",
+              "id": "studio_path",
+              "label": "To the story display",
+              "open": true,
+              "toLocation": "display"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [],
+              "asset": "book",
+              "currentStatus": "active",
+              "id": "line_board_entity",
+              "kind": "device",
+              "label": "Next-line board",
+              "locationId": "workbench",
+              "objectId": null,
+              "reactionText": "Your chosen next line is shown beside the opening.",
+              "representationObjectId": "line_board",
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [
+                "display_card"
+              ],
+              "asset": "parcel",
+              "currentStatus": "idle",
+              "id": "opening_card_entity",
+              "kind": "object",
+              "label": "Opening card",
+              "locationId": "display",
+              "objectId": "card_piece",
+              "reactionText": null,
+              "representationObjectId": "opening",
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "flag",
+              "currentStatus": "idle",
+              "id": "display_entity",
+              "kind": "destination",
+              "label": "Story display",
+              "locationId": "display",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "workbench",
+              "inspected": false,
+              "label": "Workbench",
+              "x": 25,
+              "y": 50
+            },
+            {
+              "accepts": "any",
+              "actionIds": [],
+              "capacity": 4,
+              "id": "display",
+              "inspected": false,
+              "label": "Story display",
+              "x": 78,
+              "y": 50
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "line_board_entity",
+              "id": "line_selected",
+              "status": "active",
+              "text": "Your chosen next line is shown beside the opening."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "bench_line",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Next line",
+              "layout": "object",
+              "locationId": "workbench",
+              "objectId": "line_board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "display_line",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Next line",
+              "layout": "object",
+              "locationId": "display",
+              "objectId": "line_board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "display_opening",
+              "inputId": null,
+              "kind": "text_artifact",
+              "label": "Opening",
+              "layout": "object",
+              "locationId": "display",
+              "objectId": "opening"
+            }
+          ],
+          "tools": [
+            {
+              "available": false,
+              "componentId": "line_tool",
+              "entityId": "line_board_entity",
+              "label": "Choose or switch the next line"
+            },
+            {
+              "available": false,
+              "componentId": "opening_tool",
+              "entityId": "opening_card_entity",
+              "label": "Write or revise the opening"
+            }
+          ]
+        }
+      }
+    ],
+    "counterfactual": {
+      "completedWithoutConcept": false,
+      "exhaustedDeclaredWorldOnlySearch": true,
+      "limit": "64 distinct states and 256 attempted world transitions; not general solvability proof",
+      "statesChecked": 1,
+      "transitionsChecked": 1
+    },
+    "initialGeometry": {
+      "desktopStageHeightPx": 620,
+      "mobileStageHeightPx": 580,
+      "tabletStageHeightPx": 580
+    },
+    "initialRepresentations": [
+      {
+        "boundValues": {
+          "selection": "none"
+        },
+        "kind": "evidence_board",
+        "materials": [
+          {
+            "id": "next_lines",
+            "items": [
+              {
+                "id": "map_line",
+                "text": "Then the map began to glow."
+              },
+              {
+                "id": "train_line",
+                "text": "That was when the last train stopped."
+              }
+            ],
+            "kind": "passage",
+            "quantity": null,
+            "text": "Then the map began to glow. That was when the last train stopped."
+          },
+          {
+            "id": "line_prompt",
+            "items": [],
+            "kind": "prompt",
+            "quantity": null,
+            "text": "Choose either sentence as the next line of your story."
+          }
+        ],
+        "objectId": "line_board"
+      },
+      {
+        "boundValues": {
+          "text": ""
+        },
+        "kind": "text_artifact",
+        "materials": [
+          {
+            "id": "opening_prompt",
+            "items": [],
+            "kind": "prompt",
+            "quantity": null,
+            "text": "Write an opening that comes before your chosen next line. Introduce the narrator, characters, and situation so a reader can follow what happens. You can switch lines or revise at the workbench. When ready, place your opening on the display."
+          }
+        ],
+        "objectId": "opening"
+      }
+    ],
+    "initialStage": {
+      "actionTargets": [
+        {
+          "actionId": "display_card",
+          "inputId": "destination",
+          "targets": [
+            {
+              "allowed": false,
+              "id": "display",
+              "reasonCode": "action_guard_unsatisfied"
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "bidirectional": true,
+          "blockedLabel": "The display is not ready.",
+          "fromLocation": "workbench",
+          "id": "studio_path",
+          "label": "To the story display",
+          "open": true,
+          "toLocation": "display"
+        }
+      ],
+      "entities": [
+        {
+          "actionIds": [],
+          "asset": "book",
+          "currentStatus": "idle",
+          "id": "line_board_entity",
+          "kind": "device",
+          "label": "Next-line board",
+          "locationId": "workbench",
+          "objectId": null,
+          "reactionText": null,
+          "representationObjectId": "line_board",
+          "toolComponentIds": [
+            "line_tool"
+          ]
+        },
+        {
+          "actionIds": [
+            "display_card"
+          ],
+          "asset": "parcel",
+          "currentStatus": "idle",
+          "id": "opening_card_entity",
+          "kind": "object",
+          "label": "Opening card",
+          "locationId": "workbench",
+          "objectId": "card_piece",
+          "reactionText": null,
+          "representationObjectId": "opening",
+          "toolComponentIds": [
+            "opening_tool"
+          ]
+        },
+        {
+          "actionIds": [],
+          "asset": "flag",
+          "currentStatus": "idle",
+          "id": "display_entity",
+          "kind": "destination",
+          "label": "Story display",
+          "locationId": "display",
+          "objectId": null,
+          "reactionText": null,
+          "representationObjectId": null,
+          "toolComponentIds": []
+        }
+      ],
+      "locations": [
+        {
+          "accepts": "any",
+          "actionIds": [],
+          "capacity": 4,
+          "id": "workbench",
+          "inspected": false,
+          "label": "Workbench",
+          "x": 25,
+          "y": 50
+        },
+        {
+          "accepts": "any",
+          "actionIds": [],
+          "capacity": 4,
+          "id": "display",
+          "inspected": false,
+          "label": "Story display",
+          "x": 78,
+          "y": 50
+        }
+      ],
+      "reactions": [],
+      "surfaces": [
+        {
+          "actionId": null,
+          "cellIds": [],
+          "cells": [],
+          "connectionId": null,
+          "id": "bench_line",
+          "inputId": null,
+          "kind": "evidence_board",
+          "label": "Next line",
+          "layout": "object",
+          "locationId": "workbench",
+          "objectId": "line_board"
+        },
+        {
+          "actionId": null,
+          "cellIds": [],
+          "cells": [],
+          "connectionId": null,
+          "id": "bench_opening",
+          "inputId": null,
+          "kind": "text_artifact",
+          "label": "Opening",
+          "layout": "object",
+          "locationId": "workbench",
+          "objectId": "opening"
+        }
+      ],
+      "tools": [
+        {
+          "available": true,
+          "componentId": "line_tool",
+          "entityId": "line_board_entity",
+          "label": "Choose or switch the next line"
+        },
+        {
+          "available": true,
+          "componentId": "opening_tool",
+          "entityId": "opening_card_entity",
+          "label": "Write or revise the opening"
+        }
+      ]
+    },
+    "layout": {
+      "connections": [
+        {
+          "bidirectional": true,
+          "blockedLabel": "The display is not ready.",
+          "fromLocation": "workbench",
+          "id": "studio_path",
+          "label": "To the story display",
+          "toLocation": "display",
+          "when": {
+            "kind": "always"
+          }
+        }
+      ],
+      "entities": [
+        {
+          "asset": "book",
+          "id": "line_board_entity",
+          "kind": "device",
+          "label": "Next-line board",
+          "locationId": "workbench",
+          "objectId": null,
+          "representationObjectId": "line_board"
+        },
+        {
+          "asset": "parcel",
+          "id": "opening_card_entity",
+          "kind": "object",
+          "label": "Opening card",
+          "locationId": null,
+          "objectId": "card_piece",
+          "representationObjectId": "opening"
+        },
+        {
+          "asset": "flag",
+          "id": "display_entity",
+          "kind": "destination",
+          "label": "Story display",
+          "locationId": "display",
+          "objectId": null,
+          "representationObjectId": null
+        }
+      ],
+      "locations": [
+        {
+          "accepts": "any",
+          "capacity": 4,
+          "id": "workbench",
+          "label": "Workbench",
+          "x": 25,
+          "y": 50
+        },
+        {
+          "accepts": "any",
+          "capacity": 4,
+          "id": "display",
+          "label": "Story display",
+          "x": 78,
+          "y": 50
+        }
+      ],
+      "reactions": [
+        {
+          "entityId": "line_board_entity",
+          "id": "line_selected",
+          "status": "active",
+          "text": "Your chosen next line is shown beside the opening.",
+          "when": {
+            "kind": "compare",
+            "left": {
+              "kind": "state",
+              "ref": "chosen_line"
+            },
+            "op": "ne",
+            "right": {
+              "kind": "literal",
+              "value": "none"
+            }
+          }
+        },
+        {
+          "entityId": "opening_card_entity",
+          "id": "ready_to_place",
+          "status": "active",
+          "text": "You can revise or switch the line, or place the card when you are ready.",
+          "when": {
+            "conditions": [
+              {
+                "kind": "compare",
+                "left": {
+                  "kind": "state",
+                  "ref": "chosen_line"
+                },
+                "op": "ne",
+                "right": {
+                  "kind": "literal",
+                  "value": "none"
+                }
+              },
+              {
+                "kind": "compare",
+                "left": {
+                  "kind": "state",
+                  "ref": "opening_text"
+                },
+                "op": "ne",
+                "right": {
+                  "kind": "literal",
+                  "value": ""
+                }
+              },
+              {
+                "kind": "compare",
+                "left": {
+                  "kind": "state",
+                  "ref": "card_location"
+                },
+                "op": "eq",
+                "right": {
+                  "kind": "literal",
+                  "value": "workbench"
+                }
+              }
+            ],
+            "kind": "all"
+          }
+        }
+      ],
+      "surfaces": [
+        {
+          "actionId": null,
+          "cellIds": [],
+          "connectionId": null,
+          "id": "bench_line",
+          "label": "Next line",
+          "layout": "object",
+          "locationId": "workbench",
+          "objectId": "line_board",
+          "visibleWhen": {
+            "kind": "always"
+          }
+        },
+        {
+          "actionId": null,
+          "cellIds": [],
+          "connectionId": null,
+          "id": "bench_opening",
+          "label": "Opening",
+          "layout": "object",
+          "locationId": "workbench",
+          "objectId": "opening",
+          "visibleWhen": {
+            "kind": "compare",
+            "left": {
+              "kind": "state",
+              "ref": "card_location"
+            },
+            "op": "eq",
+            "right": {
+              "kind": "literal",
+              "value": "workbench"
+            }
+          }
+        },
+        {
+          "actionId": null,
+          "cellIds": [],
+          "connectionId": null,
+          "id": "display_line",
+          "label": "Next line",
+          "layout": "object",
+          "locationId": "display",
+          "objectId": "line_board",
+          "visibleWhen": {
+            "kind": "compare",
+            "left": {
+              "kind": "state",
+              "ref": "card_location"
+            },
+            "op": "eq",
+            "right": {
+              "kind": "literal",
+              "value": "display"
+            }
+          }
+        },
+        {
+          "actionId": null,
+          "cellIds": [],
+          "connectionId": null,
+          "id": "display_opening",
+          "label": "Opening",
+          "layout": "object",
+          "locationId": "display",
+          "objectId": "opening",
+          "visibleWhen": {
+            "kind": "compare",
+            "left": {
+              "kind": "state",
+              "ref": "card_location"
+            },
+            "op": "eq",
+            "right": {
+              "kind": "literal",
+              "value": "display"
+            }
+          }
+        }
+      ],
+      "tools": [
+        {
+          "availableWhen": {
+            "kind": "compare",
+            "left": {
+              "kind": "state",
+              "ref": "card_location"
+            },
+            "op": "eq",
+            "right": {
+              "kind": "literal",
+              "value": "workbench"
+            }
+          },
+          "componentId": "line_tool",
+          "entityId": "line_board_entity",
+          "label": "Choose or switch the next line"
+        },
+        {
+          "availableWhen": {
+            "kind": "compare",
+            "left": {
+              "kind": "state",
+              "ref": "card_location"
+            },
+            "op": "eq",
+            "right": {
+              "kind": "literal",
+              "value": "workbench"
+            }
+          },
+          "componentId": "opening_tool",
+          "entityId": "opening_card_entity",
+          "label": "Write or revise the opening"
+        }
+      ]
+    },
+    "renderer": {
+      "accessibility": "Keyboard and touch buttons, responsive scrolling/layout and reduced-motion support",
+      "animation": "Accepted world movement animates left/top; reduced motion disables animation",
+      "consequences": "Server-derived from authoritative post-action state, with zero rule cascades",
+      "desktopGeometry": {
+        "bottomInsetPx": 78,
+        "contextualSidebarMinimumViewportPx": 1050,
+        "locationWidthPx": 92,
+        "sideInsetPx": 52,
+        "stageHeightPx": 620,
+        "topInsetPx": 120
+      },
+      "gestures": "Native keyboard/click selection and location targets; drag for movable entities",
+      "mainSurface": "A spatial world stage with actionable locations/entities/connections",
+      "mobileGeometry": {
+        "actorIllustrationPx": 48,
+        "bottomInsetPx": 77,
+        "locationMinimumHeightPx": 62,
+        "locationWidthPx": 80,
+        "sideInsetPx": 45,
+        "stageHeightPx": 580,
+        "topInsetPx": 118
+      },
+      "physicalSurfaces": {
+        "anchors": "Bounded clear-lane placement prefers declared route midpoint/location anchors, then avoids full artifact and native control bounds. A relocated path runs through the actual target footprint entry/exit ports; location mounts retain an anchor connector.",
+        "artifacts": "Actual saved text, literal selected evidence or bound expression",
+        "conditionalCanvasHeights": {
+          "anyVisibleLocationMount": {
+            "desktop": 620,
+            "mobile": 580,
+            "tablet": 580
+          },
+          "desktopMinimumViewportPx": 1050,
+          "mobileMaximumViewportPx": 520,
+          "noVisibleSurfaces": {
+            "desktop": 500,
+            "mobile": 410,
+            "tablet": 440
+          },
+          "pathCounting": "Distinct connection IDs from visible surfaces and all public construction targets, including hidden-source target-only frames",
+          "perAdditionalDistinctPath": {
+            "desktop": 220,
+            "mobile": 400,
+            "tablet": 400
+          },
+          "perVisibleLocationWhenMultiplePaths": {
+            "desktop": 80,
+            "mobile": 160,
+            "tablet": 160
+          },
+          "visiblePathSurfaces": {
+            "desktop": 550,
+            "mobile": 500,
+            "tablet": 500
+          }
+        },
+        "directActions": "Existing server-checked toggle_tile/toggle_fraction_piece with the same source object and input; readonly when no direct action or cells are too small",
+        "fraction": "Complete same-whole strip, fixed base columns and current denominator rows; never a selected-piece subset",
+        "fractionWholePx": {
+          "height": 112,
+          "width": 164
+        },
+        "grid": "Actual source cell IDs, selection and row/column coordinates; declared subset may form the actual route planks",
+        "limitation": "A rendered source-to-route relationship, not an additional physics or client-side scoring engine",
+        "minimumDirectCellPx": 24,
+        "placement": "Preferred anchors plus bounded five-column lanes in 24px vertical steps; overlap with native entity/location safety bounds and prior full artifacts outweighs distance. Bounds include actual/target geometry and headers/feedback.",
+        "visibility": "Display follows server-derived surface.visibleWhen and a bound visible presentation space for mutable sources; current tool availability controls editing separately. Display can persist readonly after travel; immutable references can be visible independently."
+      },
+      "representation": "Actual bound concept objects appear on visible entities and physical stage surfaces; sources are not copies or correctness badges",
+      "scope": "Render-contract and computed-state evidence, not actual child testing or a screenshot-based enjoyment claim",
+      "tools": "Contextual existing controls attached to stage entities; not the universal main layout"
+    },
+    "version": "sidekick-world-render-v1"
+  },
+  "structuralFingerprint": {
+    "digest": "9f7421a935c1a53d0f6d5c6db2b38a4b318d52c06cc4d722d091706aff873815",
+    "features": [
+      "action:place_piece#1",
+      "action:replace_text#1",
+      "action:revise_text#1",
+      "action:select_evidence#1",
+      "completion:(goal)#1",
+      "component:evidence_board#1",
+      "component:text_editor#1",
+      "component:world_stage#1",
+      "consequence:active:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label)])#1",
+      "consequence:active:(compare|ne|left:state:evidence_board.selection|right:literal:label)#1",
+      "edge:True:(always)#1",
+      "entity:destination:fixed#1",
+      "entity:device:fixed#1",
+      "entity:object:movable#1",
+      "goal:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label)])#1",
+      "location:any:in1:out1#2",
+      "object:evidence_board#1",
+      "object:stage_piece#1",
+      "object:text_artifact#1",
+      "relation:text_artifact:derived_from:evidence_board#1",
+      "rule:place_piece:(all|conditions:[(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label)]):[(set|value:input|target:stage_piece.location)]#1",
+      "rule:replace_text:(compare|eq|left:state:stage_piece.location|right:literal:label):[(set|value:input|target:text_artifact.text)]#1",
+      "rule:revise_text:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(compare|ne|left:input|right:literal:label),(compare|ne|left:input|right:state:text_artifact.text),(compare|ne|left:state:text_artifact.text|right:literal:label)]):[(set|value:input|target:text_artifact.text)]#1",
+      "rule:select_evidence:(compare|eq|left:state:stage_piece.location|right:literal:label):[(set|value:input|target:evidence_board.selection)]#1",
+      "surface:evidence_board:location:any:object:whole:read_only:(always)#1",
+      "surface:evidence_board:location:any:object:whole:read_only:(compare|eq|left:state:stage_piece.location|right:literal:label)#1",
+      "surface:text_artifact:location:any:object:whole:read_only:(compare|eq|left:state:stage_piece.location|right:literal:label)#2",
+      "tool:evidence_board:device:(compare|eq|left:state:stage_piece.location|right:literal:label)#1",
+      "tool:text_editor:object:(compare|eq|left:state:stage_piece.location|right:literal:label)#1"
+    ],
+    "version": "sidekick-game-structure-v1"
+  }
+}

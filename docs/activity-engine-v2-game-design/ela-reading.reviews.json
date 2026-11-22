@@ -1,0 +1,2166 @@
+{
+  "auditOnly": true,
+  "definitionHash": "8f9279367a66fd259eca584e806f8844932787703f855e8ebf54c76313c00ca5",
+  "semanticReview": {
+    "definitionHash": "8f9279367a66fd259eca584e806f8844932787703f855e8ebf54c76313c00ca5",
+    "approved": true,
+    "targetNecessary": true,
+    "meaningfulConsequences": true,
+    "materialsSuitable": true,
+    "goalAchievable": true,
+    "helpRelevant": true,
+    "scoringCorrectAcrossRoutes": true,
+    "shortcutsPrevented": true,
+    "parentAssessmentAppropriate": true,
+    "requiresParentReview": true,
+    "reasonCode": "approved",
+    "summary": "Every finish requires a child-written label and a selected detail. The parent rubric checks the label against the whole passage; saving alone does not establish a correct main idea."
+  },
+  "gameplayReview": {
+    "definitionHash": "8f9279367a66fd259eca584e806f8844932787703f855e8ebf54c76313c00ca5",
+    "renderManifestHash": "13949fbcbd1d5cae02e595657ce75b01aba781bc1341072bea0cc70a369b0587",
+    "approved": true,
+    "meaningfulChoices": true,
+    "understandableConsequences": true,
+    "recoveryPossible": true,
+    "targetNecessary": true,
+    "briefGoalClear": true,
+    "finishAchievable": true,
+    "finishSatisfying": true,
+    "mainStagePlayable": true,
+    "structuralVariety": true,
+    "renderedAffordancesSuitable": true,
+    "reasonCode": "approved",
+    "summary": "The child creates and revises a visible main-idea label alongside a selectable source detail, then saves the report. Both remain visible during publication, and revision is possible before finishing. The label’s quality remains for parent review."
+  },
+  "renderManifest": {
+    "actualOperations": {
+      "inspect_location": {
+        "automaticAssessment": false,
+        "childAction": "Investigate a selected location and retain the discovery.",
+        "component": "world_stage",
+        "effectKinds": [
+          "add_item"
+        ],
+        "evidence": "Investigation history only; reading assessment still needs the actual evidence selection or artifact.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "location": "choice"
+        },
+        "legacySource": "components/activity-program-stage.tsx",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "stage_map",
+        "previewOnly": true,
+        "visibleChange": "Authoritative discovery state can reveal actual passages, tools or contextual materials."
+      },
+      "move_actor": {
+        "automaticAssessment": false,
+        "childAction": "Move the selected actor through an adjacent usable connection.",
+        "component": "world_stage",
+        "effectKinds": [
+          "set"
+        ],
+        "evidence": "Navigation and choice history only; an arrival is never evidence of conceptual understanding.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "destination": "choice"
+        },
+        "legacySource": "components/activity-program-stage.tsx",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "stage_piece",
+        "previewOnly": true,
+        "visibleChange": "The actor travels between actual locations; conceptual state can make a connection usable or blocked."
+      },
+      "replace_text": {
+        "automaticAssessment": false,
+        "childAction": "Create an original draft.",
+        "component": "text_editor",
+        "effectKinds": [
+          "set"
+        ],
+        "evidence": "Text artifact and process, assessed against a parent rubric.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "text": "text"
+        },
+        "legacySource": "components/activity-families.tsx:TextEditor",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "text_artifact",
+        "previewOnly": true,
+        "visibleChange": "The actual written artifact changes."
+      },
+      "revise_text": {
+        "automaticAssessment": false,
+        "childAction": "Change the existing draft.",
+        "component": "text_editor",
+        "effectKinds": [
+          "set"
+        ],
+        "evidence": "Actual revision and parent-assessed writing quality.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "text": "text"
+        },
+        "legacySource": "components/activity-families.tsx:TextEditor",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "text_artifact",
+        "previewOnly": true,
+        "visibleChange": "Previous and new drafts differ; future events retain both."
+      },
+      "select_evidence": {
+        "automaticAssessment": true,
+        "childAction": "Place a passage sentence on the board.",
+        "component": "evidence_board",
+        "effectKinds": [
+          "set"
+        ],
+        "evidence": "Selection key; factual support still needs semantic review.",
+        "implementationStatus": "development_preview_adapter",
+        "inputKinds": {
+          "sentence": "choice"
+        },
+        "legacySource": "components/activity-toolkit.tsx:EvidenceBoard",
+        "liveV2AdapterImplemented": true,
+        "objectKind": "evidence_board",
+        "previewOnly": true,
+        "visibleChange": "The selected literal sentence becomes the displayed clue."
+      }
+    },
+    "actualStructure": {
+      "digest": "da95a44c09dd6ed919f7e0aecdee45939e9dd970c50c6c0f14090d0f7ef4deab",
+      "features": [
+        "action:inspect_location#1",
+        "action:move_actor#1",
+        "action:replace_text#1",
+        "action:revise_text#1",
+        "action:select_evidence#1",
+        "completion:(goal)#1",
+        "component:evidence_board#1",
+        "component:text_editor#1",
+        "component:world_stage#2",
+        "consequence:active:(all|conditions:[(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label)])#1",
+        "consequence:discovered:(contains|collection:state:stage_map.inspected|item:literal:label)#1",
+        "edge:True:(all|conditions:[(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label)])#1",
+        "entity:actor:movable#1",
+        "entity:destination:fixed#1",
+        "entity:device:fixed#2",
+        "goal:(all|conditions:[(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label),(contains|collection:state:stage_map.inspected|item:literal:label)])#1",
+        "location:any:in1:out1#2",
+        "object:evidence_board#1",
+        "object:stage_map#1",
+        "object:stage_piece#1",
+        "object:text_artifact#1",
+        "rule:inspect_location:(all|conditions:[(any|conditions:[(all|conditions:[(compare|eq|left:input|right:literal:label),(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label)]),(compare|eq|left:input|right:literal:label)]),(compare|eq|left:input|right:state:stage_piece.location)]):[(add_item|item:input|target:stage_map.inspected)]#1",
+        "rule:move_actor:(always):[(set|value:input|target:stage_piece.location)]#1",
+        "rule:replace_text:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(contains|collection:state:stage_map.inspected|item:literal:label)]):[(set|value:input|target:text_artifact.text)]#1",
+        "rule:revise_text:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(compare|ne|left:input|right:state:text_artifact.text),(compare|ne|left:state:text_artifact.text|right:literal:label),(contains|collection:state:stage_map.inspected|item:literal:label)]):[(set|value:input|target:text_artifact.text)]#1",
+        "rule:select_evidence:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(contains|collection:state:stage_map.inspected|item:literal:label)]):[(set|value:input|target:evidence_board.selection)]#1",
+        "surface:evidence_board:location:any:object:whole:read_only:(contains|collection:state:stage_map.inspected|item:literal:label)#1",
+        "surface:text_artifact:location:any:object:whole:read_only:(contains|collection:state:stage_map.inspected|item:literal:label)#1",
+        "tool:evidence_board:device:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(contains|collection:state:stage_map.inspected|item:literal:label)])#1",
+        "tool:text_editor:device:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(contains|collection:state:stage_map.inspected|item:literal:label)])#1"
+      ],
+      "version": "sidekick-game-structure-v1"
+    },
+    "authoritativeCheckpoints": [
+      {
+        "afterOperation": "inspect_location",
+        "geometry": {
+          "desktopStageHeightPx": 620,
+          "mobileStageHeightPx": 580,
+          "tabletStageHeightPx": 580
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "selection": "none"
+            },
+            "kind": "evidence_board",
+            "materials": [
+              {
+                "id": "seed-passage",
+                "items": [
+                  {
+                    "id": "breeze",
+                    "text": "A breeze blows dandelion seeds across a field."
+                  },
+                  {
+                    "id": "burrs",
+                    "text": "Burrs stick to a fox's coat and travel with it."
+                  }
+                ],
+                "kind": "passage",
+                "quantity": null,
+                "text": "Seeds can reach new places in different ways. A breeze blows dandelion seeds across a field. Burrs stick to a fox's coat and travel with it."
+              },
+              {
+                "id": "detail-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Read the whole report. Choose one detail to display beneath your main-idea label."
+              }
+            ],
+            "objectId": "detail-board"
+          },
+          {
+            "boundValues": {
+              "text": ""
+            },
+            "kind": "text_artifact",
+            "materials": [
+              {
+                "id": "label-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Write a label in your own words telling what the whole report is mostly about. You can change your label or detail before visiting the publisher."
+              }
+            ],
+            "objectId": "report-label"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "inspect",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "seed-station",
+                  "reasonCode": "action_has_no_visible_change"
+                },
+                {
+                  "allowed": false,
+                  "id": "publisher",
+                  "reasonCode": "action_guard_unsatisfied"
+                }
+              ]
+            },
+            {
+              "actionId": "travel",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "seed-station",
+                  "reasonCode": "stage_destination_not_adjacent"
+                },
+                {
+                  "allowed": false,
+                  "id": "publisher",
+                  "reasonCode": "stage_connection_closed"
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "Choose a detail and write a label first.",
+              "fromLocation": "seed-station",
+              "id": "report-path",
+              "label": "Take the report to the publisher",
+              "open": false,
+              "toLocation": "publisher"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "travel"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "reporter",
+              "kind": "actor",
+              "label": "Reporter",
+              "locationId": "seed-station",
+              "objectId": "traveler",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "book",
+              "currentStatus": "discovered",
+              "id": "detail-display",
+              "kind": "device",
+              "label": "Seed report and detail",
+              "locationId": "seed-station",
+              "objectId": null,
+              "reactionText": "The complete seed report is ready to read.",
+              "representationObjectId": "detail-board",
+              "toolComponentIds": [
+                "detail-tool"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "clue",
+              "currentStatus": "idle",
+              "id": "label-display",
+              "kind": "device",
+              "label": "Main-idea label",
+              "locationId": "seed-station",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": "report-label",
+              "toolComponentIds": [
+                "label-tool"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "home",
+              "currentStatus": "idle",
+              "id": "publish-desk",
+              "kind": "destination",
+              "label": "Publish the report",
+              "locationId": "publisher",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "inspect"
+              ],
+              "capacity": 4,
+              "id": "seed-station",
+              "inspected": true,
+              "label": "Seed station",
+              "x": 25,
+              "y": 50
+            },
+            {
+              "accepts": "any",
+              "actionIds": [
+                "inspect"
+              ],
+              "capacity": 4,
+              "id": "publisher",
+              "inspected": false,
+              "label": "Publisher",
+              "x": 80,
+              "y": 50
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "detail-display",
+              "id": "station-discovered",
+              "status": "discovered",
+              "text": "The complete seed report is ready to read."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "detail-surface",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Supporting detail",
+              "layout": "object",
+              "locationId": "seed-station",
+              "objectId": "detail-board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "label-surface",
+              "inputId": null,
+              "kind": "text_artifact",
+              "label": "Your main-idea label",
+              "layout": "object",
+              "locationId": "seed-station",
+              "objectId": "report-label"
+            }
+          ],
+          "tools": [
+            {
+              "available": true,
+              "componentId": "detail-tool",
+              "entityId": "detail-display",
+              "label": "Read and choose a detail"
+            },
+            {
+              "available": true,
+              "componentId": "label-tool",
+              "entityId": "label-display",
+              "label": "Write or revise the label"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "select_evidence",
+        "geometry": {
+          "desktopStageHeightPx": 620,
+          "mobileStageHeightPx": 580,
+          "tabletStageHeightPx": 580
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "selection": "breeze"
+            },
+            "kind": "evidence_board",
+            "materials": [
+              {
+                "id": "seed-passage",
+                "items": [
+                  {
+                    "id": "breeze",
+                    "text": "A breeze blows dandelion seeds across a field."
+                  },
+                  {
+                    "id": "burrs",
+                    "text": "Burrs stick to a fox's coat and travel with it."
+                  }
+                ],
+                "kind": "passage",
+                "quantity": null,
+                "text": "Seeds can reach new places in different ways. A breeze blows dandelion seeds across a field. Burrs stick to a fox's coat and travel with it."
+              },
+              {
+                "id": "detail-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Read the whole report. Choose one detail to display beneath your main-idea label."
+              }
+            ],
+            "objectId": "detail-board"
+          },
+          {
+            "boundValues": {
+              "text": ""
+            },
+            "kind": "text_artifact",
+            "materials": [
+              {
+                "id": "label-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Write a label in your own words telling what the whole report is mostly about. You can change your label or detail before visiting the publisher."
+              }
+            ],
+            "objectId": "report-label"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "inspect",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "seed-station",
+                  "reasonCode": "action_has_no_visible_change"
+                },
+                {
+                  "allowed": false,
+                  "id": "publisher",
+                  "reasonCode": "action_guard_unsatisfied"
+                }
+              ]
+            },
+            {
+              "actionId": "travel",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "seed-station",
+                  "reasonCode": "stage_destination_not_adjacent"
+                },
+                {
+                  "allowed": false,
+                  "id": "publisher",
+                  "reasonCode": "stage_connection_closed"
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "Choose a detail and write a label first.",
+              "fromLocation": "seed-station",
+              "id": "report-path",
+              "label": "Take the report to the publisher",
+              "open": false,
+              "toLocation": "publisher"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "travel"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "reporter",
+              "kind": "actor",
+              "label": "Reporter",
+              "locationId": "seed-station",
+              "objectId": "traveler",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "book",
+              "currentStatus": "discovered",
+              "id": "detail-display",
+              "kind": "device",
+              "label": "Seed report and detail",
+              "locationId": "seed-station",
+              "objectId": null,
+              "reactionText": "The complete seed report is ready to read.",
+              "representationObjectId": "detail-board",
+              "toolComponentIds": [
+                "detail-tool"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "clue",
+              "currentStatus": "idle",
+              "id": "label-display",
+              "kind": "device",
+              "label": "Main-idea label",
+              "locationId": "seed-station",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": "report-label",
+              "toolComponentIds": [
+                "label-tool"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "home",
+              "currentStatus": "idle",
+              "id": "publish-desk",
+              "kind": "destination",
+              "label": "Publish the report",
+              "locationId": "publisher",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "inspect"
+              ],
+              "capacity": 4,
+              "id": "seed-station",
+              "inspected": true,
+              "label": "Seed station",
+              "x": 25,
+              "y": 50
+            },
+            {
+              "accepts": "any",
+              "actionIds": [
+                "inspect"
+              ],
+              "capacity": 4,
+              "id": "publisher",
+              "inspected": false,
+              "label": "Publisher",
+              "x": 80,
+              "y": 50
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "detail-display",
+              "id": "station-discovered",
+              "status": "discovered",
+              "text": "The complete seed report is ready to read."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "detail-surface",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Supporting detail",
+              "layout": "object",
+              "locationId": "seed-station",
+              "objectId": "detail-board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "label-surface",
+              "inputId": null,
+              "kind": "text_artifact",
+              "label": "Your main-idea label",
+              "layout": "object",
+              "locationId": "seed-station",
+              "objectId": "report-label"
+            }
+          ],
+          "tools": [
+            {
+              "available": true,
+              "componentId": "detail-tool",
+              "entityId": "detail-display",
+              "label": "Read and choose a detail"
+            },
+            {
+              "available": true,
+              "componentId": "label-tool",
+              "entityId": "label-display",
+              "label": "Write or revise the label"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "replace_text",
+        "geometry": {
+          "desktopStageHeightPx": 620,
+          "mobileStageHeightPx": 580,
+          "tabletStageHeightPx": 580
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "selection": "breeze"
+            },
+            "kind": "evidence_board",
+            "materials": [
+              {
+                "id": "seed-passage",
+                "items": [
+                  {
+                    "id": "breeze",
+                    "text": "A breeze blows dandelion seeds across a field."
+                  },
+                  {
+                    "id": "burrs",
+                    "text": "Burrs stick to a fox's coat and travel with it."
+                  }
+                ],
+                "kind": "passage",
+                "quantity": null,
+                "text": "Seeds can reach new places in different ways. A breeze blows dandelion seeds across a field. Burrs stick to a fox's coat and travel with it."
+              },
+              {
+                "id": "detail-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Read the whole report. Choose one detail to display beneath your main-idea label."
+              }
+            ],
+            "objectId": "detail-board"
+          },
+          {
+            "boundValues": {
+              "text": "Wind moves seeds."
+            },
+            "kind": "text_artifact",
+            "materials": [
+              {
+                "id": "label-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Write a label in your own words telling what the whole report is mostly about. You can change your label or detail before visiting the publisher."
+              }
+            ],
+            "objectId": "report-label"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "inspect",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "seed-station",
+                  "reasonCode": "action_has_no_visible_change"
+                },
+                {
+                  "allowed": false,
+                  "id": "publisher",
+                  "reasonCode": "action_guard_unsatisfied"
+                }
+              ]
+            },
+            {
+              "actionId": "travel",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "seed-station",
+                  "reasonCode": "stage_destination_not_adjacent"
+                },
+                {
+                  "allowed": true,
+                  "id": "publisher",
+                  "reasonCode": null
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "Choose a detail and write a label first.",
+              "fromLocation": "seed-station",
+              "id": "report-path",
+              "label": "Take the report to the publisher",
+              "open": true,
+              "toLocation": "publisher"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "travel"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "reporter",
+              "kind": "actor",
+              "label": "Reporter",
+              "locationId": "seed-station",
+              "objectId": "traveler",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "book",
+              "currentStatus": "discovered",
+              "id": "detail-display",
+              "kind": "device",
+              "label": "Seed report and detail",
+              "locationId": "seed-station",
+              "objectId": null,
+              "reactionText": "The complete seed report is ready to read.",
+              "representationObjectId": "detail-board",
+              "toolComponentIds": [
+                "detail-tool"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "clue",
+              "currentStatus": "idle",
+              "id": "label-display",
+              "kind": "device",
+              "label": "Main-idea label",
+              "locationId": "seed-station",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": "report-label",
+              "toolComponentIds": [
+                "label-tool"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "home",
+              "currentStatus": "active",
+              "id": "publish-desk",
+              "kind": "destination",
+              "label": "Publish the report",
+              "locationId": "publisher",
+              "objectId": null,
+              "reactionText": "Your report is ready to bring here. Inspect the publisher to save it, or return to revise.",
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "inspect"
+              ],
+              "capacity": 4,
+              "id": "seed-station",
+              "inspected": true,
+              "label": "Seed station",
+              "x": 25,
+              "y": 50
+            },
+            {
+              "accepts": "any",
+              "actionIds": [
+                "inspect"
+              ],
+              "capacity": 4,
+              "id": "publisher",
+              "inspected": false,
+              "label": "Publisher",
+              "x": 80,
+              "y": 50
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "detail-display",
+              "id": "station-discovered",
+              "status": "discovered",
+              "text": "The complete seed report is ready to read."
+            },
+            {
+              "entityId": "publish-desk",
+              "id": "ready-to-publish",
+              "status": "active",
+              "text": "Your report is ready to bring here. Inspect the publisher to save it, or return to revise."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "detail-surface",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Supporting detail",
+              "layout": "object",
+              "locationId": "seed-station",
+              "objectId": "detail-board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "label-surface",
+              "inputId": null,
+              "kind": "text_artifact",
+              "label": "Your main-idea label",
+              "layout": "object",
+              "locationId": "seed-station",
+              "objectId": "report-label"
+            }
+          ],
+          "tools": [
+            {
+              "available": true,
+              "componentId": "detail-tool",
+              "entityId": "detail-display",
+              "label": "Read and choose a detail"
+            },
+            {
+              "available": true,
+              "componentId": "label-tool",
+              "entityId": "label-display",
+              "label": "Write or revise the label"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "revise_text",
+        "geometry": {
+          "desktopStageHeightPx": 620,
+          "mobileStageHeightPx": 580,
+          "tabletStageHeightPx": 580
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "selection": "breeze"
+            },
+            "kind": "evidence_board",
+            "materials": [
+              {
+                "id": "seed-passage",
+                "items": [
+                  {
+                    "id": "breeze",
+                    "text": "A breeze blows dandelion seeds across a field."
+                  },
+                  {
+                    "id": "burrs",
+                    "text": "Burrs stick to a fox's coat and travel with it."
+                  }
+                ],
+                "kind": "passage",
+                "quantity": null,
+                "text": "Seeds can reach new places in different ways. A breeze blows dandelion seeds across a field. Burrs stick to a fox's coat and travel with it."
+              },
+              {
+                "id": "detail-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Read the whole report. Choose one detail to display beneath your main-idea label."
+              }
+            ],
+            "objectId": "detail-board"
+          },
+          {
+            "boundValues": {
+              "text": "Seeds can travel to new places in more than one way."
+            },
+            "kind": "text_artifact",
+            "materials": [
+              {
+                "id": "label-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Write a label in your own words telling what the whole report is mostly about. You can change your label or detail before visiting the publisher."
+              }
+            ],
+            "objectId": "report-label"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "inspect",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "seed-station",
+                  "reasonCode": "action_has_no_visible_change"
+                },
+                {
+                  "allowed": false,
+                  "id": "publisher",
+                  "reasonCode": "action_guard_unsatisfied"
+                }
+              ]
+            },
+            {
+              "actionId": "travel",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "seed-station",
+                  "reasonCode": "stage_destination_not_adjacent"
+                },
+                {
+                  "allowed": true,
+                  "id": "publisher",
+                  "reasonCode": null
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "Choose a detail and write a label first.",
+              "fromLocation": "seed-station",
+              "id": "report-path",
+              "label": "Take the report to the publisher",
+              "open": true,
+              "toLocation": "publisher"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "travel"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "reporter",
+              "kind": "actor",
+              "label": "Reporter",
+              "locationId": "seed-station",
+              "objectId": "traveler",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "book",
+              "currentStatus": "discovered",
+              "id": "detail-display",
+              "kind": "device",
+              "label": "Seed report and detail",
+              "locationId": "seed-station",
+              "objectId": null,
+              "reactionText": "The complete seed report is ready to read.",
+              "representationObjectId": "detail-board",
+              "toolComponentIds": [
+                "detail-tool"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "clue",
+              "currentStatus": "idle",
+              "id": "label-display",
+              "kind": "device",
+              "label": "Main-idea label",
+              "locationId": "seed-station",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": "report-label",
+              "toolComponentIds": [
+                "label-tool"
+              ]
+            },
+            {
+              "actionIds": [],
+              "asset": "home",
+              "currentStatus": "active",
+              "id": "publish-desk",
+              "kind": "destination",
+              "label": "Publish the report",
+              "locationId": "publisher",
+              "objectId": null,
+              "reactionText": "Your report is ready to bring here. Inspect the publisher to save it, or return to revise.",
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "inspect"
+              ],
+              "capacity": 4,
+              "id": "seed-station",
+              "inspected": true,
+              "label": "Seed station",
+              "x": 25,
+              "y": 50
+            },
+            {
+              "accepts": "any",
+              "actionIds": [
+                "inspect"
+              ],
+              "capacity": 4,
+              "id": "publisher",
+              "inspected": false,
+              "label": "Publisher",
+              "x": 80,
+              "y": 50
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "detail-display",
+              "id": "station-discovered",
+              "status": "discovered",
+              "text": "The complete seed report is ready to read."
+            },
+            {
+              "entityId": "publish-desk",
+              "id": "ready-to-publish",
+              "status": "active",
+              "text": "Your report is ready to bring here. Inspect the publisher to save it, or return to revise."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "detail-surface",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Supporting detail",
+              "layout": "object",
+              "locationId": "seed-station",
+              "objectId": "detail-board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "label-surface",
+              "inputId": null,
+              "kind": "text_artifact",
+              "label": "Your main-idea label",
+              "layout": "object",
+              "locationId": "seed-station",
+              "objectId": "report-label"
+            }
+          ],
+          "tools": [
+            {
+              "available": true,
+              "componentId": "detail-tool",
+              "entityId": "detail-display",
+              "label": "Read and choose a detail"
+            },
+            {
+              "available": true,
+              "componentId": "label-tool",
+              "entityId": "label-display",
+              "label": "Write or revise the label"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "move_actor",
+        "geometry": {
+          "desktopStageHeightPx": 620,
+          "mobileStageHeightPx": 580,
+          "tabletStageHeightPx": 580
+        },
+        "missionComplete": false,
+        "representations": [
+          {
+            "boundValues": {
+              "selection": "breeze"
+            },
+            "kind": "evidence_board",
+            "materials": [
+              {
+                "id": "seed-passage",
+                "items": [
+                  {
+                    "id": "breeze",
+                    "text": "A breeze blows dandelion seeds across a field."
+                  },
+                  {
+                    "id": "burrs",
+                    "text": "Burrs stick to a fox's coat and travel with it."
+                  }
+                ],
+                "kind": "passage",
+                "quantity": null,
+                "text": "Seeds can reach new places in different ways. A breeze blows dandelion seeds across a field. Burrs stick to a fox's coat and travel with it."
+              },
+              {
+                "id": "detail-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Read the whole report. Choose one detail to display beneath your main-idea label."
+              }
+            ],
+            "objectId": "detail-board"
+          },
+          {
+            "boundValues": {
+              "text": "Seeds can travel to new places in more than one way."
+            },
+            "kind": "text_artifact",
+            "materials": [
+              {
+                "id": "label-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Write a label in your own words telling what the whole report is mostly about. You can change your label or detail before visiting the publisher."
+              }
+            ],
+            "objectId": "report-label"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "inspect",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "seed-station",
+                  "reasonCode": "action_guard_unsatisfied"
+                },
+                {
+                  "allowed": true,
+                  "id": "publisher",
+                  "reasonCode": null
+                }
+              ]
+            },
+            {
+              "actionId": "travel",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": true,
+                  "id": "seed-station",
+                  "reasonCode": null
+                },
+                {
+                  "allowed": false,
+                  "id": "publisher",
+                  "reasonCode": "stage_destination_not_adjacent"
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "Choose a detail and write a label first.",
+              "fromLocation": "seed-station",
+              "id": "report-path",
+              "label": "Take the report to the publisher",
+              "open": true,
+              "toLocation": "publisher"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "travel"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "reporter",
+              "kind": "actor",
+              "label": "Reporter",
+              "locationId": "publisher",
+              "objectId": "traveler",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "book",
+              "currentStatus": "discovered",
+              "id": "detail-display",
+              "kind": "device",
+              "label": "Seed report and detail",
+              "locationId": "seed-station",
+              "objectId": null,
+              "reactionText": "The complete seed report is ready to read.",
+              "representationObjectId": "detail-board",
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "clue",
+              "currentStatus": "idle",
+              "id": "label-display",
+              "kind": "device",
+              "label": "Main-idea label",
+              "locationId": "seed-station",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": "report-label",
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "home",
+              "currentStatus": "active",
+              "id": "publish-desk",
+              "kind": "destination",
+              "label": "Publish the report",
+              "locationId": "publisher",
+              "objectId": null,
+              "reactionText": "Your report is ready to bring here. Inspect the publisher to save it, or return to revise.",
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "inspect"
+              ],
+              "capacity": 4,
+              "id": "seed-station",
+              "inspected": true,
+              "label": "Seed station",
+              "x": 25,
+              "y": 50
+            },
+            {
+              "accepts": "any",
+              "actionIds": [
+                "inspect"
+              ],
+              "capacity": 4,
+              "id": "publisher",
+              "inspected": false,
+              "label": "Publisher",
+              "x": 80,
+              "y": 50
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "detail-display",
+              "id": "station-discovered",
+              "status": "discovered",
+              "text": "The complete seed report is ready to read."
+            },
+            {
+              "entityId": "publish-desk",
+              "id": "ready-to-publish",
+              "status": "active",
+              "text": "Your report is ready to bring here. Inspect the publisher to save it, or return to revise."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "detail-surface",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Supporting detail",
+              "layout": "object",
+              "locationId": "seed-station",
+              "objectId": "detail-board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "label-surface",
+              "inputId": null,
+              "kind": "text_artifact",
+              "label": "Your main-idea label",
+              "layout": "object",
+              "locationId": "seed-station",
+              "objectId": "report-label"
+            }
+          ],
+          "tools": [
+            {
+              "available": false,
+              "componentId": "detail-tool",
+              "entityId": "detail-display",
+              "label": "Read and choose a detail"
+            },
+            {
+              "available": false,
+              "componentId": "label-tool",
+              "entityId": "label-display",
+              "label": "Write or revise the label"
+            }
+          ]
+        }
+      },
+      {
+        "afterOperation": "inspect_location",
+        "geometry": {
+          "desktopStageHeightPx": 620,
+          "mobileStageHeightPx": 580,
+          "tabletStageHeightPx": 580
+        },
+        "missionComplete": true,
+        "representations": [
+          {
+            "boundValues": {
+              "selection": "breeze"
+            },
+            "kind": "evidence_board",
+            "materials": [
+              {
+                "id": "seed-passage",
+                "items": [
+                  {
+                    "id": "breeze",
+                    "text": "A breeze blows dandelion seeds across a field."
+                  },
+                  {
+                    "id": "burrs",
+                    "text": "Burrs stick to a fox's coat and travel with it."
+                  }
+                ],
+                "kind": "passage",
+                "quantity": null,
+                "text": "Seeds can reach new places in different ways. A breeze blows dandelion seeds across a field. Burrs stick to a fox's coat and travel with it."
+              },
+              {
+                "id": "detail-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Read the whole report. Choose one detail to display beneath your main-idea label."
+              }
+            ],
+            "objectId": "detail-board"
+          },
+          {
+            "boundValues": {
+              "text": "Seeds can travel to new places in more than one way."
+            },
+            "kind": "text_artifact",
+            "materials": [
+              {
+                "id": "label-prompt",
+                "items": [],
+                "kind": "prompt",
+                "quantity": null,
+                "text": "Write a label in your own words telling what the whole report is mostly about. You can change your label or detail before visiting the publisher."
+              }
+            ],
+            "objectId": "report-label"
+          }
+        ],
+        "stage": {
+          "actionTargets": [
+            {
+              "actionId": "inspect",
+              "inputId": "location",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "seed-station",
+                  "reasonCode": "mission_already_complete"
+                },
+                {
+                  "allowed": false,
+                  "id": "publisher",
+                  "reasonCode": "mission_already_complete"
+                }
+              ]
+            },
+            {
+              "actionId": "travel",
+              "inputId": "destination",
+              "targets": [
+                {
+                  "allowed": false,
+                  "id": "seed-station",
+                  "reasonCode": "mission_already_complete"
+                },
+                {
+                  "allowed": false,
+                  "id": "publisher",
+                  "reasonCode": "mission_already_complete"
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "bidirectional": true,
+              "blockedLabel": "Choose a detail and write a label first.",
+              "fromLocation": "seed-station",
+              "id": "report-path",
+              "label": "Take the report to the publisher",
+              "open": true,
+              "toLocation": "publisher"
+            }
+          ],
+          "entities": [
+            {
+              "actionIds": [
+                "travel"
+              ],
+              "asset": "person",
+              "currentStatus": "idle",
+              "id": "reporter",
+              "kind": "actor",
+              "label": "Reporter",
+              "locationId": "publisher",
+              "objectId": "traveler",
+              "reactionText": null,
+              "representationObjectId": null,
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "book",
+              "currentStatus": "discovered",
+              "id": "detail-display",
+              "kind": "device",
+              "label": "Seed report and detail",
+              "locationId": "seed-station",
+              "objectId": null,
+              "reactionText": "The complete seed report is ready to read.",
+              "representationObjectId": "detail-board",
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "clue",
+              "currentStatus": "idle",
+              "id": "label-display",
+              "kind": "device",
+              "label": "Main-idea label",
+              "locationId": "seed-station",
+              "objectId": null,
+              "reactionText": null,
+              "representationObjectId": "report-label",
+              "toolComponentIds": []
+            },
+            {
+              "actionIds": [],
+              "asset": "home",
+              "currentStatus": "active",
+              "id": "publish-desk",
+              "kind": "destination",
+              "label": "Publish the report",
+              "locationId": "publisher",
+              "objectId": null,
+              "reactionText": "Your report is ready to bring here. Inspect the publisher to save it, or return to revise.",
+              "representationObjectId": null,
+              "toolComponentIds": []
+            }
+          ],
+          "locations": [
+            {
+              "accepts": "any",
+              "actionIds": [
+                "inspect"
+              ],
+              "capacity": 4,
+              "id": "seed-station",
+              "inspected": true,
+              "label": "Seed station",
+              "x": 25,
+              "y": 50
+            },
+            {
+              "accepts": "any",
+              "actionIds": [
+                "inspect"
+              ],
+              "capacity": 4,
+              "id": "publisher",
+              "inspected": true,
+              "label": "Publisher",
+              "x": 80,
+              "y": 50
+            }
+          ],
+          "reactions": [
+            {
+              "entityId": "detail-display",
+              "id": "station-discovered",
+              "status": "discovered",
+              "text": "The complete seed report is ready to read."
+            },
+            {
+              "entityId": "publish-desk",
+              "id": "ready-to-publish",
+              "status": "active",
+              "text": "Your report is ready to bring here. Inspect the publisher to save it, or return to revise."
+            }
+          ],
+          "surfaces": [
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "detail-surface",
+              "inputId": null,
+              "kind": "evidence_board",
+              "label": "Supporting detail",
+              "layout": "object",
+              "locationId": "seed-station",
+              "objectId": "detail-board"
+            },
+            {
+              "actionId": null,
+              "cellIds": [],
+              "cells": [],
+              "connectionId": null,
+              "id": "label-surface",
+              "inputId": null,
+              "kind": "text_artifact",
+              "label": "Your main-idea label",
+              "layout": "object",
+              "locationId": "seed-station",
+              "objectId": "report-label"
+            }
+          ],
+          "tools": [
+            {
+              "available": false,
+              "componentId": "detail-tool",
+              "entityId": "detail-display",
+              "label": "Read and choose a detail"
+            },
+            {
+              "available": false,
+              "componentId": "label-tool",
+              "entityId": "label-display",
+              "label": "Write or revise the label"
+            }
+          ]
+        }
+      }
+    ],
+    "counterfactual": {
+      "completedWithoutConcept": false,
+      "exhaustedDeclaredWorldOnlySearch": true,
+      "limit": "64 distinct states and 256 attempted world transitions; not general solvability proof",
+      "statesChecked": 2,
+      "transitionsChecked": 8
+    },
+    "initialGeometry": {
+      "desktopStageHeightPx": 500,
+      "mobileStageHeightPx": 410,
+      "tabletStageHeightPx": 440
+    },
+    "initialRepresentations": [],
+    "initialStage": {
+      "actionTargets": [
+        {
+          "actionId": "inspect",
+          "inputId": "location",
+          "targets": [
+            {
+              "allowed": true,
+              "id": "seed-station",
+              "reasonCode": null
+            },
+            {
+              "allowed": false,
+              "id": "publisher",
+              "reasonCode": "action_guard_unsatisfied"
+            }
+          ]
+        },
+        {
+          "actionId": "travel",
+          "inputId": "destination",
+          "targets": [
+            {
+              "allowed": false,
+              "id": "seed-station",
+              "reasonCode": "stage_destination_not_adjacent"
+            },
+            {
+              "allowed": false,
+              "id": "publisher",
+              "reasonCode": "stage_connection_closed"
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "bidirectional": true,
+          "blockedLabel": "Choose a detail and write a label first.",
+          "fromLocation": "seed-station",
+          "id": "report-path",
+          "label": "Take the report to the publisher",
+          "open": false,
+          "toLocation": "publisher"
+        }
+      ],
+      "entities": [
+        {
+          "actionIds": [
+            "travel"
+          ],
+          "asset": "person",
+          "currentStatus": "idle",
+          "id": "reporter",
+          "kind": "actor",
+          "label": "Reporter",
+          "locationId": "seed-station",
+          "objectId": "traveler",
+          "reactionText": null,
+          "representationObjectId": null,
+          "toolComponentIds": []
+        },
+        {
+          "actionIds": [],
+          "asset": "book",
+          "currentStatus": "idle",
+          "id": "detail-display",
+          "kind": "device",
+          "label": "Seed report and detail",
+          "locationId": "seed-station",
+          "objectId": null,
+          "reactionText": null,
+          "representationObjectId": null,
+          "toolComponentIds": []
+        },
+        {
+          "actionIds": [],
+          "asset": "clue",
+          "currentStatus": "idle",
+          "id": "label-display",
+          "kind": "device",
+          "label": "Main-idea label",
+          "locationId": "seed-station",
+          "objectId": null,
+          "reactionText": null,
+          "representationObjectId": null,
+          "toolComponentIds": []
+        },
+        {
+          "actionIds": [],
+          "asset": "home",
+          "currentStatus": "idle",
+          "id": "publish-desk",
+          "kind": "destination",
+          "label": "Publish the report",
+          "locationId": "publisher",
+          "objectId": null,
+          "reactionText": null,
+          "representationObjectId": null,
+          "toolComponentIds": []
+        }
+      ],
+      "locations": [
+        {
+          "accepts": "any",
+          "actionIds": [
+            "inspect"
+          ],
+          "capacity": 4,
+          "id": "seed-station",
+          "inspected": false,
+          "label": "Seed station",
+          "x": 25,
+          "y": 50
+        },
+        {
+          "accepts": "any",
+          "actionIds": [
+            "inspect"
+          ],
+          "capacity": 4,
+          "id": "publisher",
+          "inspected": false,
+          "label": "Publisher",
+          "x": 80,
+          "y": 50
+        }
+      ],
+      "reactions": [],
+      "surfaces": [],
+      "tools": [
+        {
+          "available": false,
+          "componentId": "detail-tool",
+          "entityId": "detail-display",
+          "label": "Read and choose a detail"
+        },
+        {
+          "available": false,
+          "componentId": "label-tool",
+          "entityId": "label-display",
+          "label": "Write or revise the label"
+        }
+      ]
+    },
+    "layout": {
+      "connections": [
+        {
+          "bidirectional": true,
+          "blockedLabel": "Choose a detail and write a label first.",
+          "fromLocation": "seed-station",
+          "id": "report-path",
+          "label": "Take the report to the publisher",
+          "toLocation": "publisher",
+          "when": {
+            "conditions": [
+              {
+                "kind": "compare",
+                "left": {
+                  "kind": "state",
+                  "ref": "chosen-detail"
+                },
+                "op": "ne",
+                "right": {
+                  "kind": "literal",
+                  "value": "none"
+                }
+              },
+              {
+                "kind": "compare",
+                "left": {
+                  "kind": "state",
+                  "ref": "report-text"
+                },
+                "op": "ne",
+                "right": {
+                  "kind": "literal",
+                  "value": ""
+                }
+              }
+            ],
+            "kind": "all"
+          }
+        }
+      ],
+      "entities": [
+        {
+          "asset": "person",
+          "id": "reporter",
+          "kind": "actor",
+          "label": "Reporter",
+          "locationId": null,
+          "objectId": "traveler",
+          "representationObjectId": null
+        },
+        {
+          "asset": "book",
+          "id": "detail-display",
+          "kind": "device",
+          "label": "Seed report and detail",
+          "locationId": "seed-station",
+          "objectId": null,
+          "representationObjectId": "detail-board"
+        },
+        {
+          "asset": "clue",
+          "id": "label-display",
+          "kind": "device",
+          "label": "Main-idea label",
+          "locationId": "seed-station",
+          "objectId": null,
+          "representationObjectId": "report-label"
+        },
+        {
+          "asset": "home",
+          "id": "publish-desk",
+          "kind": "destination",
+          "label": "Publish the report",
+          "locationId": "publisher",
+          "objectId": null,
+          "representationObjectId": null
+        }
+      ],
+      "locations": [
+        {
+          "accepts": "any",
+          "capacity": 4,
+          "id": "seed-station",
+          "label": "Seed station",
+          "x": 25,
+          "y": 50
+        },
+        {
+          "accepts": "any",
+          "capacity": 4,
+          "id": "publisher",
+          "label": "Publisher",
+          "x": 80,
+          "y": 50
+        }
+      ],
+      "reactions": [
+        {
+          "entityId": "detail-display",
+          "id": "station-discovered",
+          "status": "discovered",
+          "text": "The complete seed report is ready to read.",
+          "when": {
+            "collection": {
+              "kind": "state",
+              "ref": "discoveries"
+            },
+            "item": {
+              "kind": "literal",
+              "value": "seed-station"
+            },
+            "kind": "contains"
+          }
+        },
+        {
+          "entityId": "publish-desk",
+          "id": "ready-to-publish",
+          "status": "active",
+          "text": "Your report is ready to bring here. Inspect the publisher to save it, or return to revise.",
+          "when": {
+            "conditions": [
+              {
+                "kind": "compare",
+                "left": {
+                  "kind": "state",
+                  "ref": "chosen-detail"
+                },
+                "op": "ne",
+                "right": {
+                  "kind": "literal",
+                  "value": "none"
+                }
+              },
+              {
+                "kind": "compare",
+                "left": {
+                  "kind": "state",
+                  "ref": "report-text"
+                },
+                "op": "ne",
+                "right": {
+                  "kind": "literal",
+                  "value": ""
+                }
+              }
+            ],
+            "kind": "all"
+          }
+        }
+      ],
+      "surfaces": [
+        {
+          "actionId": null,
+          "cellIds": [],
+          "connectionId": null,
+          "id": "detail-surface",
+          "label": "Supporting detail",
+          "layout": "object",
+          "locationId": "seed-station",
+          "objectId": "detail-board",
+          "visibleWhen": {
+            "collection": {
+              "kind": "state",
+              "ref": "discoveries"
+            },
+            "item": {
+              "kind": "literal",
+              "value": "seed-station"
+            },
+            "kind": "contains"
+          }
+        },
+        {
+          "actionId": null,
+          "cellIds": [],
+          "connectionId": null,
+          "id": "label-surface",
+          "label": "Your main-idea label",
+          "layout": "object",
+          "locationId": "seed-station",
+          "objectId": "report-label",
+          "visibleWhen": {
+            "collection": {
+              "kind": "state",
+              "ref": "discoveries"
+            },
+            "item": {
+              "kind": "literal",
+              "value": "seed-station"
+            },
+            "kind": "contains"
+          }
+        }
+      ],
+      "tools": [
+        {
+          "availableWhen": {
+            "conditions": [
+              {
+                "collection": {
+                  "kind": "state",
+                  "ref": "discoveries"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "seed-station"
+                },
+                "kind": "contains"
+              },
+              {
+                "kind": "compare",
+                "left": {
+                  "kind": "state",
+                  "ref": "traveler-location"
+                },
+                "op": "eq",
+                "right": {
+                  "kind": "literal",
+                  "value": "seed-station"
+                }
+              }
+            ],
+            "kind": "all"
+          },
+          "componentId": "detail-tool",
+          "entityId": "detail-display",
+          "label": "Read and choose a detail"
+        },
+        {
+          "availableWhen": {
+            "conditions": [
+              {
+                "collection": {
+                  "kind": "state",
+                  "ref": "discoveries"
+                },
+                "item": {
+                  "kind": "literal",
+                  "value": "seed-station"
+                },
+                "kind": "contains"
+              },
+              {
+                "kind": "compare",
+                "left": {
+                  "kind": "state",
+                  "ref": "traveler-location"
+                },
+                "op": "eq",
+                "right": {
+                  "kind": "literal",
+                  "value": "seed-station"
+                }
+              }
+            ],
+            "kind": "all"
+          },
+          "componentId": "label-tool",
+          "entityId": "label-display",
+          "label": "Write or revise the label"
+        }
+      ]
+    },
+    "renderer": {
+      "accessibility": "Keyboard and touch buttons, responsive scrolling/layout and reduced-motion support",
+      "animation": "Accepted world movement animates left/top; reduced motion disables animation",
+      "consequences": "Server-derived from authoritative post-action state, with zero rule cascades",
+      "desktopGeometry": {
+        "bottomInsetPx": 78,
+        "contextualSidebarMinimumViewportPx": 1050,
+        "locationWidthPx": 92,
+        "sideInsetPx": 52,
+        "stageHeightPx": 500,
+        "topInsetPx": 120
+      },
+      "gestures": "Native keyboard/click selection and location targets; drag for movable entities",
+      "mainSurface": "A spatial world stage with actionable locations/entities/connections",
+      "mobileGeometry": {
+        "actorIllustrationPx": 48,
+        "bottomInsetPx": 77,
+        "locationMinimumHeightPx": 62,
+        "locationWidthPx": 80,
+        "sideInsetPx": 45,
+        "stageHeightPx": 410,
+        "topInsetPx": 118
+      },
+      "physicalSurfaces": {
+        "anchors": "Bounded clear-lane placement prefers declared route midpoint/location anchors, then avoids full artifact and native control bounds. A relocated path runs through the actual target footprint entry/exit ports; location mounts retain an anchor connector.",
+        "artifacts": "Actual saved text, literal selected evidence or bound expression",
+        "conditionalCanvasHeights": {
+          "anyVisibleLocationMount": {
+            "desktop": 620,
+            "mobile": 580,
+            "tablet": 580
+          },
+          "desktopMinimumViewportPx": 1050,
+          "mobileMaximumViewportPx": 520,
+          "noVisibleSurfaces": {
+            "desktop": 500,
+            "mobile": 410,
+            "tablet": 440
+          },
+          "pathCounting": "Distinct connection IDs from visible surfaces and all public construction targets, including hidden-source target-only frames",
+          "perAdditionalDistinctPath": {
+            "desktop": 220,
+            "mobile": 400,
+            "tablet": 400
+          },
+          "perVisibleLocationWhenMultiplePaths": {
+            "desktop": 80,
+            "mobile": 160,
+            "tablet": 160
+          },
+          "visiblePathSurfaces": {
+            "desktop": 550,
+            "mobile": 500,
+            "tablet": 500
+          }
+        },
+        "directActions": "Existing server-checked toggle_tile/toggle_fraction_piece with the same source object and input; readonly when no direct action or cells are too small",
+        "fraction": "Complete same-whole strip, fixed base columns and current denominator rows; never a selected-piece subset",
+        "fractionWholePx": {
+          "height": 112,
+          "width": 164
+        },
+        "grid": "Actual source cell IDs, selection and row/column coordinates; declared subset may form the actual route planks",
+        "limitation": "A rendered source-to-route relationship, not an additional physics or client-side scoring engine",
+        "minimumDirectCellPx": 24,
+        "placement": "Preferred anchors plus bounded five-column lanes in 24px vertical steps; overlap with native entity/location safety bounds and prior full artifacts outweighs distance. Bounds include actual/target geometry and headers/feedback.",
+        "visibility": "Display follows server-derived surface.visibleWhen and a bound visible presentation space for mutable sources; current tool availability controls editing separately. Display can persist readonly after travel; immutable references can be visible independently."
+      },
+      "representation": "Actual bound concept objects appear on visible entities and physical stage surfaces; sources are not copies or correctness badges",
+      "scope": "Render-contract and computed-state evidence, not actual child testing or a screenshot-based enjoyment claim",
+      "tools": "Contextual existing controls attached to stage entities; not the universal main layout"
+    },
+    "version": "sidekick-world-render-v1"
+  },
+  "structuralFingerprint": {
+    "digest": "da95a44c09dd6ed919f7e0aecdee45939e9dd970c50c6c0f14090d0f7ef4deab",
+    "features": [
+      "action:inspect_location#1",
+      "action:move_actor#1",
+      "action:replace_text#1",
+      "action:revise_text#1",
+      "action:select_evidence#1",
+      "completion:(goal)#1",
+      "component:evidence_board#1",
+      "component:text_editor#1",
+      "component:world_stage#2",
+      "consequence:active:(all|conditions:[(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label)])#1",
+      "consequence:discovered:(contains|collection:state:stage_map.inspected|item:literal:label)#1",
+      "edge:True:(all|conditions:[(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label)])#1",
+      "entity:actor:movable#1",
+      "entity:destination:fixed#1",
+      "entity:device:fixed#2",
+      "goal:(all|conditions:[(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label),(contains|collection:state:stage_map.inspected|item:literal:label)])#1",
+      "location:any:in1:out1#2",
+      "object:evidence_board#1",
+      "object:stage_map#1",
+      "object:stage_piece#1",
+      "object:text_artifact#1",
+      "rule:inspect_location:(all|conditions:[(any|conditions:[(all|conditions:[(compare|eq|left:input|right:literal:label),(compare|ne|left:state:evidence_board.selection|right:literal:label),(compare|ne|left:state:text_artifact.text|right:literal:label)]),(compare|eq|left:input|right:literal:label)]),(compare|eq|left:input|right:state:stage_piece.location)]):[(add_item|item:input|target:stage_map.inspected)]#1",
+      "rule:move_actor:(always):[(set|value:input|target:stage_piece.location)]#1",
+      "rule:replace_text:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(contains|collection:state:stage_map.inspected|item:literal:label)]):[(set|value:input|target:text_artifact.text)]#1",
+      "rule:revise_text:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(compare|ne|left:input|right:state:text_artifact.text),(compare|ne|left:state:text_artifact.text|right:literal:label),(contains|collection:state:stage_map.inspected|item:literal:label)]):[(set|value:input|target:text_artifact.text)]#1",
+      "rule:select_evidence:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(contains|collection:state:stage_map.inspected|item:literal:label)]):[(set|value:input|target:evidence_board.selection)]#1",
+      "surface:evidence_board:location:any:object:whole:read_only:(contains|collection:state:stage_map.inspected|item:literal:label)#1",
+      "surface:text_artifact:location:any:object:whole:read_only:(contains|collection:state:stage_map.inspected|item:literal:label)#1",
+      "tool:evidence_board:device:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(contains|collection:state:stage_map.inspected|item:literal:label)])#1",
+      "tool:text_editor:device:(all|conditions:[(compare|eq|left:state:stage_piece.location|right:literal:label),(contains|collection:state:stage_map.inspected|item:literal:label)])#1"
+    ],
+    "version": "sidekick-game-structure-v1"
+  }
+}

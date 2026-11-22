@@ -1,0 +1,802 @@
+{
+  "schemaVersion": "2.0-foundation",
+  "id": "opening-and-next-line",
+  "title": "Write What Comes Before",
+  "definitionVersion": 1,
+  "componentVersion": "sidekick-program-contract-v1",
+  "intent": {
+    "targets": [
+      {
+        "skillId": "W.4.3-1",
+        "demonstration": "Orient the reader with a situation, narrator, and characters"
+      }
+    ],
+    "observations": [],
+    "misconceptions": [],
+    "successEvidence": [
+      "opening_review"
+    ]
+  },
+  "world": {
+    "state": [
+      {
+        "id": "chosen_line",
+        "mutable": true,
+        "kind": "choice",
+        "initial": "none",
+        "options": [
+          "none",
+          "map_line",
+          "train_line"
+        ]
+      },
+      {
+        "id": "opening_text",
+        "mutable": true,
+        "kind": "text",
+        "initial": "",
+        "maxLength": 1200
+      },
+      {
+        "id": "card_location",
+        "mutable": true,
+        "kind": "choice",
+        "initial": "workbench",
+        "options": [
+          "workbench",
+          "display"
+        ]
+      }
+    ],
+    "materials": [
+      {
+        "id": "next_lines",
+        "kind": "passage",
+        "text": "Then the map began to glow. That was when the last train stopped.",
+        "items": [
+          {
+            "id": "map_line",
+            "text": "Then the map began to glow."
+          },
+          {
+            "id": "train_line",
+            "text": "That was when the last train stopped."
+          }
+        ],
+        "quantity": null
+      },
+      {
+        "id": "line_prompt",
+        "kind": "prompt",
+        "text": "Choose either sentence as the next line of your story.",
+        "items": [],
+        "quantity": null
+      },
+      {
+        "id": "opening_prompt",
+        "kind": "prompt",
+        "text": "Write an opening that comes before your chosen next line. Introduce the narrator, characters, and situation so a reader can follow what happens. You can switch lines or revise at the workbench. When ready, place your opening on the display.",
+        "items": [],
+        "quantity": null
+      }
+    ],
+    "objects": [
+      {
+        "id": "line_board",
+        "kind": "evidence_board",
+        "bindings": {
+          "selection": "chosen_line"
+        },
+        "materialIds": [
+          "next_lines",
+          "line_prompt"
+        ],
+        "width": null,
+        "height": null
+      },
+      {
+        "id": "opening",
+        "kind": "text_artifact",
+        "bindings": {
+          "text": "opening_text"
+        },
+        "materialIds": [
+          "opening_prompt"
+        ],
+        "width": null,
+        "height": null
+      },
+      {
+        "id": "card_piece",
+        "kind": "stage_piece",
+        "bindings": {
+          "location": "card_location"
+        },
+        "materialIds": [],
+        "width": null,
+        "height": null
+      }
+    ],
+    "relationships": [
+      {
+        "id": "opening_prepares_line",
+        "kind": "derived_from",
+        "source": "opening",
+        "target": "line_board"
+      }
+    ],
+    "invariants": []
+  },
+  "components": [
+    {
+      "id": "line_tool",
+      "kind": "evidence_board",
+      "objectIds": [
+        "line_board"
+      ],
+      "spaceId": "studio"
+    },
+    {
+      "id": "opening_tool",
+      "kind": "text_editor",
+      "objectIds": [
+        "opening"
+      ],
+      "spaceId": "studio"
+    },
+    {
+      "id": "card_controls",
+      "kind": "world_stage",
+      "objectIds": [
+        "card_piece"
+      ],
+      "spaceId": "studio"
+    }
+  ],
+  "actions": [
+    {
+      "id": "choose_line",
+      "componentId": "line_tool",
+      "operation": "select_evidence",
+      "inputs": [
+        {
+          "id": "sentence",
+          "kind": "choice",
+          "minimum": null,
+          "maximum": null,
+          "minLength": null,
+          "maxLength": null,
+          "options": [
+            "map_line",
+            "train_line"
+          ],
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Choose the next line"
+    },
+    {
+      "id": "write_opening",
+      "componentId": "opening_tool",
+      "operation": "replace_text",
+      "inputs": [
+        {
+          "id": "text",
+          "kind": "text",
+          "minimum": null,
+          "maximum": null,
+          "minLength": null,
+          "maxLength": 1200,
+          "options": null,
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Write the opening"
+    },
+    {
+      "id": "revise_opening",
+      "componentId": "opening_tool",
+      "operation": "revise_text",
+      "inputs": [
+        {
+          "id": "text",
+          "kind": "text",
+          "minimum": null,
+          "maximum": null,
+          "minLength": null,
+          "maxLength": 1200,
+          "options": null,
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Revise the opening"
+    },
+    {
+      "id": "display_card",
+      "componentId": "card_controls",
+      "operation": "place_piece",
+      "inputs": [
+        {
+          "id": "destination",
+          "kind": "choice",
+          "minimum": null,
+          "maximum": null,
+          "minLength": null,
+          "maxLength": null,
+          "options": [
+            "display"
+          ],
+          "maxItems": null,
+          "mediaKind": null
+        }
+      ],
+      "label": "Place the opening on the display"
+    }
+  ],
+  "rules": [
+    {
+      "id": "select_at_bench",
+      "onAction": "choose_line",
+      "when": {
+        "kind": "compare",
+        "op": "eq",
+        "left": {
+          "kind": "state",
+          "ref": "card_location"
+        },
+        "right": {
+          "kind": "literal",
+          "value": "workbench"
+        }
+      },
+      "effects": [
+        {
+          "kind": "set",
+          "target": "chosen_line",
+          "value": {
+            "kind": "input",
+            "ref": "sentence"
+          }
+        }
+      ]
+    },
+    {
+      "id": "write_at_bench",
+      "onAction": "write_opening",
+      "when": {
+        "kind": "compare",
+        "op": "eq",
+        "left": {
+          "kind": "state",
+          "ref": "card_location"
+        },
+        "right": {
+          "kind": "literal",
+          "value": "workbench"
+        }
+      },
+      "effects": [
+        {
+          "kind": "set",
+          "target": "opening_text",
+          "value": {
+            "kind": "input",
+            "ref": "text"
+          }
+        }
+      ]
+    },
+    {
+      "id": "revise_at_bench",
+      "onAction": "revise_opening",
+      "when": {
+        "kind": "all",
+        "conditions": [
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "card_location"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "workbench"
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "ne",
+            "left": {
+              "kind": "state",
+              "ref": "opening_text"
+            },
+            "right": {
+              "kind": "literal",
+              "value": ""
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "ne",
+            "left": {
+              "kind": "input",
+              "ref": "text"
+            },
+            "right": {
+              "kind": "literal",
+              "value": ""
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "ne",
+            "left": {
+              "kind": "input",
+              "ref": "text"
+            },
+            "right": {
+              "kind": "state",
+              "ref": "opening_text"
+            }
+          }
+        ]
+      },
+      "effects": [
+        {
+          "kind": "set",
+          "target": "opening_text",
+          "value": {
+            "kind": "input",
+            "ref": "text"
+          }
+        }
+      ]
+    },
+    {
+      "id": "place_when_ready",
+      "onAction": "display_card",
+      "when": {
+        "kind": "all",
+        "conditions": [
+          {
+            "kind": "compare",
+            "op": "ne",
+            "left": {
+              "kind": "state",
+              "ref": "chosen_line"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "none"
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "ne",
+            "left": {
+              "kind": "state",
+              "ref": "opening_text"
+            },
+            "right": {
+              "kind": "literal",
+              "value": ""
+            }
+          }
+        ]
+      },
+      "effects": [
+        {
+          "kind": "set",
+          "target": "card_location",
+          "value": {
+            "kind": "input",
+            "ref": "destination"
+          }
+        }
+      ]
+    }
+  ],
+  "goals": [
+    {
+      "id": "display_story",
+      "description": "Place a written opening and a chosen next line on the story display.",
+      "when": {
+        "kind": "all",
+        "conditions": [
+          {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "card_location"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "display"
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "ne",
+            "left": {
+              "kind": "state",
+              "ref": "chosen_line"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "none"
+            }
+          },
+          {
+            "kind": "compare",
+            "op": "ne",
+            "left": {
+              "kind": "state",
+              "ref": "opening_text"
+            },
+            "right": {
+              "kind": "literal",
+              "value": ""
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "when": {
+      "kind": "goal",
+      "goalId": "display_story"
+    },
+    "goalIds": [
+      "display_story"
+    ],
+    "allowAssisted": true
+  },
+  "help": [
+    {
+      "id": "imagine_before",
+      "kind": "hint",
+      "text": "Imagine who encounters the map or train. Who is telling the story, who else is there, and what is happening just before your chosen line?",
+      "availableWhen": {
+        "kind": "always"
+      },
+      "actionIds": [
+        "choose_line",
+        "write_opening",
+        "revise_opening"
+      ],
+      "maxUses": 3
+    }
+  ],
+  "evidence": [
+    {
+      "id": "opening_review",
+      "skillIds": [
+        "W.4.3-1"
+      ],
+      "actionIds": [
+        "choose_line",
+        "write_opening",
+        "revise_opening"
+      ],
+      "stateRefs": [
+        "chosen_line",
+        "opening_text"
+      ],
+      "assessment": {
+        "kind": "parent_review",
+        "rubric": [
+          "Review the child's original opening alongside the selected next line.",
+          "Does the opening orient a reader to a situation, establish a narrator, and introduce characters?",
+          "Does the situation prepare the reader for the selected next line? Judge the writing itself, not simply its presence or length."
+        ]
+      },
+      "assistance": "server_event_history"
+    }
+  ],
+  "presentation": {
+    "entrySpace": "studio",
+    "spaces": [
+      {
+        "id": "studio",
+        "title": "Story studio",
+        "visibleWhen": {
+          "kind": "always"
+        }
+      }
+    ],
+    "assets": [],
+    "theme": "sidekick",
+    "stage": {
+      "locations": [
+        {
+          "id": "workbench",
+          "label": "Workbench",
+          "x": 25,
+          "y": 50,
+          "capacity": 4,
+          "accepts": "any"
+        },
+        {
+          "id": "display",
+          "label": "Story display",
+          "x": 78,
+          "y": 50,
+          "capacity": 4,
+          "accepts": "any"
+        }
+      ],
+      "entities": [
+        {
+          "id": "line_board_entity",
+          "label": "Next-line board",
+          "kind": "device",
+          "objectId": null,
+          "locationId": "workbench",
+          "asset": "book",
+          "representationObjectId": "line_board"
+        },
+        {
+          "id": "opening_card_entity",
+          "label": "Opening card",
+          "kind": "object",
+          "objectId": "card_piece",
+          "locationId": null,
+          "asset": "parcel",
+          "representationObjectId": "opening"
+        },
+        {
+          "id": "display_entity",
+          "label": "Story display",
+          "kind": "destination",
+          "objectId": null,
+          "locationId": "display",
+          "asset": "flag",
+          "representationObjectId": null
+        }
+      ],
+      "connections": [
+        {
+          "id": "studio_path",
+          "fromLocation": "workbench",
+          "toLocation": "display",
+          "bidirectional": true,
+          "when": {
+            "kind": "always"
+          },
+          "label": "To the story display",
+          "blockedLabel": "The display is not ready."
+        }
+      ],
+      "tools": [
+        {
+          "componentId": "line_tool",
+          "entityId": "line_board_entity",
+          "availableWhen": {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "card_location"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "workbench"
+            }
+          },
+          "label": "Choose or switch the next line"
+        },
+        {
+          "componentId": "opening_tool",
+          "entityId": "opening_card_entity",
+          "availableWhen": {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "card_location"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "workbench"
+            }
+          },
+          "label": "Write or revise the opening"
+        }
+      ],
+      "reactions": [
+        {
+          "id": "line_selected",
+          "entityId": "line_board_entity",
+          "when": {
+            "kind": "compare",
+            "op": "ne",
+            "left": {
+              "kind": "state",
+              "ref": "chosen_line"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "none"
+            }
+          },
+          "status": "active",
+          "text": "Your chosen next line is shown beside the opening."
+        },
+        {
+          "id": "ready_to_place",
+          "entityId": "opening_card_entity",
+          "when": {
+            "kind": "all",
+            "conditions": [
+              {
+                "kind": "compare",
+                "op": "ne",
+                "left": {
+                  "kind": "state",
+                  "ref": "chosen_line"
+                },
+                "right": {
+                  "kind": "literal",
+                  "value": "none"
+                }
+              },
+              {
+                "kind": "compare",
+                "op": "ne",
+                "left": {
+                  "kind": "state",
+                  "ref": "opening_text"
+                },
+                "right": {
+                  "kind": "literal",
+                  "value": ""
+                }
+              },
+              {
+                "kind": "compare",
+                "op": "eq",
+                "left": {
+                  "kind": "state",
+                  "ref": "card_location"
+                },
+                "right": {
+                  "kind": "literal",
+                  "value": "workbench"
+                }
+              }
+            ]
+          },
+          "status": "active",
+          "text": "You can revise or switch the line, or place the card when you are ready."
+        }
+      ],
+      "surfaces": [
+        {
+          "id": "bench_line",
+          "label": "Next line",
+          "objectId": "line_board",
+          "locationId": "workbench",
+          "connectionId": null,
+          "cellIds": [],
+          "layout": "object",
+          "actionId": null,
+          "visibleWhen": {
+            "kind": "always"
+          }
+        },
+        {
+          "id": "bench_opening",
+          "label": "Opening",
+          "objectId": "opening",
+          "locationId": "workbench",
+          "connectionId": null,
+          "cellIds": [],
+          "layout": "object",
+          "actionId": null,
+          "visibleWhen": {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "card_location"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "workbench"
+            }
+          }
+        },
+        {
+          "id": "display_line",
+          "label": "Next line",
+          "objectId": "line_board",
+          "locationId": "display",
+          "connectionId": null,
+          "cellIds": [],
+          "layout": "object",
+          "actionId": null,
+          "visibleWhen": {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "card_location"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "display"
+            }
+          }
+        },
+        {
+          "id": "display_opening",
+          "label": "Opening",
+          "objectId": "opening",
+          "locationId": "display",
+          "connectionId": null,
+          "cellIds": [],
+          "layout": "object",
+          "actionId": null,
+          "visibleWhen": {
+            "kind": "compare",
+            "op": "eq",
+            "left": {
+              "kind": "state",
+              "ref": "card_location"
+            },
+            "right": {
+              "kind": "literal",
+              "value": "display"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "origin": "ai_composed",
+    "author": "Sidekick AI",
+    "sourceRefs": [],
+    "model": "gpt-6.1-terra",
+    "promptVersion": "sidekick-program-composer-v1"
+  },
+  "limits": {
+    "maxActions": 100,
+    "maxRulesPerAction": 4,
+    "maxEffectsPerAction": 4,
+    "maxExpressionDepth": 8,
+    "maxExpressionNodes": 64
+  },
+  "witness": [
+    {
+      "actionId": "choose_line",
+      "inputs": {
+        "sentence": "map_line"
+      }
+    },
+    {
+      "actionId": "write_opening",
+      "inputs": {
+        "text": "I found a map in the attic. My cousin Jo came upstairs to see it."
+      }
+    },
+    {
+      "actionId": "revise_opening",
+      "inputs": {
+        "text": "I was searching Grandma's attic for a missing kite when I found a folded map. My cousin Jo held the flashlight while I spread it across a dusty trunk."
+      }
+    },
+    {
+      "actionId": "display_card",
+      "inputs": {
+        "destination": "display"
+      }
+    }
+  ]
+}
