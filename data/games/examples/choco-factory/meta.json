@@ -1,0 +1,7 @@
+{
+  "subskillId": "3.MD.C.7-1",
+  "title": "Choco Factory",
+  "premise": "Every chocolate bar is rows of squares. Tell the machine how many squares to pour.",
+  "idea": "The typed number is the controller: the machine pours that many unit squares row by row, so adding the sides visibly leaves holes and only rows x columns fills the bar.",
+  "author": "claude-stand-in"
+}
