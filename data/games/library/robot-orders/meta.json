@@ -1,0 +1,8 @@
+{
+  "subskillId": "RF.3.3-1",
+  "title": "Robot Orders",
+  "emoji": "🤖",
+  "premise": "Robo does exactly what the word says. Snap on a word part to make the right order.",
+  "idea": "Prefixes and suffixes snap onto a base word and change what the robot is told to do, so a real word with the wrong meaning gives the wrong order.",
+  "author": "claude-stand-in"
+}

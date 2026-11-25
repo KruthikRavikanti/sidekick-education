@@ -1,0 +1,8 @@
+{
+  "subskillId": "5.G.A.2-1",
+  "title": "Treasure Map",
+  "emoji": "🗺️",
+  "premise": "The parrot calls out where X marks the spot. Walk across, climb up, and dig.",
+  "idea": "A coordinate pair is a walk: across first, then up. Swapping the numbers puts the shovel on a different spot of the island.",
+  "author": "claude-stand-in"
+}

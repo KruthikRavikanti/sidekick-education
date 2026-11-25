@@ -1,0 +1,8 @@
+{
+  "subskillId": "L.K.2-1",
+  "title": "Sentence Train",
+  "emoji": "🚂",
+  "premise": "The word train cannot leave until its capital letters are right. Tap a car to fix it.",
+  "idea": "Words are train cars and a tap switches a car between small and capital. The train leaves only when the first word and every I are capitals.",
+  "author": "claude-stand-in"
+}

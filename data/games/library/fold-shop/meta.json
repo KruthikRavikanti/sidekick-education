@@ -1,0 +1,8 @@
+{
+  "subskillId": "4.G.A.3-1",
+  "title": "Fold Shop",
+  "emoji": "📄",
+  "premise": "The fold shop only makes folds where both halves match. Find every fold that works.",
+  "idea": "Tapping a fold line flips the paper over it. A rectangle flipped over its diagonal visibly fails to land on itself.",
+  "author": "claude-stand-in"
+}

@@ -1,0 +1,8 @@
+{
+  "subskillId": "RF.K.2-1",
+  "title": "Rhyme Pond",
+  "emoji": "🐸",
+  "premise": "Each frog can only land on a lily pad that rhymes with its word.",
+  "idea": "Frogs land only on pads that sound the same at the end. Every frog also sees a pad that starts with its sound, the usual mix-up.",
+  "author": "claude-stand-in"
+}

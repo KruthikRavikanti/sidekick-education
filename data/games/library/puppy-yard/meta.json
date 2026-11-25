@@ -1,0 +1,8 @@
+{
+  "subskillId": "4.MD.A.3-1",
+  "title": "Puppy Yard",
+  "emoji": "🐶",
+  "premise": "Build yards for the puppies. Fence goes around the edge and grass covers the inside.",
+  "idea": "Fence panels are laid around the edge and grass squares fill the inside as they are ordered, so swapping area and perimeter leaves a gap, bare dirt or a pile left over.",
+  "author": "claude-stand-in"
+}

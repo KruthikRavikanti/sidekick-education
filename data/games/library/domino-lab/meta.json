@@ -1,0 +1,8 @@
+{
+  "subskillId": "RI.3.3-1",
+  "title": "Domino Lab",
+  "emoji": "🧪",
+  "premise": "Line up the event cards so each one makes the next one happen. Then tip the first.",
+  "idea": "Events are dominoes that fall only if each card causes the next. The chain is read back with the word so, which exposes a reversed cause and effect.",
+  "author": "claude-stand-in"
+}
