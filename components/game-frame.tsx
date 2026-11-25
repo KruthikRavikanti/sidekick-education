@@ -37,6 +37,7 @@ export function GameFrame({
   const [height, setHeight] = useState(560);
   const loads = useRef(0);
   const lastBeat = useRef(0);
+  const fitRef = useRef<() => void>(() => undefined);
   const handlers = useRef({ onMessage, onStopped });
   useEffect(() => {
     handlers.current = { onMessage, onStopped };
@@ -62,12 +63,27 @@ export function GameFrame({
         handlers.current.onStopped("error");
         return;
       }
+      if (data.type === "event") {
+        // When play starts, bring the whole game into view.
+        const kind = (data.event as { kind?: unknown } | null)?.kind;
+        if (kind === "start")
+          frame.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+        return;
+      }
       handlers.current.onMessage?.({
         type: data.type,
         result: data.result,
       });
     }
     window.addEventListener("message", receive);
+    // Tell the game how tall it may be, so a whole round fits on a short screen.
+    const fit = () =>
+      frame.current?.contentWindow?.postMessage(
+        { sidekick: kit, type: "fit", height: window.innerHeight - 20 },
+        "*",
+      );
+    fitRef.current = fit;
+    window.addEventListener("resize", fit);
     // The kit sends a heartbeat every second. Silence means the game froze.
     // Browsers slow timers in hidden tabs, so only judge while the tab is in view.
     const visible = () => {
@@ -85,6 +101,7 @@ export function GameFrame({
     }, 2000);
     return () => {
       window.removeEventListener("message", receive);
+      window.removeEventListener("resize", fit);
       document.removeEventListener("visibilitychange", visible);
       clearInterval(watch);
     };
@@ -104,6 +121,7 @@ export function GameFrame({
       onLoad={() => {
         loads.current += 1;
         lastBeat.current = Date.now();
+        fitRef.current();
         // A second load means the game tried to go somewhere else. Take it away.
         if (loads.current > 1) handlers.current.onStopped("left");
       }}

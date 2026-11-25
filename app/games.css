@@ -84,6 +84,7 @@
 .game-frame {
   display: block;
   width: 100%;
+  scroll-margin-top: 10px;
   border: 0;
   background: transparent;
   transition: height 0.2s ease;

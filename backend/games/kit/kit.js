@@ -621,6 +621,7 @@
     this.wrap.textContent = ''; this.wrap.appendChild(stage.el);
     try { if (typeof round.setup === 'function') round.setup(stage, this.sk); } catch (error) { return this.fail(error); }
     stage.dirty = false;
+    fit();
     var game = this;
     if (!solo && (round.hints || []).length) { var idle = setTimeout(function () { if (game.record && !game.record.solved && game.round === round) game.hintButton.hidden = false; }, 25000); stage.timers.push(function () { clearTimeout(idle); }); }
     this.event('round', { index: index, id: this.record.id, phase: round.phase });
@@ -745,6 +746,22 @@
     return { tap: hd2.id };
   }
   var current = null;
+  // The host page may say how much height it has. The kit then narrows itself so a whole round fits
+  // on screen at once, which matters on short laptop screens where dragging and scrolling do not mix.
+  var fitHeight = 0;
+  function fit() {
+    if (!fitHeight || !current || !current.stage) { root.style.maxWidth = ''; return; }
+    for (var pass = 0; pass < 2; pass++) {
+      var chrome = root.getBoundingClientRect().height - current.stage.el.getBoundingClientRect().height;
+      root.style.maxWidth = Math.max(300, Math.min(760, Math.floor((fitHeight - chrome - 8) * 100 / current.stage.H))) + 'px';
+    }
+  }
+  window.addEventListener('message', function (event) {
+    var data = event.data;
+    if (event.source !== HOST || HOST === window || !data || data.sidekick !== KIT || data.type !== 'fit') return;
+    var height = Number(data.height);
+    if (isFinite(height)) { fitHeight = Math.max(0, Math.min(4000, height)); fit(); }
+  });
   window.__SK = {
     kit: KIT,
     manifest: function () { return current ? current.manifest() : null; },
