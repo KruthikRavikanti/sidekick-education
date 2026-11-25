@@ -70,7 +70,7 @@ button { font: inherit; color: inherit; }
 /* ---- sprites: things on the stage */
 .sk-sprite { left: calc(var(--x) * 1cqw); top: calc(var(--y) * 1cqw); transform: translate(-50%, -50%) scale(var(--k, 1)) rotate(var(--r, 0deg)); display: grid; place-items: center; line-height: 1; outline: none; transition: left .32s cubic-bezier(.3,1.3,.5,1), top .32s cubic-bezier(.3,1.3,.5,1), opacity .2s, filter .2s; will-change: left, top, transform; }
 .sk-sprite.sk-emoji { font-size: calc(var(--s) * 1cqw); width: calc(var(--s) * 1.18cqw); height: calc(var(--s) * 1.18cqw); font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; filter: drop-shadow(0 .5cqw 0 rgba(0,0,0,.14)); }
-.sk-sprite.sk-text { font-family: "Fredoka", sans-serif; font-weight: 600; font-size: calc(var(--s) * 1cqw); padding: .9cqw 2.2cqw; background: #fff; color: var(--sk-forest); border: .5cqw solid var(--tc, var(--sk-forest)); border-radius: 2.2cqw; box-shadow: 0 .8cqw 0 var(--tc, var(--sk-forest)); white-space: nowrap; min-height: max(34px, 9cqw); min-width: max(34px, 9cqw); }
+.sk-sprite.sk-text { font-family: "Fredoka", sans-serif; font-weight: 600; font-size: calc(var(--s) * 1cqw); padding: .9cqw 2.2cqw; background: #fff; color: var(--sk-forest); border: .5cqw solid var(--tc, var(--sk-forest)); border-radius: 2.2cqw; box-shadow: 0 .8cqw 0 var(--tc, var(--sk-forest)); white-space: nowrap; min-height: 9.5cqw; min-width: 9.5cqw; }
 .sk-sprite.sk-text.plain { background: transparent; border: none; box-shadow: none; padding: 0; min-height: 0; min-width: 0; }
 .sk-sprite.sk-shape { width: calc(var(--w) * 1cqw); height: calc(var(--h) * 1cqw); background: var(--c, var(--sk-orange)); border: .5cqw solid rgba(0,0,0,.2); box-shadow: inset 0 -1cqw 0 rgba(0,0,0,.12); border-radius: 1.6cqw; font-family: "Fredoka", sans-serif; font-weight: 600; font-size: calc(var(--s) * 1cqw); color: #fff; }
 .sk-sprite.sk-shape.circle { border-radius: 50%; }
@@ -93,7 +93,7 @@ button { font: inherit; color: inherit; }
 .sk-label { left: calc(var(--x) * 1cqw); top: calc(var(--y) * 1cqw); transform: translate(-50%, -50%); font-family: "Fredoka", sans-serif; font-weight: 600; font-size: calc(var(--s) * 1cqw); line-height: 1.15; text-align: center; color: var(--lc, inherit); pointer-events: none; white-space: nowrap; }
 .sk-label.wrap { white-space: normal; width: calc(var(--w) * 1cqw); }
 .sk-label.card { background: rgba(255,255,255,.92); border: .4cqw solid var(--sk-border); border-radius: 2.4cqw; padding: 1cqw 2.2cqw; color: var(--sk-forest); }
-.sk-btn { left: calc(var(--x) * 1cqw); top: calc(var(--y) * 1cqw); transform: translate(-50%, -50%); font-family: "Fredoka", sans-serif; font-weight: 600; font-size: clamp(13px, calc(var(--s) * 1cqw), 26px); min-height: 44px; min-width: 44px; padding: .8cqw 3cqw; border-radius: 99px; border: .5cqw solid rgba(0,0,0,.18); background: var(--c, var(--sk-orange)); color: var(--fc, #fff); box-shadow: 0 .9cqw 0 rgba(0,0,0,.2); cursor: pointer; white-space: nowrap; }
+.sk-btn { left: calc(var(--x) * 1cqw); top: calc(var(--y) * 1cqw); transform: translate(-50%, -50%); font-family: "Fredoka", sans-serif; font-weight: 600; font-size: clamp(13px, calc(var(--s) * 1cqw), 26px); min-height: min(11cqw, 58px); min-width: min(11cqw, 58px); padding: .8cqw 3cqw; border-radius: 99px; border: .5cqw solid rgba(0,0,0,.18); background: var(--c, var(--sk-orange)); color: var(--fc, #fff); box-shadow: 0 .9cqw 0 rgba(0,0,0,.2); cursor: pointer; white-space: nowrap; }
 .sk-btn:active { transform: translate(-50%, calc(-50% + .5cqw)); box-shadow: 0 .4cqw 0 rgba(0,0,0,.2); }
 .sk-btn:focus-visible, .sk-chip:focus-visible, .sk-key:focus-visible, .sk-cell:focus-visible { outline: .7cqw solid var(--sk-sun); outline-offset: .3cqw; }
 .sk-btn[disabled] { opacity: .5; cursor: default; }
@@ -101,18 +101,18 @@ button { font: inherit; color: inherit; }
 .sk-btn { z-index: 5; }
 .sk-track { z-index: 4; }
 .sk-stepper { display: flex; align-items: center; gap: 1.4cqw; background: rgba(255,255,255,.94); border: .5cqw solid var(--sk-forest); border-radius: 99px; padding: .8cqw 1.2cqw; box-shadow: 0 .8cqw 0 rgba(5,74,41,.2); color: var(--sk-forest); }
-.sk-stepper button { width: max(44px, 8.4cqw); height: max(44px, 8.4cqw); border-radius: 50%; border: none; background: var(--sk-forest); color: #fff; font: 700 clamp(20px, 5.4cqw, 34px)/1 "Fredoka", sans-serif; cursor: pointer; }
+.sk-stepper button { width: min(11cqw, 62px); height: min(11cqw, 62px); border-radius: 50%; border: none; background: var(--sk-forest); color: #fff; font: 700 clamp(20px, 5.4cqw, 34px)/1 "Fredoka", sans-serif; cursor: pointer; }
 .sk-stepper button:active { transform: scale(.93); }
 .sk-stepper output { min-width: 11cqw; text-align: center; font: 600 clamp(20px, 6cqw, 40px)/1 "Fredoka", sans-serif; }
 .sk-stepper small { font: 800 clamp(10px, 2.6cqw, 15px)/1 "Nunito", sans-serif; letter-spacing: .06em; text-transform: uppercase; padding: 0 1cqw; color: var(--sk-muted); }
 .sk-choice { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.6cqw; width: calc(var(--w) * 1cqw); }
 .sk-choice.col { flex-direction: column; align-items: stretch; }
-.sk-chip { min-height: 44px; padding: 1cqw 3cqw; border-radius: 2.6cqw; border: .5cqw solid var(--sk-forest); background: #fff; color: var(--sk-forest); font: 600 clamp(14px, 3.8cqw, 24px)/1.1 "Fredoka", sans-serif; box-shadow: 0 .8cqw 0 var(--sk-forest); cursor: pointer; }
+.sk-chip { min-height: min(11cqw, 58px); padding: 1cqw 3cqw; border-radius: 2.6cqw; border: .5cqw solid var(--sk-forest); background: #fff; color: var(--sk-forest); font: 600 clamp(14px, 3.8cqw, 24px)/1.1 "Fredoka", sans-serif; box-shadow: 0 .8cqw 0 var(--sk-forest); cursor: pointer; }
 .sk-chip[aria-pressed="true"] { background: var(--sk-sun); transform: translateY(.4cqw); box-shadow: 0 .4cqw 0 var(--sk-forest); }
 .sk-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1cqw; padding: 1.6cqw; background: rgba(255,255,255,.95); border: .5cqw solid var(--sk-forest); border-radius: 3cqw; box-shadow: 0 .9cqw 0 rgba(5,74,41,.2); color: var(--sk-forest); }
 .sk-keypad output { grid-column: 1 / -1; min-height: 9cqw; border-radius: 1.8cqw; background: #f3f6e6; display: grid; place-items: center; font: 600 clamp(20px, 6cqw, 38px)/1 "Fredoka", sans-serif; letter-spacing: .04em; }
 .sk-keypad output:empty::before { content: attr(data-empty); opacity: .35; }
-.sk-key { min-width: max(40px, 8cqw); min-height: max(40px, 7.4cqw); border-radius: 1.8cqw; border: none; background: var(--sk-forest); color: #fff; font: 600 clamp(17px, 4.6cqw, 28px)/1 "Fredoka", sans-serif; cursor: pointer; }
+.sk-key { min-width: min(10.5cqw, 66px); min-height: min(9.5cqw, 60px); border-radius: 1.8cqw; border: none; background: var(--sk-forest); color: #fff; font: 600 clamp(17px, 4.6cqw, 28px)/1 "Fredoka", sans-serif; cursor: pointer; }
 .sk-key.alt { background: var(--sk-orange); }
 .sk-key:active { transform: scale(.94); }
 .sk-grid { display: grid; gap: .5cqw; padding: .8cqw; background: rgba(255,255,255,.7); border: .5cqw solid var(--sk-forest); border-radius: 2cqw; touch-action: none; }

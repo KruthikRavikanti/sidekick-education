@@ -12,14 +12,14 @@ const COLORS = { 2: 'berry', 3: 'grape', 4: 'orange', 6: 'sun', 8: 'coral' };
 function bridgeRound(o) {
   const target = o.a / o.b, name = '{' + o.a + '/' + o.b + '}';
   return {
-    id: o.id, phase: o.phase, say: o.say, hints: o.hints || [], win: o.win || '', action: 'Hop!', scene: 'ocean', height: 90,
+    id: o.id, phase: o.phase, say: o.say, hints: o.hints || [], win: o.win || '', action: 'Hop!', scene: 'ocean', height: 95,
     setup(stage) {
       stage.block({ x: -2, y: DECK, w: X0 + 2, h: 21, color: 'leaf', round: 3 });
       stage.block({ x: X0 + W, y: DECK, w: 14, h: 21, color: 'leaf', round: 3 });
       stage.sprite({ emoji: '🌴', x: 95, y: DECK - 7, size: 11 });
       const frog = stage.sprite({ id: 'frog', emoji: '🐸', x: 6, y: DECK - 5.5, size: 10, z: 50 });
       const flagX = X0 + W * target;
-      const post = stage.block({ id: 'post', x: flagX - 0.6, y: DECK - 9, w: 1.2, h: 24, color: 'forest', round: 1 });
+      const post = stage.block({ id: 'post', x: flagX - 0.6, y: DECK - 9, w: 1.2, h: 25, color: 'forest', round: 1 });
       const berry = stage.sprite({ id: 'berry', emoji: '🍓', x: flagX, y: DECK - 12, size: 8, float: true });
       if (o.hidden) {
         post.hide(); berry.hide();
@@ -27,16 +27,16 @@ function bridgeRound(o) {
       } else {
         stage.label({ text: name, x: flagX, y: DECK - 22, size: 5.4, card: true });
       }
-      if (o.ticks) for (let i = 1; i < o.b; i++) stage.block({ x: X0 + (W * i) / o.b - 0.3, y: DECK + 10, w: 0.6, h: 3, color: 'white', round: 1 });
-      stage.zone({ id: 'bridge', x: X0, y: DECK, w: W, h: 9, look: 'slot', color: 'white', label: 'The bridge', showLabel: false,
+      if (o.ticks) for (let i = 1; i < o.b; i++) stage.block({ x: X0 + (W * i) / o.b - 0.3, y: DECK + 11, w: 0.6, h: 3, color: 'white', round: 1 });
+      stage.zone({ id: 'bridge', x: X0, y: DECK, w: W, h: 10, look: 'slot', color: 'white', label: 'The bridge', showLabel: false,
         layout: 'row', align: 'start', gap: 0, pad: 0,
         accepts: (plank, zone) => plank.kind === 'plank' && zone.sum(plankLength) + plankLength(plank) <= 1.0001 });
       let x = 3;
       o.piles.forEach((pile, index) => {
         const w = o.piles.length === 1 ? 94 : 46;
-        stage.zone({ id: 'pile' + pile.den, x, y: 58, w, h: 30.5, look: 'tray', label: '{1/' + pile.den + '} planks', labelAt: 'top', accepts: (plank) => plank.value === pile.den });
+        stage.zone({ id: 'pile' + pile.den, x, y: 59, w, h: 34, look: 'tray', label: '{1/' + pile.den + '} planks', labelAt: 'top', accepts: (plank) => plank.value === pile.den });
         for (let i = 1; i <= pile.count; i++) {
-          stage.sprite({ id: 'p' + pile.den + '_' + i, shape: 'rect', w: W / pile.den, h: 8.5, color: COLORS[pile.den], caption: '{1/' + pile.den + '}',
+          stage.sprite({ id: 'p' + pile.den + '_' + i, shape: 'rect', w: W / pile.den, h: 9.5, color: COLORS[pile.den], caption: '{1/' + pile.den + '}',
             label: 'one ' + pile.den + 'th plank', kind: 'plank', value: pile.den, drag: true, zone: 'pile' + pile.den });
         }
         x += w + 2;

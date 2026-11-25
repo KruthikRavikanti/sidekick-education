@@ -38,7 +38,7 @@ Engineering rules:
 - Write plain modern JavaScript against the kit below. Call Sidekick.game exactly once. No other libraries.
 - `check` must have no side effects. It is called many times.
 - `solution` and every mistake's `steps` must really work when performed with a pointer on a phone-sized screen.
-- Give every interactive thing an `id`. Keep draggable and tappable things at least 9 units wide and tall, and keep controls apart.
+- Give every interactive thing an `id`. Keep draggable and tappable things at least 9.5 units wide and tall, and keep controls apart.
 - Everything must fit inside the stage. Pick a `height` that leaves room.
 - Use `Sidekick.pick` and friends for fresh numbers in the solo round, choosing from options you have checked by hand.
 

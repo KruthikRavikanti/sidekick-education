@@ -49,8 +49,8 @@ Wrap any fraction in braces to stack it: `'{3/4}'`. All text is plain text.
 
 The stage is 100 units wide and `height` units tall. `(0, 0)` is the top left. Sprites, labels
 and controls are placed by their center. Zones and blocks are placed by their top left corner.
-One unit is about 3.8 px on a phone and 7.6 px on a tablet. Anything a child drags or taps must
-be at least 9 units wide and 9 units tall.
+One unit is about 3.5 px on a small phone and 7.6 px on a tablet, and everything scales with it, so a layout
+that fits at one size fits at every size. Anything a child drags or taps must be at least 9.5 units wide and tall.
 
 Layers from back to front: blocks, zones, labels, tracks, controls, sprites. Sprites, zones, labels, blocks and `stage.add` take `z` to change that.
 
@@ -104,7 +104,8 @@ stage.marker({ id: 'flag', track: 'line', value: 0, emoji: '🚩' });   // .valu
 stage.button({ id: 'pour', text: 'Pour', x: 50, y: 60, onTap(sk, button) { /* ... */ } });   // .taps
 ```
 
-A keypad is about 38 units wide and 58 tall on a phone. A stepper is about 40 by 14. Keep controls from overlapping.
+A keypad is 38 units wide and 58 tall. A stepper is about 40 by 14, wider with long text. A choice chip is at least 11 tall.
+Keep controls clear of each other and of anything a child needs to see.
 
 ### Scenery, text and custom drawing
 

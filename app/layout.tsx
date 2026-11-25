@@ -3,6 +3,7 @@ import "./globals.css";
 import "./accounts.css";
 import "./learning.css";
 import "./activities.css";
+import "./games.css";
 import { AccountSessionProvider } from "@/components/account-session";
 
 export const metadata: Metadata = {

@@ -27,6 +27,7 @@ import {
   WORK_ACCEPT,
 } from "@/lib/upload-files";
 import { ActivitySuggestion } from "./activity-suggestion";
+import { GameSuggestion } from "./game-suggestion";
 
 const MAX_BYTES = 10 * 1024 * 1024;
 type Phase = "upload" | "reading" | "results";
@@ -372,7 +373,10 @@ export function WorksheetReader() {
               onReset={reset}
               activity={
                 uploadId ? (
-                  <ActivitySuggestion key={uploadId} uploadId={uploadId} />
+                  <>
+                    <GameSuggestion key={`game:${uploadId}`} uploadId={uploadId} />
+                    <ActivitySuggestion key={uploadId} uploadId={uploadId} />
+                  </>
                 ) : undefined
               }
             />

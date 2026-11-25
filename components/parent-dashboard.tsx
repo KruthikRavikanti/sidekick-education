@@ -27,6 +27,7 @@ import { RequireMode, useAccountSession } from "./account-session";
 import { GapInsights } from "./gap-insights";
 import { HomeworkUploads } from "./homework-uploads";
 import { ParentActivityHistory } from "./activity-history";
+import { ParentGameHistory } from "./game-history";
 import {
   AccountShell,
   AVATARS,
@@ -719,7 +720,10 @@ function ParentContent() {
           ) : null
         ) : effectiveTab === "activities" ? (
           selected ? (
-            <ParentActivityHistory key={selected} kidId={selected} />
+            <>
+              <ParentGameHistory key={`games:${selected}`} kidId={selected} />
+              <ParentActivityHistory key={selected} kidId={selected} />
+            </>
           ) : null
         ) : (
           <>

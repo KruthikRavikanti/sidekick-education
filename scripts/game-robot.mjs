@@ -62,8 +62,8 @@ async function tap(page, id) { const box = await page.locator(`[data-sk-id="${id
 async function shot(page, name) { if (!outDir) return; mkdirSync(outDir, { recursive: true }); const file = join(outDir, name + '.jpg'); await page.screenshot({ path: file, type: 'jpeg', quality: 82 }); report.screenshots.push(name + '.jpg'); }
 
 try {
-  const WIDTH = 390;
-  const { page, trouble } = await open(WIDTH, 760);
+  const WIDTH = 360;   // a small phone. Controls are sized in stage units, so wider screens only add room.
+  const { page, trouble } = await open(WIDTH, 740);
   const booted = await page.waitForFunction(() => window.__SK && window.__SK.manifest && window.__SK.manifest(), null, { timeout: 6000 }).then(() => true, () => false);
   if (!check('boots', booted, booted ? '' : (trouble.errors[0] || 'The game never called Sidekick.game().'))) throw new Error('boot');
   const manifest = report.manifest = await page.evaluate(() => window.__SK.manifest());

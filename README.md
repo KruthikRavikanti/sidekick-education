@@ -158,7 +158,7 @@ Migration `007_activity_family_assessment.sql` adds assessment status, private r
 
 ## Playable activity toolkit
 
-The Sources-only export supplies design inspiration rather than executable controls. These are original Sidekick controls, rendered by React, with bounded declarative parameters. No model-generated code runs in the browser. The model invents the scenario, objects, passage or cards, goal, prompts, and feedback, then chooses among compatible controls. There is no separate player or activity template for each subskill.
+The Sources-only export supplies design inspiration rather than executable controls. These are original Sidekick controls, rendered by React, with bounded declarative parameters. No model-generated code runs in the app's own page. (Generated games, described below, are the one deliberate exception, and they run only inside a locked frame.) The model invents the scenario, objects, passage or cards, goal, prompts, and feedback, then chooses among compatible controls. There is no separate player or activity template for each subskill.
 
 | Control | Child action and scene change | Server validation |
 | --- | --- | --- |
@@ -175,6 +175,39 @@ To try the three new actions, launch `npm run dev:all`, enter child mode, and up
 - [Reading evidence](public/samples/activity-toolkit-evidence-work.png), with a grade-3 child.
 
 Tap **Read my work**, then **Try an activity**, manipulate the scene, and finish the fresh challenge. Switch to parent mode with the PIN and open **Activities** to see the outcome. These three skills have no prebuilt activity in the six-example library; live composition saves a verified reusable definition on demand. Apply migration 007 for the expanded engine. No new package dependency or provider setting is required.
+
+## Generated games (experimental, off by default)
+
+The activity toolkit above gives every skill one of 14 fixed controls. Generated games take the other road: a model writes a small game for a skill, so the ceiling is the model's imagination and every skill in the catalog is reachable. That reverses the "model never writes code" rule, so the rule is replaced by four layers that do not depend on trusting the model.
+
+**The brief.** A Sidekick game is play, not a quiz: a little world with a mission, solved by moving or changing things, where the world reacts and the skill is the rule that makes it work. Guided rounds let the child explore; the last round is a fresh version with the help taken away. If it could be printed on paper, it failed. The full brief is in `backend/games/prompts.py`.
+
+**1. The kit.** A game is one JavaScript file written against the Sidekick kit (`backend/games/kit/`, reference in `KIT.md`). The kit owns the brand, the stage, dragging and tapping, keyboard use, the round flow, hints, scoring and the report back to the app. The game supplies the world and the rules, and declares its own winning steps and the known mistakes for each round.
+
+**2. The locked frame.** Game code runs only in an `<iframe sandbox="allow-scripts">` whose document is served with `Content-Security-Policy: default-src 'none'; script-src 'nonce-…'; connect-src 'none'; … sandbox allow-scripts`. That gives it an empty origin: no cookies, no storage, no network, no access to the Sidekick page. The document is self-contained (kit, fonts and game inline) and holds nothing about the child. The page accepts messages only from that frame's window, and only with a per-run token the kit keeps where game code cannot read it. `backend/games/checks.py` also rejects source that reaches for the network, storage, navigation, dynamic code, links or text inputs; that is hygiene, and the frame is the real boundary.
+
+**3. The robot player.** `scripts/game-robot.mjs` plays every game in headless Chromium under the same policy and proves that it starts, that no round is already solved, that the declared solution wins every round, that every declared known mistake is recognised, rejected and tagged, that random play cannot win the last round more than a third of the time, that fresh numbers (other seeds) still work, that nothing is cut off, overlapping or too small on a phone and a tablet, and that there was no network request, navigation or script error. A failed run goes back to the model with the report, at most twice. Then a second model call reviews what a robot cannot judge.
+
+**4. A person.** The pipeline's best outcome is `verified`. A game becomes `approved` only when a reviewer plays it at `/parent/games` (parent PIN required) and approves it. Reviewers are the accounts in `SIDEKICK_GAME_REVIEWERS`; in development and test an empty list lets any parent review. Retired games stay retired.
+
+Games are never generated while a child waits. A build is a background job (one per skill, not retried for a day after a failure) or a CLI run. A child whose homework points at a skill with an approved game sees a card above the activity suggestion; otherwise they see the existing activity flow, which is unchanged.
+
+Game results are recorded for the parent's Activities tab. They come from the child's browser and are practice, so they do not change skill states and are not evidence.
+
+```bash
+npm run db:migrate                      # adds the game tables (migration 008)
+npm run games:seed                      # loads the reference games; each must pass the robot; they wait for review
+npm run games:robot -- data/games/examples/froggys-bridge --shots /tmp/frog
+npm run games:generate -- --subskill 4.NF.A.1-1        # needs VISION_* (or GAMES_MODEL); blocks until verified or failed
+npm run games:generate -- --missing --grade 3 --limit 5
+npm run games:list
+```
+
+Flags, all in `backend/.env.example`: `SIDEKICK_GAMES_ENABLED` (default `false`), `SIDEKICK_GAMES_REQUIRE_APPROVAL` (default `true`; keep it on for real families), `SIDEKICK_GAMES_AUTOGENERATE` (default `false`; queue a build when homework shows a skill with no game), `SIDEKICK_GAME_REVIEWERS`, `GAMES_MODEL`, `GAMES_TIMEOUT_SECONDS`. The robot needs Node and Playwright's Chromium (`npx playwright install chromium`).
+
+The five games in `data/games/examples/` (unit fractions, rectangle area, unit price, irregular plurals, facts within 10) were written by Claude standing in for the model, the last one by answering the app's own generation prompt. They are the few-shot examples the model sees. The pipeline has not yet been run against a live provider.
+
+Known limits: a game shares one JavaScript realm with the kit, so a hostile game could fake what the robot sees; the robot and reviews are quality gates, and the frame is the security boundary. A frozen game can freeze its frame; the page watches a heartbeat and offers a restart. Review screenshots are not stored; reviewers play the game instead.
 
 ## Equivalent fractions: split and compare
 

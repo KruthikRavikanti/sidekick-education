@@ -92,7 +92,7 @@ function SuggestionContent({ uploadId }: { uploadId: string }) {
   const pending = !suggestion || suggestion.reason === "analysis_pending";
   return (
     <section
-      className="activity-suggestion"
+      className={`activity-suggestion${suggestion && !suggestion.available && !pending ? " activity-suggestion-empty" : ""}`}
       aria-label="Suggested learning activity"
       aria-busy={busy}
     >
