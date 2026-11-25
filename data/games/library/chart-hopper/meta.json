@@ -1,0 +1,8 @@
+{
+  "subskillId": "1.NBT.C.5-1",
+  "title": "Chart Hopper",
+  "emoji": "🦘",
+  "premise": "Roo hops ten at a time. Tap the tile where each big hop lands.",
+  "idea": "Numbers sit in rows of ten, so 10 more is always one row straight down. Adding 1 only reaches the next tile.",
+  "author": "claude-stand-in"
+}

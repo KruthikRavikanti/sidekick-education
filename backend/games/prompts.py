@@ -5,6 +5,8 @@ from pathlib import Path
 from .frame import KIT_DIR, ROOT
 
 EXAMPLES_DIR = ROOT / 'data' / 'games' / 'examples'
+# Games shipped with the repo beyond the few the model is shown as examples.
+LIBRARY_DIR = ROOT / 'data' / 'games' / 'library'
 
 BRIEF = """You design and write one small game for Sidekick, a learning app for children.
 
@@ -72,15 +74,25 @@ def skill_brief(subskill):
     return {key: str(subskill.get(key) or '')[:600] for key in _SKILL_KEYS if subskill.get(key)}
 
 
-def load_examples():
-    examples = []
-    for folder in sorted(EXAMPLES_DIR.iterdir()) if EXAMPLES_DIR.is_dir() else []:
+def _load(directory):
+    games = []
+    for folder in sorted(directory.iterdir()) if directory.is_dir() else []:
         meta, code = folder / 'meta.json', folder / 'game.js'
         if meta.is_file() and code.is_file():
             item = json.loads(meta.read_text(encoding='utf-8'))
             css = folder / 'game.css'
-            examples.append({**item, 'slug': folder.name, 'code': code.read_text(encoding='utf-8'), 'css': css.read_text(encoding='utf-8') if css.is_file() else ''})
-    return examples
+            games.append({**item, 'slug': folder.name, 'code': code.read_text(encoding='utf-8'), 'css': css.read_text(encoding='utf-8') if css.is_file() else ''})
+    return games
+
+
+def load_examples():
+    """The few reference games the model is shown."""
+    return _load(EXAMPLES_DIR)
+
+
+def load_library():
+    """Every game shipped with the repo: the examples plus the wider library."""
+    return _load(EXAMPLES_DIR) + _load(LIBRARY_DIR)
 
 
 def _is_math(subskill_id):

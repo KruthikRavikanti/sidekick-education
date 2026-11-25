@@ -3,11 +3,14 @@
   python -m backend.games seed                 load the reference games (each must pass the robot)
   python -m backend.games robot <folder>       play one game folder (game.js, optional game.css) with the robot
   python -m backend.games generate --subskill 3.NF.A.1-2
-  python -m backend.games generate --missing --grade 3 --limit 5
-  python -m backend.games list | coverage
+  python -m backend.games generate --missing --grades K,1,2,3,4,5 --subject math --limit 50 --workers 3
+  python -m backend.games verify               play every shipped game with the robot
+  python -m backend.games coverage             which skills in the skill map have a game (writes data/games/COVERAGE.md)
+  python -m backend.games list
 """
 import argparse
 import asyncio
+import collections
 import json
 import os
 import sys
@@ -19,7 +22,7 @@ from dotenv import load_dotenv
 from backend.accounts.database import Database, ROOT
 from backend.gap.catalog import get_subskill
 
-from . import library
+from . import library, prompts
 from .checks import static_issues
 from .frame import build_document
 from .robot import failures, run_robot
@@ -53,6 +56,72 @@ def _robot(args):
     return 0 if report['passed'] else 1
 
 
+GRADE_ORDER = ['K', '1', '2', '3', '4', '5', '6', '7', '8']
+
+
+def _verify(args):
+    """Play every shipped game with the robot. This is the gate a game passes before review."""
+    from concurrent.futures import ThreadPoolExecutor
+    games = [g for g in prompts.load_library() if not args.only or g['slug'] in args.only]
+    if not games:
+        print('no games match')
+        return 1
+
+    def play(game):
+        shots = str(Path(args.shots) / game['slug']) if args.shots else None
+        return game, run_robot(game['code'], game['css'], shots_dir=shots)
+
+    failed = 0
+    with ThreadPoolExecutor(max_workers=max(1, args.workers)) as pool:
+        for game, report in pool.map(play, games):
+            ok = report['passed']
+            failed += not ok
+            print(('PASSED ' if ok else 'FAILED ') + f"{game['slug']:28} {game['subskillId']:16} {len(report['checks'])} checks")
+            for line in failures(report):
+                print('    -', line)
+    print(f'{len(games) - failed} of {len(games)} games passed')
+    return 1 if failed else 0
+
+
+def _coverage(args):
+    """Compare the shipped games with the whole skill map, and write the map to data/games/COVERAGE.md."""
+    catalog = json.loads((ROOT / 'data' / 'sidekick_skill_map_v2.json').read_text(encoding='utf-8'))
+    games = collections.defaultdict(list)
+    for game in prompts.load_library():
+        games[game['subskillId']].append(game)
+    known = {item['subskill_id'] for item in catalog}
+    cells = collections.defaultdict(lambda: [0, 0])
+    for item in catalog:
+        cell = cells[(item['subject'], str(item['grade']))]
+        cell[0] += 1
+        cell[1] += item['subskill_id'] in games
+    def rank(grade):
+        return (GRADE_ORDER.index(grade), grade) if grade in GRADE_ORDER else (99, grade)
+    covered = sum(1 for item in catalog if item['subskill_id'] in games)
+    lines = ['# Game coverage', '',
+             'Written by `python -m backend.games coverage`. A skill counts as covered when a game for it ships in this repo',
+             'and passes the robot. Every other skill is waiting for `python -m backend.games generate --missing`.', '',
+             f'**{covered} of {len(catalog)} skills have a game** ({sum(len(v) for v in games.values())} games).', '',
+             '| Subject | Grade | Skills | With a game |', '|---|---|---|---|']
+    for (subject, grade), (total, have) in sorted(cells.items(), key=lambda kv: (kv[0][0], rank(kv[0][1]))):
+        lines.append(f'| {subject} | {grade} | {total} | {have} |')
+    lines += ['', '## Games', '', '| Skill | Grade | Game | What the child does |', '|---|---|---|---|']
+    by_id = {item['subskill_id']: item for item in catalog}
+    for subskill_id in sorted(games, key=lambda sid: (by_id.get(sid, {}).get('subject', ''), rank(str(by_id.get(sid, {}).get('grade', ''))), sid)):
+        item = by_id.get(subskill_id, {})
+        for game in games[subskill_id]:
+            lines.append(f"| `{subskill_id}` {item.get('subskill', '(not in the skill map)')} | {item.get('grade', '')} | {game.get('emoji', '')} {game['title']} | {game['premise']} |")
+    lines += ['', '## Skills still waiting', '']
+    for (subject, grade), (total, have) in sorted(cells.items(), key=lambda kv: (kv[0][0], rank(kv[0][1]))):
+        waiting = [item['subskill_id'] for item in catalog if item['subject'] == subject and str(item['grade']) == grade and item['subskill_id'] not in games]
+        lines.append(f"- **{subject}, grade {grade}** ({len(waiting)}): " + ', '.join(f'`{sid}`' for sid in waiting))
+    out = ROOT / 'data' / 'games' / 'COVERAGE.md'
+    out.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+    unknown = sorted(set(games) - known)
+    print(json.dumps({'skills': len(catalog), 'withGame': covered, 'games': sum(len(v) for v in games.values()), 'notInSkillMap': unknown, 'written': str(out.relative_to(ROOT))}, indent=2))
+    return 1 if unknown else 0
+
+
 async def _generate(args, database):
     from .jobs import build_one
     with database.transaction() as conn:
@@ -60,19 +129,37 @@ async def _generate(args, database):
             targets = list(args.subskill)
         else:
             marks, values = '', []
-            if args.grade:
-                marks, values = ' AND s.grade=?', [args.grade]
+            grades = [g.strip() for g in (args.grades or '').split(',') if g.strip()] + ([args.grade] if args.grade else [])
+            if grades:
+                marks += ' AND s.grade IN (' + ','.join('?' for _ in grades) + ')'
+                values += grades
+            if args.subject:
+                marks += ' AND s.subject=?'
+                values.append('Math' if args.subject == 'math' else 'Reading/ELA')
+            # A skill with a game shipped in data/games counts as covered even before `seed` has run.
+            shipped = sorted({game['subskillId'] for game in prompts.load_library()})
+            if shipped:
+                marks += ' AND s.id NOT IN (' + ','.join('?' for _ in shipped) + ')'
+                values += shipped
             targets = [row[0] for row in conn.execute(
                 f"""SELECT s.id FROM catalog_subskills s WHERE s.active=1{marks}
                     AND NOT EXISTS (SELECT 1 FROM game_versions v WHERE v.subskill_id=s.id AND v.status!='retired')
                     ORDER BY s.grade, s.id LIMIT ?""", (*values, args.limit))]
-    clock, code = _Clock(), 0
-    for subskill_id in targets:
+            print(len(targets), 'skills to build', flush=True)
+    clock = _Clock()
+    gate = asyncio.Semaphore(max(1, args.workers))
+
+    results = await asyncio.gather(*[_guarded(database, clock, subskill_id, build_one, gate) for subskill_id in targets])
+    return 1 if any(results) else 0
+
+
+async def _guarded(database, clock, subskill_id, build_one, gate):
+    """Build one game. Returns 1 when it did not verify."""
+    async with gate:
         with database.transaction() as conn:
             if not get_subskill(conn, subskill_id):
                 print(subskill_id, 'is not in the catalog')
-                code = 1
-                continue
+                return 1
             row = library.open_job(conn, subskill_id, clock.now())
             job_id = row['id'] if row else library.uid()
             if not row:
@@ -81,11 +168,10 @@ async def _generate(args, database):
                 conn.execute("UPDATE game_jobs SET status='running',lease_until=? WHERE id=?", (clock.now() + library.JOB_LEASE_SECONDS, job_id))
         version_id, failure = await build_one(database, clock, {'id': job_id, 'subskill_id': subskill_id})
         if version_id:
-            print(subskill_id, 'verified, waiting for review:', version_id)
-        else:
-            code = 1
-            print(subskill_id, 'not verified:', json.dumps(failure, ensure_ascii=False)[:1200])
-    return code
+            print(subskill_id, 'verified, waiting for review:', version_id, flush=True)
+            return 0
+        print(subskill_id, 'not verified:', json.dumps(failure, ensure_ascii=False)[:1200], flush=True)
+        return 1
 
 
 def main():
@@ -104,12 +190,23 @@ def main():
     generate.add_argument('--subskill', action='append')
     generate.add_argument('--missing', action='store_true')
     generate.add_argument('--grade')
+    generate.add_argument('--grades', help='comma-separated, for example K,1,2,3,4,5')
+    generate.add_argument('--subject', choices=['math', 'ela'])
     generate.add_argument('--limit', type=int, default=5)
+    generate.add_argument('--workers', type=int, default=1, help='games to build at the same time')
+    verify = commands.add_parser('verify', help='play every shipped game with the robot')
+    verify.add_argument('--only', action='append', help='a game folder name; repeat for more')
+    verify.add_argument('--workers', type=int, default=3)
+    verify.add_argument('--shots', help='folder for screenshots')
     commands.add_parser('list', help='every stored game')
-    commands.add_parser('coverage', help='how many skills have a game')
+    commands.add_parser('coverage', help='which skills in the skill map have a game')
     args = parser.parse_args()
     if args.command == 'robot':
         sys.exit(_robot(args))
+    if args.command == 'verify':
+        sys.exit(_verify(args))
+    if args.command == 'coverage':
+        sys.exit(_coverage(args))
     database = Database(args.database_url)
     database.assert_migrated()
     if args.command == 'seed':
@@ -122,7 +219,6 @@ def main():
         with database.transaction() as conn:
             for row in conn.execute('SELECT id,subskill_id,status,origin,title FROM game_versions ORDER BY created_at'):
                 print(f"{row['status']:9} {row['origin']:16} {row['subskill_id']:14} {row['title']}  ({row['id']})")
-    elif args.command == 'coverage':
         with database.transaction() as conn:
             total = conn.execute('SELECT COUNT(*) FROM catalog_subskills WHERE active=1').fetchone()[0]
             counts = {row[0]: row[1] for row in conn.execute("SELECT status,COUNT(DISTINCT subskill_id) FROM game_versions GROUP BY status")}

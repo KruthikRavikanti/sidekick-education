@@ -1,0 +1,8 @@
+{
+  "subskillId": "K.OA.A.4-1",
+  "title": "Bus to Ten",
+  "emoji": "🚌",
+  "premise": "The bus only leaves when all 10 seats are full. Call just enough kids.",
+  "idea": "The bus is a ten frame. Only the number of empty seats fills it, so counting the riders already on board calls the wrong number of kids.",
+  "author": "claude-stand-in"
+}

@@ -1,5 +1,7 @@
 """Generated games run only in a locked frame, pass a robot, and wait for a person."""
 import asyncio
+import json
+import os
 import uuid
 
 import pytest
@@ -14,6 +16,8 @@ from backend.gap.service import record_homework_evidence
 from backend.tests.account_helpers import create_child, mutate, picker, select_child, setup_pin, signup, unlock
 
 EXAMPLES = {item['slug']: item for item in prompts.load_examples()}
+SHIPPED = {item['slug']: item for item in prompts.load_library()}
+LIBRARY = {slug: item for slug, item in SHIPPED.items() if slug not in EXAMPLES}
 FROG = EXAMPLES['froggys-bridge']['code']
 PASSING = {'passed': True, 'kit': 'kit-1', 'stats': {}, 'manifest': {'rounds': [{'id': 'a', 'phase': 'solo', 'say': 'Go', 'mistakes': [{'tag': 't'}]}]},
            'checks': [{'name': 'boots', 'ok': True, 'detail': ''}]}
@@ -200,7 +204,7 @@ def test_seed_examples_wait_for_review_and_skip_games_the_robot_rejects(family, 
     assert {item['slug']: item['result'] for item in report}['choco-factory'] == 'robot_failed'
     with security_context.db.transaction() as conn:
         rows = conn.execute('SELECT status,origin FROM game_versions').fetchall()
-    assert len(rows) == len(EXAMPLES) - 1 and all(row['status'] == 'verified' and row['origin'] == 'seed_example' for row in rows)
+    assert len(rows) == len(SHIPPED) - 1 and all(row['status'] == 'verified' and row['origin'] == 'seed_example' for row in rows)
     assert all(item['result'] in {'unchanged', 'robot_failed'} for item in library.seed_examples(security_context.db, 6.0, robot=robot))
 
 
@@ -393,6 +397,28 @@ def test_reference_games_pass_the_real_robot(slug):
     report = robot_or_skip(run_robot, EXAMPLES[slug]['code'], EXAMPLES[slug]['css'])
     assert report['passed'], failures(report)
     assert report['stats']['randomWins'] * 3 <= report['stats']['randomTrials']
+
+
+def test_every_shipped_game_is_clean_named_and_tied_to_one_real_skill():
+    skills = {item['subskill_id'] for item in json.loads((prompts.ROOT / 'data' / 'sidekick_skill_map_v2.json').read_text(encoding='utf-8'))}
+    assert len(SHIPPED) == len(prompts.load_library()), 'two games share a folder name'
+    seen = {}
+    for slug, game in SHIPPED.items():
+        assert checks.static_issues(game['code'], game['css']) == [], slug
+        assert game['subskillId'] in skills, f'{slug} names a skill that is not in the skill map'
+        assert seen.setdefault(game['subskillId'], slug) == slug, f'{slug} and {seen[game["subskillId"]]} cover the same skill'
+        assert 3 <= len(game['title']) <= 60 and 10 <= len(game['premise']) <= 180 and game['emoji'] and game['idea'], slug
+        assert game['title'] in game['code'], f'{slug}: meta title does not match the game'
+        assert '\u2014' not in game['code'] + game['premise'] + game['idea'], slug
+
+
+# The whole library takes several minutes in a real browser, so it runs on request:
+#   SIDEKICK_GAMES_VERIFY_LIBRARY=1 npm run test:backend -- -k library     (or: npm run games:verify)
+@pytest.mark.skipif(not os.environ.get('SIDEKICK_GAMES_VERIFY_LIBRARY'), reason='set SIDEKICK_GAMES_VERIFY_LIBRARY=1 to play every library game')
+@pytest.mark.parametrize('slug', sorted(LIBRARY))
+def test_library_games_pass_the_real_robot(slug):
+    report = robot_or_skip(run_robot, LIBRARY[slug]['code'], LIBRARY[slug]['css'])
+    assert report['passed'], failures(report)
 
 
 @pytest.mark.parametrize('change,expected', [

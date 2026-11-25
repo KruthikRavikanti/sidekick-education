@@ -93,7 +93,7 @@
     if (opts.id && typeof opts.onTap === 'function') {
       el.setAttribute('role', 'button'); el.tabIndex = 0; el.style.cursor = 'pointer';
       if (opts.label) el.setAttribute('aria-label', plain(opts.label));
-      var fire = function () { if (st.locked) return; try { opts.onTap(st.game.sk); } catch (error) { st.game.fail(error); } };
+      var fire = function () { if (st.locked) return; try { opts.onTap(st.game.sk); } catch (error) { st.game.fail(error); return; } st.changed(); };
       el.addEventListener('click', fire);
       el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fire(); } });
       this.handle(opts.id, el, 'tap');
@@ -146,12 +146,13 @@
     if (o.drag) { el.classList.add('sk-drag'); el.tabIndex = 0; el.setAttribute('role', 'button'); stage._enableDrag(this); stage.handle(this.id, el, 'drag', this); }
     if (typeof o.tap === 'function') {
       el.classList.add('sk-tap'); el.tabIndex = 0; el.setAttribute('role', 'button');
-      var fire = function () { if (stage.locked || sp.locked) return; try { o.tap(sp, stage.game.sk); } catch (error) { stage.game.fail(error); } };
+      var fire = function () { if (stage.locked || sp.locked) return; try { o.tap(sp, stage.game.sk); } catch (error) { stage.game.fail(error); return; } stage.changed(); };
       el.addEventListener('click', fire);
       el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fire(); } });
       if (!o.drag) stage.handle(this.id, el, 'tap', this);
     }
     if (!o.drag && typeof o.tap !== 'function') { el.setAttribute('data-sk-id', this.id); el.style.pointerEvents = 'none'; el.setAttribute('role', 'img'); }
+    this.angle = 0; if (o.turn) this.turn(o.turn);
     if (o.float) el.classList.add('sk-float');
     if (o.badge != null) this.badge(o.badge);
     if (o.hidden) el.classList.add('sk-hidden');
@@ -207,6 +208,7 @@
   Sprite.prototype.pop = function () { restart(this.el, 'sk-pop'); return this; };
   Sprite.prototype.shake = function () { restart(this.el, 'sk-shake'); return this; };
   Sprite.prototype.spin = function () { restart(this.el, 'sk-spin'); return this; };
+  Sprite.prototype.turn = function (degrees) { this.angle = Number(degrees) || 0; this.el.style.setProperty('--r', this.angle + 'deg'); return this; };
   Sprite.prototype.float = function (on) { this.el.classList.toggle('sk-float', on !== false); return this; };
   Sprite.prototype.hide = function () { this.el.classList.add('sk-hidden'); return this; };
   Sprite.prototype.show = function () { this.el.classList.remove('sk-hidden'); return this; };
@@ -278,7 +280,8 @@
       return;
     }
     if (this.layout === 'stack') {
-      var step = Math.min(innerH / n, this.sprites[0]._h() + this.gap);
+      // a pile: items overlap as much as needed to stay inside the zone
+      var itemH = this.sprites[0]._h(), step = n > 1 ? Math.max(0.6, Math.min((innerH - itemH) / (n - 1), itemH + this.gap)) : 0;
       this.sprites.forEach(function (s, i) { s.moveTo(z.x + z.w / 2, z.y + z.h / 2 + (i - (n - 1) / 2) * step); });
       return;
     }
@@ -405,7 +408,7 @@
     if (o.color) el.style.setProperty('--c', color(o.color)); if (o.textColor) el.style.setProperty('--fc', color(o.textColor));
     el.innerHTML = rich(o.text || ''); if (o.label) el.setAttribute('aria-label', plain(o.label));
     var api = { id: o.id || this._auto('button'), el: el, taps: 0, set: function (text) { el.innerHTML = rich(text); return api; }, enable: function (on) { el.disabled = on === false; return api; } };
-    el.addEventListener('click', function () { if (st.locked) return; api.taps += 1; try { if (typeof o.onTap === 'function') o.onTap(st.game.sk, api); } catch (error) { st.game.fail(error); } });
+    el.addEventListener('click', function () { if (st.locked) return; api.taps += 1; try { if (typeof o.onTap === 'function') o.onTap(st.game.sk, api); } catch (error) { st.game.fail(error); return; } st.changed(); });
     this.handle(api.id, el, 'tap', api); this.widgets[api.id] = api; this.el.appendChild(el); return api;
   };
   Stage.prototype.stepper = function (o) {
@@ -717,6 +720,7 @@
     if (!st) throw new Error('no active round');
     if (step.drag != null) {
       var sp = st.sprites[step.drag]; if (!sp || !st.handles[step.drag]) throw new Error('no draggable "' + step.drag + '"');
+      sp.front();
       var from = centerOf(sp.el), to;
       if (step.to != null) { var z = st.zones[step.to]; if (!z) throw new Error('no zone "' + step.to + '"'); var at = step.at || ((z.layout === 'row' || z.layout === 'flow') ? [0.94, 0.5] : [0.5, 0.5]); to = st.toClient(z.x + z.w * at[0], z.y + z.h * at[1]); }
       else if (step.toXY) to = st.toClient(step.toXY[0], step.toXY[1]);
@@ -775,7 +779,7 @@
     layout: function () {
       var g = current, st = g.stage, issues = [], view = document.documentElement.clientWidth;
       if (document.documentElement.scrollWidth > view + 1) issues.push('page is wider than the screen');
-      if (st) { var sr = st.el.getBoundingClientRect(), unit = sr.width / 100; for (var id in st.handles) { var hd = st.handles[id]; if (hd.kind === 'zone' || !hd.el.isConnected) continue; var r = hd.el.getBoundingClientRect(); if (r.width < 1 || r.height < 1) continue; var seen = Math.max(0, Math.min(r.right, sr.right) - Math.max(r.left, sr.left)) * Math.max(0, Math.min(r.bottom, sr.bottom) - Math.max(r.top, sr.top)) / (r.width * r.height); if (seen < 0.05) issues.push('"' + id + '" is off the stage'); else if (seen < 0.85) issues.push('"' + id + '" is cut off by the edge of the stage'); else if (Math.min(r.width, r.height) < 9 * unit - 0.5) issues.push('"' + id + '" is too small to tap (' + (Math.min(r.width, r.height) / unit).toFixed(1) + ' units; make it at least 9.5)'); } }
+      if (st) { var sr = st.el.getBoundingClientRect(), unit = sr.width / 100; for (var id in st.handles) { var hd = st.handles[id]; if (hd.kind === 'zone' || !hd.el.isConnected) continue; var r = hd.el.getBoundingClientRect(); if (r.width < 1 || r.height < 1) continue; var seen = Math.max(0, Math.min(r.right, sr.right) - Math.max(r.left, sr.left)) * Math.max(0, Math.min(r.bottom, sr.bottom) - Math.max(r.top, sr.top)) / (r.width * r.height); if (seen < 0.05) issues.push('"' + id + '" is off the stage'); else if (seen < 0.85) issues.push('"' + id + '" is cut off by the edge of the stage'); else if (Math.min(r.width, r.height) < Math.min(9 * unit - 0.5, 44)) issues.push('"' + id + '" is too small to tap (' + (Math.min(r.width, r.height) / unit).toFixed(1) + ' units; make it at least 9.5)'); } }
       if (st) {
         var boxes = []; for (var wid in st.handles) { var w = st.handles[wid]; if (!w.el.isConnected || ['stepper', 'keypad', 'choice', 'grid'].indexOf(w.kind) < 0 && !w.el.classList.contains('sk-btn')) continue; boxes.push({ id: wid, r: w.el.getBoundingClientRect() }); }
         for (var a = 0; a < boxes.length; a++) for (var b = a + 1; b < boxes.length; b++) {

@@ -61,13 +61,13 @@ def save_version(conn, now, subskill, *, title, emoji, premise, idea, code, css,
 
 
 def seed_examples(db, now, *, robot=run_robot, approve=False):
-    """Load the hand-written reference games. Each one must pass the robot first.
+    """Load every game shipped with the repo. Each one must pass the robot first.
 
     They are stored as `verified`, like any other game, and wait for a person in the
     review page unless `approve` is passed explicitly (local development only).
     """
     out = []
-    for item in prompts.load_examples():
+    for item in prompts.load_library():
         with db.transaction() as conn:
             subskill = get_subskill(conn, item['subskillId'])
             known = conn.execute('SELECT id,status FROM game_versions WHERE source_sha256=?', (source_hash(item['code'], item['css']),)).fetchone()

@@ -69,11 +69,11 @@ stage.sprite({ id: 'lamp', emoji: '💡', x: 50, y: 20, size: 10, tap(sprite, sk
 Looks: `emoji`, `text` (add `plain: true` for bare text), `shape: 'rect' | 'circle'` with `w h color caption`,
 or `svg` / `html` with `w h`. Behaviour: `drag: true` (must land in a zone, otherwise it goes back),
 `drag: 'free'` (can rest anywhere), `tap(sprite, sk)`. Other options: `zone` (start inside a zone, which
-becomes its home), `kind`, `value`, `data`, `label` (spoken name), `z`, `float`, `badge`, `hidden`.
+becomes its home), `kind`, `value`, `data`, `label` (spoken name), `z`, `float`, `badge`, `hidden`, `turn` (degrees).
 
 Read: `sprite.id .kind .value .data .x .y .text .emoji .zone` (zone id or null).
 Do: `moveTo(x, y)` (animates), `place(zoneId)`, `home()`, `set({ emoji, text, size, value, kind, data })`,
-`badge(text)`, `pop()`, `shake()`, `spin()`, `float()`, `hide()`, `show()`, `lock()`, `remove()`.
+`badge(text)`, `turn(degrees)`, `pop()`, `shake()`, `spin()`, `float()`, `hide()`, `show()`, `lock()`, `remove()`.
 
 ### Zones: places things can go
 
@@ -84,7 +84,8 @@ stage.zone({ id: 'plate', x: 10, y: 20, w: 30, h: 22, look: 'plate', label: 'Pla
 
 Options: `look` (`tray plate box basket slot ghost cloud`), `color`, `label`, `labelAt` (`'top'`, `'in'`, or below),
 `showLabel: false`, `layout` (`flow row grid stack free`), `align` (`start center end`), `cols`, `rows`, `gap`, `pad`,
-`capacity`, `swap: true` (a full zone hands back what it held), `accepts` (a kind, a list of kinds, or
+`capacity`, `swap: true` (a full zone hands back what it held). `layout: 'stack'` makes an overlapping pile.
+Other options: , `accepts` (a kind, a list of kinds, or
 `(sprite, zone) => boolean`), `onDrop`, `onReject`.
 
 Read: `zone.sprites` (in order), `zone.count`, `zone.ids`, `zone.has(spriteOrId)`, `zone.kinds()`, `zone.values()`,
