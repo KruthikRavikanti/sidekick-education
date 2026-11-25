@@ -168,13 +168,13 @@ function Detail({ id, onChanged }: { id: string; onChanged: () => void }) {
               <span className="game-round-phase">
                 {round.phase === "solo" ? "On their own" : "Guided"}
               </span>
-              <p>{round.say}</p>
+              <p>{plainText(round.say)}</p>
               {round.mistakes.length ? (
                 <ul>
                   {round.mistakes.map((mistake) => (
                     <li key={mistake.tag}>
                       <code>{mistake.tag}</code>
-                      {mistake.say ? ` → “${mistake.say}”` : " (no words in the solo round)"}
+                      {mistake.say ? ` → “${plainText(mistake.say)}”` : " (no words in the solo round)"}
                     </li>
                   ))}
                 </ul>
@@ -421,6 +421,11 @@ function ReviewContent() {
       </section>
     </AccountShell>
   );
+}
+
+// In a game, {3/4} is drawn as a stacked fraction. In this plain list it reads 3/4.
+function plainText(text: string) {
+  return text.replace(/\{\s*([^{}\/]+?)\s*\/\s*([^{}\/]+?)\s*\}/g, "$1/$2");
 }
 
 export function GameReview() {

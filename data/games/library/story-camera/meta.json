@@ -1,0 +1,8 @@
+{
+  "subskillId": "RL.4.6-1",
+  "title": "Story Camera",
+  "emoji": "🎥",
+  "premise": "Move the story camera inside a character or outside. Tap the words that have to change.",
+  "idea": "Point of view is where the camera sits. Moving it inside or outside a character means switching every pronoun, not just the first.",
+  "author": "claude-stand-in"
+}

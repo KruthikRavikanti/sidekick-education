@@ -1,0 +1,8 @@
+{
+  "subskillId": "L.5.2-1",
+  "title": "Comma Cart",
+  "emoji": "🛒",
+  "premise": "The shopping robot buys exactly what the list says. Tap a word to put a comma after it.",
+  "idea": "A robot splits its shopping list only at commas, so items with no comma between them become one strange thing in the cart.",
+  "author": "claude-stand-in"
+}

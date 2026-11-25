@@ -1,0 +1,8 @@
+{
+  "subskillId": "RF.1.2-1",
+  "title": "Magic E",
+  "emoji": "✨",
+  "premise": "A silent e at the end changes a word. Add it or take it away to make the picture.",
+  "idea": "Dragging a silent e on or off a word flips its vowel between short and long, and the picture beside the word changes with it.",
+  "author": "claude-stand-in"
+}
