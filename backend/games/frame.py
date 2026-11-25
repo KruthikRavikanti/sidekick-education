@@ -54,10 +54,14 @@ def frame_headers(nonce):
     }
 
 
-def build_document(code, css='', *, seed=None, title='Sidekick game', kit_version=KIT_VERSION, nonce=None):
+def build_document(code, css='', *, seed=None, title='Sidekick game', kit_version=KIT_VERSION, nonce=None, token=None):
     """Return (html, nonce). `code` and `css` must already have passed checks.static_issues."""
     kit_css, kit_js = kit_assets(kit_version)
     nonce = nonce or secrets.token_urlsafe(18)
+    token = token or secrets.token_urlsafe(24)
+    if not all(ch.isalnum() or ch in '-_' for ch in token):
+        raise ValueError('Invalid message token')
+    kit_js = kit_js.replace('__SK_MESSAGE_TOKEN__', token)
     init = json.dumps({'seed': int(seed) if seed is not None else None, 'kit': kit_version})
     safe_title = ''.join(ch for ch in str(title) if ch.isalnum() or ch in ' -:,!?\'')[:80]
     html = (

@@ -97,7 +97,9 @@ button { font: inherit; color: inherit; }
 .sk-btn:active { transform: translate(-50%, calc(-50% + .5cqw)); box-shadow: 0 .4cqw 0 rgba(0,0,0,.2); }
 .sk-btn:focus-visible, .sk-chip:focus-visible, .sk-key:focus-visible, .sk-cell:focus-visible { outline: .7cqw solid var(--sk-sun); outline-offset: .3cqw; }
 .sk-btn[disabled] { opacity: .5; cursor: default; }
-.sk-widget { left: calc(var(--x) * 1cqw); top: calc(var(--y) * 1cqw); transform: translate(-50%, -50%); }
+.sk-widget { left: calc(var(--x) * 1cqw); top: calc(var(--y) * 1cqw); transform: translate(-50%, -50%); z-index: 5; }
+.sk-btn { z-index: 5; }
+.sk-track { z-index: 4; }
 .sk-stepper { display: flex; align-items: center; gap: 1.4cqw; background: rgba(255,255,255,.94); border: .5cqw solid var(--sk-forest); border-radius: 99px; padding: .8cqw 1.2cqw; box-shadow: 0 .8cqw 0 rgba(5,74,41,.2); color: var(--sk-forest); }
 .sk-stepper button { width: max(44px, 8.4cqw); height: max(44px, 8.4cqw); border-radius: 50%; border: none; background: var(--sk-forest); color: #fff; font: 700 clamp(20px, 5.4cqw, 34px)/1 "Fredoka", sans-serif; cursor: pointer; }
 .sk-stepper button:active { transform: scale(.93); }

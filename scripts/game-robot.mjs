@@ -29,14 +29,16 @@ const report = { passed: false, kit: null, checks: [], manifest: null, stats: {}
 const check = (name, ok, detail = '') => { report.checks.push({ name, ok: !!ok, detail: String(detail).slice(0, 400) }); return !!ok; };
 const words = (text) => String(text).trim().split(/\s+/).filter(Boolean).length;
 
+const SEEDS = String(args.seeds ?? '101,2024').split(',').map(Number).filter((n) => Number.isInteger(n) && n > 0).slice(0, 4);
+const withSeed = (seed) => html.replace(/window\.__SK_INIT=\{"seed": (null|\d+)/, `window.__SK_INIT={"seed": ${seed}`);
 const browser = await chromium.launch({ args: ['--disable-dev-shm-usage'] });
-async function open(width, height) {
+async function open(width, height, body = html) {
   const context = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 2, reducedMotion: 'reduce', serviceWorkers: 'block' });
   const page = await context.newPage();
   const trouble = { errors: [], requests: [], loads: 0 };
   await context.route('**/*', (route) => {
     const url = route.request().url();
-    if (url === URL_ && trouble.loads === 0) { trouble.loads += 1; return route.fulfill({ status: 200, contentType: 'text/html; charset=utf-8', headers: { 'Content-Security-Policy': args.csp || DEFAULT_CSP }, body: html }); }
+    if (url === URL_ && trouble.loads === 0) { trouble.loads += 1; return route.fulfill({ status: 200, contentType: 'text/html; charset=utf-8', headers: { 'Content-Security-Policy': args.csp || DEFAULT_CSP }, body }); }
     trouble.requests.push(url.slice(0, 120)); return route.abort();
   });
   page.on('pageerror', (error) => trouble.errors.push(String(error.message).slice(0, 200)));
@@ -150,6 +152,37 @@ try {
   check('not_guessable', trials === 0 || lucky / trials <= 0.34, `random play solved the solo round ${lucky} of ${trials} times`);
   s = await state(page);
   check('survives_random_play', !s.failed, s.failed || '');
+
+  // ---- fresh numbers: a different seed must still be winnable, and must still reject the known mistakes
+  for (const seed of SEEDS) {
+    const other = await open(WIDTH, 760, withSeed(seed));
+    const p = other.page, label = `seed_${seed}`;
+    try {
+      await p.waitForFunction(() => window.__SK && window.__SK.manifest(), null, { timeout: 6000 });
+      const m2 = await p.evaluate(() => window.__SK.manifest());
+      check(label + '_same_shape', m2.rounds.length === rounds.length && m2.rounds[solo].mistakes.length >= 1, 'a different seed changed the number of rounds or dropped the solo mistakes');
+      await tap(p, 'sk-start');
+      for (let i = 0; i < m2.rounds.length; i++) {
+        await p.evaluate((index) => window.__SK.goto(index), i); await fit(p, WIDTH);
+        const ready = await p.evaluate(() => window.__SK.peek());
+        for (const step of await p.evaluate(() => window.__SK.steps('solution'))) await act(p, step);
+        if (!m2.rounds[i].autoCheck) await tap(p, 'sk-check');
+        const st = await state(p);
+        check(`${label}_round_${i + 1}_wins`, !ready && st.solved && !st.failed, st.failed || (ready ? 'solved before any move' : `said "${st.feedback}"`));
+      }
+      for (let j = 0; j < m2.rounds[solo].mistakes.length; j++) {
+        await p.evaluate((index) => window.__SK.goto(index), solo); await fit(p, WIDTH);
+        for (const step of await p.evaluate((jj) => window.__SK.steps('mistake', jj), j)) await act(p, step);
+        await tap(p, 'sk-check');
+        const st = await state(p);
+        check(`${label}_mistake_${m2.rounds[solo].mistakes[j].tag}_rejected`, !st.solved && !st.failed, 'with these numbers the known mistake wins');
+      }
+      const issues = await p.evaluate(() => window.__SK.layout());
+      check(label + '_fits_phone', issues.length === 0, issues.slice(0, 3).join('; '));
+    } catch (error) { check(label + '_plays', false, String(error.message).split('\n')[0]); }
+    trouble.errors.push(...other.trouble.errors); trouble.requests.push(...other.trouble.requests);
+    await other.context.close();
+  }
 
   // ---- a wider screen
   const wide = await open(820, 900);

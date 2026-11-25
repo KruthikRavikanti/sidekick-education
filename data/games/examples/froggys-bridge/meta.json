@@ -1,6 +1,7 @@
 {
   "subskillId": "3.NF.A.1-2",
   "title": "Froggy's Bridge",
+  "emoji": "🐸",
   "premise": "Froggy can only hop on planks. Build a bridge that stops right at the berry.",
   "idea": "The river gap is one whole and every plank is a unit fraction of it, so a/b can only be reached by laying a planks of size 1/b.",
   "author": "claude-stand-in"

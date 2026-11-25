@@ -26,6 +26,11 @@ def run_robot(code, css='', *, seed=None, shots_dir=None, trials=30, timeout=ROB
     issues = static_issues(code, css)
     if issues:
         return _failed('static_checks', ', '.join(issues))
+    return play(code, css, seed=seed, shots_dir=shots_dir, trials=trials, timeout=timeout)
+
+
+def play(code, css='', *, seed=None, shots_dir=None, trials=30, timeout=ROBOT_TIMEOUT_SECONDS):
+    """Play source in the locked frame without the static checks. Tests use this to probe the frame itself."""
     node = shutil.which('node')
     if not node or not ROBOT_SCRIPT.exists():
         raise RobotUnavailable('Node.js and scripts/game-robot.mjs are required to verify a game.')

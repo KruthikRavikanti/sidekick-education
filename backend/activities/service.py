@@ -26,13 +26,14 @@ def target_view(target):
     return dict(id=target['subskill_id'], name=target['subskill'], subject=general.subject_for(target))
 
 
-def _target(conn, security, kid_id, upload_id, active):
+def _candidates(conn, security, kid_id, upload_id, active):
+    """Every reliably matched skill on an owned upload, as (priority, skill, evidence id)."""
     authorize(security, conn, kid_id, active, 'kid')
     upload = conn.execute('SELECT * FROM homework_uploads WHERE id=? AND kid_id=?', (upload_id, kid_id)).fetchone()
     if not upload:
         raise AccountError('not_found', 'That student work was not found.', 404)
     if upload['state'] != 'completed':
-        return None, None, 'analysis_failed' if upload['state'] == 'failed' else 'analysis_pending'
+        return [], 'analysis_failed' if upload['state'] == 'failed' else 'analysis_pending'
     # A reliable skill match is enough to teach it, even where automatic grading
     # abstained. This does not promote that observation into support evidence.
     rows = conn.execute("""SELECT p.*, e.id AS evidence_id,
@@ -65,12 +66,19 @@ def _target(conn, security, kid_id, upload_id, active):
         if not target or not target['active'] or general.subject_for(target) is None or general.grade_for(target) is None:
             continue
         priority = 0 if row['evidence_eligible'] and row['evidence_correctness'] == 'incorrect' else 1 if row['evidence_correctness'] == 'correct' else 2
-        # A reliably mapped playable item must not be hidden by an earlier or
-        # incorrect question whose skill has no available interaction.
-        playable = bool(capabilities.mechanics_for(target))
-        candidates.append((0 if playable else 1, priority, target, row['evidence_id']))
-    if candidates:
-        _, _, target, evidence_id = min(candidates, key=lambda candidate: candidate[:2])
+        candidates.append((priority, target, row['evidence_id']))
+    return candidates, None
+
+
+def _target(conn, security, kid_id, upload_id, active):
+    candidates, reason = _candidates(conn, security, kid_id, upload_id, active)
+    if reason:
+        return None, None, reason
+    # A reliably mapped playable item must not be hidden by an earlier or
+    # incorrect question whose skill has no available interaction.
+    ranked = [(0 if capabilities.mechanics_for(target) else 1, priority, target, evidence_id) for priority, target, evidence_id in candidates]
+    if ranked:
+        _, _, target, evidence_id = min(ranked, key=lambda candidate: candidate[:2])
         return target, evidence_id, None
     return None, None, 'no_supported_skill'
 

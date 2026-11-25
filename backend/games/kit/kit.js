@@ -8,6 +8,11 @@
 (function () {
   'use strict';
   var KIT = 'kit-1';
+  // The host page only trusts messages that carry this token. It lives in this closure and the
+  // kit removes its own script tag, so game code that runs afterwards cannot read or forge it.
+  var TOKEN = '__SK_MESSAGE_TOKEN__';
+  var HOST = window.parent;
+  try { if (document.currentScript && document.currentScript.parentNode) document.currentScript.parentNode.removeChild(document.currentScript); } catch (_) { /* keep running */ }
   var INIT = window.__SK_INIT || {};
   var root = document.getElementById('sk-root');
   var reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -18,9 +23,9 @@
 
   // ------------------------------------------------------------ small helpers
   function post(type, data) {
-    var message = { sidekick: KIT, type: type };
-    for (var key in data || {}) message[key] = data[key];
-    try { window.parent.postMessage(message, '*'); } catch (_) { /* no parent in tests */ }
+    var message = { sidekick: KIT, type: type, token: TOKEN };
+    for (var key in data || {}) if (key !== 'token' && key !== 'sidekick') message[key] = data[key];
+    try { HOST.postMessage(message, '*'); } catch (_) { /* no host in tests */ }
   }
   function h(tag, cls, text) { var el = document.createElement(tag); if (cls) el.className = cls; if (text != null) el.textContent = text; return el; }
   function esc(text) { return String(text).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -667,8 +672,9 @@
   };
   Game.prototype.result = function () {
     var solo = null; this.records.forEach(function (r) { if (r && r.phase === 'solo') solo = r; });
-    return { rounds: this.records.filter(Boolean).map(function (r) { return { id: r.id, phase: r.phase, attempts: r.attempts, hints: r.hints, solved: r.solved, firstTry: r.firstTry, mistakes: r.mistakes.slice(0, 6) }; }),
-      solo: solo ? { solved: solo.solved, firstTry: solo.firstTry === true, attempts: solo.attempts, mistakes: solo.mistakes.slice(0, 6) } : null,
+    var tags = function (list) { return list.slice(0, 6).map(function (tag) { return String(tag).slice(0, 60); }); };
+    return { rounds: this.records.filter(Boolean).slice(0, 8).map(function (r) { return { id: String(r.id).slice(0, 40), phase: r.phase === 'solo' ? 'solo' : 'guided', attempts: Math.min(r.attempts, 500), hints: Math.min(r.hints, 500), solved: !!r.solved, firstTry: r.firstTry, mistakes: tags(r.mistakes) }; }),
+      solo: solo ? { solved: !!solo.solved, firstTry: solo.firstTry === true, attempts: Math.min(solo.attempts, 500), mistakes: tags(solo.mistakes) } : null,
       ms: Date.now() - this.startedAt };
   };
   Game.prototype.finish = function () {
@@ -713,7 +719,7 @@
       var from = centerOf(sp.el), to;
       if (step.to != null) { var z = st.zones[step.to]; if (!z) throw new Error('no zone "' + step.to + '"'); var at = step.at || ((z.layout === 'row' || z.layout === 'flow') ? [0.94, 0.5] : [0.5, 0.5]); to = st.toClient(z.x + z.w * at[0], z.y + z.h * at[1]); }
       else if (step.toXY) to = st.toClient(step.toXY[0], step.toXY[1]);
-      else if (step.home) to = st.toClient(sp.homeX, sp.homeY);
+      else if (step.home) { var hz = sp.homeZone && st.zones[sp.homeZone]; to = hz ? st.toClient(hz.x + hz.w / 2, hz.y + hz.h / 2) : st.toClient(sp.homeX, sp.homeY); }
       else throw new Error('drag needs "to", "toXY" or "home"');
       return [{ type: 'drag', from: from, to: to }];
     }
