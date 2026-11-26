@@ -1,0 +1,8 @@
+{
+  "subskillId": "W.1.3-2",
+  "title": "Robot Chef",
+  "emoji": "🤖",
+  "premise": "Robo follows time words exactly. Label each step so the robot does them in order.",
+  "idea": "The robot performs steps in the order the time words say. Misplaced words make it eat before it cooks, and \"and then\" tells it nothing.",
+  "author": "claude-stand-in"
+}

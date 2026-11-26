@@ -1,0 +1,8 @@
+{
+  "subskillId": "RL.1.4-1",
+  "title": "Sense Sparks",
+  "emoji": "✨",
+  "premise": "Some words wake up your senses. Tap the words in each sentence that give a spark.",
+  "idea": "Tapping a word tests it for a spark. Sense words light up with the sense they wake, while a plain describing word like new gives none.",
+  "author": "claude-stand-in"
+}
