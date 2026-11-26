@@ -21,21 +21,20 @@ button { font: inherit; color: inherit; }
 .sk-phase { font-weight: 900; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; background: #eef4dc; color: var(--sk-forest); }
 .sk-phase.solo { background: #ffe9d8; color: #8a3d0c; }
 .sk-dots { display: flex; gap: 6px; margin-left: auto; }
-.sk-dot { width: 12px; height: 12px; border-radius: 50%; background: #fff; transition: background .25s, transform .25s; }
+.sk-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--sk-border); transition: background .25s, transform .25s; }
 .sk-dot.done { background: var(--sk-lime); }
 .sk-dot.now { background: var(--sk-orange); transform: scale(1.25); }
 
 /* ---- the mission line */
 .sk-say { display: flex; align-items: flex-start; gap: 10px; padding: 0 2px 10px; }
-.sk-guide { flex: 0 0 46px; width: 46px; height: 46px; border-radius: 16px; background: #fff url("__SK_MASCOT__") center / 82% no-repeat; border: 2px solid #fff; }
-.sk-mission { flex: 1; background: #fff; border: 2px solid #fff; border-radius: 6px 22px 22px 22px; padding: 10px 14px; font-family: "Fredoka", sans-serif; font-weight: 500; font-size: clamp(17px, 4.6vw, 22px); line-height: 1.25; }
+.sk-guide { flex: 0 0 46px; width: 46px; height: 46px; border-radius: 16px; background: #fff url("__SK_MASCOT__") center / 82% no-repeat; border: 2px solid var(--sk-border); box-shadow: 0 3px 0 var(--sk-border); }
+.sk-mission { flex: 1; background: #fff; border: 2px solid var(--sk-border); border-radius: 6px 20px 20px 20px; padding: 10px 14px; font-family: "Fredoka", sans-serif; font-weight: 500; font-size: clamp(17px, 4.6vw, 22px); line-height: 1.25; box-shadow: 0 3px 0 var(--sk-border); }
 .sk-frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1; font-size: .82em; margin: 0 .12em; font-weight: 600; }
 .sk-frac > span:first-child { border-bottom: .09em solid currentColor; padding: 0 .18em .05em; }
 .sk-frac > span:last-child { padding: .05em .18em 0; }
 
 /* ---- the stage: a fixed coordinate box, 100 units wide */
-/* Flat, like every panel in the app around it. The clear border keeps the stage the size it has always been. */
-.sk-stage-wrap { border-radius: 26px; border: 3px solid transparent; overflow: hidden; background: transparent; }
+.sk-stage-wrap { border-radius: 26px; border: 3px solid var(--sk-forest); box-shadow: 0 6px 0 var(--sk-forest); overflow: hidden; background: var(--sk-cream); }
 .sk-stage { position: relative; width: 100%; container-type: inline-size; overflow: hidden; touch-action: none; background: linear-gradient(#e9f7ff, #fff9f0); }
 .sk-stage > * { position: absolute; }
 .sk-scene-meadow { background: linear-gradient(#bfe9ff 0 46%, #a5dc7b 46% 100%); }
@@ -128,12 +127,12 @@ button { font: inherit; color: inherit; }
 
 /* ---- bottom bar: act, hear back */
 .sk-bar { display: flex; align-items: center; gap: 10px; padding: 12px 2px 0; flex-wrap: wrap; }
-.sk-check { font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 20px; min-height: 52px; padding: 8px 30px; border-radius: 999px; border: none; background: var(--sk-forest); color: #fff; cursor: pointer; transition: transform .12s; }
-.sk-check:active { transform: scale(.97); }
-.sk-check.next { background: var(--sk-orange); color: var(--sk-forest); }
+.sk-check { font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 20px; min-height: 52px; padding: 8px 30px; border-radius: 999px; border: none; background: var(--sk-forest); color: #fff; box-shadow: 0 5px 0 #02321b; cursor: pointer; }
+.sk-check:active { transform: translateY(3px); box-shadow: 0 2px 0 #02321b; }
+.sk-check.next { background: var(--sk-orange); box-shadow: 0 5px 0 #c9652c; }
 .sk-check[disabled] { opacity: .45; cursor: default; }
 .sk-check.sk-shake { animation: sk-shake .4s ease-in-out; }
-.sk-hint { font-family: "Nunito", sans-serif; font-weight: 800; font-size: 15px; min-height: 44px; padding: 6px 16px; border-radius: 999px; border: 2px solid #fff; background: #fff; color: var(--sk-forest); cursor: pointer; }
+.sk-hint { font-family: "Nunito", sans-serif; font-weight: 800; font-size: 15px; min-height: 44px; padding: 6px 16px; border-radius: 999px; border: 2px solid var(--sk-forest); background: #fff; color: var(--sk-forest); cursor: pointer; }
 .sk-hint[hidden] { display: none; }
 .sk-back { flex: 1 1 200px; min-height: 44px; display: flex; align-items: center; font-weight: 700; font-size: 16px; line-height: 1.3; padding: 8px 14px; border-radius: 16px; background: transparent; color: var(--sk-forest); }
 .sk-back.good { background: #eef4dc; }
@@ -142,7 +141,7 @@ button { font: inherit; color: inherit; }
 .sk-back:empty { display: none; }
 
 /* ---- cards: start and finish */
-.sk-card { text-align: center; padding: 34px 18px 30px; border-radius: 26px; border: 3px solid #fff; background: #fff; }
+.sk-card { text-align: center; padding: 34px 18px 30px; border-radius: 26px; border: 3px solid var(--sk-forest); box-shadow: 0 6px 0 var(--sk-forest); background: linear-gradient(160deg, #fff, #f3f8e3); }
 .sk-card .sk-art { font-size: 64px; line-height: 1.1; font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; }
 .sk-card h1 { font-family: "Fredoka", sans-serif; font-weight: 600; font-size: clamp(26px, 7vw, 38px); margin: 10px 0 6px; line-height: 1.1; }
 .sk-card p { font-size: 18px; font-weight: 600; color: var(--sk-muted); margin: 0 auto 20px; max-width: 30em; line-height: 1.4; }

@@ -39,38 +39,6 @@ export function Avatar({
   );
 }
 
-const KID_STEPS = [
-  ["snap", "Snap your page"],
-  ["see", "See what Sidekick found"],
-  ["play", "Play a game made for you"],
-] as const;
-
-/** The kid's three steps, shown on every kid screen so the path reads as one journey. */
-export function KidTrail({
-  current,
-  auto = false,
-}: {
-  current?: "snap" | "see" | "play";
-  auto?: boolean;
-}) {
-  const at = KID_STEPS.findIndex(([id]) => id === current);
-  return (
-    <ol className={auto ? "kid-trail kid-trail-auto" : "kid-trail"}>
-      {KID_STEPS.map(([id, label], index) => (
-        <li
-          key={id}
-          className={
-            at < 0 ? undefined : index < at ? "done" : index === at ? "current" : undefined
-          }
-          aria-current={index === at ? "step" : undefined}
-        >
-          {label}
-        </li>
-      ))}
-    </ol>
-  );
-}
-
 export function AccountShell({
   children,
   kind = "account",
