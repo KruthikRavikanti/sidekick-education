@@ -3,10 +3,10 @@
    no borders and no drop shadows. It only restyles; remove the import in layout.tsx to
    go back to the previous look.
 
-   One palette, no pale green: sun, orange, forest, lime and sky, on cream, with sand as the one quiet neutral. */
+   One palette: sun, orange, forest and lime, on cream, with sand as the one quiet neutral.
+   No pale green and no light blue. */
 :root {
   --sun: #ffd45c;
-  --sky: #cdeafc;
   --orange-tint: #fde3d3;
   --sand: #f3ecdb;
   --sand-deep: #e9dfc8;
@@ -33,9 +33,17 @@ h1, h2, h3 { font-family: Fredoka, Nunito, sans-serif; }
 .auth-story { background: var(--sun); border-radius: var(--block-radius); padding: 52px 48px; display: flex; flex-direction: column; justify-content: center; }
 .auth-story h1 { font-size: clamp(44px, 5.4vw, 72px); line-height: 1; letter-spacing: -1px; }
 .auth-story p { color: var(--forest); font-weight: 700; }
-.auth-card { background: var(--sky); }
+/* The form card is forest: light text, white fields and a sun button, so the button still stands out. */
+.auth-card, .pin-card { background: var(--forest); color: var(--cream); }
+:is(.auth-card, .pin-card) :is(h1, h2, label, legend, a, .text-button) { color: var(--cream); }
+:is(.auth-card, .pin-card) > p:not(.account-eyebrow), :is(.auth-card, .pin-card) :is(.field-help, .auth-switch) { color: var(--on-forest); }
+:is(.auth-card, .pin-card) .account-eyebrow { color: var(--lime); }
+:is(.auth-card, .pin-card) .account-section-icon { border: 0; }
+:is(.auth-card, .pin-card) .button.primary, :is(.auth-card, .pin-card) .button.primary * { background: var(--sun); color: var(--forest); }
+:is(.auth-card, .pin-card) .button.primary:hover:not(:disabled) { background: #ffe08a; }
+:is(.auth-card, .pin-card) .text-button:hover { background: var(--forest-soft); }
+.account-shell :is(.auth-card, .pin-card) input:focus { border-color: var(--sun); }
 .auth-card input, .pin-card input { border: 0; border-radius: 18px; min-height: 54px; background: #fff; }
-.pin-card { background: var(--sky); }
 
 /* ---------- who is learning ---------- */
 .picker-intro { background: var(--sun); border-radius: var(--block-radius); padding: 44px 32px; margin: 4px 0 20px; max-width: none; }
@@ -45,7 +53,7 @@ h1, h2, h3 { font-family: Fredoka, Nunito, sans-serif; }
 .profile-tile { border: 0; box-shadow: none; border-radius: var(--block-radius); min-height: 264px; font-family: Fredoka, Nunito, sans-serif; font-size: 30px; transition: transform 0.15s; }
 .profile-tile:nth-child(4n + 1) { background: var(--orange); }
 .profile-tile:nth-child(4n + 2) { background: var(--lime); }
-.profile-tile:nth-child(4n + 3) { background: var(--sky); }
+.profile-tile:nth-child(4n + 3) { background: var(--sun); }
 .profile-tile:nth-child(4n + 4) { background: #e7cfe4; }
 .profile-tile.parent-tile { background: var(--forest); color: var(--cream); }
 .profile-tile.parent-tile * { color: var(--cream); }
@@ -85,7 +93,15 @@ section.kid-chat-placeholder input[disabled]::placeholder { color: var(--on-fore
 .upload-intro h1 { font-size: clamp(48px, 6vw, 80px); line-height: 1; }
 .upload-intro p { color: var(--forest); font-weight: 700; font-size: 19px; }
 .intro-mascot { width: 220px; height: 160px; margin: 24px 0 0; transform: none; }
-.upload-card { border: 0; box-shadow: none; border-radius: var(--block-radius); background: var(--sky); }
+.upload-card { border: 0; box-shadow: none; border-radius: var(--block-radius); background: var(--forest); color: var(--cream); }
+/* Forest like the log in card: light text on the card, a sun button, and the white drop area keeps its dark text. */
+.upload-card :is(h2, h3, strong, .card-topline, .text-button) { color: var(--cream); }
+.upload-card :is(p, small, .page-label, .file-types, .file-caption, .reading-caption, .preview-toolbar > span) { color: var(--on-forest); }
+.upload-card :is(.upload-dropzone, .pdf-preview) :is(h2, h3, strong) { color: var(--forest); }
+.upload-card :is(.upload-dropzone, .pdf-preview) :is(p, small) { color: var(--muted); }
+.upload-card .button.primary, .upload-card .button.primary * { background: var(--sun); color: var(--forest); }
+.upload-card .button.primary:hover:not(:disabled) { background: #ffe08a; }
+.upload-card .text-button:hover { background: var(--forest-soft); }
 .upload-card .card-topline { border-bottom: 0; }
 
 /* ---------- results ---------- */
@@ -97,8 +113,9 @@ section.kid-chat-placeholder input[disabled]::placeholder { color: var(--on-fore
 .activity-suggestion h2, .game-suggestion h2 { font-size: 32px; line-height: 1.05; }
 .activity-suggestion :is(p, span, small, li), .game-suggestion :is(p, small, li) { color: var(--forest) !important; font-weight: 700; }
 .activity-suggestion .activity-suggestion-icon { background: var(--cream); border: 0; }
-.worksheet-summary { border: 0; box-shadow: none; border-radius: var(--block-radius); background: var(--sky); padding: 32px 36px; margin-bottom: 20px; }
-.context-card { border: 0; box-shadow: none; border-radius: 28px; background: var(--sky); }
+.worksheet-summary { border: 0; box-shadow: none; border-radius: var(--block-radius); background: var(--lime); padding: 32px 36px; margin-bottom: 20px; }
+.worksheet-summary :is(p, span, small, dt, dd, li) { color: var(--forest); }
+.context-card { border: 0; box-shadow: none; border-radius: 28px; background: var(--sand); }
 .problem-card { border: 0; border-radius: 28px; background: #fff; }
 
 /* ---------- parent dashboard ---------- */
@@ -116,7 +133,7 @@ section.kid-chat-placeholder input[disabled]::placeholder { color: var(--on-fore
 
 /* ---------- one palette ----------
    The base styles used a dozen pale greens for tints, tags and selected states. Each maps to the main palette here:
-   quiet surfaces are sand, notes and places to read or type are sky, "picked" is sun,
+   quiet surfaces and notes are sand, "picked" and small accents are sun,
    and "done, correct, on track" is solid lime. */
 .demo-notice, .sample-insights-label, .empty-family, .dashboard-empty, .parent-activity-review, .split-compare-result,
 .worksheet-preview, .pdf-preview, .transcript-message, .status-blank, .sample-button, .account-shell input:disabled { background: var(--sand); }
@@ -132,16 +149,17 @@ section.kid-chat-placeholder input[disabled]::placeholder { color: var(--on-fore
 .status-answered, .skill-status.skill-on_track, .game-status-approved, .account-success, .activity-feedback-correct { background: var(--lime); color: var(--forest); }
 .avatar-lime { background: var(--lime); }
 
-.metric-card > span, .activity-phase-label > span:first-child, .activity-teaching, .bundle-number-display, .activity-book-heading,
-.text-editor-published, .activity-family .sort-target-button { background: var(--sky); }
-.math-board-object, .protractor-body { fill: var(--sky); }
+.metric-card > span, .activity-phase-label > span:first-child { background: var(--sun); }
+.activity-teaching, .bundle-number-display, .activity-book-heading, .text-editor-published, .activity-family .sort-target-button { background: var(--sand); }
+.math-board-object { fill: var(--lime); }
+.protractor-body { fill: var(--sand); }
 .math-grid-line { stroke: var(--line); }
 
 .activity-word-choice:has(input:checked), .split-compare-option[data-selected="true"], .evidence-sentence[data-selected="true"],
 .activity-family .sort-piece[aria-pressed="true"], .avatar-options button[aria-checked="true"] { background: var(--sun); }
 
 .activity-fraction-whole, .quantity-container { background: #fff; }
-.paper { box-shadow: 5px 5px 0 var(--sky); }
+.paper { box-shadow: 5px 5px 0 var(--sun); }
 .reading-picture { box-shadow: 6px 7px 0 var(--sun); }
 .scan-beam { background: linear-gradient(transparent, #ffd45c99); }
 

@@ -180,7 +180,7 @@ Tap **Read my work**, then **Try an activity**, manipulate the scene, and finish
 
 The visual theme lives in `app/color-blocks.css`, a layer imported last in `app/layout.tsx`. It restyles the existing screens into big flat panels in the brand colors (sun, orange, forest, lime, sky) with very large Fredoka headings and no borders or drop shadows. It changes no behavior. Removing that one import returns the app to the earlier look. The only markup added with it is the short "How it goes" list on the kid home page.
 
-The palette is deliberately small: sun, orange, forest, lime and sky on a cream page, with sand as the one quiet neutral. There is no pale green. Where the base styles used pale green tints, the theme maps them to the palette: quiet surfaces are sand, notes and places to read or type are sky, a picked option is sun, and "done, correct, on track" is solid lime. The game frame's own chrome (`backend/games/kit/kit.css`) follows the same swap.
+The palette is deliberately small: sun, orange, forest and lime on a cream page, with sand as the one quiet neutral. There is no pale green and no light blue. Form cards (log in, sign up, the parent PIN, the upload card) are forest with white fields and a sun button. Where the base styles used pale green tints, the theme maps them to the palette: quiet surfaces and notes are sand, a picked option is sun, and "done, correct, on track" is solid lime. The game frame's own chrome (`backend/games/kit/kit.css`) follows the same swap.
 
 ## Generated games (experimental, off by default)
 
