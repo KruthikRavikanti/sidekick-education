@@ -1,0 +1,8 @@
+{
+  "subskillId": "8.NS.A.2-1",
+  "title": "Square Garden",
+  "emoji": "🌻",
+  "premise": "Lay a square garden from a pile of tiles. Find the biggest whole side that the pile can cover.",
+  "idea": "A square root is the side of a square garden. Growing the side shows which two perfect squares the tile count sits between.",
+  "author": "claude-stand-in"
+}

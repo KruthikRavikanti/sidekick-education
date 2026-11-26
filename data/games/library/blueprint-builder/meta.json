@@ -1,0 +1,8 @@
+{
+  "subskillId": "7.G.A.1-1",
+  "title": "Blueprint Builder",
+  "emoji": "🏗️",
+  "premise": "The blueprint is small and the building is big. Use the scale to find each real length.",
+  "idea": "Each square of the plan stands for several real feet. The builder shows how a typed length would look back on the plan, exposing a scale applied backwards.",
+  "author": "claude-stand-in"
+}
