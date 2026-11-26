@@ -1,0 +1,8 @@
+{
+  "subskillId": "7.NS.A.1-2",
+  "title": "Deep Dive",
+  "emoji": "🚤",
+  "premise": "Steer the submarine along the number line. Adding a negative number sends it left.",
+  "idea": "Adding is a move along the number line from the first number: right for a positive, left for a negative. The log reports each move and its direction.",
+  "author": "claude-stand-in"
+}

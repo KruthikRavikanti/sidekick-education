@@ -1,0 +1,8 @@
+{
+  "subskillId": "6.SP.A.1-1",
+  "title": "Survey Truck",
+  "emoji": "🚚",
+  "premise": "The survey truck collects data. Send it out only for questions whose answers will vary.",
+  "idea": "A notepad shows what collecting answers would look like. Questions with many different answers need a survey, and single-answer questions do not.",
+  "author": "claude-stand-in"
+}

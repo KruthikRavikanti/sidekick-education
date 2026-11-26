@@ -1,0 +1,8 @@
+{
+  "subskillId": "6.EE.A.1-1",
+  "title": "Germ Lab",
+  "emoji": "🦠",
+  "premise": "Germs multiply by splitting. Use exponents to say how many will fill the dish.",
+  "idea": "Each split multiplies every germ by the base, and the exponent is the number of splits. The chain of generations shows why 3 to the 4th is not 3 times 4.",
+  "author": "claude-stand-in"
+}

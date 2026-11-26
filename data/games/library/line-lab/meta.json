@@ -1,0 +1,8 @@
+{
+  "subskillId": "7.RP.A.2-1",
+  "title": "Line Lab",
+  "emoji": "🔬",
+  "premise": "Test each graph in the lab. Mark only the ones that show a proportional relationship.",
+  "idea": "Tapping a straight-line graph reads out its table and y divided by x. Only lines through the origin keep that ratio constant.",
+  "author": "claude-stand-in"
+}
