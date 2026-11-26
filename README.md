@@ -209,12 +209,14 @@ npm run games:list
 
 Flags, all in `backend/.env.example`: `SIDEKICK_GAMES_ENABLED` (default `false`), `SIDEKICK_GAMES_REQUIRE_APPROVAL` (default `true`; keep it on for real families), `SIDEKICK_GAMES_AUTOGENERATE` (default `false`; queue a build when homework shows a skill with no game), `SIDEKICK_GAME_REVIEWERS`, `GAMES_MODEL`, `GAMES_TIMEOUT_SECONDS`. The robot needs Node and Playwright's Chromium (`npx playwright install chromium`).
 
-**The shipped library.** `data/games/` holds 63 games, one skill each, every one passing the robot:
+**The shipped library.** `data/games/` holds 77 games, one skill each, every one passing the robot:
 
 - `examples/` (5): unit fractions, rectangle area, unit price, irregular plurals, facts within 10. These are the few-shot examples the model is shown.
-- `library/` (58): 29 math games and 29 reading, writing and language games. Together with the examples, every grade from K to 5 has at least one game in every math domain (including the Georgia-only groups) and in every ELA strand (Language, Foundational Skills, Informational Text, Literature, Writing). `data/games/COVERAGE.md` lists every game and counts covered skills by subject and grade.
+- `library/` (72): 43 math games and 29 reading, writing and language games.
 
-One game per cell is breadth, not depth: 62 of the 795 K to 5 skills have a game, and grades 6 and up have one. All 63 were written by Claude standing in for the model, to the same brief, kit and robot the pipeline uses. They are seeded as `verified`, so none reaches a child until a person approves it. The pipeline has not yet been run against a live provider; `games:generate --missing` is how the other skills get their games.
+Together they put at least one game in every cell of the K to 5 map: every math domain in every grade (including the Georgia-only groups) and every ELA strand in every grade (Language, Foundational Skills, Informational Text, Literature, Writing). Grades 6 to 8 have one game for every Common Core math domain and no ELA games yet. `data/games/COVERAGE.md` lists every game and counts covered skills by subject and grade.
+
+One game per cell is breadth, not depth: 62 of the 795 K to 5 skills have a game. All 77 were written by Claude standing in for the model, to the same brief, kit and robot the pipeline uses. They are seeded as `verified`, so none reaches a child until a person approves it. The pipeline has not yet been run against a live provider; `games:generate --missing` is how the other skills get their games.
 
 **What scales and what does not.** The robot checks a game in about a minute with no person involved, so generating at catalog size is a matter of model cost. Review is the bottleneck: 1,533 skills means 1,533 games for a person to play before children see them. Start with the skills real homework is hitting (`SIDEKICK_GAMES_AUTOGENERATE`) rather than the whole map. Many skills marked "needs an adult or AI rubric" in the skill map (open writing, read-aloud fluency, discussion) do not fit an auto-checked game at all and are better served by the activity flow.
 
