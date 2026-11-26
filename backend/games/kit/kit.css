@@ -18,7 +18,7 @@ button { font: inherit; color: inherit; }
 
 /* ---- top bar: progress and phase */
 .sk-top { display: flex; align-items: center; gap: 10px; min-height: 34px; padding: 0 4px 6px; }
-.sk-phase { font-weight: 900; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; background: #eef4dc; color: var(--sk-forest); }
+.sk-phase { font-weight: 900; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; background: var(--sk-sun); color: var(--sk-forest); }
 .sk-phase.solo { background: #ffe9d8; color: #8a3d0c; }
 .sk-dots { display: flex; gap: 6px; margin-left: auto; }
 .sk-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--sk-border); transition: background .25s, transform .25s; }
@@ -110,7 +110,7 @@ button { font: inherit; color: inherit; }
 .sk-chip { min-height: min(11cqw, 58px); padding: 1cqw 3cqw; border-radius: 2.6cqw; border: .5cqw solid var(--sk-forest); background: #fff; color: var(--sk-forest); font: 600 clamp(14px, 3.8cqw, 24px)/1.1 "Fredoka", sans-serif; box-shadow: 0 .8cqw 0 var(--sk-forest); cursor: pointer; }
 .sk-chip[aria-pressed="true"] { background: var(--sk-sun); transform: translateY(.4cqw); box-shadow: 0 .4cqw 0 var(--sk-forest); }
 .sk-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1cqw; padding: 1.6cqw; background: rgba(255,255,255,.95); border: .5cqw solid var(--sk-forest); border-radius: 3cqw; box-shadow: 0 .9cqw 0 rgba(5,74,41,.2); color: var(--sk-forest); }
-.sk-keypad output { grid-column: 1 / -1; min-height: 9cqw; border-radius: 1.8cqw; background: #f3f6e6; display: grid; place-items: center; font: 600 clamp(20px, 6cqw, 38px)/1 "Fredoka", sans-serif; letter-spacing: .04em; }
+.sk-keypad output { grid-column: 1 / -1; min-height: 9cqw; border-radius: 1.8cqw; background: var(--sk-cream); display: grid; place-items: center; font: 600 clamp(20px, 6cqw, 38px)/1 "Fredoka", sans-serif; letter-spacing: .04em; }
 .sk-keypad output:empty::before { content: attr(data-empty); opacity: .35; }
 .sk-key { min-width: min(10.5cqw, 66px); min-height: min(9.5cqw, 60px); border-radius: 1.8cqw; border: none; background: var(--sk-forest); color: #fff; font: 600 clamp(17px, 4.6cqw, 28px)/1 "Fredoka", sans-serif; cursor: pointer; }
 .sk-key.alt { background: var(--sk-orange); }
@@ -135,13 +135,13 @@ button { font: inherit; color: inherit; }
 .sk-hint { font-family: "Nunito", sans-serif; font-weight: 800; font-size: 15px; min-height: 44px; padding: 6px 16px; border-radius: 999px; border: 2px solid var(--sk-forest); background: #fff; color: var(--sk-forest); cursor: pointer; }
 .sk-hint[hidden] { display: none; }
 .sk-back { flex: 1 1 200px; min-height: 44px; display: flex; align-items: center; font-weight: 700; font-size: 16px; line-height: 1.3; padding: 8px 14px; border-radius: 16px; background: transparent; color: var(--sk-forest); }
-.sk-back.good { background: #eef4dc; }
+.sk-back.good { background: var(--sk-lime); }
 .sk-back.try { background: #fff1e3; }
 .sk-back.tip { background: #f1eafb; }
 .sk-back:empty { display: none; }
 
 /* ---- cards: start and finish */
-.sk-card { text-align: center; padding: 34px 18px 30px; border-radius: 26px; border: 3px solid var(--sk-forest); box-shadow: 0 6px 0 var(--sk-forest); background: linear-gradient(160deg, #fff, #f3f8e3); }
+.sk-card { text-align: center; padding: 34px 18px 30px; border-radius: 26px; border: 3px solid var(--sk-forest); box-shadow: 0 6px 0 var(--sk-forest); background: linear-gradient(160deg, #fff, #fff1cf); }
 .sk-card .sk-art { font-size: 64px; line-height: 1.1; font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; }
 .sk-card h1 { font-family: "Fredoka", sans-serif; font-weight: 600; font-size: clamp(26px, 7vw, 38px); margin: 10px 0 6px; line-height: 1.1; }
 .sk-card p { font-size: 18px; font-weight: 600; color: var(--sk-muted); margin: 0 auto 20px; max-width: 30em; line-height: 1.4; }

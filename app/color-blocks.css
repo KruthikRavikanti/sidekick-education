@@ -1,15 +1,18 @@
 /* Color Blocks theme.
    A layer over the base styles: big flat panels in the brand colors, very large type,
    no borders and no drop shadows. It only restyles; remove the import in layout.tsx to
-   go back to the previous look. */
+   go back to the previous look.
+
+   One palette, no pale green: sun, orange, forest, lime and sky, on cream, with sand as the one quiet neutral. */
 :root {
   --sun: #ffd45c;
   --sky: #cdeafc;
-  --lime-tint: #e9f0d2;
   --orange-tint: #fde3d3;
   --sand: #f3ecdb;
+  --sand-deep: #e9dfc8;
+  --line: #e2d9c4;
   --forest-soft: #0b5c35;
-  --on-forest: #d7e6c0;
+  --on-forest: #f3ecdb;
   --block-radius: 36px;
 }
 
@@ -30,9 +33,9 @@ h1, h2, h3 { font-family: Fredoka, Nunito, sans-serif; }
 .auth-story { background: var(--sun); border-radius: var(--block-radius); padding: 52px 48px; display: flex; flex-direction: column; justify-content: center; }
 .auth-story h1 { font-size: clamp(44px, 5.4vw, 72px); line-height: 1; letter-spacing: -1px; }
 .auth-story p { color: var(--forest); font-weight: 700; }
-.auth-card { background: var(--lime-tint); }
+.auth-card { background: var(--sky); }
 .auth-card input, .pin-card input { border: 0; border-radius: 18px; min-height: 54px; background: #fff; }
-.pin-card { background: var(--lime-tint); }
+.pin-card { background: var(--sky); }
 
 /* ---------- who is learning ---------- */
 .picker-intro { background: var(--sun); border-radius: var(--block-radius); padding: 44px 32px; margin: 4px 0 20px; max-width: none; }
@@ -94,7 +97,7 @@ section.kid-chat-placeholder input[disabled]::placeholder { color: var(--on-fore
 .activity-suggestion h2, .game-suggestion h2 { font-size: 32px; line-height: 1.05; }
 .activity-suggestion :is(p, span, small, li), .game-suggestion :is(p, small, li) { color: var(--forest) !important; font-weight: 700; }
 .activity-suggestion .activity-suggestion-icon { background: var(--cream); border: 0; }
-.worksheet-summary { border: 0; box-shadow: none; border-radius: var(--block-radius); background: var(--lime-tint); padding: 32px 36px; margin-bottom: 20px; }
+.worksheet-summary { border: 0; box-shadow: none; border-radius: var(--block-radius); background: var(--sky); padding: 32px 36px; margin-bottom: 20px; }
 .context-card { border: 0; box-shadow: none; border-radius: 28px; background: var(--sky); }
 .problem-card { border: 0; border-radius: 28px; background: #fff; }
 
@@ -104,12 +107,43 @@ section.kid-chat-placeholder input[disabled]::placeholder { color: var(--on-fore
 .dashboard-intro :is(p, span, small, label, div), .dashboard-intro .account-eyebrow { color: var(--on-forest) !important; }
 .dashboard-intro select { border: 0; border-radius: 999px; min-height: 50px; background: var(--cream); color: var(--forest); font-weight: 800; }
 .dashboard-tabs { border-bottom: 0; gap: 8px; padding-bottom: 4px; }
-.dashboard-tabs button { background: var(--lime-tint); color: var(--forest); min-height: 46px; padding: 10px 22px; font-size: 15px; font-family: Fredoka, Nunito, sans-serif; font-weight: 600; }
+.dashboard-tabs button { background: var(--sand); color: var(--forest); min-height: 46px; padding: 10px 22px; font-size: 15px; font-family: Fredoka, Nunito, sans-serif; font-weight: 600; }
+.dashboard-tabs button:hover:not(.selected) { background: var(--sand-deep); }
 .dashboard-tabs button.selected { background: var(--forest); color: var(--cream); }
 .dashboard-section h2 { font-size: 32px; line-height: 1.05; }
 .skill-card { border: 0; border-radius: 24px; padding: 24px; background: var(--sand); }
-.skill-card.skill-card-on_track { background: var(--lime-tint); }
 .skill-card.skill-card-needs_support { background: var(--orange-tint); }
+
+/* ---------- one palette ----------
+   The base styles used a dozen pale greens for tints, tags and selected states. Each maps to the main palette here:
+   quiet surfaces are sand, notes and places to read or type are sky, "picked" is sun,
+   and "done, correct, on track" is solid lime. */
+.demo-notice, .sample-insights-label, .empty-family, .dashboard-empty, .parent-activity-review, .split-compare-result,
+.worksheet-preview, .pdf-preview, .transcript-message, .status-blank, .sample-button, .account-shell input:disabled { background: var(--sand); }
+.demo-notice, .sample-insights-label, .sample-button, .parent-activity-review, .account-success { border: 0; }
+.dashboard-empty, .child-editor, .problem-number, .learning-filter input, .account-shell input, .account-shell select { border-color: var(--line); }
+.student-work { border-top-color: var(--line); }
+.card-topline { border-bottom-color: var(--line); }
+.text-button:hover { background: var(--sand); }
+.sample-button:hover { background: var(--sand-deep); }
+.account-shell input:focus, .account-shell select:focus { outline-color: var(--sun); }
+
+.subject-tag, .grade-tag { background: #fff; }
+.status-answered, .skill-status.skill-on_track, .game-status-approved, .account-success, .activity-feedback-correct { background: var(--lime); color: var(--forest); }
+.avatar-lime { background: var(--lime); }
+
+.metric-card > span, .activity-phase-label > span:first-child, .activity-teaching, .bundle-number-display, .activity-book-heading,
+.text-editor-published, .activity-family .sort-target-button { background: var(--sky); }
+.math-board-object, .protractor-body { fill: var(--sky); }
+.math-grid-line { stroke: var(--line); }
+
+.activity-word-choice:has(input:checked), .split-compare-option[data-selected="true"], .evidence-sentence[data-selected="true"],
+.activity-family .sort-piece[aria-pressed="true"], .avatar-options button[aria-checked="true"] { background: var(--sun); }
+
+.activity-fraction-whole, .quantity-container { background: #fff; }
+.paper { box-shadow: 5px 5px 0 var(--sky); }
+.reading-picture { box-shadow: 6px 7px 0 var(--sun); }
+.scan-beam { background: linear-gradient(transparent, #ffd45c99); }
 
 /* ---------- small screens ---------- */
 @media (max-width: 760px) {
