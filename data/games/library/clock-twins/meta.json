@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.MD.B.3-3",
+  "title": "Clock Twins",
+  "emoji": "🕰️",
+  "premise": "Every clock with hands has a twin that shows the same time in numbers. Match each pair.",
+  "idea": "Matching analog and digital times to the hour and half hour: the child tags each clock face with its digital time. Reading the 6 the long hand points to as the hour is a common slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.NBT.B.3-1",
+  "title": "Tens Come First",
+  "emoji": "🥇",
+  "premise": "The runners wear two-digit numbers. Line them up from least to greatest by looking at the tens first.",
+  "idea": "Comparing two-digit numbers by tens first: the child orders numbers least to greatest. Ordering by the ones digit gives the trap order.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

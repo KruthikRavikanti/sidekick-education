@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.C.6-3",
+  "title": "Double Trouble",
+  "emoji": "👯",
+  "premise": "If you know a double, the fact next door is just one more. Use the doubles to find their neighbors.",
+  "idea": "Doubles and near doubles (6 + 7 = 6 + 6 + 1): the child uses the smaller double and adds one. Adding one to the bigger double is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "GA-1-PAR.3.2-1",
+  "title": "Grow or Shrink",
+  "emoji": "🌱",
+  "premise": "Some patterns grow, some shrink and some just repeat. Give each number pattern its rule.",
+  "idea": "Describing how a pattern grows or shrinks: the child matches each number pattern to its rule. Seeing every pattern as repeating is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

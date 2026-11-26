@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.D.7-1",
+  "title": "Equal Seesaw",
+  "emoji": "🎠",
+  "premise": "The seesaw only sits level when both sides hold the same amount. Load the right side to match the left.",
+  "idea": "The meaning of the equal sign: a balance shows a number or a sum on one side and the child loads the other side until it is level.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

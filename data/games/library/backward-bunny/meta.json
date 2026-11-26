@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.C.5-2",
+  "title": "Backward Bunny",
+  "emoji": "🐇",
+  "premise": "The bunny hops backward to take away. Each hop back is one less.",
+  "idea": "Counting back to subtract small numbers: counting the starting number as the first step back ends one too high.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

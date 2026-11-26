@@ -33,9 +33,41 @@
   }
   const order = (list, o, solo) => o.keep ? list : solo ? S.shuffle(list) : mix(list, (o.say || '') + list.length);
 
-  // tiles: an emoji, a short word or a wrapped card, chosen by what the text is
+  // small pictures for tiles: a token that starts with ~ is drawn, e.g. ~pie:1/4 ~bar:2/3 ~ngon:5 ~tri:r ~quad:trap ~ang:60 ~clock:7:30 ~arr:3x4 ~dots:7
+  const isFig = (t) => String(t).charAt(0) === '~';
+  const FC = { line: '#054a29', fill: '#ffd45c', shade: '#f79256', pale: '#ffffff' };
+  const poly = (pts, fill, more) => '<polygon points="' + pts.map((q) => Number(q[0].toFixed(1)) + ',' + Number(q[1].toFixed(1))).join(' ') + '" fill="' + (fill || FC.fill) + '" stroke="' + FC.line + '" stroke-width="4" stroke-linejoin="round" ' + (more || '') + '/>';
+  const TAU = 2 * Math.PI;
+  const TRI = { e: [[50, 12], [92, 86], [8, 86]], r: [[14, 14], [14, 86], [88, 86]], s: [[10, 84], [94, 84], [66, 22]], i: [[50, 8], [78, 90], [22, 90]], o: [[6, 84], [70, 84], [96, 40]], t: [[50, 30], [62, 70], [38, 70]] };
+  const QUAD = { sq: [[16, 16], [84, 16], [84, 84], [16, 84]], rect: [[8, 28], [92, 28], [92, 72], [8, 72]], tall: [[30, 6], [70, 6], [70, 94], [30, 94]], rhomb: [[50, 8], [88, 50], [50, 92], [12, 50]], trap: [[30, 26], [70, 26], [94, 76], [6, 76]], para: [[28, 26], [94, 26], [72, 76], [6, 76]], kite: [[50, 6], [80, 36], [50, 94], [20, 36]], odd: [[12, 20], [80, 12], [92, 70], [30, 88]] };
+  function mini(token) {
+    const parts = String(token).slice(1).split(':'), name = parts[0], a = parts.slice(1); let out = '';
+    const frac = (a[0] || '0/1').split('/').map(Number), n = frac[0], d = frac[1] || 1;
+    if (name === 'pie') { if (d === 1) out += '<circle cx="50" cy="50" r="42" fill="' + (n ? FC.shade : FC.pale) + '" stroke="' + FC.line + '" stroke-width="4"/>'; else for (let i = 0; i < d; i++) { const a0 = -Math.PI / 2 + i * TAU / d, a1 = a0 + TAU / d; out += '<path d="M 50 50 L ' + (50 + 42 * Math.cos(a0)).toFixed(1) + ' ' + (50 + 42 * Math.sin(a0)).toFixed(1) + ' A 42 42 0 ' + (d === 1 ? 1 : 0) + ' 1 ' + (50 + 42 * Math.cos(a1)).toFixed(1) + ' ' + (50 + 42 * Math.sin(a1)).toFixed(1) + ' Z" fill="' + (i < n ? FC.shade : FC.pale) + '" stroke="' + FC.line + '" stroke-width="4" stroke-linejoin="round"/>'; } }
+    else if (name === 'pieU') { out += '<circle cx="50" cy="50" r="42" fill="' + FC.pale + '" stroke="' + FC.line + '" stroke-width="4"/>'; const cuts = { 2: [[30, 13, 30, 87]], 3: [[26, 15, 26, 85], [44, 8, 44, 92]], 4: [[30, 13, 30, 87], [8, 62, 92, 62]] }[+a[0]] || [[30, 13, 30, 87]]; cuts.forEach((c) => { out += '<line x1="' + c[0] + '" y1="' + c[1] + '" x2="' + c[2] + '" y2="' + c[3] + '" stroke="' + FC.line + '" stroke-width="4"/>'; }); }
+    else if (name === 'bar' || name === 'barU') { const even = name === 'bar', k = even ? d : +a[0], cuts = even ? Array.from({ length: k + 1 }, (_, i) => i / k) : ({ 2: [0, 0.3, 1], 3: [0, 0.2, 0.5, 1], 4: [0, 0.15, 0.4, 0.6, 1] }[k] || [0, 0.3, 1]); for (let i = 0; i < k; i++) out += '<rect x="' + (6 + 88 * cuts[i]).toFixed(1) + '" y="26" width="' + (88 * (cuts[i + 1] - cuts[i])).toFixed(1) + '" height="48" fill="' + (even && i < n ? FC.shade : FC.pale) + '" stroke="' + FC.line + '" stroke-width="4"/>'; }
+    else if (name === 'sq4') { for (let i = 0; i < 4; i++) out += '<rect x="' + (10 + (i % 2) * 40) + '" y="' + (10 + Math.floor(i / 2) * 40) + '" width="40" height="40" fill="' + (i < n ? FC.shade : FC.pale) + '" stroke="' + FC.line + '" stroke-width="4"/>'; }
+    else if (name === 'ngon') { const k = +a[0] || 5; out += poly(Array.from({ length: k }, (_, i) => { const t = -Math.PI / 2 + (k % 2 ? 0 : Math.PI / k) + i * TAU / k; return [50 + 42 * Math.cos(t), 52 + 42 * Math.sin(t)]; })); }
+    else if (name === 'open') { const k = +a[0] || 3, pts = Array.from({ length: k + 1 }, (_, i) => { const t = -Math.PI / 2 + i * TAU / k; return [50 + 40 * Math.cos(t), 54 + 40 * Math.sin(t)]; }); pts[k] = [(pts[k - 1][0] + pts[0][0] * 1.2) / 2.2, (pts[k - 1][1] + pts[0][1] * 1.2) / 2.2 + 8]; out += '<polyline points="' + pts.map((q) => q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' ') + '" fill="none" stroke="' + FC.line + '" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>'; }
+    else if (name === 'curvy') out += '<path d="M 16 84 L 16 20 Q 96 20 84 84 Z" fill="' + FC.fill + '" stroke="' + FC.line + '" stroke-width="4" stroke-linejoin="round"/>';
+    else if (name === 'tri') out += poly(TRI[a[0]] || TRI.e);
+    else if (name === 'quad') out += poly(QUAD[a[0]] || QUAD.sq);
+    else if (name === 'circle') out += '<circle cx="50" cy="50" r="' + (a[0] === 's' ? 16 : 42) + '" fill="' + FC.fill + '" stroke="' + FC.line + '" stroke-width="4"/>';
+    else if (name === 'oval') out += '<ellipse cx="50" cy="50" rx="44" ry="26" fill="' + FC.fill + '" stroke="' + FC.line + '" stroke-width="4"/>';
+    else if (name === 'ang') { const t = (+a[0] || 60) * Math.PI / 180; out += '<path d="M 44 78 A 26 26 0 ' + (+a[0] > 180 ? 1 : 0) + ' 0 ' + (18 + 26 * Math.cos(t)).toFixed(1) + ' ' + (78 - 26 * Math.sin(t)).toFixed(1) + '" fill="none" stroke="' + FC.shade + '" stroke-width="5"/><line x1="18" y1="78" x2="92" y2="78" stroke="' + FC.line + '" stroke-width="5" stroke-linecap="round"/><line x1="18" y1="78" x2="' + (18 + 70 * Math.cos(t)).toFixed(1) + '" y2="' + (78 - 70 * Math.sin(t)).toFixed(1) + '" stroke="' + FC.line + '" stroke-width="5" stroke-linecap="round"/>'; }
+    else if (name === 'clock') { const hr = +a[0] || 12, mn = +a[1] || 0, ha = ((hr % 12) + mn / 60) * Math.PI / 6, ma = mn * Math.PI / 30; out += '<circle cx="50" cy="50" r="44" fill="#fff" stroke="' + FC.line + '" stroke-width="4"/>'; for (let i = 1; i <= 12; i++) out += '<text x="' + (50 + 34 * Math.sin(i * Math.PI / 6)).toFixed(1) + '" y="' + (50 - 34 * Math.cos(i * Math.PI / 6)).toFixed(1) + '" font-size="11" font-family="Fredoka, sans-serif" font-weight="600" fill="' + FC.line + '" text-anchor="middle" dominant-baseline="central">' + i + '</text>'; out += '<line x1="50" y1="50" x2="' + (50 + 20 * Math.sin(ha)).toFixed(1) + '" y2="' + (50 - 20 * Math.cos(ha)).toFixed(1) + '" stroke="' + FC.line + '" stroke-width="6" stroke-linecap="round"/><line x1="50" y1="50" x2="' + (50 + 31 * Math.sin(ma)).toFixed(1) + '" y2="' + (50 - 31 * Math.cos(ma)).toFixed(1) + '" stroke="' + FC.shade + '" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="50" r="4" fill="' + FC.line + '"/>'; }
+    else if (name === 'arr') { const rc = (a[0] || '2x3').split('x').map(Number), cell = Math.min(88 / rc[1], 88 / rc[0]); for (let r = 0; r < rc[0]; r++) for (let c = 0; c < rc[1]; c++) out += '<circle cx="' + (50 + (c - (rc[1] - 1) / 2) * cell).toFixed(1) + '" cy="' + (50 + (r - (rc[0] - 1) / 2) * cell).toFixed(1) + '" r="' + (cell * 0.36).toFixed(1) + '" fill="' + FC.shade + '" stroke="' + FC.line + '" stroke-width="2.5"/>'; }
+    else if (name === 'dots') { const k = +a[0] || 0; for (let i = 0; i < 10; i++) { const x = 8 + (i % 5) * 17, y = 32 + Math.floor(i / 5) * 18; out += '<rect x="' + x + '" y="' + y + '" width="17" height="18" fill="#fff" stroke="' + FC.line + '" stroke-width="2.5"/>' + (i < k ? '<circle cx="' + (x + 8.5) + '" cy="' + (y + 9) + '" r="5.6" fill="' + FC.shade + '"/>' : ''); } }
+    else if (name === 'lines') { const L = (x1, y1, x2, y2) => '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + FC.line + '" stroke-width="5" stroke-linecap="round"/>'; out += a[0] === 'par' ? L(10, 34, 90, 34) + L(10, 66, 90, 66) : a[0] === 'perp' ? L(10, 50, 90, 50) + L(50, 10, 50, 90) + '<rect x="50" y="38" width="12" height="12" fill="none" stroke="' + FC.shade + '" stroke-width="3"/>' : L(10, 30, 90, 70) + L(12, 78, 88, 22); }
+    else if (name === 'rod') { const tens = +a[0] || 0, ones = +a[1] || 0; for (let i = 0; i < tens; i++) out += '<rect x="' + (6 + i * 10) + '" y="10" width="8" height="80" fill="#b7ce63" stroke="' + FC.line + '" stroke-width="2"/>'; for (let i = 0; i < ones; i++) out += '<rect x="' + (10 + tens * 10 + Math.floor(i / 5) * 11) + '" y="' + (82 - (i % 5) * 11) + '" width="8" height="8" fill="' + FC.shade + '" stroke="' + FC.line + '" stroke-width="2"/>'; }
+    else fail('picture', 'unknown picture "' + token + '"');
+    return '<div class="skp-fig"><svg viewBox="0 0 100 100">' + out + '</svg></div>';
+  }
+
+  // tiles: an emoji, a short word, a small picture or a wrapped card, chosen by what the text is
   function tileSize(t, opt) {
     opt = opt || {};
+    if (isFig(t)) { mini(t); const fw = opt.figW || 15; return { type: 'fig', w: fw, h: fw }; }
     if (isIcon(t)) { const s = opt.icon || 10.5; return { type: 'icon', s: s, w: s * 1.18, h: s * 1.18 }; }
     const fs = opt.fs || 4.4, w = Math.max(9.5, em(t) * fs + 5.8);
     if (w <= (opt.maxW || 40)) return { type: 'text', s: fs, w: w, h: Math.max(9.5, fs * 1.05 + 3) };
@@ -46,7 +78,8 @@
     const z = tileSize(o.t, o);
     const base = { id: o.id, x: o.x, y: o.y, drag: o.drag, tap: o.tap, kind: o.kind, value: o.value, data: Object.assign({ t: o.t }, o.data), label: String(o.t).replace(/[{}]/g, ''), z: o.z };
     let sp;
-    if (z.type === 'icon') sp = stage.sprite(Object.assign(base, { emoji: o.t, size: z.s }));
+    if (z.type === 'fig') sp = stage.sprite(Object.assign(base, { html: mini(o.t), w: z.w, h: z.h }));
+    else if (z.type === 'icon') sp = stage.sprite(Object.assign(base, { emoji: o.t, size: z.s }));
     else if (z.type === 'text') sp = stage.sprite(Object.assign(base, { text: o.t, size: z.s, color: o.color }));
     else { sp = stage.sprite(Object.assign(base, { html: '<div class="skp-card">' + rich(o.t) + '</div>', w: z.w, h: z.h })); sp.el.style.height = 'auto'; }
     if (o.zone) { sp.homeZone = o.zone; sp.place(o.zone); }
@@ -60,7 +93,7 @@
   const T = (x, y, s, text, more) => '<text x="' + nice(x) + '" y="' + nice(y) + '" font-size="' + s + '" font-family="Fredoka, sans-serif" font-weight="600" fill="' + C.forest + '" text-anchor="middle" dominant-baseline="central" ' + (more || '') + '>' + esc(text) + '</text>';
   const R = (x, y, w, h, fill, more) => '<rect x="' + nice(x) + '" y="' + nice(y) + '" width="' + nice(Math.max(0, w)) + '" height="' + nice(Math.max(0, h)) + '" fill="' + fill + '" ' + (more || 'stroke="' + C.forest + '" stroke-width="4"') + '/>';
   const Ln = (x1, y1, x2, y2, w, col, more) => '<line x1="' + nice(x1) + '" y1="' + nice(y1) + '" x2="' + nice(x2) + '" y2="' + nice(y2) + '" stroke="' + (col || C.forest) + '" stroke-width="' + (w || 4) + '" stroke-linecap="round" ' + (more || '') + '/>';
-  const fillT = (t, v) => String(t).replace(/\{(\d|sum|prod|diff|num)\}/g, (m, k) => String(k === 'sum' ? nice(v.reduce((a, b) => a + b, 0)) : k === 'prod' ? nice(v.reduce((a, b) => a * b, 1)) : k === 'diff' ? nice(v[0] - v[1]) : k === 'num' ? v.join('') : v[+k]));
+  const fillT = (t, v) => String(t).replace(/\{(\d):2\}/g, (m, k) => String(v[+k]).padStart(2, '0')).replace(/\{(\d|sum|prod|diff|num)\}/g, (m, k) => String(k === 'sum' ? nice(v.reduce((a, b) => a + b, 0)) : k === 'prod' ? nice(v.reduce((a, b) => a * b, 1)) : k === 'diff' ? nice(v[0] - v[1]) : k === 'num' ? v.join('') : v[+k]));
   const fracText = (x, y, n, d, s) => T(x, y - s * 0.62, s, n) + Ln(x - s * 0.6, y, x + s * 0.6, y, 4) + T(x, y + s * 0.62, s, d);
   const linear = (a, b, x) => { x = x || 'x'; const ax = a === 0 ? '' : (a === 1 ? '' : a === -1 ? '−' : String(a).replace('-', '−')) + x; return !ax ? String(b).replace('-', '−') : b === 0 ? ax : ax + (b < 0 ? ' − ' + (-b) : ' + ' + b); };
 
@@ -261,6 +294,15 @@
     return svg(W, H, out);
   } };
 
+  // measuring with units laid end to end: an object `len` units long, and as many units as the dial (or `sizes` for a still picture)
+  VIEWS.units = { h: 30, draw(v, c, W, H) {
+    const len = c.len || 5, sizes = c.sizes || range(Math.max(0, v[0] || 0)).map(() => 1), span = Math.max(len, sizes.reduce((a, b) => a + b, 0) + (c.gaps || 0) * Math.max(0, sizes.length - 1), c.span || 0) + 0.6, u = (W - 60) / span, x0 = 30; let out = '', x = x0;
+    out += R(x0, 34, len * u, 70, C[c.color] || C.sun, 'rx="18" stroke="' + C.forest + '" stroke-width="5"') + (c.icon ? T(x0 + len * u / 2, 70, 52, c.icon) : '');
+    sizes.forEach((sz, i) => { out += R(x + 3, 150, sz * u - 6, 56, i % 2 ? C.sky : C.orange, 'rx="14" stroke="' + C.forest + '" stroke-width="4"'); x += sz * u + (c.gaps || 0) * u; });
+    out += Ln(x0, 120, x0, 226, 3, C.forest, 'stroke-dasharray="8 8"') + Ln(x0 + len * u, 120, x0 + len * u, 226, 3, C.forest, 'stroke-dasharray="8 8"');
+    return svg(W, H, out);
+  } };
+
   function drawView(stage, box, cfg, live, vals, names) {
     const view = VIEWS[cfg.type]; if (!view) fail('view', 'unknown view "' + cfg.type + '"');
     const el = stage.add('<div></div>', { x: box.x, y: box.y, w: box.w, h: box.h, z: 2 }); el.className = 'skp-view' + (cfg.type === 'text' || cfg.type === 'table' ? ' bare' : '');
@@ -302,7 +344,7 @@
     let items = []; groups.forEach((g, b) => g.forEach((t) => items.push({ t: t, b: b })));
     if (items.length < 3) fail('sort', 'give at least 3 things to sort');
     items = order(items, o, solo); items.forEach((it, i) => { it.id = 't' + (i + 1); });
-    const n = bins.length, binW = (94 - 2 * (n - 1)) / n, cardW = Math.min(o.cardW || 44, binW - 4.4), opt = { cardW: cardW, maxW: Math.min(40, binW - 4), fs: o.fs };
+    const n = bins.length, binW = (94 - 2 * (n - 1)) / n, cardW = Math.min(o.cardW || 44, binW - 4.4), opt = { cardW: cardW, maxW: Math.min(40, binW - 4), fs: o.fs, figW: o.figW };
     const sizes = items.map((it) => tileSize(it.t, opt)), beltH = flowH(sizes, 90.8, 1.6) + 4.4;
     const big = sizes.slice().sort((a, b) => b.h * b.w - a.h * a.w).slice(0, Math.ceil(items.length * (n === 2 ? 0.7 : 0.6)));
     const binH = Math.max(22, flowH(big, binW - 3.4, 1) + 4.4), yb = y0 + beltH + 8.5, binId = (b) => 'bin' + (b + 1);
@@ -336,7 +378,7 @@
     tiles.forEach((x, i) => { x.id = 't' + (i + 1); });
     const trapSeq = (v) => v === 'reverse' ? want.slice().reverse() : toks(v);
     const longest = Math.max.apply(null, seqs.concat(['trap', 'trap2', 'trap3'].filter((k) => o[k] != null).map((k) => trapSeq(o[k]))).map((s) => s.length));
-    const short = tiles.every((x) => isIcon(x.t) || em(x.t) <= 2.6), opt = { fs: o.fs || (short ? 6 : 4.4), cardW: o.cardW || 88, maxW: 46 };
+    const short = tiles.every((x) => isIcon(x.t) || isFig(x.t) || em(x.t) <= 2.6), opt = { fs: o.fs || (short ? 6 : 4.4), cardW: o.cardW || 88, maxW: 46, figW: o.figW };
     const sizes = tiles.map((x) => tileSize(x.t, opt)), maxW = Math.max.apply(null, sizes.map((s) => s.w)), maxH = Math.max.apply(null, sizes.map((s) => s.h));
     const nSlots = o.slots || longest, slotW = maxW + 2.4, slots = o.mode ? o.mode === 'slots' : (short && nSlots * slotW + (nSlots - 1) <= 94), labels = toks(o.labels);
     const areaH = slots ? maxH + 3.4 + (labels.length ? 6 : 0) : Math.max(14, flowH(sizes, 90.8, 1.6) + 5), bankY = y0 + areaH + 5, bankH = flowH(sizes, 90.8, 1.6) + 4.6;
@@ -366,11 +408,12 @@
     let tiles = order(rows.map((r) => ({ t: r.a[0] })).concat(toks(o.extra).map((t) => ({ t: t }))), o, solo);
     if (tiles.length < 3) fail('fill', 'give at least 3 tiles so there is a real choice');
     tiles.forEach((x, i) => { x.id = 't' + (i + 1); });
-    const opt = { cardW: o.cardW || 44, maxW: 44, fs: o.fs }, sizes = tiles.map((x) => tileSize(x.t, opt)), tw = Math.max.apply(null, sizes.map((s) => s.w)), th = Math.max.apply(null, sizes.map((s) => s.h));
+    const opt = { cardW: o.cardW || 44, maxW: 44, fs: o.fs, figW: o.figW }, sizes = tiles.map((x) => tileSize(x.t, opt)), tw = Math.max.apply(null, sizes.map((s) => s.w)), th = Math.max.apply(null, sizes.map((s) => s.h));
     const n = rows.length, colW = 94 / n, slotH = th + 3.4;
-    const mode = o.layout || (n >= 2 && rows.every((r) => isIcon(r.p) || em(r.p) <= 3.4) && colW - 2 >= tw + 2.4 ? 'cols' : tw <= 27.5 ? 'side' : 'stack');
+    const figP = rows.some((r) => isFig(r.p)), top = figP ? 23 : 16;
+    const mode = o.layout || (n >= 2 && rows.every((r) => isIcon(r.p) || isFig(r.p) || em(r.p) <= 3.4) && colW - 2 >= tw + 2.4 ? 'cols' : tw <= 27.5 ? 'side' : 'stack');
     const psize = o.pSize || 3.9, geo = []; let y = y0;
-    if (mode === 'cols') { rows.forEach((r, i) => geo.push({ px: 3 + i * colW + colW / 2, py: y0 + 7.5, sx: 3 + i * colW + 1, sy: y0 + 16, sw: colW - 2 })); y = y0 + 16 + slotH; }
+    if (mode === 'cols') { rows.forEach((r, i) => geo.push({ px: 3 + i * colW + colW / 2, py: y0 + top / 2 - 0.5, sx: 3 + i * colW + 1, sy: y0 + top, sw: colW - 2 })); y = y0 + top + slotH; }
     else rows.forEach((r) => {
       const pw = mode === 'side' ? 60 : 92, ps = /[A-Za-z0-9]/.test(r.p) ? psize : 6.4, ph = estLines(r.p, pw - 2, ps) * ps * 1.2 + 3.4;
       if (mode === 'side') { const rh = Math.max(ph, slotH); geo.push({ px: 3 + pw / 2, py: y + rh / 2, pw: pw, ps: ps, sx: 65, sy: y + (rh - slotH) / 2, sw: 32 }); y += rh + 2.2; }
@@ -386,7 +429,7 @@
       setup(stage) {
         rows.forEach((r, i) => {
           const g = geo[i];
-          if (mode === 'cols') { if (isIcon(r.p)) stage.sprite({ id: 'p' + (i + 1), emoji: r.p, size: 11, x: g.px, y: g.py }); else stage.label({ id: 'p' + (i + 1), text: r.p, x: g.px, y: g.py, size: 6, card: true }); }
+          if (mode === 'cols') { if (isFig(r.p)) stage.sprite({ id: 'p' + (i + 1), html: mini(r.p), w: 20, h: 20, x: g.px, y: g.py, label: 'picture ' + (i + 1) }); else if (isIcon(r.p)) stage.sprite({ id: 'p' + (i + 1), emoji: r.p, size: 11, x: g.px, y: g.py }); else stage.label({ id: 'p' + (i + 1), text: r.p, x: g.px, y: g.py, size: 6, card: true }); }
           else stage.label({ id: 'p' + (i + 1), text: r.p, x: g.px, y: g.py, w: g.pw, size: g.ps, card: true });
           stage.zone({ id: 'slot' + (i + 1), x: g.sx, y: g.sy, w: g.sw, h: slotH, look: 'slot', label: 'Place ' + (i + 1), showLabel: false, layout: 'grid', cols: 1, rows: 1, capacity: 1, swap: true });
         });
@@ -415,7 +458,7 @@
     if (!yes.length || yes.length + no.length < 4) fail('pick', 'give at least 4 things, with at least one that fits');
     let items = order(yes.map((t) => ({ t: t, y: true })).concat(no.map((t) => ({ t: t, y: false }))), o, solo);
     items.forEach((x, i) => { x.id = 't' + (i + 1); });
-    const opt = { cardW: o.cardW || (items.some((x) => em(x.t) > 30) ? 92 : 45), maxW: 44, fs: o.fs, icon: o.icon || 11 }, sizes = items.map((x) => tileSize(x.t, opt));
+    const opt = { cardW: o.cardW || (items.some((x) => em(x.t) > 30) ? 92 : 45), maxW: 44, fs: o.fs, icon: o.icon || 11, figW: o.figW }, sizes = items.map((x) => tileSize(x.t, opt));
     const fieldH = flowH(sizes, 92, 2.2) + 4, noteH = solo ? 0 : 8, byT = (t) => items.find((x) => x.t === t);
     const on = (stage, x) => !!stage.get(x.id).data.on;
     const taps = (want) => items.filter((x) => want(x)).map((x) => ({ tap: x.id }));

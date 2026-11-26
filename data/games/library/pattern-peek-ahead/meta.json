@@ -1,0 +1,9 @@
+{
+  "subskillId": "GA-1-PAR.3.1-1",
+  "title": "Pattern Peek Ahead",
+  "emoji": "🔮",
+  "premise": "The pattern keeps going, even past what you can see. Work out what comes later, not just next.",
+  "idea": "Predicting later terms in a repeating pattern: the child builds the 7th to 9th items, which takes knowing the repeating unit, not only the next item.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

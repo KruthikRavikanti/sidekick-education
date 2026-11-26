@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.NBT.C.4-2",
+  "title": "Ten Rod Express",
+  "emoji": "🚄",
+  "premise": "The express train only carries whole tens. Add tens to a number and watch which place changes.",
+  "idea": "Adding a two-digit number and a multiple of ten: the tens are added to the tens. Adding them to the ones place (34 + 20 = 36) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

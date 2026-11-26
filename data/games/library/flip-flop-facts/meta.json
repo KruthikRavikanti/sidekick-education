@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.B.3-1",
+  "title": "Flip Flop Facts",
+  "emoji": "🩴",
+  "premise": "Flip the two numbers in an adding fact and the total stays the same. Finish each flipped fact.",
+  "idea": "The commutative property of addition: 8 + 3 = 3 + 8. The child completes the flipped fact. Putting the total in the blank is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

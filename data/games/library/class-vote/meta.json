@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.MD.C.4-2",
+  "title": "Class Vote",
+  "emoji": "🗳️",
+  "premise": "The class voted and made a chart. Use it to answer how many in one group and how many in all.",
+  "idea": "Answering how many in each category and in all from a chart. Giving one bar when asked for the total is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

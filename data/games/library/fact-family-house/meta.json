@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.B.4-2",
+  "title": "Fact Family House",
+  "emoji": "🏡",
+  "premise": "Three numbers live together in a fact family. Tap every fact that truly belongs in their house.",
+  "idea": "Fact families: the child picks the four true facts for three numbers. Facts with the whole in the place of a part are the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

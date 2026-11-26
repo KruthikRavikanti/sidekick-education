@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.B.3-2",
+  "title": "Ten Train",
+  "emoji": "🚋",
+  "premise": "Hook two cars together to make a ten, and the adding gets easy. Group the numbers that make ten.",
+  "idea": "Grouping addends to make ten (2 + 6 + 4 = 2 + 10): the child replaces a pair with its ten and finishes the sum.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

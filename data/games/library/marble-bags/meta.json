@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.NBT.A.1-3",
+  "title": "Marble Bags",
+  "emoji": "🎒",
+  "premise": "Every bag holds exactly 10 marbles, and a few marbles are loose. Write how many marbles there are.",
+  "idea": "Representing a number of objects with a numeral: bags of ten are the tens digit and loose marbles the ones digit. Writing the digits in the other order is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.G.A.3-1",
+  "title": "Fair Shares",
+  "emoji": "🍕",
+  "premise": "Friends want to share fairly. Find the shapes that are cut into shares of exactly the same size.",
+  "idea": "Partitioning circles and rectangles into two and four equal shares: the child picks shapes cut into equal parts. Unequal pieces with the right count are the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

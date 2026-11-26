@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.NBT.C.5-2",
+  "title": "Take a Ten Away",
+  "emoji": "🧃",
+  "premise": "A number is already built with rods and cubes. Make it exactly ten less.",
+  "idea": "Finding 10 less than a two-digit number: one ten rod goes and the ones stay. Changing the ones digit instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

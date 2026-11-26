@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.A.1-1",
+  "title": "Sticker Stories",
+  "emoji": "📒",
+  "premise": "Every story hides a number. Read what really happens before you choose to add or take away.",
+  "idea": "Add-to and take-from stories with the result unknown. One story uses the word left as a pocket, so a keyword rule (left means subtract) gives the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

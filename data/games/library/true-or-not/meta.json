@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.D.7-2",
+  "title": "True or Not?",
+  "emoji": "✅",
+  "premise": "A number sentence is true when both sides are the same amount, no matter which side the sum is on.",
+  "idea": "Judging equations true or false: sentences with the total on the left (7 = 3 + 4) are true, and the child who expects the answer on the right calls them untrue.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

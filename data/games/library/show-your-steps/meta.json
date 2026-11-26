@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.NBT.C.4-4",
+  "title": "Show Your Steps",
+  "emoji": "📝",
+  "premise": "A good helper can show how the adding was done. Put the steps with the blocks in the order they happen.",
+  "idea": "Explaining an addition strategy with a model: the child orders the steps of adding with tens and ones. Trading before the ones are added is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

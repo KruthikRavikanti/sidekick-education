@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.G.A.1-2",
+  "title": "Closed Shape Checker",
+  "emoji": "🔒",
+  "premise": "A real shape is closed all the way around, with straight sides that meet. Check every drawing.",
+  "idea": "Shapes with given attributes: the child picks drawings that are closed with the right number of straight sides. An open figure called a triangle is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.NBT.C.4-1",
+  "title": "Cube Adder",
+  "emoji": "🧱",
+  "premise": "Add a few ones to a bigger number by building the total with rods and cubes. Ones join ones.",
+  "idea": "Adding a two-digit and a one-digit number: the ones are added to the ones. Adding the single digit to the tens digit (34 + 5 = 84) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "GA-1-PAR.3.2-2",
+  "title": "Cricket Jumps",
+  "emoji": "🦗",
+  "premise": "The cricket always jumps the same distance, forward or backward. Fill in where it lands next.",
+  "idea": "Extending skip-counting patterns forward and backward: the child supplies the next two numbers. Losing the step size partway is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

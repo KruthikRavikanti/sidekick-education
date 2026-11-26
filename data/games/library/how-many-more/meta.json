@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.MD.C.4-3",
+  "title": "How Many More?",
+  "emoji": "📶",
+  "premise": "Two bars stand side by side. Find how much taller one is than the other.",
+  "idea": "Comparing categories from a chart: how many more is the difference. Answering with the larger count is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

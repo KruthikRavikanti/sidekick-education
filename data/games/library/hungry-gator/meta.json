@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.NBT.B.3-2",
+  "title": "Hungry Gator",
+  "emoji": "🐊",
+  "premise": "The gator always opens its mouth toward the bigger number. Drop the right sign between each pair.",
+  "idea": "Using the symbols for greater than, less than and equal: the child places a sign between two numbers and reads the comparison. Reversing the sign is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

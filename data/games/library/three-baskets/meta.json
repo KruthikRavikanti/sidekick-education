@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.MD.C.4-1",
+  "title": "Three Baskets",
+  "emoji": "🗂️",
+  "premise": "Everything gets sorted into one of three baskets. Each thing belongs in just one.",
+  "idea": "Sorting data into up to three categories: every object belongs to exactly one of three groups.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

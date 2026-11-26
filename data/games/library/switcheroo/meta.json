@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.B.3-3",
+  "title": "Switcheroo",
+  "emoji": "🔀",
+  "premise": "Some facts work in any order and some do not. Sort the ones you can switch from the ones you cannot.",
+  "idea": "Subtraction is not commutative: the child sorts facts by whether switching the numbers keeps the answer. Treating 8 − 3 like 3 − 8 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

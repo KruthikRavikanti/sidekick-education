@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.MD.A.2-3",
+  "title": "Fair Measure",
+  "emoji": "📎",
+  "premise": "Not every way of measuring is fair. Sort the good measuring from the measuring that needs a fix.",
+  "idea": "Using same-size units only: descriptions of measuring are sorted into good and needs a fix. Mixing big and small units is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.G.A.2-1",
+  "title": "Shape Split",
+  "emoji": "✂️",
+  "premise": "Big shapes are hiding smaller shapes inside them. Match each big shape to the two pieces that make it.",
+  "idea": "Composing two-dimensional shapes: the child sees which two smaller shapes make a larger one, such as two squares in a rectangle.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

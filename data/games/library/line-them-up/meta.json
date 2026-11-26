@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.MD.A.1-1",
+  "title": "Line Them Up",
+  "emoji": "🧵",
+  "premise": "Three things, three lengths. Line them up from the shortest to the longest.",
+  "idea": "Ordering three objects by length, first by looking and then by reasoning from two clues. Going longest to shortest is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.NBT.A.1-2",
+  "title": "Number Speller",
+  "emoji": "🔢",
+  "premise": "The parrot says a big number. Spell it with digits, using just the right number of them.",
+  "idea": "Writing numerals to 120: one hundred twelve is 112, not 100 followed by 12. Extra zero tiles let the known slip be built.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

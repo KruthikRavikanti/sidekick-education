@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.NBT.C.6-2",
+  "title": "Fact Echo",
+  "emoji": "📣",
+  "premise": "Shout a small fact into the canyon and it echoes back in tens. Use the little fact to find the big one.",
+  "idea": "Relating tens subtraction to single-digit facts: 8 − 5 = 3, so 80 − 50 = 30. Giving the ones answer for the tens fact is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

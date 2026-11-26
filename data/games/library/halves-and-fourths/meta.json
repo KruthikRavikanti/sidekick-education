@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.G.A.3-2",
+  "title": "Halves and Fourths",
+  "emoji": "🍰",
+  "premise": "The bakery cuts its cakes into halves and fourths. Sort each cake by how it is cut.",
+  "idea": "The words halves, fourths and quarters: the shares must be equal. Two unequal pieces called halves is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}
