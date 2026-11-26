@@ -182,6 +182,8 @@ The visual theme lives in `app/color-blocks.css`, a layer imported last in `app/
 
 The palette is deliberately small: sun, orange, forest and lime on a cream page, with sand as the one quiet neutral. There is no pale green and no light blue. Form cards (log in, sign up, the parent PIN, the upload card) are forest with white fields and a sun button. Where the base styles used pale green tints, the theme maps them to the palette: quiet surfaces and notes are sand, a picked option is sun, and "done, correct, on track" is solid lime. The game frame's own chrome (`backend/games/kit/kit.css`) follows the same swap.
 
+The page around the panels is a small landscape, drawn in CSS behind everything (`body::before` and `body::after`, never in the way of a click). Two soft clouds sit near the top of every screen. On screens made of panels (log in, sign up, the profile picker, the parent PIN, kid home, upload and results) a sun, two hills and the mascots sit along the bottom of the screen. Where words sit straight on the page (the game and activity players, the parent side) only the clouds show, so nothing is ever behind text. The few words that do sit on the bare page on scene screens (the footer line, "Log out" on the picker, the privacy note and the results footnote) have a cream backing.
+
 ## Generated games (experimental, off by default)
 
 The activity toolkit above gives every skill one of 14 fixed controls. Generated games take the other road: a model writes a small game for a skill, so the ceiling is the model's imagination and every skill in the catalog is reachable. That reverses the "model never writes code" rule, so the rule is replaced by four layers that do not depend on trusting the model.
