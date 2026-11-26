@@ -1,0 +1,127 @@
+/* Color Blocks theme.
+   A layer over the base styles: big flat panels in the brand colors, very large type,
+   no borders and no drop shadows. It only restyles; remove the import in layout.tsx to
+   go back to the previous look. */
+:root {
+  --sun: #ffd45c;
+  --sky: #cdeafc;
+  --lime-tint: #e9f0d2;
+  --orange-tint: #fde3d3;
+  --sand: #f3ecdb;
+  --forest-soft: #0b5c35;
+  --on-forest: #d7e6c0;
+  --block-radius: 36px;
+}
+
+/* ---------- shared pieces ---------- */
+h1, h2, h3 { font-family: Fredoka, Nunito, sans-serif; }
+.account-eyebrow, .eyebrow, .little-label { color: var(--forest); font-weight: 800; letter-spacing: 0.14em; }
+.button.primary {
+  min-height: 58px; padding: 0 30px; border-radius: 999px; box-shadow: none;
+  font-family: Fredoka, Nunito, sans-serif; font-weight: 600; font-size: 20px;
+}
+.button.primary:hover:not(:disabled) { background: var(--forest-soft); transform: translateY(-2px); }
+.account-card { border: 0; box-shadow: none; border-radius: var(--block-radius); background: #fff; padding: 40px; }
+.account-header, .site-header { border-bottom: 0; }
+.account-main { max-width: 1180px; }
+
+/* ---------- log in and sign up ---------- */
+.auth-layout { gap: 20px; align-items: stretch; padding: 12px 0; }
+.auth-story { background: var(--sun); border-radius: var(--block-radius); padding: 52px 48px; display: flex; flex-direction: column; justify-content: center; }
+.auth-story h1 { font-size: clamp(44px, 5.4vw, 72px); line-height: 1; letter-spacing: -1px; }
+.auth-story p { color: var(--forest); font-weight: 700; }
+.auth-card { background: var(--lime-tint); }
+.auth-card input, .pin-card input { border: 0; border-radius: 18px; min-height: 54px; background: #fff; }
+.pin-card { background: var(--lime-tint); }
+
+/* ---------- who is learning ---------- */
+.picker-intro { background: var(--sun); border-radius: var(--block-radius); padding: 44px 32px; margin: 4px 0 20px; max-width: none; }
+.picker-intro h1 { font-size: clamp(44px, 6.5vw, 84px); line-height: 1; letter-spacing: -1px; margin: 10px 0; }
+.picker-intro p { color: var(--forest); font-weight: 700; font-size: 19px; }
+.profile-grid { max-width: none; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+.profile-tile { border: 0; box-shadow: none; border-radius: var(--block-radius); min-height: 264px; font-family: Fredoka, Nunito, sans-serif; font-size: 30px; transition: transform 0.15s; }
+.profile-tile:nth-child(4n + 1) { background: var(--orange); }
+.profile-tile:nth-child(4n + 2) { background: var(--lime); }
+.profile-tile:nth-child(4n + 3) { background: var(--sky); }
+.profile-tile:nth-child(4n + 4) { background: #e7cfe4; }
+.profile-tile.parent-tile { background: var(--forest); color: var(--cream); }
+.profile-tile.parent-tile * { color: var(--cream); }
+.profile-tile:hover { transform: translateY(-6px); box-shadow: none; }
+.profile-tile .kid-avatar, .profile-tile .parent-avatar { background: var(--cream); border: 0; box-shadow: none; }
+.profile-tile.parent-tile .parent-avatar, .profile-tile.parent-tile .parent-avatar * { color: var(--forest); }
+.profile-tile span, .profile-tile small { color: var(--forest); }
+
+/* ---------- kid home ---------- */
+.shell-kid .account-main:has(> .kid-welcome) { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); grid-template-rows: auto auto 1fr; gap: 20px; align-content: start; }
+.kid-welcome { grid-column: 1 / -1; position: relative; overflow: hidden; margin: 0; padding: 44px 48px; background: var(--sun); border-radius: var(--block-radius); text-align: left; min-height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+.kid-welcome::after { content: ""; position: absolute; right: 44px; bottom: -26px; width: 330px; height: 238px; background: url("/sidekick-mascot.svg") center / contain no-repeat; pointer-events: none; }
+.kid-welcome .kid-avatar { margin: 0 0 12px; background: var(--cream); border: 0; box-shadow: none; }
+.kid-welcome h1 { font-size: clamp(56px, 8vw, 104px); line-height: 0.95; letter-spacing: -1.5px; margin: 8px 0 12px; }
+.kid-welcome p:not(.account-eyebrow) { font-size: 24px; font-weight: 700; color: var(--forest); margin: 0; }
+.kid-actions { grid-column: 1; grid-row: 2 / span 2; max-width: none; margin: 0; }
+.kid-action-card { height: 100%; min-height: 320px; display: flex; flex-direction: column; gap: 12px; padding: 40px 44px; background: var(--orange); border: 0; box-shadow: none; border-radius: var(--block-radius); color: var(--forest); }
+.kid-action-card:hover { transform: translateY(-4px); box-shadow: none; }
+.kid-action-card h2 { font-size: clamp(40px, 4.6vw, 56px); line-height: 1; margin: 6px 0 0; }
+.kid-action-card p { font-size: 20px; font-weight: 700; color: var(--forest); max-width: 420px; }
+.kid-action-card .kid-action-icon { background: var(--cream); border: 0; }
+.kid-action-card .kid-action-arrow { position: static; margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 50%; background: var(--forest); color: var(--cream); font-size: 28px; }
+.kid-chat-placeholder { grid-column: 2; max-width: none; margin: 0; padding: 32px 36px; background: var(--forest); border: 0; border-radius: var(--block-radius); color: var(--cream); }
+.kid-chat-placeholder h2 { color: var(--cream); font-size: 28px; line-height: 1.1; }
+.kid-chat-placeholder p, .kid-chat-placeholder svg { color: var(--on-forest); }
+section.kid-chat-placeholder input[disabled] { width: 100%; min-height: 50px; padding: 0 20px; border: 0; border-radius: 999px; background: var(--forest-soft); color: var(--on-forest); }
+section.kid-chat-placeholder input[disabled]::placeholder { color: var(--on-forest); opacity: 1; }
+.kid-steps { grid-column: 2; padding: 28px 36px; background: var(--lime); border-radius: var(--block-radius); }
+.kid-steps h2 { font-size: 24px; margin: 0 0 14px; }
+.kid-steps ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; counter-reset: step; }
+.kid-steps li { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 800; counter-increment: step; }
+.kid-steps li::before { content: counter(step); flex: 0 0 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--forest); color: var(--cream); font-family: Fredoka, Nunito, sans-serif; font-size: 17px; }
+
+/* ---------- upload ---------- */
+.main-upload { max-width: 1180px; gap: 20px; align-items: stretch; padding-top: 36px; }
+.upload-intro { background: var(--sun); border-radius: var(--block-radius); padding: 48px; display: flex; flex-direction: column; justify-content: center; }
+.upload-intro h1 { font-size: clamp(48px, 6vw, 80px); line-height: 1; }
+.upload-intro p { color: var(--forest); font-weight: 700; font-size: 19px; }
+.intro-mascot { width: 220px; height: 160px; margin: 24px 0 0; transform: none; }
+.upload-card { border: 0; box-shadow: none; border-radius: var(--block-radius); background: var(--sky); }
+.upload-card .card-topline { border-bottom: 0; }
+
+/* ---------- results ---------- */
+.main-results { max-width: 860px; }
+.results-intro { background: var(--sun); border-radius: var(--block-radius); padding: 40px 32px; margin-bottom: 20px; }
+.results-intro h1 { font-size: clamp(44px, 6vw, 76px); line-height: 1; letter-spacing: -1px; }
+.results-intro p { color: var(--forest); font-weight: 700; }
+.activity-suggestion, .game-suggestion { max-width: none; margin: 20px 0; padding: 32px 36px; background: var(--orange); border: 0; box-shadow: none; border-radius: var(--block-radius); color: var(--forest); }
+.activity-suggestion h2, .game-suggestion h2 { font-size: 32px; line-height: 1.05; }
+.activity-suggestion :is(p, span, small, li), .game-suggestion :is(p, small, li) { color: var(--forest) !important; font-weight: 700; }
+.activity-suggestion .activity-suggestion-icon { background: var(--cream); border: 0; }
+.worksheet-summary { border: 0; box-shadow: none; border-radius: var(--block-radius); background: var(--lime-tint); padding: 32px 36px; margin-bottom: 20px; }
+.context-card { border: 0; box-shadow: none; border-radius: 28px; background: var(--sky); }
+.problem-card { border: 0; border-radius: 28px; background: #fff; }
+
+/* ---------- parent dashboard ---------- */
+.dashboard-intro { background: var(--forest); border-radius: var(--block-radius); padding: 40px 44px; margin-bottom: 20px; align-items: center; }
+.dashboard-intro h1 { color: var(--cream); font-size: clamp(34px, 4vw, 52px); line-height: 1.02; letter-spacing: -0.5px; }
+.dashboard-intro :is(p, span, small, label, div), .dashboard-intro .account-eyebrow { color: var(--on-forest) !important; }
+.dashboard-intro select { border: 0; border-radius: 999px; min-height: 50px; background: var(--cream); color: var(--forest); font-weight: 800; }
+.dashboard-tabs { border-bottom: 0; gap: 8px; padding-bottom: 4px; }
+.dashboard-tabs button { background: var(--lime-tint); color: var(--forest); min-height: 46px; padding: 10px 22px; font-size: 15px; font-family: Fredoka, Nunito, sans-serif; font-weight: 600; }
+.dashboard-tabs button.selected { background: var(--forest); color: var(--cream); }
+.dashboard-section h2 { font-size: 32px; line-height: 1.05; }
+.skill-card { border: 0; border-radius: 24px; padding: 24px; background: var(--sand); }
+.skill-card.skill-card-on_track { background: var(--lime-tint); }
+.skill-card.skill-card-needs_support { background: var(--orange-tint); }
+
+/* ---------- small screens ---------- */
+@media (max-width: 760px) {
+  :root { --block-radius: 28px; }
+  .shell-kid .account-main:has(> .kid-welcome) { grid-template-columns: minmax(0, 1fr); }
+  .kid-actions, .kid-chat-placeholder, .kid-steps { grid-column: 1; grid-row: auto; }
+  .kid-welcome { padding: 32px 28px; min-height: 0; }
+  .kid-welcome::after { display: none; }
+  .kid-action-card { min-height: 0; padding: 30px 28px; }
+  .auth-story, .upload-intro, .picker-intro, .results-intro, .dashboard-intro { padding: 30px 26px; }
+  .account-card { padding: 28px 24px; }
+  .intro-mascot { display: none; }
+  .profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .profile-tile { min-height: 196px; font-size: 24px; }
+}

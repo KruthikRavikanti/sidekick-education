@@ -45,6 +45,14 @@ function KidContent() {
           placeholder="Chat is coming soon"
         />
       </section>
+      <section className="kid-steps" aria-labelledby="kid-steps-title">
+        <h2 id="kid-steps-title">How it goes</h2>
+        <ol>
+          <li>Snap your page</li>
+          <li>See what Sidekick found</li>
+          <li>Play a game made for you</li>
+        </ol>
+      </section>
     </AccountShell>
   );
 }

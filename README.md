@@ -176,6 +176,10 @@ To try the three new actions, launch `npm run dev:all`, enter child mode, and up
 
 Tap **Read my work**, then **Try an activity**, manipulate the scene, and finish the fresh challenge. Switch to parent mode with the PIN and open **Activities** to see the outcome. These three skills have no prebuilt activity in the six-example library; live composition saves a verified reusable definition on demand. Apply migration 007 for the expanded engine. No new package dependency or provider setting is required.
 
+## Look and feel: Color Blocks
+
+The visual theme lives in `app/color-blocks.css`, a layer imported last in `app/layout.tsx`. It restyles the existing screens into big flat panels in the brand colors (sun, orange, forest, lime, sky) with very large Fredoka headings and no borders or drop shadows. It changes no behavior. Removing that one import returns the app to the earlier look. The only markup added with it is the short "How it goes" list on the kid home page.
+
 ## Generated games (experimental, off by default)
 
 The activity toolkit above gives every skill one of 14 fixed controls. Generated games take the other road: a model writes a small game for a skill, so the ceiling is the model's imagination and every skill in the catalog is reachable. That reverses the "model never writes code" rule, so the rule is replaced by four layers that do not depend on trusting the model.
