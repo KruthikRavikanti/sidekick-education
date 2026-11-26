@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.A.1-1",
+  "title": "Stepping Stones",
+  "emoji": "🪨",
+  "premise": "The stones across the pond lost their order. Put the numbers back so the frog can hop across.",
+  "idea": "Counting order is the rule: the child lays number stones in order, and a skipped or swapped teen number leaves the path out of order.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

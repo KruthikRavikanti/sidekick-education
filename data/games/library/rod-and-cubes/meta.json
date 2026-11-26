@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.NBT.A.1-3",
+  "title": "Rod and Cubes",
+  "emoji": "🧮",
+  "premise": "Build teen numbers with one long ten rod and some little ones cubes.",
+  "idea": "Building a teen number from a ten and ones: the child sets a ten rod and loose cubes and watches the blocks. Leaving out the rod builds only the ones.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

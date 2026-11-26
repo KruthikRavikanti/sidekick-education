@@ -1,0 +1,9 @@
+{
+  "subskillId": "GA-K-NR.1.4-1",
+  "title": "Coin Detective",
+  "emoji": "🪙",
+  "premise": "Three coins, three looks. Study the color and the size of each coin, then name it.",
+  "idea": "Telling pennies, nickels and dimes apart by look: coins are drawn to size and color, and the small silver dime is the one most often called a nickel.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.B.5-2",
+  "title": "Coin Puddles",
+  "emoji": "🪙",
+  "premise": "Coins spilled all over the sidewalk in messy puddles. Count each puddle and give it a tag.",
+  "idea": "Counting scattered objects: the coins are not in a neat line, so the child has to keep track. Counting a coin twice gives a tag that is one too big.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

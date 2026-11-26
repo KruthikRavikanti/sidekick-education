@@ -1,0 +1,9 @@
+{
+  "subskillId": "GA-K-PAR.6.1-1",
+  "title": "Pattern Parade",
+  "emoji": "🥁",
+  "premise": "The parade marches in a pattern that keeps starting over. Find the part that repeats and build it once.",
+  "idea": "Finding the unit that repeats: the child builds just the repeating part of a pattern. Copying only the first two pieces of an ABB pattern is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

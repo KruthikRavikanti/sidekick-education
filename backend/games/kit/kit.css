@@ -161,3 +161,18 @@ button { font: inherit; color: inherit; }
   .sk-sprite, .sk-zone, .sk-dot { transition: none !important; }
   .sk-sprite.sk-pop, .sk-sprite.sk-shake, .sk-sprite.sk-float, .sk-sprite.sk-spin, .sk-sprite.sk-picked, .sk-zone.sk-target, .sk-cell.on, .sk-check.sk-shake { animation: none !important; }
 }
+
+/* ---- play patterns (play.js): wrapped cards, picked things, grid points, pictures */
+.skp-card { width: 100%; min-height: 9.5cqw; display: grid; place-items: center; padding: 1.3cqw 2cqw; background: #fff; color: var(--sk-forest); border: .5cqw solid var(--sk-forest); border-radius: 2.2cqw; box-shadow: 0 .8cqw 0 var(--sk-forest); font: 700 3.7cqw/1.2 "Nunito", sans-serif; text-align: center; }
+.sk-sprite.skp-on { --k: 1.05; }
+.sk-sprite.sk-text.skp-on, .sk-sprite.skp-on > .skp-card { background: var(--sk-sun); }
+.sk-sprite.sk-emoji.skp-on { filter: drop-shadow(0 0 .9cqw var(--sk-orange)) drop-shadow(0 0 .9cqw var(--sk-orange)); }
+.skp-dot { width: 30%; height: 30%; border-radius: 50%; background: rgba(5,74,41,.3); transition: width .15s, height .15s, background .15s; }
+.sk-sprite.skp-on > .skp-dot { width: 58%; height: 58%; background: var(--sk-orange); border: .6cqw solid var(--sk-forest); }
+.skp-view { pointer-events: none; display: grid; place-items: center; background: rgba(255,255,255,.9); border: .4cqw solid var(--sk-border); border-radius: 3cqw; overflow: hidden; color: var(--sk-forest); }
+.skp-view.bare { background: transparent; border: none; overflow: visible; }
+.skp-view > svg { width: 100%; height: 100%; display: block; }
+.skp-read { font: 600 5.6cqw/1.2 "Fredoka", sans-serif; background: rgba(255,255,255,.94); border: .4cqw solid var(--sk-border); border-radius: 3cqw; padding: 2cqw 4cqw; text-align: center; }
+.skp-table { border-collapse: collapse; background: #fff; font: 600 4.2cqw/1.1 "Fredoka", sans-serif; border-radius: 2cqw; overflow: hidden; box-shadow: 0 0 0 .5cqw var(--sk-forest); }
+.skp-table th, .skp-table td { padding: 1.4cqw 3cqw; border: .3cqw solid var(--sk-border); text-align: center; }
+.skp-table th { background: var(--sk-sun); }

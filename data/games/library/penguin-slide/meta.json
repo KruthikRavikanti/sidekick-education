@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.OA.A.5-2",
+  "title": "Penguin Slide",
+  "emoji": "🐧",
+  "premise": "The penguin slides back down the ice hill to take away. Each slide back is one less.",
+  "idea": "Subtraction facts within 5 on a number line: the penguin slides back one for each taken away. Counting the starting number as a slide ends one too high.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

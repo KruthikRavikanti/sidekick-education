@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.B.4-1",
+  "title": "Firefly Count",
+  "emoji": "✨",
+  "premise": "Little bugs are out in the night garden. Tap each one the mission names, just one time.",
+  "idea": "One touch for one object: the child taps each named bug once and leaves the things that are not that bug, and the count goes up by one each tap.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

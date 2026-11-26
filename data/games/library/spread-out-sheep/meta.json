@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.B.4-3",
+  "title": "Spread-Out Sheep",
+  "emoji": "🐑",
+  "premise": "Some flocks huddle close and some spread out wide. Sort each flock by how many sheep it really has.",
+  "idea": "Conservation of number: the same count is shown bunched up and spread out, and the child sorts by how many, not by how much room they take.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

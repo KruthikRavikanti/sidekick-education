@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.OA.A.3-3",
+  "title": "Bead Sentence",
+  "emoji": "📿",
+  "premise": "Each string has beads in two colors. Build the number sentence that tells the whole string and its two parts.",
+  "idea": "Recording a split with an equation: the child builds a sentence such as 5 = 3 + 2 from tiles. Writing only the parts leaves out the whole.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

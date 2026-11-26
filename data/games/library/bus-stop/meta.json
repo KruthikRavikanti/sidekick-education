@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.OA.A.2-1",
+  "title": "Bus Stop",
+  "emoji": "🚌",
+  "premise": "Riders get on the bus and riders get off. Slide the bus to show how many are riding now.",
+  "idea": "Add-to and take-from stories: the number line is the number of riders, so getting on moves up and getting off moves down. Adding in a take-away story overshoots.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

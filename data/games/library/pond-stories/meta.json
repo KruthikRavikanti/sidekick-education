@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.OA.A.2-3",
+  "title": "Pond Stories",
+  "emoji": "🦆",
+  "premise": "Every little story changes how many there are. Decide what happened: are there more now, or fewer?",
+  "idea": "Making sense of a story before solving: the child sorts short events by whether they leave more or fewer, instead of grabbing the numbers.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.MD.B.3-1",
+  "title": "Toy Shelf",
+  "emoji": "🧸",
+  "premise": "Tidy the shelf by one rule at a time. Once you pick a rule, keep it for every single thing.",
+  "idea": "Sorting into given categories: each round names one rule, and one object would fit a different rule, which is where a child who switches rules slips.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

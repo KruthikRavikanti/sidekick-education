@@ -34,7 +34,8 @@ def kit_assets(version=KIT_VERSION):
     css = css.replace('__SK_FONT_FREDOKA__', _data_uri(ROOT / 'public/fonts/fredoka-latin.woff2', 'font/woff2'))
     css = css.replace('__SK_FONT_NUNITO__', _data_uri(ROOT / 'public/fonts/nunito-latin.woff2', 'font/woff2'))
     css = css.replace('__SK_MASCOT__', _data_uri(ROOT / 'public/sidekick-mascot.svg', 'image/svg+xml'))
-    return css, (KIT_DIR / 'kit.js').read_text(encoding='utf-8')
+    # play.js adds the ready-made play patterns (Sidekick.play) on top of the kit's public API.
+    return css, (KIT_DIR / 'kit.js').read_text(encoding='utf-8') + '\n' + (KIT_DIR / 'play.js').read_text(encoding='utf-8')
 
 
 def content_security_policy(nonce, *, header=True):

@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.A.3-3",
+  "title": "Basket Tags",
+  "emoji": "🧺",
+  "premise": "Each basket needs a number tag that tells how many are inside. One basket is empty!",
+  "idea": "A numeral names how many are in a set, and an empty set is named by 0. The child tags each basket, including an empty one.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

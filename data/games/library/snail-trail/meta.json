@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.A.2-2",
+  "title": "Snail Trail",
+  "emoji": "🐌",
+  "premise": "The snail is partway down its trail. Slide it on, right past the place where the tens change.",
+  "idea": "Counting forward across a decade from a given start: the snail slides on from numbers like 38, and counting the start again lands one short.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

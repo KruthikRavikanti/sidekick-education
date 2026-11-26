@@ -1,0 +1,9 @@
+{
+  "subskillId": "GA-K-NR.1.4-2",
+  "title": "Piggy Bank",
+  "emoji": "🐷",
+  "premise": "The piggy bank knows what every coin is worth. Match the coins to their values, then feed the pig.",
+  "idea": "Knowing the value of each coin: the child matches coins to cents, then pays an amount with a single coin. Treating every coin as 1¢ is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+build"
+}

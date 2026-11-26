@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.G.B.5-2",
+  "title": "Grid Artist",
+  "emoji": "🎨",
+  "premise": "Draw shapes on the grid with straight sides and square corners. Follow how far across and how far down.",
+  "idea": "Drawing shapes with the right sides: the child paints a rectangle or square to a given size on a grid, so the sides are straight and the corners square.",
+  "author": "claude-stand-in",
+  "play": "paint"
+}

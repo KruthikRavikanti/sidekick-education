@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.OA.A.1-2",
+  "title": "Chalk Dots",
+  "emoji": "🖍️",
+  "premise": "Draw each little story with chalk dots. Your picture should show what happened, not just the numbers.",
+  "idea": "Showing addition and subtraction with drawings: the child paints dots for what is there at the end of the story. Drawing only the starting number misses the action.",
+  "author": "claude-stand-in",
+  "play": "paint"
+}

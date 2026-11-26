@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.OA.A.3-1",
+  "title": "Two Nests",
+  "emoji": "🐿️",
+  "premise": "The squirrel hides its acorns in two nests. Share them out so every acorn has a home.",
+  "idea": "Splitting a number into two parts: the child shares a fixed pile between two nests, so the two parts are seen to make the whole. Leaving acorns out breaks the split.",
+  "author": "claude-stand-in",
+  "play": "build"
+}

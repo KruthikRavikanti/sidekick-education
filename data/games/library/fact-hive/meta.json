@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.OA.A.5-1",
+  "title": "Fact Hive",
+  "emoji": "🐝",
+  "premise": "Each bee carries a little adding fact. Fly every bee to the hive cell that shows its total.",
+  "idea": "Addition facts within 5: each fact tile belongs in the cell with its total, so the child recalls sums instead of counting everything from 1.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

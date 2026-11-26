@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.A.3-2",
+  "title": "Number Stamps",
+  "emoji": "🖋️",
+  "premise": "The owl says a teen number out loud. Stamp its two digits in the right order.",
+  "idea": "Writing teen numerals: the child builds the number from two digit stamps. Putting the digit you hear first (the 7 in seventeen) in front makes 71.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

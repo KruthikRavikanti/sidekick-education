@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.A.1-2",
+  "title": "Caboose Count",
+  "emoji": "🚂",
+  "premise": "The train cars are numbered, but they got unhooked right where the tens change. Hook them up in counting order.",
+  "idea": "Counting across a decade: the child orders numbers like 28, 29, 30, 31, and a stray earlier ten is there to tempt a slip back.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

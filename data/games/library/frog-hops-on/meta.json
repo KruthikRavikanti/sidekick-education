@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.A.2-1",
+  "title": "Frog Hops On",
+  "emoji": "🐸",
+  "premise": "The frog is already sitting on a lily pad. Count on from there to find where it lands.",
+  "idea": "Counting on from a given number: the frog starts on a pad, and the child slides it forward by counting on instead of starting again at 1.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

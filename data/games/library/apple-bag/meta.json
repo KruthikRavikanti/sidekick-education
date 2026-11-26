@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.OA.A.2-2",
+  "title": "Apple Bag",
+  "emoji": "🛍️",
+  "premise": "Red apples and green apples go into one bag. Key in how many apples are in the bag in all.",
+  "idea": "Put-together problems with the total unknown: two groups are shown and the child keys in the total. Answering with one of the two given numbers is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

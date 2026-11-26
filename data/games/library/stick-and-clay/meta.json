@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.G.B.5-1",
+  "title": "Stick and Clay",
+  "emoji": "🪵",
+  "premise": "Build shapes from sticks, with a ball of clay to join every corner. A shape is only done when it is closed.",
+  "idea": "Building shapes from sticks and clay: the child sets sticks and clay balls and the shape redraws. One clay ball short leaves a corner open.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

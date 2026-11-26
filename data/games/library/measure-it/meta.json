@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.MD.A.1-2",
+  "title": "Measure It!",
+  "emoji": "🧴",
+  "premise": "One thing can be measured in more than one way. Tap every way you could measure it.",
+  "idea": "Describing several measurable attributes of one object: the child picks the things that can be measured and leaves out color and names, which cannot.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

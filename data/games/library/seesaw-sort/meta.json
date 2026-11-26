@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.MD.A.2-2",
+  "title": "Seesaw Sort",
+  "emoji": "⚖️",
+  "premise": "Some things push the seesaw down and some barely move it. Sort them by weight, not by size.",
+  "idea": "Comparing weights: big but light things (a balloon, a giant teddy) sit beside small but heavy ones, so size alone gives the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}
