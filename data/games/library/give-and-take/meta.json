@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.B.9-2",
+  "title": "Give and Take",
+  "emoji": "🤲",
+  "premise": "Slide a little from one number to the other to make a tidy ten. The total stays the same.",
+  "idea": "Explaining a strategy with properties: 38 + 25 equals 40 + 23 because 2 moves from one addend to the other. Keeping the second addend unchanged is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

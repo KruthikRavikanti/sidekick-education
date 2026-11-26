@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.A.3-2",
+  "title": "Good Guess",
+  "emoji": "🧐",
+  "premise": "A good estimate sounds right when you picture it. Give each thing the length that makes sense.",
+  "idea": "Estimating lengths in inches, feet, centimeters and meters: each object is matched to a sensible length. Estimates with the right number but a far-off unit are the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

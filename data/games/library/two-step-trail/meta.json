@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.OA.A.1-2",
+  "title": "Two-Step Trail",
+  "emoji": "👣",
+  "premise": "These stories take two steps to solve. Follow the trail all the way to the end before you answer.",
+  "idea": "Two-step word problems: the answer to the first step is used in the second. Stopping after the first step is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

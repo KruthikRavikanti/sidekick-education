@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.D.10-1",
+  "title": "Graph Maker",
+  "emoji": "📈",
+  "premise": "Turn a list of counts into a bar graph. Raise each bar to just the right height.",
+  "idea": "Drawing a bar graph for a small data set: each bar is raised to its count on an even scale. Swapping two bars is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

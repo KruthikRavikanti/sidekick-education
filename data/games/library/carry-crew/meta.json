@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.B.7-1",
+  "title": "Carry Crew",
+  "emoji": "🚧",
+  "premise": "When a place fills up past nine, the crew carries a ten or a hundred to the next place. Key in the total.",
+  "idea": "Adding three-digit numbers with composing: each place can hold only one digit. Writing a two-digit sum in one place (51214 for 358 + 276) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.OA.C.4-1",
+  "title": "Cookie Tray",
+  "emoji": "🍪",
+  "premise": "The baker lines up cookies in neat rows. Key in how many cookies are on the whole tray.",
+  "idea": "Finding the total in an array up to 5 by 5: the child counts all the objects by rows. Giving the number of rows is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

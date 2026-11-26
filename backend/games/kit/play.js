@@ -60,6 +60,13 @@
     else if (name === 'dots') { const k = +a[0] || 0; for (let i = 0; i < 10; i++) { const x = 8 + (i % 5) * 17, y = 32 + Math.floor(i / 5) * 18; out += '<rect x="' + x + '" y="' + y + '" width="17" height="18" fill="#fff" stroke="' + FC.line + '" stroke-width="2.5"/>' + (i < k ? '<circle cx="' + (x + 8.5) + '" cy="' + (y + 9) + '" r="5.6" fill="' + FC.shade + '"/>' : ''); } }
     else if (name === 'lines') { const L = (x1, y1, x2, y2) => '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + FC.line + '" stroke-width="5" stroke-linecap="round"/>'; out += a[0] === 'par' ? L(10, 34, 90, 34) + L(10, 66, 90, 66) : a[0] === 'perp' ? L(10, 50, 90, 50) + L(50, 10, 50, 90) + '<rect x="50" y="38" width="12" height="12" fill="none" stroke="' + FC.shade + '" stroke-width="3"/>' : L(10, 30, 90, 70) + L(12, 78, 88, 22); }
     else if (name === 'rod') { const tens = +a[0] || 0, ones = +a[1] || 0; for (let i = 0; i < tens; i++) out += '<rect x="' + (6 + i * 10) + '" y="10" width="8" height="80" fill="#b7ce63" stroke="' + FC.line + '" stroke-width="2"/>'; for (let i = 0; i < ones; i++) out += '<rect x="' + (10 + tens * 10 + Math.floor(i / 5) * 11) + '" y="' + (82 - (i % 5) * 11) + '" width="8" height="8" fill="' + FC.shade + '" stroke="' + FC.line + '" stroke-width="2"/>'; }
+    else if (name === 'poly') out += poly(String(a[0] || '').split(';').map((q) => q.split(',').map(Number)));
+    else if (name === 'sym') { const shape = a[0] || 'heart', line = a[1] || 'v';
+      out += shape === 'heart' ? '<path d="M 50 86 C 10 56 8 26 30 20 C 42 17 50 26 50 34 C 50 26 58 17 70 20 C 92 26 90 56 50 86 Z" fill="' + FC.fill + '" stroke="' + FC.line + '" stroke-width="4" stroke-linejoin="round"/>' : shape === 'circle' ? '<circle cx="50" cy="50" r="36" fill="' + FC.fill + '" stroke="' + FC.line + '" stroke-width="4"/>' : shape === 'tri' ? poly([[50, 14], [80, 84], [20, 84]]) : shape === 'sq' ? poly([[20, 20], [80, 20], [80, 80], [20, 80]]) : shape === 'arrow' ? poly([[50, 12], [84, 46], [62, 46], [62, 86], [38, 86], [38, 46], [16, 46]]) : shape === 'flag' ? poly([[24, 16], [84, 34], [24, 52], [24, 86], [18, 86], [18, 16]]) : poly([[14, 30], [86, 30], [86, 70], [14, 70]]);
+      const ends = { v: [50, 4, 50, 96], h: [4, 50, 96, 50], d: [8, 8, 92, 92], o: [34, 4, 34, 96], u: [4, 38, 96, 38] }[line] || [50, 4, 50, 96];
+      out += '<line x1="' + ends[0] + '" y1="' + ends[1] + '" x2="' + ends[2] + '" y2="' + ends[3] + '" stroke="' + FC.shade + '" stroke-width="5" stroke-dasharray="9 7" stroke-linecap="round"/>'; }
+    else if (name === 'sqcut') { const cut = a[0] || 'v', sh = +a[1] || 0, P = { v: [[[14, 14], [50, 14], [50, 86], [14, 86]], [[50, 14], [86, 14], [86, 86], [50, 86]]], h: [[[14, 14], [86, 14], [86, 50], [14, 50]], [[14, 50], [86, 50], [86, 86], [14, 86]]], d: [[[14, 14], [86, 14], [14, 86]], [[86, 14], [86, 86], [14, 86]]], u: [[[14, 14], [36, 14], [36, 86], [14, 86]], [[36, 14], [86, 14], [86, 86], [36, 86]]], t: [[[14, 14], [38, 14], [38, 86], [14, 86]], [[38, 14], [62, 14], [62, 86], [38, 86]], [[62, 14], [86, 14], [86, 86], [62, 86]]], w: [[[14, 14], [86, 14], [86, 38], [14, 38]], [[14, 38], [86, 38], [86, 62], [14, 62]], [[14, 62], [86, 62], [86, 86], [14, 86]]], q: [[[14, 14], [50, 14], [50, 50], [14, 50]], [[50, 14], [86, 14], [86, 50], [50, 50]], [[14, 50], [50, 50], [50, 86], [14, 86]], [[50, 50], [86, 50], [86, 86], [50, 86]]], x: [[[14, 14], [86, 14], [50, 50]], [[86, 14], [86, 86], [50, 50]], [[86, 86], [14, 86], [50, 50]], [[14, 86], [14, 14], [50, 50]]] }[cut];
+      (P || []).forEach((q, i) => { out += poly(q, i < sh ? FC.shade : FC.pale); }); }
     else fail('picture', 'unknown picture "' + token + '"');
     return '<div class="skp-fig"><svg viewBox="0 0 100 100">' + out + '</svg></div>';
   }
@@ -157,9 +164,9 @@
     if (vals[1]) x += 10;
     for (let i = 0; i < vals[2]; i++) out += R(x + Math.floor(i / 5) * (u + 8), top + (i % 5) * (u + 8), u, u, C.orange);
     x += Math.ceil(vals[2] / 5) * (u + 8) + 6;
-    const total = vals[0] * 100 + vals[1] * 10 + vals[2], wide = Math.max(W, x + (live || c.total ? 190 : 0));
+    const total = vals[0] * 100 + vals[1] * 10 + vals[2], tall = top + u * 10 + 14, wide = Math.max(tall * W / H, x + (live || c.total ? 190 : 0));
     if (live || c.total) out += T(wide - 100, top + u * 5, 64, total);
-    return '<svg viewBox="0 0 ' + wide + ' ' + Math.max(H, top + u * 10 + 14) + '" preserveAspectRatio="xMidYMid meet">' + out + '</svg>';
+    return '<svg viewBox="0 0 ' + nice(wide) + ' ' + tall + '" preserveAspectRatio="xMinYMid meet">' + out + '</svg>';
   } };
   // an angle that opens to the dial value in degrees
   VIEWS.angle = { h: 40, draw(v, c, W, H) {
@@ -177,7 +184,7 @@
     const bars = (c.given || []).map((g) => ({ name: String(g[0]), val: g[1], col: C.sky })).concat(v.map((val, i) => ({ name: String((c.names || [])[i] || ''), val: val, col: C.orange })));
     const cap = c.cap || Math.max.apply(null, bars.map((b) => b.val).concat([1])), tick = c.tick || (cap <= 12 ? 1 : cap <= 24 ? 2 : cap <= 60 ? 5 : cap / 10), left = 80, base = H - 66, top = 44, bw = (W - left - 20) / bars.length; let out = '';
     for (let t = 0; t <= cap + 1e-9; t += tick) { const y = base - (base - top) * t / cap; out += Ln(left, y, W - 10, y, 2, C.soft) + T(left - 34, y, 28, nice(t)); }
-    bars.forEach((b, i) => { const hgt = (base - top) * Math.min(b.val, cap) / cap, x = left + i * bw + bw * 0.16; out += R(x, base - hgt, bw * 0.68, hgt, b.col) + T(x + bw * 0.34, base + 34, Math.min(44, bw * 0.42), b.name); if (live || c.values) out += T(x + bw * 0.34, base - hgt - 20, 28, b.val); });
+    bars.forEach((b, i) => { const hgt = (base - top) * Math.min(b.val, cap) / cap, x = left + i * bw + bw * 0.16; if (c.stack) { for (let k = 0; k < b.val; k++) out += T(x + bw * 0.34, base - (base - top) * (k + 0.5) / cap, Math.min(46, (base - top) / cap * 0.9), '✕', 'fill="' + b.col + '"'); out += T(x + bw * 0.34, base + 34, Math.min(44, bw * 0.42), b.name); return; } out += R(x, base - hgt, bw * 0.68, hgt, b.col) + T(x + bw * 0.34, base + 34, Math.min(44, bw * 0.42), b.name); if (live || c.values) out += T(x + bw * 0.34, base - hgt - 20, 28, b.val); });
     return svg(W, H, out + Ln(left, base, W - 10, base, 5) + Ln(left, base, left, top - 6, 5));
   } };
   // a balance: left pan holds a·x + b, right pan holds c·x + d, and x is the dial
@@ -296,10 +303,19 @@
 
   // measuring with units laid end to end: an object `len` units long, and as many units as the dial (or `sizes` for a still picture)
   VIEWS.units = { h: 30, draw(v, c, W, H) {
-    const len = c.len || 5, sizes = c.sizes || range(Math.max(0, v[0] || 0)).map(() => 1), span = Math.max(len, sizes.reduce((a, b) => a + b, 0) + (c.gaps || 0) * Math.max(0, sizes.length - 1), c.span || 0) + 0.6, u = (W - 60) / span, x0 = 30; let out = '', x = x0;
+    const len = c.len || 5, sizes = c.sizes || range(Math.max(0, v[0] || 0)).map(() => c.size || 1), span = Math.max(len, sizes.reduce((a, b) => a + b, 0) + (c.gaps || 0) * Math.max(0, sizes.length - 1), c.span || 0) + 0.6, u = (W - 60) / span, x0 = 30; let out = '', x = x0;
     out += R(x0, 34, len * u, 70, C[c.color] || C.sun, 'rx="18" stroke="' + C.forest + '" stroke-width="5"') + (c.icon ? T(x0 + len * u / 2, 70, 52, c.icon) : '');
     sizes.forEach((sz, i) => { out += R(x + 3, 150, sz * u - 6, 56, i % 2 ? C.sky : C.orange, 'rx="14" stroke="' + C.forest + '" stroke-width="4"'); x += sz * u + (c.gaps || 0) * u; });
     out += Ln(x0, 120, x0, 226, 3, C.forest, 'stroke-dasharray="8 8"') + Ln(x0 + len * u, 120, x0 + len * u, 226, 3, C.forest, 'stroke-dasharray="8 8"');
+    return svg(W, H, out);
+  } };
+
+  // a tape (bar) diagram: two rows of segments on one scale. A segment is a number, or 'x' for the first dial, 'y' for the second.
+  VIEWS.tape = { h: 34, draw(v, c, W, H, live) {
+    const val = (q) => q === 'x' ? v[0] : q === 'y' ? v[1] : q, rows = [c.top || [], c.bottom || []], sums = rows.map((r) => r.reduce((a, q) => a + Math.max(0, val(q)), 0)), span = Math.max(c.cap || 0, sums[0], sums[1], 1), k = (W - 60) / span, names = c.names || []; let out = '';
+    rows.forEach((r, ri) => { let x = 30; const y = 40 + ri * 130, cols = ri ? [C.orange, C.lime, C.berry] : [C.sky, C.sun, C.mint];
+      r.forEach((q, i) => { const n = Math.max(0, val(q)), w = n * k, unknown = q === 'x' || q === 'y'; if (w <= 0) return; out += R(x, y, w, 76, unknown ? C.white : cols[i % cols.length], 'rx="10" stroke="' + C.forest + '" stroke-width="5" ' + (unknown ? 'stroke-dasharray="14 10"' : '')); if (w > 44) out += T(x + w / 2, y + 38, 34, unknown ? (live || c.show ? n : '?') : (c.hide && c.hide[ri] && c.hide[ri][i] ? '?' : n)); x += w; });
+      if (names[ri]) out += T(30 + em(String(names[ri])) * 13, y - 20, 26, names[ri]); });
     return svg(W, H, out);
   } };
 

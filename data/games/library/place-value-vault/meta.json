@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.A.1-3",
+  "title": "Place Value Vault",
+  "emoji": "🔐",
+  "premise": "The vault opens when you know what each digit is really worth. Hundreds, tens and ones all count differently.",
+  "idea": "The value of each digit in a three-digit number: the 4 in 482 is worth 400. Naming the digit itself as its value is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

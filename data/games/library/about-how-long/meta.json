@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.A.3-1",
+  "title": "About How Long?",
+  "emoji": "🤔",
+  "premise": "An inch, a foot and a meter each have things that are just about their size. Sort each thing by its best match.",
+  "idea": "Benchmark lengths: familiar objects are sorted by whether they are about an inch, a foot or a meter, building a feel for unit sizes.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.G.A.1-2",
+  "title": "Angle Hunter",
+  "emoji": "🔻",
+  "premise": "Every corner of a shape is an angle. Count carefully and tap the shapes with just the right number.",
+  "idea": "Recognizing shapes with a given number of angles: the child counts corners on varied shapes. Miscounting on irregular shapes is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

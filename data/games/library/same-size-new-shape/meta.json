@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.G.A.3-4",
+  "title": "Same Size, New Shape",
+  "emoji": "🪄",
+  "premise": "A square can be cut in half in more than one way. The halves look different but are still the same amount.",
+  "idea": "Equal shares of identical wholes need not have the same shape: a triangle half and a rectangle half of the same square are both halves.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

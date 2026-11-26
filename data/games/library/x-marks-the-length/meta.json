@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.D.9-2",
+  "title": "X Marks the Length",
+  "emoji": "❌",
+  "premise": "Each thing you measured gets one X above its length. Build the line plot from the list.",
+  "idea": "Showing measurement data on a line plot: one X per object above its length. Putting one X for each different length is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

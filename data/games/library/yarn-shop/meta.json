@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.B.5-1",
+  "title": "Yarn Shop",
+  "emoji": "🧶",
+  "premise": "The yarn shop cuts and joins lengths all day. Read each order and key in the new length.",
+  "idea": "Addition and subtraction word problems with lengths in the same unit. Choosing the opposite operation is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.OA.A.1-3",
+  "title": "Match the Bars",
+  "emoji": "🟦",
+  "premise": "A bar model shows a whole and its parts. Stretch the missing part until the parts match the whole.",
+  "idea": "Drawing a bar model for a story: the child sizes the unknown part so the two parts match the whole bar. A bar that does not match the quantities is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

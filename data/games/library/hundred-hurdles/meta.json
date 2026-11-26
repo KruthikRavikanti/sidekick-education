@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.A.2-2",
+  "title": "Hundred Hurdles",
+  "emoji": "🏃",
+  "premise": "The runner skip counts right over a hundred without breaking stride. Fill in the next two steps.",
+  "idea": "Skip counting by 5s, 10s and 100s across a hundred: the step size stays the same. Jumping to the next hundred instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

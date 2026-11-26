@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.D.9-1",
+  "title": "Close Enough Clips",
+  "emoji": "🧷",
+  "premise": "Things do not always end right on a mark. Measure each one to the nearest whole unit.",
+  "idea": "Measuring to the nearest unit: the object ends between marks, and the child picks the closer whole number. Always rounding one way is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

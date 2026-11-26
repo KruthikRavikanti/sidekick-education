@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.G.A.3-1",
+  "title": "Thirds Bakery",
+  "emoji": "🥧",
+  "premise": "Three friends want the same amount of pie. Find the shapes that are cut into shares of the same size.",
+  "idea": "Partitioning circles and rectangles into two, three or four equal shares: the child picks the shapes cut equally. Three unequal pieces called thirds is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

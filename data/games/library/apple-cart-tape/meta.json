@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.OA.A.1-1",
+  "title": "Apple Cart Tape",
+  "emoji": "🍎",
+  "premise": "Every story has a missing piece. The two bars must end up the same length. Key in the piece that makes them match.",
+  "idea": "One-step problems with the unknown in any position: a tape diagram shows the whole and the parts, and the typed number becomes the missing bar. Adding because of the word more is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

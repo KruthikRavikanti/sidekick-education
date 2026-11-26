@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.B.5-1",
+  "title": "Robot Fuel",
+  "emoji": "🤖",
+  "premise": "The robot runs on numbers. Key in the right total to fuel it up.",
+  "idea": "Adding two-digit numbers by place value: the child keys in a total, and forgetting the new ten made by the ones gives a number that is ten too small.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.B.8-1",
+  "title": "Tens Elevator",
+  "emoji": "🛗",
+  "premise": "A number is already built. Ride the tens up or down by exactly one ten.",
+  "idea": "Mentally adding or subtracting 10 with a three-digit number: only the tens place changes (and the hundreds when a ten crosses over). Changing the ones is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

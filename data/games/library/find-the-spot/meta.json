@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.B.6-1",
+  "title": "Find the Spot",
+  "emoji": "📍",
+  "premise": "This number line only has names on its two ends. Count the equal spaces to find where each number lives.",
+  "idea": "Placing whole numbers on a number line with equal spacing: only the ends are labelled, so the child counts spaces. Counting the tick at zero as one lands a space short.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

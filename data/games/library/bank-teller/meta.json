@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.C.8-2",
+  "title": "Bank Teller",
+  "emoji": "🏦",
+  "premise": "Coins slide across the counter in a mix. Count them up by their values and key in the total.",
+  "idea": "Counting a mix of coins: each coin adds its own value. Counting every coin as 1 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.A.4-2",
+  "title": "Shark Bite Signs",
+  "emoji": "🦈",
+  "premise": "The shark always bites toward the bigger number. Drop the right sign between each pair.",
+  "idea": "Using greater than, less than and equal with three-digit numbers. Reversing the sign is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

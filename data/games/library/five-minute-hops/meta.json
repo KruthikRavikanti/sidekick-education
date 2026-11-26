@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.C.7-1",
+  "title": "Five-Minute Hops",
+  "emoji": "⏱️",
+  "premise": "The long hand hops five minutes for every number it passes. Read the clock and set the time in numbers.",
+  "idea": "Reading the minute hand in five-minute steps: the hand on 3 means 15 minutes. Reading the number it points to as the minutes is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

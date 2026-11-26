@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.A.4-1",
+  "title": "Biggest Place First",
+  "emoji": "🏔️",
+  "premise": "To compare big numbers, start at the biggest place. Line the numbers up from least to greatest.",
+  "idea": "Comparing three-digit numbers by hundreds, then tens, then ones: 301 is greater than 299 even though 299 has bigger digits.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

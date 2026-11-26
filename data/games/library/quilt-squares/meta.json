@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.G.A.2-2",
+  "title": "Quilt Squares",
+  "emoji": "🪡",
+  "premise": "Grandma sews her quilt in rows of squares. Key in how many squares are in the whole quilt.",
+  "idea": "Counting the squares in a partitioned rectangle: the total is found by counting rows of equal size. Adding rows and columns is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

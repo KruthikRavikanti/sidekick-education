@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.B.6-1",
+  "title": "Triple Stack",
+  "emoji": "🥞",
+  "premise": "Three or four numbers are stacked up to add. Keep track of every new ten as you go.",
+  "idea": "Adding three or four two-digit numbers: the ones are added first and any new tens are carried. Losing a regrouped ten is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

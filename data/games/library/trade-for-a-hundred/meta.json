@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.A.1-1",
+  "title": "Trade for a Hundred",
+  "emoji": "💯",
+  "premise": "Ten ten-rods can be traded for one hundred flat. Show each number with the fewest blocks.",
+  "idea": "Ten tens as one hundred: the child shows a number with the fewest blocks, trading every ten rods for a flat. Leaving them as tens is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}
