@@ -1,0 +1,8 @@
+{
+  "subskillId": "RF.4.3-1",
+  "title": "Word Rocket",
+  "emoji": "🚀",
+  "premise": "A long word is a three stage rocket. Load the chunks in order to match the mission.",
+  "idea": "Two real words share the same first and last chunk, so only reading the middle chunk builds the word that fits the meaning.",
+  "author": "claude-stand-in"
+}

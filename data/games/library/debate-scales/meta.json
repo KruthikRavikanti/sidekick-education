@@ -1,0 +1,8 @@
+{
+  "subskillId": "RI.5.8-1",
+  "title": "Debate Scales",
+  "emoji": "⚖️",
+  "premise": "An author made two points. Put each piece of evidence on the point it supports.",
+  "idea": "Evidence is weighed on the point it supports. The judge reads point and evidence together as one sentence so a mismatch can be heard.",
+  "author": "claude-stand-in"
+}

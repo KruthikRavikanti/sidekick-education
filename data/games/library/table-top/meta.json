@@ -1,0 +1,8 @@
+{
+  "subskillId": "RI.4.2-1",
+  "title": "Table Top",
+  "emoji": "🪑",
+  "premise": "Build a table from fact cards. The main idea is the top and the details are its legs.",
+  "idea": "The main idea is a table top and the supporting details are its legs. A single detail is too small to be the top and an off-topic fact cannot be a leg.",
+  "author": "claude-stand-in"
+}
