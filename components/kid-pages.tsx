@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { BookOpen, ChevronLeft, MessageCircle, Users } from "lucide-react";
-import { AccountShell, Avatar } from "./account-ui";
+import { AccountShell, Avatar, KidTrail } from "./account-ui";
 import { RequireMode, useAccountSession } from "./account-session";
 import { WorksheetReader } from "./worksheet-reader";
 
@@ -47,11 +47,7 @@ function KidContent() {
       </section>
       <section className="kid-steps" aria-labelledby="kid-steps-title">
         <h2 id="kid-steps-title">How it goes</h2>
-        <ol>
-          <li>Snap your page</li>
-          <li>See what Sidekick found</li>
-          <li>Play a game made for you</li>
-        </ol>
+        <KidTrail />
       </section>
     </AccountShell>
   );
@@ -81,6 +77,7 @@ function HomeworkContent() {
           Switch profile
         </button>
       </nav>
+      <KidTrail auto />
       <WorksheetReader key={session!.activeKidProfileId} />
     </>
   );

@@ -16,7 +16,7 @@ import type {
   ActivitySession,
 } from "@/lib/activity-types";
 import { RequireMode, useAccountSession } from "./account-session";
-import { AccountShell, FormError } from "./account-ui";
+import { AccountShell, FormError, KidTrail } from "./account-ui";
 import { ActivitySceneControl, ActivitySceneMaterial } from "./activity-scenes";
 
 type ActivityAction = "submit" | "hint" | "next";
@@ -292,6 +292,7 @@ function ActivityContent({ sessionId }: { sessionId: string }) {
 
   return (
     <AccountShell kind="kid" backHref="/kid">
+      <KidTrail current="play" />
       <section className="activity-player" aria-busy={loading}>
         {loading ? (
           <div className="activity-waiting" role="status">

@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { api, errorMessage } from "@/lib/account-api";
 import type { GameRun } from "@/lib/game-types";
 import { RequireMode } from "./account-session";
-import { AccountShell, FormError } from "./account-ui";
+import { AccountShell, FormError, KidTrail } from "./account-ui";
 import { GameFrame, type GameFrameMessage } from "./game-frame";
 
 function GameContent({ runId }: { runId: string }) {
@@ -61,6 +61,7 @@ function GameContent({ runId }: { runId: string }) {
 
   return (
     <AccountShell kind="kid" backHref="/kid">
+      <KidTrail current="play" />
       <section className="game-player">
         {!run && !error ? (
           <div className="activity-waiting" role="status">

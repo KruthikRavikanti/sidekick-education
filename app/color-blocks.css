@@ -1,44 +1,200 @@
-/* Color Blocks theme.
-   A layer over the base styles: big flat panels in the brand colors, very large type,
-   no borders and no drop shadows. It only restyles; remove the import in layout.tsx to
-   go back to the previous look. */
+/* Color Blocks: one visual system for every screen.
+
+   The rules, in order:
+   1. The page is warm sand. Everything else is a flat panel on it: no borders, no drop shadows.
+   2. Every screen has the same frame: a white bar across the top, then panels on one grid with one gap.
+   3. Color means the same thing everywhere.
+        sun     where you are (the big panel that opens a kid or account screen)
+        orange  the next thing to do
+        forest  the parent side, and quiet system messages
+        lime    the path: steps and progress
+        sky     where something goes in (uploads, extra context)
+        white   things to read and forms to fill in
+   4. Controls look the same everywhere: pill buttons, filled fields, pill tabs and tags.
+   5. Kid screens share one three-step trail, so the path from page to game reads as one journey.
+   6. Frames are flat; toys are chunky. Only things a kid picks up, drags or taps inside a game or activity keep an outline.
+
+   This layer only restyles. Remove its import in layout.tsx to go back to the earlier look. */
+
 :root {
+  --page: #f7efe0;
   --sun: #ffd45c;
   --sky: #cdeafc;
   --lime-tint: #e9f0d2;
   --orange-tint: #fde3d3;
-  --sand: #f3ecdb;
+  --field: #f4eee1;
   --forest-soft: #0b5c35;
   --on-forest: #d7e6c0;
-  --block-radius: 36px;
+  --block-radius: 32px;
+  --inner-radius: 20px;
+  --gap: 20px;
+  --frame: 1180px;
 }
 
-/* ---------- shared pieces ---------- */
+/* ============================================================ 1. the page and its frame */
+body, .account-shell, .app-shell { background: var(--page); }
 h1, h2, h3 { font-family: Fredoka, Nunito, sans-serif; }
-.account-eyebrow, .eyebrow, .little-label { color: var(--forest); font-weight: 800; letter-spacing: 0.14em; }
-.button.primary {
-  min-height: 58px; padding: 0 30px; border-radius: 999px; box-shadow: none;
-  font-family: Fredoka, Nunito, sans-serif; font-weight: 600; font-size: 20px;
+
+.account-header, .site-header, .kid-reader-toolbar {
+  width: calc(100% - 56px); max-width: var(--frame); margin: 18px auto 0; min-height: 70px;
+  padding: 10px 24px 10px 20px; display: flex; align-items: center; gap: 18px;
+  background: #fff; border: 0; border-radius: 999px;
 }
-.button.primary:hover:not(:disabled) { background: var(--forest-soft); transform: translateY(-2px); }
-.account-card { border: 0; box-shadow: none; border-radius: var(--block-radius); background: #fff; padding: 40px; }
-.account-header, .site-header { border-bottom: 0; }
-.account-main { max-width: 1180px; }
+.account-header, .site-header { justify-content: space-between; }
+/* On the homework screens the toolbar is the top bar, so it carries the logo and the second bar steps aside.
+   Only its "Sample mode" tag stays, moved onto the trail's row, because that tag has to stay in view. */
+.kid-reader-toolbar::before { content: ""; flex: 0 0 150px; height: 45px; background: url("/sidekick-logo.svg") left center / contain no-repeat; }
+.kid-reader-toolbar > button { margin-left: auto; }
+.kid-reader-toolbar ~ .app-shell { min-height: 0; position: relative; }
+.kid-reader-toolbar ~ .app-shell .site-header { width: calc(100% - 56px); max-width: var(--frame); min-height: 0; margin: 0 auto; padding: 0; background: transparent; border-radius: 0; justify-content: flex-end; }
+.kid-reader-toolbar ~ .app-shell .site-header > :not(.demo-tag) { display: none; }
+.kid-reader-toolbar ~ .app-shell .site-header .demo-tag { position: absolute; top: -39px; right: max(28px, calc((100% - var(--frame)) / 2)); padding: 6px 14px; font-size: 13px; background: #fff; color: var(--forest); }
 
-/* ---------- log in and sign up ---------- */
-.auth-layout { gap: 20px; align-items: stretch; padding: 12px 0; }
-.auth-story { background: var(--sun); border-radius: var(--block-radius); padding: 52px 48px; display: flex; flex-direction: column; justify-content: center; }
-.auth-story h1 { font-size: clamp(44px, 5.4vw, 72px); line-height: 1; letter-spacing: -1px; }
-.auth-story p { color: var(--forest); font-weight: 700; }
-.auth-card { background: var(--lime-tint); }
-.auth-card input, .pin-card input { border: 0; border-radius: 18px; min-height: 54px; background: #fff; }
-.pin-card { background: var(--lime-tint); }
+.account-main, .main-upload, .main-results { width: 100%; max-width: calc(var(--frame) + 56px); padding: var(--gap) 28px 28px; }
+.account-footer, .site-footer { border: 0; background: transparent; }
 
-/* ---------- who is learning ---------- */
-.picker-intro { background: var(--sun); border-radius: var(--block-radius); padding: 44px 32px; margin: 4px 0 20px; max-width: none; }
-.picker-intro h1 { font-size: clamp(44px, 6.5vw, 84px); line-height: 1; letter-spacing: -1px; margin: 10px 0; }
-.picker-intro p { color: var(--forest); font-weight: 700; font-size: 19px; }
-.profile-grid { max-width: none; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+/* ============================================================ 2. the kid's trail */
+.kid-trail { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; counter-reset: step; }
+.kid-trail li {
+  counter-increment: step; display: inline-flex; align-items: center; gap: 10px; min-height: 46px; padding: 6px 18px 6px 8px;
+  border-radius: 999px; background: #fff; color: var(--muted); font-weight: 800; font-size: 15px;
+}
+.kid-trail li::before {
+  content: counter(step); flex: 0 0 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; background: var(--lime-tint); color: var(--forest); font-family: Fredoka, Nunito, sans-serif; font-size: 16px;
+}
+.kid-trail li.current, .kid-trail-auto:has(+ .app-shell .main-upload) li:nth-child(1), .kid-trail-auto:has(+ .app-shell .main-results) li:nth-child(2) { background: var(--forest); color: var(--cream); }
+.kid-trail li.current::before, .kid-trail-auto:has(+ .app-shell .main-upload) li:nth-child(1)::before, .kid-trail-auto:has(+ .app-shell .main-results) li:nth-child(2)::before { background: var(--sun); }
+.kid-trail li.done, .kid-trail-auto:has(+ .app-shell .main-results) li:nth-child(1) { background: var(--lime); color: var(--forest); }
+.kid-trail li.done::before, .kid-trail-auto:has(+ .app-shell .main-results) li:nth-child(1)::before { content: "✓"; background: var(--forest); color: var(--cream); }
+.kid-trail-auto { width: calc(100% - 56px); max-width: var(--frame); margin: 14px auto 0; }
+
+/* ============================================================ 3. panels */
+/* Sun: the panel that opens a screen. */
+.picker-intro, .kid-welcome, .upload-intro, .results-intro, .auth-story, .game-title, .activity-title {
+  background: var(--sun); border-radius: var(--block-radius); padding: 44px 48px; margin: 0 0 var(--gap); max-width: none;
+}
+.picker-intro h1, .kid-welcome h1, .upload-intro h1, .results-intro h1, .auth-story h1 { font-size: clamp(44px, 6.4vw, 88px); line-height: 0.98; letter-spacing: -1px; margin: 8px 0 12px; }
+.game-title, .activity-title { padding: 28px 36px; }
+.game-title, .activity-title { display: grid; gap: 8px; justify-items: center; }
+.game-title h1, .activity-title h1 { font-size: clamp(34px, 4.4vw, 56px); line-height: 1.05; margin: 0; }
+.game-title p, .activity-title p { margin: 0; }
+.picker-intro p, .kid-welcome p, .upload-intro p, .results-intro p, .auth-story p, .game-title p, .activity-title p { color: var(--forest); font-weight: 700; }
+.account-eyebrow, .eyebrow, .little-label { color: var(--forest); font-weight: 800; letter-spacing: 0.14em; }
+
+/* Forest: the parent side. */
+.dashboard-intro { background: var(--forest); border-radius: var(--block-radius); padding: 40px 44px; margin: 0 0 var(--gap); align-items: center; }
+.dashboard-intro h1 { color: var(--cream); font-size: clamp(34px, 4vw, 52px); line-height: 1.02; letter-spacing: -0.5px; }
+.dashboard-intro :is(p, span, small, label, div), .dashboard-intro .account-eyebrow { color: var(--on-forest) !important; }
+
+.game-review > .section-heading { background: var(--forest); border-radius: var(--block-radius); padding: 32px 36px; margin: 0 0 var(--gap); }
+.game-review > .section-heading :is(h1, h2) { color: var(--cream); font-size: clamp(30px, 3.6vw, 44px); line-height: 1.05; }
+.game-review > .section-heading :is(p, span, small) { color: var(--on-forest); }
+
+/* Orange: the next thing to do. */
+.kid-action-card, .activity-suggestion, .game-suggestion {
+  background: var(--orange); border: 0; box-shadow: none; border-radius: var(--block-radius); color: var(--forest);
+}
+.activity-suggestion, .game-suggestion { max-width: none; margin: 0 0 var(--gap); padding: 32px 36px; }
+.activity-suggestion h2, .game-suggestion h2 { font-size: 32px; line-height: 1.05; }
+.activity-suggestion :is(p, span, small, li), .game-suggestion :is(p, small, li) { color: var(--forest) !important; font-weight: 700; }
+.activity-suggestion .activity-suggestion-icon, .game-suggestion .game-suggestion-art { background: var(--cream); border: 0; box-shadow: none; }
+
+/* Only one orange panel per screen: when a game is offered, the activity offer steps back to white. */
+.game-suggestion ~ .activity-suggestion { background: #fff; }
+
+/* White: things to read and forms to fill in. */
+.account-card, .problem-card, .dashboard-section, .activity-scene, .activity-complete, .game-stopped, .game-review-detail, .reading-picture {
+  background: #fff; border: 0; box-shadow: none; border-radius: var(--block-radius);
+}
+.account-card { padding: 40px; }
+.dashboard-section { padding: 32px 36px; margin: 0 0 var(--gap); }
+.dashboard-section .dashboard-section { padding: 0; margin: 0; }
+.dashboard-section h2 { font-size: 30px; line-height: 1.05; }
+.problem-card { border-radius: 28px; }
+
+/* Items inside a white panel sit on the field tint. */
+.skill-card, .metric-card, .conversation-card, .transcript, .managed-profile, .settings-form, .homework-history > article, .homework-observation,
+.activity-history-card, .game-history-list li, .game-review-job, .bundle-group {
+  background: var(--field); border: 0; box-shadow: none; border-radius: var(--inner-radius);
+}
+.skill-card { padding: 22px; }
+.skill-card.skill-card-on_track, .metric-card { background: var(--lime-tint); }
+.skill-card.skill-card-needs_support { background: var(--orange-tint); }
+.game-review { max-width: none; padding: 0 0 28px; }
+.game-review-list button { border: 0; box-shadow: none; border-radius: var(--inner-radius); padding: 14px 16px; }
+.game-review-list button[aria-current="true"], .game-review-list button.selected { background: var(--lime); border: 0; box-shadow: none; }
+.game-suggestion-soon { box-shadow: none; }
+
+/* Notes and notices are one quiet lime-tint strip. */
+.sample-insights-label, .demo-notice { background: var(--lime-tint); border: 0; border-radius: var(--inner-radius); padding: 14px 20px; margin-bottom: var(--gap); }
+.sample-insights-label > span { border-radius: 999px; padding: 5px 12px; font-size: 12px; }
+.sample-insights-label > p { font-size: 13px; color: var(--forest); }
+
+/* Notes inside an activity or a review: the tint says what kind of note it is, so no rules or side bars. */
+.activity-teaching, .activity-context, .activity-toolkit-goal, .parent-activity-review, .activity-parent-participation, .game-review-banner {
+  border: 0; border-radius: var(--inner-radius); padding: 18px 22px;
+}
+.activity-teaching { background: var(--lime-tint); }
+.activity-context, .evidence-passage, .oral-passage, .text-editor-original, .text-editor-published, .math-workspace-board, .sort-target,
+.quantity-stock, .quantity-container, .activity-family-visual, .area-board-figure, .area-dimensions, .activity-history-empty, .pdf-preview {
+  background: var(--field); border: 0; border-radius: var(--inner-radius);
+}
+.activity-toolkit-goal { background: var(--orange-tint); padding: 12px 20px; }
+.activity-origin { border: 0; border-radius: 999px; padding: 5px 14px; margin: 0; background: var(--cream); color: var(--forest); font-size: 12px; }
+.activity-progress { height: 12px; border-radius: 999px; background: #fff; margin-bottom: var(--gap); }
+.activity-progress > span { background: var(--forest); border-radius: 999px; }
+
+/* Sky: where something goes in. Lime tint: a summary of what came back. */
+.upload-card, .context-card { background: var(--sky); border: 0; box-shadow: none; border-radius: var(--block-radius); }
+.upload-card .card-topline { border-bottom: 0; }
+.worksheet-summary { background: var(--lime-tint); border: 0; box-shadow: none; border-radius: var(--block-radius); padding: 32px 36px; margin-bottom: var(--gap); }
+
+/* ============================================================ 4. controls */
+.button { border: 0; border-radius: 999px; box-shadow: none; font-family: Fredoka, Nunito, sans-serif; font-weight: 600; }
+.button.primary { min-height: 58px; padding: 0 30px; font-size: 20px; box-shadow: none; }
+.button.primary:hover:not(:disabled) { background: var(--forest-soft); transform: translateY(-2px); box-shadow: none; }
+.button.primary:active:not(:disabled) { transform: translateY(0); box-shadow: none; }
+.button.secondary { background: var(--lime-tint); color: var(--forest); border: 0; box-shadow: none; }
+.button.danger { background: var(--orange-tint); color: #8a2d0b; border: 0; box-shadow: none; }
+.account-shell .button, .app-shell .button, .activity-suggestion .button, .game-suggestion .button { box-shadow: none; }
+.text-button { border-radius: 999px; font-weight: 800; }
+.account-back { min-height: 46px; padding: 6px 18px 6px 12px; margin-bottom: var(--gap); border-radius: 999px; background: #fff; color: var(--forest); font-size: 15px; }
+.account-back:hover { background: var(--lime-tint); }
+.sample-button, .icon-button { border: 0; box-shadow: none; border-radius: 999px; background: #fff; }
+
+.account-shell input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+.account-shell select, .account-shell textarea, .learning-filter input, .game-review-decision input,
+.activity-independent-answer input, .activity-independent-answer textarea {
+  border: 0; border-radius: 16px; background: var(--field); min-height: 52px;
+}
+.account-shell :is(.settings-form, .managed-profile, .skill-card, .game-review-decision, .child-editor) :is(input, select, textarea) { background: #fff !important; }
+.dashboard-intro select { border-radius: 999px; background: var(--cream); color: var(--forest); font-weight: 800; }
+:is(input, select, textarea, button, a):focus-visible { outline: 3px solid var(--forest); outline-offset: 2px; }
+
+.dashboard-tabs { border-bottom: 0; gap: 8px; padding-bottom: 4px; margin-bottom: var(--gap); }
+.dashboard-tabs button { background: #fff; color: var(--forest); min-height: 46px; padding: 10px 22px; font-size: 15px; font-family: Fredoka, Nunito, sans-serif; font-weight: 600; }
+.dashboard-tabs button.selected { background: var(--forest); color: var(--cream); }
+
+.skill-status, .status, .subject-tag, .grade-tag, .demo-tag, .game-status, .parent-mode-label { border: 0; border-radius: 999px; font-weight: 800; }
+
+/* ============================================================ 5. screens */
+/* Log in, sign up, parent PIN */
+.auth-layout { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--gap); align-items: stretch; padding: 0; }
+.auth-card { max-width: none; width: 100%; display: flex; flex-direction: column; justify-content: center; }
+.auth-story { margin: 0; display: flex; flex-direction: column; justify-content: center; }
+.auth-story h1 { font-size: clamp(44px, 5.4vw, 72px); }
+/* The parent gate is the first forest panel a parent meets. */
+.pin-card { max-width: 620px; margin-inline: auto; background: var(--forest); color: var(--cream); }
+.pin-card :is(h1, h2, label, .account-eyebrow) { color: var(--cream); }
+.pin-card :is(p, span, small, .text-button, a) { color: var(--on-forest); }
+.pin-card .button.primary { background: var(--sun); color: var(--forest); }
+.pin-card .button.primary:hover:not(:disabled) { background: #ffe08a; }
+.account-shell .pin-card input { background: #fff !important; color: var(--forest); }
+
+/* Who is learning */
+.picker-intro { text-align: center; }
+.profile-grid { max-width: none; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--gap); }
 .profile-tile { border: 0; box-shadow: none; border-radius: var(--block-radius); min-height: 264px; font-family: Fredoka, Nunito, sans-serif; font-size: 30px; transition: transform 0.15s; }
 .profile-tile:nth-child(4n + 1) { background: var(--orange); }
 .profile-tile:nth-child(4n + 2) { background: var(--lime); }
@@ -51,15 +207,15 @@ h1, h2, h3 { font-family: Fredoka, Nunito, sans-serif; }
 .profile-tile.parent-tile .parent-avatar, .profile-tile.parent-tile .parent-avatar * { color: var(--forest); }
 .profile-tile span, .profile-tile small { color: var(--forest); }
 
-/* ---------- kid home ---------- */
-.shell-kid .account-main:has(> .kid-welcome) { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); grid-template-rows: auto auto 1fr; gap: 20px; align-content: start; }
-.kid-welcome { grid-column: 1 / -1; position: relative; overflow: hidden; margin: 0; padding: 44px 48px; background: var(--sun); border-radius: var(--block-radius); text-align: left; min-height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+/* Kid home */
+.shell-kid .account-main:has(> .kid-welcome) { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); grid-template-rows: auto auto 1fr; gap: var(--gap); align-content: start; }
+.kid-welcome { grid-column: 1 / -1; position: relative; overflow: hidden; margin: 0; text-align: left; min-height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
 .kid-welcome::after { content: ""; position: absolute; right: 44px; bottom: -26px; width: 330px; height: 238px; background: url("/sidekick-mascot.svg") center / contain no-repeat; pointer-events: none; }
 .kid-welcome .kid-avatar { margin: 0 0 12px; background: var(--cream); border: 0; box-shadow: none; }
-.kid-welcome h1 { font-size: clamp(56px, 8vw, 104px); line-height: 0.95; letter-spacing: -1.5px; margin: 8px 0 12px; }
-.kid-welcome p:not(.account-eyebrow) { font-size: 24px; font-weight: 700; color: var(--forest); margin: 0; }
+.kid-welcome h1 { font-size: clamp(56px, 8vw, 104px); line-height: 0.95; letter-spacing: -1.5px; }
+.kid-welcome p:not(.account-eyebrow) { font-size: 24px; margin: 0; }
 .kid-actions { grid-column: 1; grid-row: 2 / span 2; max-width: none; margin: 0; }
-.kid-action-card { height: 100%; min-height: 320px; display: flex; flex-direction: column; gap: 12px; padding: 40px 44px; background: var(--orange); border: 0; box-shadow: none; border-radius: var(--block-radius); color: var(--forest); }
+.kid-action-card { height: 100%; min-height: 320px; display: flex; flex-direction: column; gap: 12px; padding: 40px 44px; }
 .kid-action-card:hover { transform: translateY(-4px); box-shadow: none; }
 .kid-action-card h2 { font-size: clamp(40px, 4.6vw, 56px); line-height: 1; margin: 6px 0 0; }
 .kid-action-card p { font-size: 20px; font-weight: 700; color: var(--forest); max-width: 420px; }
@@ -68,60 +224,79 @@ h1, h2, h3 { font-family: Fredoka, Nunito, sans-serif; }
 .kid-chat-placeholder { grid-column: 2; max-width: none; margin: 0; padding: 32px 36px; background: var(--forest); border: 0; border-radius: var(--block-radius); color: var(--cream); }
 .kid-chat-placeholder h2 { color: var(--cream); font-size: 28px; line-height: 1.1; }
 .kid-chat-placeholder p, .kid-chat-placeholder svg { color: var(--on-forest); }
-section.kid-chat-placeholder input[disabled] { width: 100%; min-height: 50px; padding: 0 20px; border: 0; border-radius: 999px; background: var(--forest-soft); color: var(--on-forest); }
+.account-shell section.kid-chat-placeholder input[disabled] { width: 100%; min-height: 50px; padding: 0 20px; border: 0; border-radius: 999px; background: var(--forest-soft) !important; color: var(--on-forest); }
 section.kid-chat-placeholder input[disabled]::placeholder { color: var(--on-forest); opacity: 1; }
 .kid-steps { grid-column: 2; padding: 28px 36px; background: var(--lime); border-radius: var(--block-radius); }
 .kid-steps h2 { font-size: 24px; margin: 0 0 14px; }
-.kid-steps ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; counter-reset: step; }
-.kid-steps li { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 800; counter-increment: step; }
-.kid-steps li::before { content: counter(step); flex: 0 0 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--forest); color: var(--cream); font-family: Fredoka, Nunito, sans-serif; font-size: 17px; }
+.kid-steps .kid-trail { flex-direction: column; gap: 8px; }
+.kid-steps .kid-trail li { background: transparent; color: var(--forest); padding: 0; min-height: 0; font-size: 18px; }
+.kid-steps .kid-trail li::before { background: var(--forest); color: var(--cream); }
 
-/* ---------- upload ---------- */
-.main-upload { max-width: 1180px; gap: 20px; align-items: stretch; padding-top: 36px; }
-.upload-intro { background: var(--sun); border-radius: var(--block-radius); padding: 48px; display: flex; flex-direction: column; justify-content: center; }
-.upload-intro h1 { font-size: clamp(48px, 6vw, 80px); line-height: 1; }
-.upload-intro p { color: var(--forest); font-weight: 700; font-size: 19px; }
+/* Upload and results */
+.main-upload { gap: var(--gap); align-items: stretch; padding-top: var(--gap); }
+.upload-intro { margin: 0; display: flex; flex-direction: column; justify-content: center; }
+.upload-intro h1 { font-size: clamp(48px, 6vw, 80px); }
+.upload-intro p { font-size: 19px; }
 .intro-mascot { width: 220px; height: 160px; margin: 24px 0 0; transform: none; }
-.upload-card { border: 0; box-shadow: none; border-radius: var(--block-radius); background: var(--sky); }
-.upload-card .card-topline { border-bottom: 0; }
+.results-intro { text-align: center; }
+.results-intro h1 { font-size: clamp(44px, 6vw, 76px); }
+/* Results keep the same edges as every other screen: the two next steps sit side by side, the page details and problems fill the frame. */
+.results { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gap); }
+.results > * { grid-column: 1 / -1; min-width: 0; }
+.results > .game-suggestion:has(+ .activity-suggestion) { grid-column: 1; }
+.results > .game-suggestion + .activity-suggestion { grid-column: 2; }
+/* A ready game hides an empty activity offer (games.css), so then the game card takes the whole row. */
+.results > .game-suggestion:not(.game-suggestion-soon):has(+ .activity-suggestion-empty) { grid-column: 1 / -1; }
+.problem-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: var(--gap); align-items: start; }
+.results-footnote { margin: var(--gap) 0; }
+.context-card { border-radius: 28px; }
 
-/* ---------- results ---------- */
-.main-results { max-width: 860px; }
-.results-intro { background: var(--sun); border-radius: var(--block-radius); padding: 40px 32px; margin-bottom: 20px; }
-.results-intro h1 { font-size: clamp(44px, 6vw, 76px); line-height: 1; letter-spacing: -1px; }
-.results-intro p { color: var(--forest); font-weight: 700; }
-.activity-suggestion, .game-suggestion { max-width: none; margin: 20px 0; padding: 32px 36px; background: var(--orange); border: 0; box-shadow: none; border-radius: var(--block-radius); color: var(--forest); }
-.activity-suggestion h2, .game-suggestion h2 { font-size: 32px; line-height: 1.05; }
-.activity-suggestion :is(p, span, small, li), .game-suggestion :is(p, small, li) { color: var(--forest) !important; font-weight: 700; }
-.activity-suggestion .activity-suggestion-icon { background: var(--cream); border: 0; }
-.worksheet-summary { border: 0; box-shadow: none; border-radius: var(--block-radius); background: var(--lime-tint); padding: 32px 36px; margin-bottom: 20px; }
-.context-card { border: 0; box-shadow: none; border-radius: 28px; background: var(--sky); }
-.problem-card { border: 0; border-radius: 28px; background: #fff; }
+/* Players: the way back sits beside the trail, and the title panel takes the frame like every other opener. */
+.shell-kid .account-main:has(> .kid-trail) { display: flex; flex-wrap: wrap; align-items: center; align-content: flex-start; gap: var(--gap) 10px; }
+.shell-kid .account-main:has(> .kid-trail) > * { flex: 0 0 100%; min-width: 0; }
+.shell-kid .account-main:has(> .kid-trail) > .account-back { flex: 0 0 auto; margin: 0; }
+.shell-kid .account-main:has(> .kid-trail) > .kid-trail { flex: 0 1 auto; margin: 0; }
+.game-player, .activity-player { max-width: none; margin: 0; padding: 0; }
+.game-title, .activity-title { text-align: center; }
+/* Inside the frame the game brings its own white cards, so the frame itself stays clear on the page color.
+   On the parent review page it sits inside a white panel, so there it gets a page-colored well. */
+.game-review-detail .game-frame, .game-review-play .game-frame { background: var(--page); border-radius: var(--inner-radius); padding: 14px; }
 
-/* ---------- parent dashboard ---------- */
-.dashboard-intro { background: var(--forest); border-radius: var(--block-radius); padding: 40px 44px; margin-bottom: 20px; align-items: center; }
-.dashboard-intro h1 { color: var(--cream); font-size: clamp(34px, 4vw, 52px); line-height: 1.02; letter-spacing: -0.5px; }
-.dashboard-intro :is(p, span, small, label, div), .dashboard-intro .account-eyebrow { color: var(--on-forest) !important; }
-.dashboard-intro select { border: 0; border-radius: 999px; min-height: 50px; background: var(--cream); color: var(--forest); font-weight: 800; }
-.dashboard-tabs { border-bottom: 0; gap: 8px; padding-bottom: 4px; }
-.dashboard-tabs button { background: var(--lime-tint); color: var(--forest); min-height: 46px; padding: 10px 22px; font-size: 15px; font-family: Fredoka, Nunito, sans-serif; font-weight: 600; }
-.dashboard-tabs button.selected { background: var(--forest); color: var(--cream); }
-.dashboard-section h2 { font-size: 32px; line-height: 1.05; }
-.skill-card { border: 0; border-radius: 24px; padding: 24px; background: var(--sand); }
-.skill-card.skill-card-on_track { background: var(--lime-tint); }
-.skill-card.skill-card-needs_support { background: var(--orange-tint); }
+/* ============================================================ 6. motion: panels settle in, in order */
+@media (prefers-reduced-motion: no-preference) {
+  .account-main > *, .main-upload > *, .results > * { animation: block-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+  .account-main > :nth-child(2), .main-upload > :nth-child(2), .results > :nth-child(2) { animation-delay: 0.06s; }
+  .account-main > :nth-child(3), .results > :nth-child(3) { animation-delay: 0.12s; }
+  .account-main > :nth-child(n + 4), .results > :nth-child(n + 4) { animation-delay: 0.18s; }
+}
+@keyframes block-in { from { opacity: 0; transform: translateY(16px); } }
 
-/* ---------- small screens ---------- */
+/* ============================================================ 7. small screens */
 @media (max-width: 760px) {
-  :root { --block-radius: 28px; }
+  :root { --block-radius: 26px; --gap: 14px; }
+  .account-header, .site-header, .kid-reader-toolbar, .kid-trail-auto { width: calc(100% - 28px); }
+  .account-header, .site-header, .kid-reader-toolbar { border-radius: 26px; padding: 8px 14px; min-height: 60px; gap: 10px; }
+  .kid-reader-toolbar::before { flex-basis: 110px; height: 34px; }
+  .account-main, .main-upload, .main-results { padding: var(--gap) 14px 20px; }
+  .picker-intro, .kid-welcome, .upload-intro, .results-intro, .auth-story, .dashboard-intro, .game-title, .activity-title { padding: 28px 24px; }
+  .account-card, .dashboard-section, .worksheet-summary, .activity-suggestion, .game-suggestion { padding: 24px 20px; }
   .shell-kid .account-main:has(> .kid-welcome) { grid-template-columns: minmax(0, 1fr); }
   .kid-actions, .kid-chat-placeholder, .kid-steps { grid-column: 1; grid-row: auto; }
-  .kid-welcome { padding: 32px 28px; min-height: 0; }
-  .kid-welcome::after { display: none; }
-  .kid-action-card { min-height: 0; padding: 30px 28px; }
-  .auth-story, .upload-intro, .picker-intro, .results-intro, .dashboard-intro { padding: 30px 26px; }
-  .account-card { padding: 28px 24px; }
-  .intro-mascot { display: none; }
-  .profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .kid-welcome { min-height: 0; }
+  .kid-welcome::after, .intro-mascot { display: none; }
+  .kid-action-card { min-height: 0; padding: 28px 24px; }
+  .profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .profile-tile { min-height: 196px; font-size: 24px; }
+  .kid-trail { gap: 8px; }
+  .kid-trail li { font-size: 14px; padding: 5px 14px 5px 6px; min-height: 42px; }
+  .kid-trail li::before { flex-basis: 30px; height: 30px; font-size: 15px; }
+  /* On a phone only the step you are on keeps its words; the others shrink to their number. */
+  .account-main > .kid-trail li:not(.current),
+  .kid-trail-auto:has(+ .app-shell .main-upload) li:nth-child(n + 2),
+  .kid-trail-auto:has(+ .app-shell .main-results) li:not(:nth-child(2)) { font-size: 0; gap: 0; padding: 6px; }
+  .kid-reader-toolbar ~ .app-shell .site-header { width: calc(100% - 28px); }
+  .kid-reader-toolbar ~ .app-shell .site-header .demo-tag { position: static; margin-top: 10px; }
+  .results { grid-template-columns: minmax(0, 1fr); }
+  .results > .game-suggestion:has(+ .activity-suggestion), .results > .game-suggestion + .activity-suggestion { grid-column: 1; }
+  .account-back { min-height: 42px; }
 }

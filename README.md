@@ -178,7 +178,16 @@ Tap **Read my work**, then **Try an activity**, manipulate the scene, and finish
 
 ## Look and feel: Color Blocks
 
-The visual theme lives in `app/color-blocks.css`, a layer imported last in `app/layout.tsx`. It restyles the existing screens into big flat panels in the brand colors (sun, orange, forest, lime, sky) with very large Fredoka headings and no borders or drop shadows. It changes no behavior. Removing that one import returns the app to the earlier look. The only markup added with it is the short "How it goes" list on the kid home page.
+The visual theme lives in `app/color-blocks.css`, a layer imported last in `app/layout.tsx`. It is written as one system, not screen by screen, so every screen follows the same six rules:
+
+1. The page is warm sand. Everything else is a flat panel on it, with no borders and no drop shadows.
+2. Every screen has the same frame: one white bar across the top, then panels that share the same left and right edges and the same gap.
+3. Color means the same thing everywhere. Sun is where you are (the panel that opens a kid or account screen). Orange is the next thing to do, and there is only one orange panel per screen. Forest is the parent side. Lime is the path and progress. Sky is where something goes in. White is for things to read and forms to fill in, and items inside a white panel sit on a light sand tint.
+4. Controls look the same everywhere: pill buttons, filled fields, pill tabs and tags.
+5. Kid screens share one three-step trail (snap your page, see what Sidekick found, play a game made for you), so the path from a photo to a game reads as one journey. It is the `KidTrail` component in `components/account-ui.tsx`, shown on the kid home, the homework screens, the game player and the activity player.
+6. Frames are flat and toys are chunky. Only the things a kid picks up, drags or taps inside a game or activity keep an outline. The game frame's own chrome (`backend/games/kit/kit.css`: speech bubble, stage edge, buttons, start and finish cards) follows the same flat look, with every box kept the same size so the robot's measurements did not change.
+
+The layer changes no behavior. The only markup added with it is the trail. Removing the one import returns the app to the earlier look.
 
 ## Generated games (experimental, off by default)
 
