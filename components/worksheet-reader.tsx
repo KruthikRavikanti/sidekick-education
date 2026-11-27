@@ -703,12 +703,6 @@ export function WorksheetReader() {
           </>
         )}
       </main>
-      <footer className="site-footer">
-        <span className="footer-spark" aria-hidden="true">
-          ✳
-        </span>
-        A little support. A lot of possibility.
-      </footer>
     </div>
   );
 }
