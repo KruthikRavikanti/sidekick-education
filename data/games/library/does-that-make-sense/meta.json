@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.1.4-3",
+  "title": "Does That Make Sense?",
+  "emoji": "🐴",
+  "premise": "Sometimes a word comes out not quite right. Stop when it does not make sense, look again, and fix it.",
+  "idea": "Using context to confirm or self-correct word recognition, rereading as necessary. Reading on after an error that does not make sense is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

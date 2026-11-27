@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.1.2-1",
+  "title": "Capital Letter Patrol",
+  "emoji": "🚓",
+  "premise": "Names of people, days and months get a capital letter. So does the first word of a sentence.",
+  "idea": "Capitalizing dates and names of people. Leaving names in lowercase is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

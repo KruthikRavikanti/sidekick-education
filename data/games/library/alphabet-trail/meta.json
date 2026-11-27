@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.1.1-1",
+  "title": "Alphabet Trail",
+  "emoji": "🔡",
+  "premise": "The letters of the alphabet walk in a line, always in the same order. Fill in the ones that wandered off.",
+  "idea": "Knowing all upper- and lowercase letters in order: missing letters are supplied in alphabet sequences. Forming or ordering letters inconsistently is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

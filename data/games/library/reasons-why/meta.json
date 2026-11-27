@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.1.8-1",
+  "title": "Reasons Why",
+  "emoji": "🪱",
+  "premise": "An author makes a point, then backs it up with reasons. Find the reasons the book gives.",
+  "idea": "Identifying the reasons an author gives to support points in a text. Restating the point is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

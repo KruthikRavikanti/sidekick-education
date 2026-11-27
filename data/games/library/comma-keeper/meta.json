@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.1.2-3",
+  "title": "Comma Keeper",
+  "emoji": "🐾",
+  "premise": "Commas go between the things in a list, and between the day and the year in a date. Keep the commas that belong.",
+  "idea": "Using commas in dates and to separate single words in a series. Leaving out the commas is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

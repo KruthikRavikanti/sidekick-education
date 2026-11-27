@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.1.2-1",
+  "title": "Fact Finder",
+  "emoji": "🐸",
+  "premise": "Writing that teaches needs facts. A fact is true for everyone. An opinion is what one person thinks.",
+  "idea": "Writing informative texts that name a topic and supply facts. Writing opinions instead of facts is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

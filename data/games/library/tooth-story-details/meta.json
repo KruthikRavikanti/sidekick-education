@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.1.1-1",
+  "title": "Tooth Story Details",
+  "emoji": "🦷",
+  "premise": "The answers to questions about a story are in its details. Go back and find them.",
+  "idea": "Answering questions about key details in a text. Answering from memory of a different story is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

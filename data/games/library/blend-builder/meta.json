@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.1.2-2",
+  "title": "Blend Builder",
+  "emoji": "🐸",
+  "premise": "Some words start with two consonants that slide together, like fr in frog. Say both sounds.",
+  "idea": "Blending sounds into words that include consonant blends. Dropping the second consonant of the blend (fog for frog) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

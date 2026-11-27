@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.1.3-6",
+  "title": "Word Endings",
+  "emoji": "🦘",
+  "premise": "The end of a word tells when it happens. Jumps, jumped and jumping all come from jump.",
+  "idea": "Reading words with inflectional endings. Dropping the ending is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

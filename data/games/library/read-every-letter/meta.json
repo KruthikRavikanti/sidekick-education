@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.1.3-2",
+  "title": "Read Every Letter",
+  "emoji": "🚩",
+  "premise": "Two words can start the same way. Read all the way to the last letter to be sure.",
+  "idea": "Decoding regularly spelled one-syllable words. Guessing from the first letter and the picture is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

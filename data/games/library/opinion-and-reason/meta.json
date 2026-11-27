@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.1.1-1",
+  "title": "Opinion and Reason",
+  "emoji": "🐕",
+  "premise": "An opinion says what you think. A reason says why. Good opinion writing has both.",
+  "idea": "Writing opinion pieces that state an opinion and supply a reason. Giving an opinion without a reason is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

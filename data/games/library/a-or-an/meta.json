@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.1.1-8",
+  "title": "A or An",
+  "emoji": "🍎",
+  "premise": "Use an before a word that starts with a vowel sound. Use a before all the others.",
+  "idea": "Using determiners: a, an, this, that. Using a before a vowel sound is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

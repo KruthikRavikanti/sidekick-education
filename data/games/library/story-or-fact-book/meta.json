@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.1.5-1",
+  "title": "Story or Fact Book?",
+  "emoji": "🍯",
+  "premise": "Some books tell a made-up story. Other books teach true information. You can tell by what is inside.",
+  "idea": "Explaining major differences between books that tell stories and books that give information. Thinking any book with pictures is a story is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.1.3-5",
+  "title": "Syllable Snap",
+  "emoji": "🧲",
+  "premise": "A long word is just two short parts snapped together. Read each part, then say them fast.",
+  "idea": "Decoding two-syllable words by breaking them into syllables. Reading only the first syllable is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

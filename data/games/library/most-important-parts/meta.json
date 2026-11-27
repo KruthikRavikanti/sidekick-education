@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.1.2-1",
+  "title": "Most Important Parts",
+  "emoji": "🐶",
+  "premise": "A retell is short. It tells only the most important parts of the story, not every little thing.",
+  "idea": "Retelling stories including key details. Retelling every detail with no focus is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

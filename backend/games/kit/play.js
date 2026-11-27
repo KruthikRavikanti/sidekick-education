@@ -725,7 +725,7 @@
     if (p.height > 130.5 && (head.parts.cast || (head.parts.q && head.parts.q.hero))) { head = headSize(o, true); p = make(o, solo, 2 + head.h); }
     // the last round shuffles its pieces, and a shuffle can wrap onto one more line: deal again rather than give up
     for (let again = 0; solo && p.height > 130.5 && again < 12 && !(S.play && S.play.strict); again++) p = make(o, solo, 2 + head.h);
-    if (p.height > 130.5) fail(o.kind, 'this round is too tall for the stage (' + Math.round(p.height) + ' of 130). Use fewer or shorter pieces.');
+    if (p.height > 130.5) fail(o.kind, 'round ' + (index + 1) + ' is too tall for the stage (' + Math.round(p.height) + ' of 130). Use fewer or shorter pieces.');
     ['', '2', '3'].forEach((n) => {
       const what = o['trap' + n]; if (what == null) return;
       const m = p.trap(what), tag = String(o['tag' + n] || (o.tag || 'mix_up') + (n ? '_' + n : ''));

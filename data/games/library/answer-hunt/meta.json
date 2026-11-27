@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.1.8-1",
+  "title": "Answer Hunt",
+  "emoji": "🕵️",
+  "premise": "To answer a question, pick the right place to look. Then find the answer there.",
+  "idea": "Recalling information from experiences or gathering information from provided sources to answer a question. Giving an unrelated answer is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+pick"
+}

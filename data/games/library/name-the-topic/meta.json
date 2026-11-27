@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.1.2-1",
+  "title": "Name the Topic",
+  "emoji": "🏷️",
+  "premise": "The main topic is what the whole page is about. One fun fact is only a small part of it.",
+  "idea": "Identifying the main topic of an informational text. Naming the most interesting fact as the topic is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

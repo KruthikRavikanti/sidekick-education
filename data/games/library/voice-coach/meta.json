@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.1.4-2",
+  "title": "Voice Coach",
+  "emoji": "🎭",
+  "premise": "Good readers make their voice match the words. End marks tell your voice what to do.",
+  "idea": "Reading with expression: each sentence is matched to the way the voice should sound. Reading word by word in a flat voice is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

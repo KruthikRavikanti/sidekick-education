@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.1.2-2",
+  "title": "Mark the End",
+  "emoji": "❗",
+  "premise": "Each sentence needs the right end mark: a period to tell, a question mark to ask, an exclamation point for strong feeling.",
+  "idea": "Using end punctuation for sentences. Putting periods on questions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.1.9-1",
+  "title": "Mouse and Bird Trips",
+  "emoji": "🐭",
+  "premise": "Two characters go on trips. Find what is alike about their trips, and what is different.",
+  "idea": "Comparing and contrasting the adventures and experiences of characters in stories. Only listing similarities is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}
