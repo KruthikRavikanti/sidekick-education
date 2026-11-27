@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.A.1-1",
+  "title": "Who Did You Ask?",
+  "emoji": "🗳️",
+  "premise": "A sample stands in for a whole population only if it looks like that population. Who you ask matters more than how many.",
+  "idea": "Understanding that a sample can represent a population only if it is representative. Thinking bigger samples are always representative is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.EE.A.1-3",
+  "title": "Pull Out the Factor",
+  "emoji": "🧲",
+  "premise": "Factoring is distributing in reverse. Find the number that divides every term and pull it out front.",
+  "idea": "Factoring linear expressions with rational coefficients. Factoring from only one term is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

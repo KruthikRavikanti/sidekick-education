@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.EE.B.4-1",
+  "title": "Two-Step Balance",
+  "emoji": "⚖️",
+  "premise": "A two-step equation is unwrapped in reverse. Undo the adding or subtracting first, then undo the multiplying.",
+  "idea": "Solving equations of the form px + q = r and p(x + q) = r. Undoing the operations in the reverse of the right order is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

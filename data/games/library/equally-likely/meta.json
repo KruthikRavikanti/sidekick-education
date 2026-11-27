@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.C.7-1",
+  "title": "Equally Likely",
+  "emoji": "🎲",
+  "premise": "When every outcome is equally likely, probability is a count: outcomes you want over all outcomes.",
+  "idea": "Developing a uniform probability model and using it to find probabilities. Assuming outcomes are equally likely when they are not is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

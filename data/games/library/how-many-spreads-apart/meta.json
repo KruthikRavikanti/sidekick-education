@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.B.3-2",
+  "title": "How Many Spreads Apart?",
+  "emoji": "📏",
+  "premise": "To judge how different two groups are, measure the distance between their centers in units of spread.",
+  "idea": "Expressing the difference between centers as a multiple of a measure of variability. Ignoring variability is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

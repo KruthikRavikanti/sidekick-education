@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.RP.A.3-3",
+  "title": "Percent Error",
+  "emoji": "🎯",
+  "premise": "Percent error tells how far off an estimate was, compared with the ACTUAL value.",
+  "idea": "Finding percent error. Dividing by the estimate instead of the actual value is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

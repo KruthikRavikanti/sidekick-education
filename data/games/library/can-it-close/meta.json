@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.G.A.2-1",
+  "title": "Can It Close?",
+  "emoji": "🥢",
+  "premise": "Three sticks make a triangle only if the two shorter ones together are longer than the longest.",
+  "idea": "Drawing triangles from given side measures and noticing when they cannot form a triangle. Ignoring whether the sides can meet is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type"
+}

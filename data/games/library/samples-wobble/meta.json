@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.A.2-2",
+  "title": "Samples Wobble",
+  "emoji": "🎲",
+  "premise": "Two random samples from the same population rarely match exactly. A little wobble is normal and expected.",
+  "idea": "Generating multiple samples to gauge the variation in estimates. Expecting every sample to match exactly is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

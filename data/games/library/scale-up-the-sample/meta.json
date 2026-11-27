@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.A.2-1",
+  "title": "Scale Up the Sample",
+  "emoji": "🎒",
+  "premise": "A random sample is a small copy of the population. The fraction in the sample is your best guess for the fraction in the whole group.",
+  "idea": "Using data from a random sample to draw inferences about a population. Using the sample count as the population count is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

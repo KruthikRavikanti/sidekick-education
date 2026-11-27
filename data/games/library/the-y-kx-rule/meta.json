@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.RP.A.2-3",
+  "title": "The y = kx Rule",
+  "emoji": "🎟️",
+  "premise": "A proportional relationship is always written y = kx. The constant multiplies. It is never added.",
+  "idea": "Representing proportional relationships by equations of the form y = kx. Writing y = x + k is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

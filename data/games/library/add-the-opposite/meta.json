@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.NS.A.1-3",
+  "title": "Add the Opposite",
+  "emoji": "🔁",
+  "premise": "Subtracting a number is the same as adding its opposite. Change BOTH things: the minus becomes plus, and the number flips sign.",
+  "idea": "Understanding subtraction of rational numbers as adding the additive inverse. Changing only one sign is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

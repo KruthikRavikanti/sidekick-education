@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.B.4-2",
+  "title": "Fair Conclusion?",
+  "emoji": "⚖️",
+  "premise": "Data supports some conclusions and not others. A tiny difference from a small sample does not prove much.",
+  "idea": "Drawing informal comparative inferences about two populations. Overstating conclusions from small differences is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

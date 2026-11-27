@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.NS.A.2-2",
+  "title": "Dividing Negatives",
+  "emoji": "➗",
+  "premise": "Negative numbers can be divided just like positives. Sharing a debt of 36 among 9 people gives each a debt of 4.",
+  "idea": "Dividing integers and understanding that the quotient is a rational number. Thinking a negative cannot be divided is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

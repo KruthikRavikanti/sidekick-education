@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.G.A.3-1",
+  "title": "Slice the Solid",
+  "emoji": "🔪",
+  "premise": "Cut straight through a solid and look at the flat face you made. Its shape depends on the solid and on the direction of the cut.",
+  "idea": "Describing the two-dimensional figures that result from slicing prisms and pyramids. Thinking every slice of a pyramid is a triangle is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

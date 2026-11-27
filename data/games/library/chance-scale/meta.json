@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.C.5-2",
+  "title": "Chance Scale",
+  "emoji": "🌦️",
+  "premise": "Probability runs from 0 to 1. Near 0 is unlikely, near 1 is likely. Only exactly 0 is impossible.",
+  "idea": "Understanding that probability near 0 means unlikely, near one half neither, and near 1 likely. Thinking unlikely means impossible is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

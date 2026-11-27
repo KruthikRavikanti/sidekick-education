@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.EE.B.3-2",
+  "title": "Does the Estimate Fit?",
+  "emoji": "🚪",
+  "premise": "Round the numbers and work it out in your head. An exact answer far from your estimate needs another look.",
+  "idea": "Assessing the reasonableness of answers using mental computation and estimation. Not checking is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+sort"
+}

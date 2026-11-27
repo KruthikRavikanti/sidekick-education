@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.C.6-1",
+  "title": "Long Run Chance",
+  "emoji": "🎡",
+  "premise": "Do something many times and count. The fraction of times an outcome happens is a good estimate of its probability.",
+  "idea": "Approximating the probability of a chance event from its long-run relative frequency. Expecting the result to match theory regardless of data is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

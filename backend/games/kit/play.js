@@ -173,15 +173,20 @@
     if (live || c.total) out += T(wide - 100, top + u * 5, 64, total);
     return '<svg viewBox="0 0 ' + nice(wide) + ' ' + tall + '" preserveAspectRatio="xMinYMid meet">' + out + '</svg>';
   } };
-  // an angle that opens to the dial value in degrees
+  // an angle that opens to the dial value in degrees. `straight: true` adds the other half of the line (supplementary), `corner: true` a square corner (complementary),
+  // `cross: true` two full crossing lines (vertical angles); `mark: ['65°', '?', '?']` labels the angle, its partner, and with cross the neighbour.
   VIEWS.angle = { h: 40, draw(v, c, W, H) {
-    const full = c.full || v[0] > 180, cx = W / 2, cy = full ? H / 2 : H - 34, L = Math.min(W / 2 - 60, full ? H / 2 - 20 : H - 60), a = v[0] * Math.PI / 180, ar = Math.min(70, L * 0.45);
+    const full = c.full || c.cross || v[0] > 180, cx = W / 2, cy = full ? H / 2 : H - 34, L = Math.min(W / 2 - 60, full ? H / 2 - 20 : H - 60), a = v[0] * Math.PI / 180, ar = Math.min(70, L * 0.45);
     const ex = cx + Math.cos(a) * L, ey = cy - Math.sin(a) * L; let out = '';
     if (c.protractor) { out += '<path d="M ' + (cx - L) + ' ' + cy + ' A ' + L + ' ' + L + ' 0 0 1 ' + (cx + L) + ' ' + cy + ' Z" fill="rgba(110,195,244,.22)" stroke="' + C.forest + '" stroke-width="4"/>'; for (let t = 0; t <= 180; t += 10) { const r = t * Math.PI / 180, big = t % 30 === 0; out += Ln(cx + Math.cos(r) * L, cy - Math.sin(r) * L, cx + Math.cos(r) * (L - (big ? 22 : 12)), cy - Math.sin(r) * (L - (big ? 22 : 12)), big ? 4 : 2); if (big) { const end = t === 0 || t === 180, up = end ? 26 : 0; out += T(cx + Math.cos(r) * (L - 48), cy - Math.sin(r) * (L - 48) - up, 38, t) + (c.twoScales && !end ? T(cx + Math.cos(r) * (L - 92), cy - Math.sin(r) * (L - 92), 30, 180 - t, 'style="fill:' + C.berry + '"') : ''); } } }
     if (c.ref != null) { const b = c.ref * Math.PI / 180; out += Ln(cx, cy, cx + Math.cos(b) * L, cy - Math.sin(b) * L, 5, C.sky, 'stroke-dasharray="14 12"'); }
     if (v[0] > 0) out += '<path d="M ' + (cx + ar) + ' ' + cy + ' A ' + ar + ' ' + ar + ' 0 ' + (v[0] > 180 ? 1 : 0) + ' 0 ' + nice(cx + Math.cos(a) * ar) + ' ' + nice(cy - Math.sin(a) * ar) + '" fill="none" stroke="' + C.orange + '" stroke-width="8"/>';
     if (v[0] === 90) out += R(cx, cy - 34, 34, 34, 'none', 'stroke="' + C.orange + '" stroke-width="6"');
     out += Ln(cx, cy, cx + L, cy, 8) + Ln(cx, cy, ex, ey, 8) + '<circle cx="' + cx + '" cy="' + cy + '" r="10" fill="' + C.forest + '"/>';
+    if (c.straight || c.cross) out += Ln(cx, cy, cx - L, cy, 8);
+    if (c.cross) out += Ln(cx, cy, cx - Math.cos(a) * L, cy + Math.sin(a) * L, 8);
+    if (c.corner) out += Ln(cx, cy, cx, cy - L, 8) + R(cx, cy - 30, 30, 30, 'none', 'stroke="' + C.forest + '" stroke-width="4"');
+    if (c.mark) { const put = (deg, text) => { if (text == null || text === '') return; const r = deg * Math.PI / 180, d = ar + 30 + em(String(text)) * 8; out += T(cx + Math.cos(r) * d, cy - Math.sin(r) * d, 30, text); }; put(v[0] / 2, c.mark[0]); put(c.cross ? v[0] / 2 + 180 : c.corner ? (v[0] + 90) / 2 : (v[0] + 180) / 2, c.mark[1]); if (c.cross) put((v[0] + 180) / 2, c.mark[2]); }
     if (c.icon) out += T(ex, ey, 44, c.icon);
     return svg(W, H, out);
   } };

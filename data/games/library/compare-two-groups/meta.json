@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.B.4-1",
+  "title": "Compare Two Groups",
+  "emoji": "🏫",
+  "premise": "To compare two groups fairly, use a measure of center and a measure of spread. One standout value proves little.",
+  "idea": "Using measures of center and variability from random samples to compare two populations. Comparing a single data point is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

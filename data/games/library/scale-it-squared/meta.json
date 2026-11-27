@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.G.A.1-2",
+  "title": "Scale It Squared",
+  "emoji": "🗺️",
+  "premise": "On a scale drawing, each side grows by the scale. So the area grows by the scale twice: once for length, once for width.",
+  "idea": "Computing actual areas from a scale drawing. Using the scale factor once instead of its square for area is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

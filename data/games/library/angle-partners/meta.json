@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.G.B.5-1",
+  "title": "Angle Partners",
+  "emoji": "📐",
+  "premise": "Some angles come in pairs. Supplementary angles make a straight line, 180°. Complementary angles make a square corner, 90°. Vertical angles are equal.",
+  "idea": "Using facts about supplementary, complementary, vertical and adjacent angles. Confusing supplementary (180) with complementary (90) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

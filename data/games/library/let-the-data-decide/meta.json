@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.C.7-2",
+  "title": "Let the Data Decide",
+  "emoji": "🪙",
+  "premise": "Some things are not fair. For a bent coin or a lopsided spinner, build the probability model from what actually happened.",
+  "idea": "Developing a probability model from observed frequencies. Ignoring the data and assuming equal chances is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

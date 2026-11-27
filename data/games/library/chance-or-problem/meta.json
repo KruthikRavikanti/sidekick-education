@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.C.7-3",
+  "title": "Chance or Problem?",
+  "emoji": "🧪",
+  "premise": "Experiments never match the theory exactly. Small differences are chance. Huge differences mean the model may not fit.",
+  "idea": "Comparing probabilities from a model to observed frequencies and explaining discrepancies. Thinking any difference means the model does not fit is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

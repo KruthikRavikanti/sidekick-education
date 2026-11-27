@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.C.8-2",
+  "title": "List Them All",
+  "emoji": "📝",
+  "premise": "A sample space lists every possible outcome. Order matters: heads then tails is not the same as tails then heads.",
+  "idea": "Representing sample spaces for compound events with lists, tables and tree diagrams. Missing outcomes is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+type"
+}

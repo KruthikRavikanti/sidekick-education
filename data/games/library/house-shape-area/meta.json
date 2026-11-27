@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.G.B.6-1",
+  "title": "House Shape Area",
+  "emoji": "🏠",
+  "premise": "A complicated shape is simple shapes joined together. Split it so no piece overlaps, find each area, and add.",
+  "idea": "Finding the area of composite two-dimensional figures. Double counting shared regions (or using a full rectangle for a triangle) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

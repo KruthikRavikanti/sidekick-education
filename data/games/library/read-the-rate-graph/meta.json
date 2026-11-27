@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.RP.A.2-4",
+  "title": "Read the Rate Graph",
+  "emoji": "📈",
+  "premise": "On the graph of a proportional relationship, two points are special: (0, 0) and (1, r). The r is the unit rate.",
+  "idea": "Explaining what a point (x, y) on the graph of a proportional relationship means, with special attention to (0, 0) and (1, r). Not being able to interpret points in context is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

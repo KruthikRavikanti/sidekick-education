@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.G.B.5-2",
+  "title": "Angle Equations",
+  "emoji": "✏️",
+  "premise": "An angle fact turns into an equation. Equal angles go on two sides of the equals sign. Angles on a line add to 180.",
+  "idea": "Writing and solving simple equations for an unknown angle in a figure. Setting the angles equal when they should sum (or the reverse) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

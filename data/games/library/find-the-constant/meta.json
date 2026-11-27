@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.RP.A.2-2",
+  "title": "Find the Constant",
+  "emoji": "🔑",
+  "premise": "In a proportional relationship, y is always the same number times x. That number is k, and k = y ÷ x.",
+  "idea": "Identifying the constant of proportionality. Dividing in the opposite order (x ÷ y) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

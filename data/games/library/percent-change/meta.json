@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.RP.A.3-1",
+  "title": "Percent Change",
+  "emoji": "📉",
+  "premise": "Percent change compares how much something changed with where it STARTED. Always divide by the original amount.",
+  "idea": "Solving percent increase and decrease problems. Dividing by the new amount instead of the original is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

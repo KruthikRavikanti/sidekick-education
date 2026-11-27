@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.A.1-2",
+  "title": "Random Beats Convenient",
+  "emoji": "🎩",
+  "premise": "Random sampling gives every member the same chance of being picked. That is what makes a sample trustworthy.",
+  "idea": "Understanding that random sampling tends to produce representative samples. Trusting convenience samples is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+sort"
+}
