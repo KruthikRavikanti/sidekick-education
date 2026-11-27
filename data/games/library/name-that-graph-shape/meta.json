@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.C.7-2",
+  "title": "Name That Graph Shape",
+  "emoji": "🖼️",
+  "premise": "Each family of functions has a signature shape: the V of absolute value, the half-arch of a square root, the stairs of a step function.",
+  "idea": "Graphing square root, cube root, piecewise, step and absolute value functions. Connecting pieces that should not connect is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

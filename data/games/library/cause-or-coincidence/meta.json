@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-ID.C.9-1",
+  "title": "Cause or Coincidence?",
+  "emoji": "🍦",
+  "premise": "Two things can rise together without one causing the other. Often a third thing is driving both.",
+  "idea": "Distinguishing between correlation and causation. Concluding cause from a strong correlation is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

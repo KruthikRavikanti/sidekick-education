@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-Q.A.2-1",
+  "title": "What Matters in the Model",
+  "emoji": "🚗",
+  "premise": "Modeling starts by choosing which quantities matter for the question. Leave out the ones that do not affect the answer.",
+  "idea": "Defining appropriate quantities for the purpose of descriptive modeling. Modeling irrelevant quantities is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-LE.B.5-2",
+  "title": "Start Value and Growth Factor",
+  "emoji": "🚙",
+  "premise": "In an exponential model a·b^t, a is where it starts and b is what it is multiplied by each period.",
+  "idea": "Interpreting the parameters in an exponential function in terms of a context. Reading 1.03 as 103% growth is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

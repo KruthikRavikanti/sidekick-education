@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-RN.B.3-3",
+  "title": "Products With Roots",
+  "emoji": "✖️",
+  "premise": "A nonzero rational times an irrational is irrational. Two irrationals multiplied can go either way.",
+  "idea": "Knowing that the product of a nonzero rational and an irrational number is irrational. Thinking irrational × irrational is always irrational is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

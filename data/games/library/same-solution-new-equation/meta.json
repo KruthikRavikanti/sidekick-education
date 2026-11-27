@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.C.5-1",
+  "title": "Same Solution, New Equation",
+  "emoji": "♻️",
+  "premise": "Doubling an equation or adding two equations makes a new equation with the same solution, as long as every term is treated the same.",
+  "idea": "Proving that replacing one equation by the sum of that equation and a multiple of the other produces a system with the same solutions. Multiplying only one side is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

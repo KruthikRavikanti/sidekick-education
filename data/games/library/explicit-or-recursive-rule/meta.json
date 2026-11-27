@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-BF.A.1-1",
+  "title": "Explicit or Recursive Rule",
+  "emoji": "🏦",
+  "premise": "A pattern can be described two ways. An explicit rule jumps straight to any step. A recursive rule builds each step from the one before.",
+  "idea": "Determining an explicit expression or a recursive process from a context. Mixing up the starting value and the change is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

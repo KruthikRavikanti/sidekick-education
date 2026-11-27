@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-SSE.B.3-3",
+  "title": "Same Growth, New Base",
+  "emoji": "🔁",
+  "premise": "An exponential can be rewritten with a different base to show a rate over a different period. The exponent rules do the work.",
+  "idea": "Using the properties of exponents to transform exponential expressions. Multiplying the base by the exponent is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

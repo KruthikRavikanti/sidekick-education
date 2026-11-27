@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.D.12-3",
+  "title": "Where Both Shadings Overlap",
+  "emoji": "🟪",
+  "premise": "A system of inequalities is solved only where every shaded region overlaps. A point must pass all the tests.",
+  "idea": "Graphing the solution set of a system of linear inequalities as the intersection of half-planes. Shading the union instead of the intersection is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

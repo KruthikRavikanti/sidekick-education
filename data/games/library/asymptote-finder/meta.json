@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.C.7-4",
+  "title": "Asymptote Finder",
+  "emoji": "🚧",
+  "premise": "A rational function has lines it approaches and never crosses where its denominator would be zero.",
+  "idea": "Graphing rational functions, identifying zeros and asymptotes. Drawing the graph across a vertical asymptote is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

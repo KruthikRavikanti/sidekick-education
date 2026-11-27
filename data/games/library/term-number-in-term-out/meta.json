@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.A.3-1",
+  "title": "Term Number In, Term Out",
+  "emoji": "🔢",
+  "premise": "A sequence is a function. The input is the position: 1st, 2nd, 3rd. The output is the term in that position.",
+  "idea": "Recognizing that sequences are functions whose domain is a subset of the integers. Treating sequences as lists only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+sort"
+}

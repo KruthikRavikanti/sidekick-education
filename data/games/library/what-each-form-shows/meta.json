@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.C.8-1",
+  "title": "What Each Form Shows",
+  "emoji": "🔍",
+  "premise": "One quadratic can be written three ways. Factored form shows the zeros. Vertex form shows the turning point.",
+  "idea": "Using factoring and completing the square to show zeros, extreme values and symmetry. Misreading the sign in the vertex is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-LE.A.1-1",
+  "title": "Add or Multiply Pattern",
+  "emoji": "📊",
+  "premise": "Linear patterns change by the same difference each step. Exponential patterns change by the same factor.",
+  "idea": "Proving that linear functions grow by equal differences and exponential functions by equal factors. Thinking all increasing patterns are linear is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

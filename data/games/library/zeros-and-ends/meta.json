@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.C.7-3",
+  "title": "Zeros and Ends",
+  "emoji": "〽️",
+  "premise": "A factored polynomial shows its zeros directly. A repeated factor makes the graph touch the axis and turn back.",
+  "idea": "Graphing polynomial functions, identifying zeros and end behavior. Ignoring multiplicity is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+fill"
+}

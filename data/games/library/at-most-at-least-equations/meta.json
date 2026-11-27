@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-CED.A.1-1",
+  "title": "At Most, At Least Equations",
+  "emoji": "📱",
+  "premise": "A situation with a limit becomes an inequality. At most means ≤. At least means ≥. Exactly means =.",
+  "idea": "Creating linear equations and inequalities in one variable from situations. Reversing the inequality direction is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

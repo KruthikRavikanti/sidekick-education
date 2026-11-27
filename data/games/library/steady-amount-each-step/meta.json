@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-LE.A.1-2",
+  "title": "Steady Amount Each Step",
+  "emoji": "🕯️",
+  "premise": "When a quantity changes by the same amount in each equal time step, a linear model fits it.",
+  "idea": "Recognizing situations in which one quantity changes at a constant rate per unit interval. Mistaking percent change for constant change is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+sort"
+}

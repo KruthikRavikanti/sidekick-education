@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.C.7-5",
+  "title": "Curves That Hug a Line",
+  "emoji": "🌙",
+  "premise": "An exponential graph flattens toward the x-axis without touching it. A logarithm graph does the same with the y-axis.",
+  "idea": "Graphing exponential and logarithmic functions, showing intercepts and end behavior. Drawing an exponential across its asymptote is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

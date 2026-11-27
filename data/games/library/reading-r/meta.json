@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-ID.C.8-1",
+  "title": "Reading r",
+  "emoji": "📏",
+  "premise": "The correlation coefficient r runs from −1 to 1. Its size tells how tightly points follow a line. Its sign tells the direction.",
+  "idea": "Computing and interpreting the correlation coefficient of a linear fit. Thinking r near 0 means no relationship of any kind is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

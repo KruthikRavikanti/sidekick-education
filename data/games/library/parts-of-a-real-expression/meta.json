@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-SSE.A.1-1",
+  "title": "Parts of a Real Expression",
+  "emoji": "🎉",
+  "premise": "Every piece of an expression means something in the situation. A term is added. A factor multiplies. A coefficient is the number in front.",
+  "idea": "Interpreting parts of an expression such as terms, factors and coefficients. Calling a factor a term is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

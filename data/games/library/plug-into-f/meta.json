@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.A.2-1",
+  "title": "Plug Into f",
+  "emoji": "🔌",
+  "premise": "f(3) is not f times 3. It means: put 3 in place of x and work out the result.",
+  "idea": "Using function notation and evaluating functions for inputs in their domains. Reading f(3) as f times 3 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

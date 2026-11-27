@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-BF.A.1-3",
+  "title": "Function Inside a Function",
+  "emoji": "🪆",
+  "premise": "f(g(3)) means: put 3 into g first, then put that answer into f. Work from the inside out.",
+  "idea": "Composing functions. Multiplying f and g instead of composing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

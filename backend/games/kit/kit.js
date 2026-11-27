@@ -29,11 +29,11 @@
   }
   function h(tag, cls, text) { var el = document.createElement(tag); if (cls) el.className = cls; if (text != null) el.textContent = text; return el; }
   function esc(text) { return String(text).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-  // Kid-facing text is escaped. {3/4} becomes a stacked fraction; x^2 and 10^{-3} become raised exponents.
+  // Kid-facing text is escaped. {3/4} becomes a stacked fraction; x^2, 10^{-3} and 2^(3t) become raised exponents.
   function rich(text) {
     return esc(text == null ? '' : text)
       .replace(/\{\s*([^{}\/]{1,12}?)\s*\/\s*([^{}\/]{1,12}?)\s*\}/g, '<span class="sk-frac"><span>$1</span><span>$2</span></span>')
-      .replace(/\^\{([^{}]{1,12})\}/g, '<sup>$1</sup>').replace(/\^(−?-?[0-9A-Za-z]{1,3})/g, '<sup>$1</sup>')
+      .replace(/\^\{([^{}]{1,12})\}/g, '<sup>$1</sup>').replace(/\^\(([^()<>]{1,14})\)/g, '<sup>$1</sup>').replace(/\^(−?-?[0-9A-Za-z]{1,3})/g, '<sup>$1</sup>')
       .replace(/\n/g, '<br>');
   }
   function plain(text) { return String(text == null ? '' : text).replace(/\{\s*([^{}\/]+?)\s*\/\s*([^{}\/]+?)\s*\}/g, '$1/$2'); }

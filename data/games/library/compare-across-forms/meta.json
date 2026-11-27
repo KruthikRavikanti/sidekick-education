@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.C.9-1",
+  "title": "Compare Across Forms",
+  "emoji": "⚖️",
+  "premise": "One function is an equation and another is a table. To compare them, find the same feature in each.",
+  "idea": "Comparing properties of two functions each represented in a different way. Comparing only one point is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

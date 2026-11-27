@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.B.4-3",
+  "title": "Zero Product Rule",
+  "emoji": "🅾️",
+  "premise": "If two things multiply to zero, one of them must be zero. That only works for zero, so get zero on one side first.",
+  "idea": "Solving quadratic equations by factoring. Setting factors equal to a nonzero number is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

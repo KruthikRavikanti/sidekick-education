@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.C.7-1",
+  "title": "Vertex and Intercepts",
+  "emoji": "🎯",
+  "premise": "A parabola is pinned down by its vertex and its intercepts. The vertex is not simply (b, c) from the equation.",
+  "idea": "Graphing linear and quadratic functions and showing intercepts, maxima and minima. Plotting the vertex at (b, c) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial+fill"
+}

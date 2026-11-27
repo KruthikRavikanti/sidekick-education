@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-ID.B.5-2",
+  "title": "Out of Which Total?",
+  "emoji": "🎯",
+  "premise": "The same count gives different percents depending on what you divide by: the whole table, or just one row.",
+  "idea": "Interpreting joint, marginal and conditional relative frequencies. Using the grand total for conditional frequencies is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

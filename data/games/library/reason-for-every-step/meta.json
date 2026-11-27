@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.A.1-1",
+  "title": "Reason for Every Step",
+  "emoji": "🪜",
+  "premise": "Each step in solving an equation is allowed for a reason. Whatever you do to one side, you do to the other.",
+  "idea": "Explaining each step in solving a simple equation as following from the equality asserted at the previous step. Not being able to say why a step is allowed is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-CED.A.3-1",
+  "title": "All the Constraints",
+  "emoji": "🍕",
+  "premise": "A real situation has more than one limit. The budget is one. You also cannot buy a negative number of things.",
+  "idea": "Representing constraints by equations or inequalities and by systems of them. Leaving out non-negativity constraints is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

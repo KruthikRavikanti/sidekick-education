@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.B.4-4",
+  "title": "Quadratic Formula Steps",
+  "emoji": "🧮",
+  "premise": "The quadratic formula solves any quadratic. The trickiest part is −b: if b is negative, −b is positive.",
+  "idea": "Solving quadratic equations with the quadratic formula. Mishandling the minus sign on b is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

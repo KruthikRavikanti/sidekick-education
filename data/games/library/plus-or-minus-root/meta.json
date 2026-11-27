@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.B.4-2",
+  "title": "Plus or Minus Root",
+  "emoji": "±",
+  "premise": "Taking a square root of both sides gives two answers, one positive and one negative. Keep both.",
+  "idea": "Solving quadratic equations by taking square roots. Forgetting the negative root is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

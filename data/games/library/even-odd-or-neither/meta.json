@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-BF.B.3-3",
+  "title": "Even, Odd or Neither",
+  "emoji": "🪞",
+  "premise": "An even function mirrors across the y-axis. An odd function looks the same after a half turn about the origin. Most are neither.",
+  "idea": "Recognizing even and odd functions from graphs and expressions. Calling every symmetric-looking graph even is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

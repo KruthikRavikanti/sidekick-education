@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-LE.A.1-3",
+  "title": "Steady Percent Each Step",
+  "emoji": "🧫",
+  "premise": "When a quantity grows or shrinks by the same percent in each time step, an exponential model fits it.",
+  "idea": "Recognizing situations in which a quantity grows or decays by a constant percent rate. Using a constant difference instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+fill"
+}

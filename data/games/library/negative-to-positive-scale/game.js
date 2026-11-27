@@ -12,7 +12,7 @@ Sidekick.game(Sidekick.play({
   tag: "interchanges_words",
   rounds: [
     { say: "Order from most negative to most positive.", seq: "bullheaded firm resolute", trap: "firm bullheaded resolute", why: "Bullheaded is an insult. It belongs at the negative end.", win: "Bullheaded, firm, resolute." },
-    { say: "Order from most negative to most positive.", seq: "cheap thrifty wise-with-money", trap: "thrifty cheap wise-with-money", why: "Cheap criticizes. Thrifty is mildly positive.", win: "Cheap, thrifty, wise with money." },
+    { say: "Order from most negative to most positive.", seq: "stingy thrifty prudent", trap: "thrifty stingy prudent", why: "Stingy criticizes. Thrifty is mildly positive.", win: "Stingy, thrifty, prudent." },
     { say: "Order from most negative to most positive by yourself.", alt: [{ seq: "nosy curious inquisitive", trap: "curious nosy inquisitive" }, { seq: "scrawny thin slender", trap: "thin scrawny slender" }, { seq: "reckless bold courageous", trap: "bold reckless courageous" }] },
   ],
 }));

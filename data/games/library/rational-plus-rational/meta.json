@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-RN.B.3-1",
+  "title": "Rational Plus Rational",
+  "emoji": "➕",
+  "premise": "Add two fractions and you always get another fraction. The rational numbers never leak out under addition or multiplication.",
+  "idea": "Explaining why the sum or product of two rational numbers is rational. Not being able to justify it with a general argument is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

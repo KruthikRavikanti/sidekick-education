@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.B.4-2",
+  "title": "Where the Graph Is Headed",
+  "emoji": "🧭",
+  "premise": "End behavior describes what a graph does far to the left and far to the right, beyond the part you can see.",
+  "idea": "Describing end behavior and symmetry of graphs. Describing only the visible window is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

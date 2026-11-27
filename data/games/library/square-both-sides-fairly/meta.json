@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.B.4-1",
+  "title": "Square Both Sides Fairly",
+  "emoji": "⬜",
+  "premise": "To solve by completing the square, add the same number to both sides so the left becomes a perfect square.",
+  "idea": "Using the method of completing the square to solve quadratic equations. Adding the constant to one side only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

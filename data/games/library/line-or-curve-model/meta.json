@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-ID.B.6-3",
+  "title": "Line or Curve Model?",
+  "emoji": "〰️",
+  "premise": "A line only fits data that looks like a straight band. If the points bend, use a curve.",
+  "idea": "Fitting a linear function for a scatter plot that suggests a linear association. Forcing a line through curved data is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+dial"
+}

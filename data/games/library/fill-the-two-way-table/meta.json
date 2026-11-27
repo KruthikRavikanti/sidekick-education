@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-ID.B.5-1",
+  "title": "Fill the Two-Way Table",
+  "emoji": "🗃️",
+  "premise": "A two-way table sorts people by two categories. Row totals go across. Column totals go down. They must agree at the corner.",
+  "idea": "Summarizing categorical data for two categories in two-way frequency tables. Mixing up row and column totals is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

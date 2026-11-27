@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-CED.A.4-1",
+  "title": "Solve the Formula",
+  "emoji": "🔧",
+  "premise": "A formula can be turned around to give any of its letters. Use the same inverse steps you use on equations with numbers.",
+  "idea": "Rearranging formulas to highlight a quantity of interest. Moving terms without inverse operations is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

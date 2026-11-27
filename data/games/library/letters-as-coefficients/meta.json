@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.B.3-1",
+  "title": "Letters as Coefficients",
+  "emoji": "🔡",
+  "premise": "An equation with letters for numbers is solved the same way. Just remember you can never divide by zero.",
+  "idea": "Solving linear equations in one variable, including equations with coefficients represented by letters. Dividing by a letter that could be zero is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

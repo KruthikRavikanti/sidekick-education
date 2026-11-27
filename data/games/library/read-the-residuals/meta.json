@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-ID.B.6-2",
+  "title": "Read the Residuals",
+  "emoji": "📉",
+  "premise": "A residual is how far a data point sits above or below the fitted line. Residuals from a good model look like random scatter.",
+  "idea": "Informally assessing the fit of a function by plotting and analyzing residuals. Thinking a pattern in the residuals means a good fit is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type"
+}

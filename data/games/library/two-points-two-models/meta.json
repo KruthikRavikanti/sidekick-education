@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-LE.A.2-1",
+  "title": "Two Points, Two Models",
+  "emoji": "📌",
+  "premise": "Two points can be joined by a line or by an exponential curve. The line adds. The curve multiplies.",
+  "idea": "Constructing linear and exponential functions from a graph, a table or two input-output pairs. Using the linear form for growth by a factor is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

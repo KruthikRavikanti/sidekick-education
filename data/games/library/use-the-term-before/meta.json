@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.A.3-2",
+  "title": "Use the Term Before",
+  "emoji": "🔁",
+  "premise": "A recursive rule builds each term from the ones before it. You must start from the given first term.",
+  "idea": "Using recursive definitions of sequences. Starting from the term after the given one is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

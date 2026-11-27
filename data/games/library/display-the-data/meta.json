@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-ID.A.1-1",
+  "title": "Display the Data",
+  "emoji": "📊",
+  "premise": "A histogram groups data into equal bins. A box plot shows the middle half. Both start from the same list of numbers.",
+  "idea": "Representing data with dot plots, histograms and box plots. Using unequal bins is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

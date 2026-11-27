@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-LE.B.5-1",
+  "title": "Meaning of m and b",
+  "emoji": "📞",
+  "premise": "In a linear model, the number multiplied by the variable is a rate. The number standing alone is the starting amount.",
+  "idea": "Interpreting the parameters in a linear function in terms of a context. Giving the meaning to the other parameter is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

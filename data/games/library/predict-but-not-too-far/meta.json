@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-ID.B.6-1",
+  "title": "Predict, But Not Too Far",
+  "emoji": "🔭",
+  "premise": "A fitted line is trustworthy inside the range of the data it came from. Far outside that range, it is a guess.",
+  "idea": "Fitting a function to data and using it to solve problems. Extrapolating far beyond the data is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+sort"
+}

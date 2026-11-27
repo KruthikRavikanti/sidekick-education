@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-ID.A.3-1",
+  "title": "Say It in Context",
+  "emoji": "💬",
+  "premise": "A difference in statistics should be put into words about the real situation, without claiming more than it shows.",
+  "idea": "Interpreting differences in shape, center and spread in the context of the data sets. Stating numbers without meaning is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-Q.A.1-1",
+  "title": "Units Tell the Story",
+  "emoji": "⛽",
+  "premise": "Carry the units through a calculation the way you carry numbers. They tell you whether the answer makes sense.",
+  "idea": "Using units as a way to understand problems and guide the solution. Dropping the units partway through is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

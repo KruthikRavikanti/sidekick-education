@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-BF.B.3-2",
+  "title": "Stretch and Squeeze",
+  "emoji": "🪗",
+  "premise": "Multiplying outside the function stretches the graph up and down. Multiplying inside, next to x, squeezes it sideways.",
+  "idea": "Identifying the effect on the graph of replacing f(x) by k f(x) and f(kx). Confusing vertical and horizontal stretch is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}
