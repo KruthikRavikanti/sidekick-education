@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.9-10.1-1",
+  "title": "Two Quotes and a Because",
+  "emoji": "🧾",
+  "premise": "A strong reading needs more than one quote dropped on the page. Choose the lines that prove the claim, then say how they prove it.",
+  "idea": "Citing strong and thorough textual evidence for what a text says explicitly and by inference. Citing one quote with no explanation is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+fill"
+}

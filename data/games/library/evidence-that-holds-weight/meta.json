@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.9-10.1-1",
+  "title": "Evidence That Holds Weight",
+  "emoji": "🏋️",
+  "premise": "Not all support is equal. Specific facts, numbers and named sources carry an argument. Vague feelings do not.",
+  "idea": "Citing strong and thorough textual evidence to support analysis of an informational text. Citing weak evidence is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

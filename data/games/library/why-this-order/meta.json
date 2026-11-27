@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.9-10.3-1",
+  "title": "Why This Order?",
+  "emoji": "🧱",
+  "premise": "Writers arrange their points on purpose: a story to hook you, data to convince you, a solution to send you off.",
+  "idea": "Analyzing how an author unfolds a series of ideas or events, including their order and the connections between them. Summarizing instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

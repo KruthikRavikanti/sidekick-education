@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.9-10.2-1",
+  "title": "Semicolon Fix",
+  "emoji": "🔧",
+  "premise": "Two complete sentences cannot be held together by a comma alone. A semicolon is strong enough.",
+  "idea": "Using a semicolon to link closely related independent clauses. Writing comma splices is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

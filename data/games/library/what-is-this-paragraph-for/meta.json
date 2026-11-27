@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.9-10.5-1",
+  "title": "What Is This Paragraph For?",
+  "emoji": "🧩",
+  "premise": "Each paragraph in an argument has a job: state the claim, give an example, answer an objection, or drive it home.",
+  "idea": "Analyzing how an author’s claims are developed and refined by particular sentences, paragraphs or sections. Summarizing instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

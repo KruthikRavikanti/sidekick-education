@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.9-10.2-2",
+  "title": "Choose Facts That Fit",
+  "emoji": "🧲",
+  "premise": "An explanation is only as good as its details. Pick facts that are specific, on topic, and enough to make the idea clear.",
+  "idea": "Developing a topic with well-chosen, relevant and sufficient facts and examples. Thin development is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

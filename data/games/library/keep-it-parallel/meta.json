@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.9-10.1-1",
+  "title": "Keep It Parallel",
+  "emoji": "🛤️",
+  "premise": "Items in a list should wear the same grammatical uniform: all -ing words, all to-verbs, or all nouns.",
+  "idea": "Using parallel structure. Mixing forms, as in to swim, running and bike rides, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

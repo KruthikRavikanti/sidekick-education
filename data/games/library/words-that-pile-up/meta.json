@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.9-10.4-1",
+  "title": "Words That Pile Up",
+  "emoji": "🎚️",
+  "premise": "Tone is built one word at a time. A single cold word is a detail. Five of them in a row are a mood.",
+  "idea": "Analyzing the cumulative impact of specific word choices on meaning and tone. Naming devices without their effect is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+fill"
+}

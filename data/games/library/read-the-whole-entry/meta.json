@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.9-10.4-3",
+  "title": "Read the Whole Entry",
+  "emoji": "📖",
+  "premise": "A dictionary entry holds more than a definition. It gives the part of speech and where the word came from.",
+  "idea": "Consulting reference materials to find the pronunciation, meaning, part of speech or etymology of a word. Choosing an unfitting meaning is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

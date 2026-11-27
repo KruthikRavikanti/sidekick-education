@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.9-10.7-1",
+  "title": "Poem and Painting",
+  "emoji": "🖼️",
+  "premise": "A poem and a painting can share a subject and still tell you different things. Each medium has to leave something out.",
+  "idea": "Analyzing the representation of a subject in two different artistic mediums, including what is emphasized or absent in each. Listing differences without analysis is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

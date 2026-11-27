@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.9-10.1-1",
+  "title": "Sharpen the Claim",
+  "emoji": "🎯",
+  "premise": "A precise claim says exactly what should happen and why. It also stands apart from the view it argues against.",
+  "idea": "Introducing precise claims and distinguishing them from alternate or opposing claims. Writing vague claims is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

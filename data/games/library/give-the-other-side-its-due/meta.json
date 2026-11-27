@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.9-10.1-2",
+  "title": "Give the Other Side Its Due",
+  "emoji": "⚖️",
+  "premise": "A strong argument treats the opposing view fairly. It admits what is true in it, then answers with evidence.",
+  "idea": "Developing claims and counterclaims fairly, supplying evidence and pointing out strengths and limitations. Writing one-sidedly is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

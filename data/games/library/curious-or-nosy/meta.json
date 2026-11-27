@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.9-10.5-2",
+  "title": "Curious or Nosy",
+  "emoji": "🌡️",
+  "premise": "Curious and nosy describe the same habit. One is a compliment. The other is a complaint.",
+  "idea": "Analyzing nuances in the meaning of words with similar denotations. Treating such words as interchangeable is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}
