@@ -93,9 +93,6 @@ export function AccountShell({
         <FormError message={error} />
         {children}
       </main>
-      <footer className="account-footer">
-        A little support. A lot of possibility.
-      </footer>
     </div>
   );
 }

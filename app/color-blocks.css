@@ -180,11 +180,8 @@ body::after {
   background-size: 100% 100%, 150px auto, 100% 100%, 100% 100%;
 }
 body:has(.auth-layout, .picker-intro, .pin-card, .narrow-card, .kid-welcome, .main-upload, .main-results)::after { display: block; }
-/* On those screens the page ends with room for the scene, and the footer line stands on the hill as a small cream label. */
-body:has(.auth-layout, .picker-intro, .pin-card, .narrow-card, .kid-welcome, .main-upload, .main-results) :is(.account-footer, .site-footer) {
-  width: fit-content; margin: 150px auto 16px; padding: 7px 16px; border-radius: 999px;
-  background: var(--cream); color: var(--forest); font-weight: 800; font-size: 12px;
-}
+/* On those screens the page ends with room for the scene. */
+body:has(.auth-layout, .picker-intro, .pin-card, .narrow-card, .kid-welcome, .main-upload, .main-results) :is(.account-shell, .app-shell) { padding-bottom: 198px; }
 /* The few words that sit on the bare page get a cream backing, so they stay readable if a hill is behind them. */
 .picker-logout .text-button, .privacy-note, .results-footnote { background: var(--cream); }
 .picker-logout .text-button { padding-inline: 16px; }
@@ -204,7 +201,7 @@ body:has(.auth-layout, .picker-intro, .pin-card, .narrow-card, .kid-welcome, .ma
     background-position: 0 0, right 10px bottom 30px, 0 0, 0 0;
     background-size: 100% 100%, 92px auto, 100% 100%, 100% 100%;
   }
-  body:has(.auth-layout, .picker-intro, .pin-card, .narrow-card, .kid-welcome, .main-upload, .main-results) :is(.account-footer, .site-footer) { margin-top: 96px; }
+  body:has(.auth-layout, .picker-intro, .pin-card, .narrow-card, .kid-welcome, .main-upload, .main-results) :is(.account-shell, .app-shell) { padding-bottom: 144px; }
   .shell-kid .account-main:has(> .kid-welcome) { grid-template-columns: minmax(0, 1fr); }
   .kid-actions, .kid-chat-placeholder, .kid-steps { grid-column: 1; grid-row: auto; }
   .kid-welcome { padding: 32px 28px; min-height: 0; }

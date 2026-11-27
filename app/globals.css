@@ -416,19 +416,6 @@ img {
   font-size: 10px;
   margin-top: 12px;
 }
-.site-footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: var(--muted);
-  font-size: 11px;
-  padding: 34px 20px 28px;
-}
-.footer-spark {
-  font-size: 16px;
-  color: var(--berry);
-}
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -1086,11 +1073,6 @@ img {
     margin-top: 23px;
     padding-top: 20px;
     font-size: 11px;
-  }
-  .site-footer {
-    font-size: 10px;
-    padding-top: 27px;
-    padding-bottom: 23px;
   }
   .preview-area {
     padding: 13px 18px 15px;

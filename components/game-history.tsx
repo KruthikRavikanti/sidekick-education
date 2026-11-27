@@ -23,7 +23,11 @@ function outcome(item: GameHistoryItem) {
 export function ParentGameHistory({ kidId }: { kidId: string }) {
   const [runs, setRuns] = useState<GameHistoryItem[] | null>(null);
   const [enabled, setEnabled] = useState(false);
-  const [review, setReview] = useState<{ reviewer: boolean; waiting?: number } | null>(null);
+  const [review, setReview] = useState<{
+    reviewer: boolean;
+    waiting?: number;
+    playground?: boolean;
+  } | null>(null);
   useEffect(() => {
     const request = new AbortController();
     void api<{ enabled: boolean; runs: GameHistoryItem[] }>(
@@ -38,7 +42,7 @@ export function ParentGameHistory({ kidId }: { kidId: string }) {
       .catch(() => {
         if (!request.signal.aborted) setRuns([]);
       });
-    void api<{ reviewer: boolean; waiting?: number }>("/api/games/review/me", {
+    void api<{ reviewer: boolean; waiting?: number; playground?: boolean }>("/api/games/review/me", {
       signal: request.signal,
     })
       .then((result) => {
@@ -71,6 +75,17 @@ export function ParentGameHistory({ kidId }: { kidId: string }) {
             picture, which still comes from uploaded work.
           </p>
         </div>
+        {/* Temporary: the playground link shows only while SIDEKICK_GAMES_PLAYGROUND is on. */}
+        {review?.reviewer && review.playground ? (
+          <Link
+            className="button secondary"
+            href="/parent/playground"
+            prefetch={false}
+            style={{ marginLeft: "auto" }}
+          >
+            Game playground
+          </Link>
+        ) : null}
         {review?.reviewer ? (
           <Link className="button secondary" href="/parent/games" prefetch={false}>
             Review games{review.waiting ? ` (${review.waiting})` : ""}

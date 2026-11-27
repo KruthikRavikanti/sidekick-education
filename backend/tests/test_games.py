@@ -362,6 +362,19 @@ def test_production_review_needs_a_listed_reviewer(family, security_context, gam
     assert mutate(client, 'POST', f'/api/games/review/{version_id}/decision', json={'decision': 'approve'}).status_code == 200
 
 
+def test_playground_switch_is_off_unless_set_and_is_only_told_to_reviewers(family, security_context, games_on, monkeypatch):
+    child, client = family
+    picker(client); unlock(client)
+    monkeypatch.delenv('SIDEKICK_GAMES_PLAYGROUND', raising=False)
+    assert client.get('/api/games/review/me').json()['playground'] is False
+    monkeypatch.setenv('SIDEKICK_GAMES_PLAYGROUND', 'true')
+    assert client.get('/api/games/review/me').json()['playground'] is True
+    # The switch only shows a page. Someone who may not review learns nothing about it.
+    monkeypatch.setattr(type(security_context.settings), '__setattr__', object.__setattr__)
+    monkeypatch.setattr(security_context.settings, 'app_env', 'production')
+    assert 'playground' not in client.get('/api/games/review/me').json()
+
+
 def test_play_frame_finish_and_parent_history(family, security_context, games_on):
     child, client = family
     upload_id = upload(security_context, child)

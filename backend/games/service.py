@@ -193,7 +193,7 @@ def is_reviewer(security, active):
                 raise
             return dict(reviewer=False, enabled=GameSettings.from_env().enabled)
         waiting = conn.execute("SELECT COUNT(*) FROM game_versions WHERE status='verified'").fetchone()[0]
-        return dict(reviewer=True, enabled=settings.enabled, waiting=waiting, requireApproval=settings.require_approval)
+        return dict(reviewer=True, enabled=settings.enabled, waiting=waiting, requireApproval=settings.require_approval, playground=settings.playground)
 
 
 def _review_row(conn, row, full=False):
