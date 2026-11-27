@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.6.4-3",
+  "title": "Which Entry Fits?",
+  "emoji": "📚",
+  "premise": "A dictionary lists several meanings and parts of speech for one word. The sentence tells you which entry you need.",
+  "idea": "Consulting reference materials to find the pronunciation, meaning and part of speech of a word. Picking an entry that does not fit the sentence is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

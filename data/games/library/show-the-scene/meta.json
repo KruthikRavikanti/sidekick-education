@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.6.3-2",
+  "title": "Show the Scene",
+  "emoji": "🎭",
+  "premise": "Writers bring events to life with three tools: dialogue, description, and pacing that slows down or speeds up.",
+  "idea": "Using narrative techniques such as dialogue, pacing and description to develop events. Summarizing events instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

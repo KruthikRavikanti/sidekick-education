@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.6.4-1",
+  "title": "Who Is Reading?",
+  "emoji": "📱",
+  "premise": "The same message sounds different in an email to a teacher and a text to a friend. Match the style to the reader.",
+  "idea": "Producing writing in which development, organization and style suit the task, purpose and audience. Using the same style everywhere is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

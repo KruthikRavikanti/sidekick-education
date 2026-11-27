@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.6.1-2",
+  "title": "Clue Collector",
+  "emoji": "🧩",
+  "premise": "An inference is a smart guess the author never states. It only counts if clues in the text back it up.",
+  "idea": "Citing textual evidence to support inferences drawn from the text. Making inferences with no support is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

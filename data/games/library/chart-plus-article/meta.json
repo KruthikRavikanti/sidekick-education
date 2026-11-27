@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.6.7-1",
+  "title": "Chart Plus Article",
+  "emoji": "📊",
+  "premise": "Some answers are in the words. Some are in the chart. The full picture needs both.",
+  "idea": "Integrating information presented in different media or formats. Using only one format is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

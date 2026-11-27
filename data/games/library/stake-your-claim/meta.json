@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.6.1-1",
+  "title": "Stake Your Claim",
+  "emoji": "📣",
+  "premise": "An argument starts with a claim: one clear sentence that takes a side. Reasons come next.",
+  "idea": "Introducing claims and organizing reasons and evidence clearly. Giving an opinion without a clear claim is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+row"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.6.6-1",
+  "title": "Tools for Writers",
+  "emoji": "⌨️",
+  "premise": "Technology helps you draft, share and publish. Good typing habits let your fingers keep up with your ideas.",
+  "idea": "Using technology to produce and publish writing and to collaborate, with sufficient keyboarding skill. Slow typing habits are the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

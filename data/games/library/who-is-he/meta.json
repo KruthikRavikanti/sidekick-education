@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.6.1-4",
+  "title": "Who Is He?",
+  "emoji": "❓",
+  "premise": "A pronoun must point clearly to one person or thing. If the reader has to guess, the sentence needs fixing.",
+  "idea": "Recognizing and correcting vague pronouns with unclear or ambiguous antecedents. Using it and they with unclear references is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

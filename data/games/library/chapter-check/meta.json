@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.6.10-1",
+  "title": "Chapter Check",
+  "emoji": "📖",
+  "premise": "Strong readers keep track of a longer passage as they go: who, what they want, what stands in the way.",
+  "idea": "Reading and comprehending literature in the grades 6 to 8 complexity band. Avoiding complex texts is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+pick"
+}

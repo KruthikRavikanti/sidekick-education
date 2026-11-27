@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.6.4-1",
+  "title": "Science Meanings",
+  "emoji": "🧫",
+  "premise": "A familiar word can mean something new in a science or history article. Let the subject guide you.",
+  "idea": "Determining the technical meanings of words in an informational text. Using the everyday meaning is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

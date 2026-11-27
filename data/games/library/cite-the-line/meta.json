@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.6.1-1",
+  "title": "Cite the Line",
+  "emoji": "🔦",
+  "premise": "A claim about a story needs proof from the story itself. Find the exact lines that show it.",
+  "idea": "Citing textual evidence to support analysis of what the text says explicitly. Summarizing instead of citing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

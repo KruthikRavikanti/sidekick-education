@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.6.8-2",
+  "title": "Backed Up or Bare?",
+  "emoji": "🧱",
+  "premise": "Some claims come with reasons and evidence. Others are just said loudly. Readers should tell them apart.",
+  "idea": "Distinguishing claims that are supported by reasons and evidence from claims that are not. Accepting all claims is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

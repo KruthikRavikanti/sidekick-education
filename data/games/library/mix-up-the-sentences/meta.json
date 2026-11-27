@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.6.3-1",
+  "title": "Mix Up the Sentences",
+  "emoji": "🎼",
+  "premise": "Writing where every sentence has the same shape sounds like a drum with one beat. Vary the length and the beginnings.",
+  "idea": "Varying sentence patterns for meaning, reader interest and style. Repetitive sentences are the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.6.3-1",
+  "title": "Episodes in Order",
+  "emoji": "🎬",
+  "premise": "A plot unfolds in episodes. Each one pushes the story toward its resolution.",
+  "idea": "Describing how a plot unfolds in a series of episodes. Listing events without structure is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+fill"
+}

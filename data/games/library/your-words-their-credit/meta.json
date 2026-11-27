@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.6.8-2",
+  "title": "Your Words, Their Credit",
+  "emoji": "🧾",
+  "premise": "Using a source means putting its ideas in your own words, or quoting exactly, and always saying where it came from.",
+  "idea": "Quoting or paraphrasing the data and conclusions of others while avoiding plagiarism, and providing basic bibliographic information. Copying without credit is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+pick"
+}

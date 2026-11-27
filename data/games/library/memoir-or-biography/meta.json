@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.6.9-1",
+  "title": "Memoir or Biography",
+  "emoji": "🪞",
+  "premise": "The same life can be told by the person who lived it or by someone looking in. Each stresses different things.",
+  "idea": "Comparing one author’s presentation of events with that of another. Summarizing each one instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.6.2-4",
+  "title": "Wrap Up the Report",
+  "emoji": "🎀",
+  "premise": "An informative piece should end by pulling its ideas together, not by stopping or by starting something new.",
+  "idea": "Providing a concluding statement that follows from the information presented. Leaving out a conclusion is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.6.2-1",
+  "title": "Fence Off the Extra",
+  "emoji": "🚧",
+  "premise": "Extra information that could be lifted out of a sentence gets a comma on each side, like a pair of fences.",
+  "idea": "Using commas, parentheses or dashes to set off nonrestrictive elements. Leaving them out is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}
