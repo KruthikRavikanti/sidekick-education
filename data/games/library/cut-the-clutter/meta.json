@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.7.3-1",
+  "title": "Cut the Clutter",
+  "emoji": "✂️",
+  "premise": "Extra words hide your point. Say it once, in the fewest words that keep the meaning.",
+  "idea": "Choosing language that expresses ideas precisely and concisely, eliminating wordiness and redundancy. Wordy writing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

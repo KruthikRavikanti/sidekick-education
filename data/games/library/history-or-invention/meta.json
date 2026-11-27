@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.7.9-1",
+  "title": "History or Invention?",
+  "emoji": "🏛️",
+  "premise": "Historical fiction mixes real events with made-up characters and scenes. Readers need to tell which is which.",
+  "idea": "Comparing a fictional portrayal of a time, place or character with a historical account of the same period. Assuming the fiction is accurate is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.7.1-3",
+  "title": "Close the Case",
+  "emoji": "🔨",
+  "premise": "A conclusion should grow out of the argument. Copying the first paragraph word for word adds nothing.",
+  "idea": "Providing a concluding statement that follows from and supports the argument. Just repeating the introduction is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

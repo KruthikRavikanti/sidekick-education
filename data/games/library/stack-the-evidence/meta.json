@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.7.1-1",
+  "title": "Stack the Evidence",
+  "emoji": "🧱",
+  "premise": "An author’s conclusion stands on several pieces of evidence. Find all of them, not just the first.",
+  "idea": "Citing several pieces of textual evidence to support analysis of an informational text. Stopping at one piece is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

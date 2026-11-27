@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.7.1-1",
+  "title": "Clause or Phrase?",
+  "emoji": "🧩",
+  "premise": "A clause has a subject and a verb. An independent clause can stand alone. A dependent clause leans on another.",
+  "idea": "Explaining the function of phrases and clauses in specific sentences. Not being able to identify clauses is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

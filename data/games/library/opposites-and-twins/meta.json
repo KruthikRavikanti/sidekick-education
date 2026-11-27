@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.7.5-2",
+  "title": "Opposites and Twins",
+  "emoji": "⚖️",
+  "premise": "In an analogy, the second pair must match the first. If the first pair are opposites, so are the second.",
+  "idea": "Using the relationship between particular words (synonym, antonym, analogy) to better understand each. Weak analogies are the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

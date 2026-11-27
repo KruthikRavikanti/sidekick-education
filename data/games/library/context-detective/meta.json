@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.7.4-1",
+  "title": "Context Detective",
+  "emoji": "🕵️",
+  "premise": "An unknown word is rarely alone. The sentence around it usually hints at its meaning.",
+  "idea": "Using context as a clue to the meaning of a word or phrase. Ignoring context is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

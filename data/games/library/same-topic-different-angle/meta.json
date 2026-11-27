@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.7.9-1",
+  "title": "Same Topic, Different Angle",
+  "emoji": "🔭",
+  "premise": "Two authors can write about the same topic and stress different facts. What each chooses shapes what you believe.",
+  "idea": "Analyzing how two authors writing about the same topic shape their presentations by emphasizing different evidence. Summarizing both instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

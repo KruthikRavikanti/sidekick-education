@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.7.8-1",
+  "title": "Is the Evidence Enough?",
+  "emoji": "🧪",
+  "premise": "Good arguments use evidence that is on topic and strong enough. One story or a popularity claim does not prove much.",
+  "idea": "Evaluating an argument: whether the reasoning is sound and the evidence relevant and sufficient. Accepting weak evidence is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.7.8-1",
+  "title": "Search Smart",
+  "emoji": "🧭",
+  "premise": "The words you type decide what you find. Specific search terms bring back useful, trustworthy results.",
+  "idea": "Using search terms effectively and assessing the credibility and accuracy of each source. Using unreliable sources is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.7.10-1",
+  "title": "Novel Chapter Check",
+  "emoji": "📘",
+  "premise": "Reading a full chapter means holding on to who wants what, and how each scene changes things.",
+  "idea": "Reading and comprehending literature in the grades 6 to 8 complexity band proficiently. Needing support to keep track is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+pick"
+}

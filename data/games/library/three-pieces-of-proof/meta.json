@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.7.1-1",
+  "title": "Three Pieces of Proof",
+  "emoji": "🧾",
+  "premise": "One clue is a hint. Several clues together make a case. Collect every line that supports the claim.",
+  "idea": "Citing several pieces of textual evidence to support analysis and inferences. Citing only one piece is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

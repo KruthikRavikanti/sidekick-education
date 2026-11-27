@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.7.5-1",
+  "title": "Section Roles",
+  "emoji": "🗃️",
+  "premise": "An article is organized on purpose. Each section does a job for the whole: the problem, the causes, the solutions.",
+  "idea": "Analyzing the structure an author uses to organize a text, including how the major sections contribute to the whole. Describing the sections only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

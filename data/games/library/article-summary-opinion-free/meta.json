@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.7.2-2",
+  "title": "Article Summary, Opinion Free",
+  "emoji": "🧽",
+  "premise": "Summarizing an article means reporting its points fairly, whether or not you agree with them.",
+  "idea": "Providing an objective summary of an informational text. Including opinions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

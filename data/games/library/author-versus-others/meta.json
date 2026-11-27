@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.7.6-1",
+  "title": "Author Versus Others",
+  "emoji": "🥊",
+  "premise": "Authors often bring up views they disagree with, then answer them. Watch for signals such as some say and critics argue.",
+  "idea": "Determining an author’s point of view and how the author distinguishes it from that of others. Missing the opposing views is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

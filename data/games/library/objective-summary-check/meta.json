@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.7.2-2",
+  "title": "Objective Summary Check",
+  "emoji": "⚖️",
+  "premise": "An objective summary tells what the story says, not what you think of it.",
+  "idea": "Providing an objective summary of the text. Including opinions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}
