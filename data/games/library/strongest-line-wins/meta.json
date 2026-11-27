@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.8.1-1",
+  "title": "Strongest Line Wins",
+  "emoji": "🏆",
+  "premise": "Several lines may relate to a claim. One of them proves it best. Choose the line that leaves the least doubt.",
+  "idea": "Citing the textual evidence that most strongly supports an analysis. Citing weak or loosely related evidence is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

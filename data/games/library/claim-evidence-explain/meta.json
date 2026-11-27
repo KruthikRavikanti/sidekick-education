@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.8.9-1",
+  "title": "Claim, Evidence, Explain",
+  "emoji": "🧱",
+  "premise": "An analysis paragraph has three parts: a claim, evidence from the text, and an explanation of how the evidence proves the claim.",
+  "idea": "Drawing evidence from texts to support analysis, reflection and research. Giving no evidence, or no explanation, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+fill"
+}

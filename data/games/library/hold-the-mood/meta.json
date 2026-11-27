@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.8.1-4",
+  "title": "Hold the Mood",
+  "emoji": "🧭",
+  "premise": "A sentence that starts as a command should finish as one. Switching voice or mood halfway feels like a swerve.",
+  "idea": "Recognizing and correcting inappropriate shifts in verb voice and mood. Shifting mid-sentence is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

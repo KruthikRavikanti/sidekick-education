@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.8.1-2",
+  "title": "Active or Passive?",
+  "emoji": "⚾",
+  "premise": "In active voice the subject does the action. In passive voice the subject receives it. Active is usually clearer.",
+  "idea": "Forming and using verbs in the active and passive voice. Overusing the passive voice is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

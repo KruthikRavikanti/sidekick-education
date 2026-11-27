@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.8.2-4",
+  "title": "Closing the Explanation",
+  "emoji": "🔚",
+  "premise": "An explanation should end by showing the reader what the information adds up to.",
+  "idea": "Providing a concluding statement or section that follows from and supports the information presented. Leaving it out is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.8.2-1",
+  "title": "File It Under",
+  "emoji": "🗄️",
+  "premise": "Before writing, sort your notes into bigger categories. Each category becomes a section of the piece.",
+  "idea": "Introducing a topic and organizing ideas and information into broader categories. Disorganized writing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

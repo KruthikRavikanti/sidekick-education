@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.8.7-1",
+  "title": "Follow-Up Questions That Fit",
+  "emoji": "🧭",
+  "premise": "Research raises new questions. The useful ones stay tied to the main question and can actually be looked up.",
+  "idea": "Conducting short research projects and generating additional related, focused questions. Unfocused questions are the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

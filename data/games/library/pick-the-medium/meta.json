@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.8.7-1",
+  "title": "Pick the Medium",
+  "emoji": "📺",
+  "premise": "Print, video and audio each do some jobs well and others badly. Choose by what the topic needs.",
+  "idea": "Evaluating the advantages and disadvantages of using different mediums to present a topic or idea. Stating preferences only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

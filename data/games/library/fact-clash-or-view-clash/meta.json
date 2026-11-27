@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.8.9-1",
+  "title": "Fact Clash or View Clash?",
+  "emoji": "⚡",
+  "premise": "When two texts disagree, ask how. They may report different facts, or read the same facts differently.",
+  "idea": "Analyzing texts that provide conflicting information and identifying where they disagree on fact or interpretation. Picking a side without analysis is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

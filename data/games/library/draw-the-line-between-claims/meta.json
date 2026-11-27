@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.8.1-1",
+  "title": "Draw the Line Between Claims",
+  "emoji": "📐",
+  "premise": "A strong introduction states your claim and shows exactly how it differs from the claim on the other side.",
+  "idea": "Introducing claims and acknowledging and distinguishing them from alternate or opposing claims. Ignoring counterclaims is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

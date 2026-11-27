@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.8.4-3",
+  "title": "Two Words in One Spelling",
+  "emoji": "📚",
+  "premise": "Some spellings hide two different words. REFuse is trash. reFUSE is to say no. A dictionary lists both.",
+  "idea": "Consulting reference materials to find pronunciation, precise meaning or part of speech. Choosing an entry that does not fit is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

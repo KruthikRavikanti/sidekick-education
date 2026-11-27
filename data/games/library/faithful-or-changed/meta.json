@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.8.7-1",
+  "title": "Faithful or Changed?",
+  "emoji": "🎬",
+  "premise": "A film version keeps some things and changes others. Each change is a choice the director made for a reason.",
+  "idea": "Analyzing the extent to which a filmed or live production stays faithful to or departs from the text. Listing differences only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.8.1-1",
+  "title": "Verbal Spotter",
+  "emoji": "🏊",
+  "premise": "A verbal is a verb form doing another job. A gerund acts as a noun, a participle as an adjective, and an infinitive starts with to.",
+  "idea": "Explaining the function of verbals (gerunds, participles, infinitives). Not being able to identify verbals is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

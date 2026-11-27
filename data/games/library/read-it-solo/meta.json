@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.8.10-1",
+  "title": "Read It Solo",
+  "emoji": "📗",
+  "premise": "Independent readers track a demanding passage on their own: the situation, the turn, the outcome.",
+  "idea": "Reading and comprehending literature at the high end of the grades 6 to 8 band independently. Needing support is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+pick"
+}

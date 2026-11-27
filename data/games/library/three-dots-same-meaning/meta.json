@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.8.2-2",
+  "title": "Three Dots, Same Meaning",
+  "emoji": "✂️",
+  "premise": "An ellipsis shows where words were cut from a quotation. A fair cut shortens it without changing what it says.",
+  "idea": "Using an ellipsis to indicate an omission. Misusing it, including cuts that change the meaning, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

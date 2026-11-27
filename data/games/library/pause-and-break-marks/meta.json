@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.8.2-1",
+  "title": "Pause and Break Marks",
+  "emoji": "⏸️",
+  "premise": "A comma is a short pause. A dash is a sudden break. An ellipsis is a voice trailing off.",
+  "idea": "Using punctuation (comma, ellipsis, dash) to indicate a pause or break. Misusing these marks is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

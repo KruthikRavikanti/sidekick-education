@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.8.2-2",
+  "title": "Neutral Retelling",
+  "emoji": "🧊",
+  "premise": "An objective summary is cool and even. It reports the story without cheering or booing.",
+  "idea": "Providing an objective summary of the text. Including opinions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

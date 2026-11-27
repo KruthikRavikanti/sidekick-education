@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.8.2-2",
+  "title": "Choose the Best Support",
+  "emoji": "💎",
+  "premise": "Well-chosen support is specific and on topic. A vague or loosely related fact weakens the explanation.",
+  "idea": "Developing a topic with relevant, well-chosen facts, definitions, concrete details and quotations. Thin development is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

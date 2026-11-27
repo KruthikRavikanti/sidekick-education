@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.8.8-1",
+  "title": "Spot the Irrelevant",
+  "emoji": "🚫",
+  "premise": "Some “evidence” has nothing to do with the claim. It may be true and still prove nothing.",
+  "idea": "Evaluating whether the reasoning is sound and the evidence relevant and sufficient; recognizing irrelevant evidence. Accepting all evidence is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}
