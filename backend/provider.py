@@ -13,13 +13,10 @@ from .models import Extraction
 
 
 class ExtractionError(Exception):
-    def __init__(self, code: str, message: str, status: int = 502, *, diagnostic=None, activity_candidate=None):
+    def __init__(self, code: str, message: str, status: int = 502):
+        # API handlers serialize only code/message. A provider body is never logged
+        # or attached to a public error response.
         self.code, self.message, self.status = code, message, status
-        # Internal bounded original activity drafts support scene repair. API
-        # handlers serialize only code/message; neither draft nor provider body
-        # is logged or attached to a public error response.
-        self.diagnostic = diagnostic
-        self._activity_candidate = activity_candidate
         super().__init__(code)
 
 

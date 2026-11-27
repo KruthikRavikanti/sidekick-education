@@ -8,8 +8,7 @@ import os
 import secrets
 
 from backend.accounts.security import AccountError
-from backend.activities import general
-from backend.activities.service import _candidates
+from backend.gap import targets
 from backend.gap.catalog import get_subskill
 from backend.gap.service import authorize
 
@@ -23,7 +22,7 @@ def model_configured():
 
 
 def skill_view(subskill):
-    return dict(id=subskill['subskill_id'], name=subskill['subskill'], subject=general.subject_for(subskill))
+    return dict(id=subskill['subskill_id'], name=subskill['subskill'], subject=targets.subject_for(subskill))
 
 
 def game_view(version):
@@ -32,8 +31,8 @@ def game_view(version):
 
 def _pick(conn, security, kid_id, upload_id, active, settings):
     """The skill on this upload to play, preferring one that already has a game."""
-    # Games exist for every grade in the skill map, high school included, so they use their own grade mapping.
-    candidates, reason = _candidates(conn, security, kid_id, upload_id, active, grade_of=library.grade_number)
+    # Games exist for every grade in the skill map, high school included.
+    candidates, reason = targets.candidates(conn, security, kid_id, upload_id, active, grade_of=library.grade_number)
     if not candidates:
         return None, None, reason or 'no_supported_skill'
     ranked = []

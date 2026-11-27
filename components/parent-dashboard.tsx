@@ -26,7 +26,6 @@ import type {
 import { RequireMode, useAccountSession } from "./account-session";
 import { GapInsights } from "./gap-insights";
 import { HomeworkUploads } from "./homework-uploads";
-import { ParentActivityHistory } from "./activity-history";
 import { ParentGameHistory } from "./game-history";
 import {
   AccountShell,
@@ -43,13 +42,13 @@ type Tab =
   | "profiles"
   | "settings"
   | "homework"
-  | "activities";
+  | "games";
 const tabs: { key: Tab; label: string }[] = [
   { key: "skills", label: "Skills" },
   { key: "analytics", label: "Analytics" },
   { key: "conversations", label: "Conversations" },
   { key: "homework", label: "Student work" },
-  { key: "activities", label: "Activities" },
+  { key: "games", label: "Games" },
   { key: "profiles", label: "Children" },
   { key: "settings", label: "Settings" },
 ];
@@ -718,12 +717,9 @@ function ParentContent() {
           selected ? (
             <HomeworkUploads key={selected} kidId={selected} />
           ) : null
-        ) : effectiveTab === "activities" ? (
+        ) : effectiveTab === "games" ? (
           selected ? (
-            <>
-              <ParentGameHistory key={`games:${selected}`} kidId={selected} />
-              <ParentActivityHistory key={selected} kidId={selected} />
-            </>
+            <ParentGameHistory key={`games:${selected}`} kidId={selected} />
           ) : null
         ) : (
           <>

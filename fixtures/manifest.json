@@ -1,25 +1,6 @@
 {
   "62248b13d94e05b8dd72873edb3a8364a091fc9d34ba177b7c8becafaf054c39": "math",
   "2c679220fa574fef462a88160ea37363807e85037c7e902fa97c2e21059b27b6": "ela",
-  "f9ceb2d2ef80b512391080f1f124e74d26181ba4aea779a22e1f51c5db26c50a": "activity-math",
-  "76836499f209c5e74318e556af017a1ccd5f1c70bbf88db97cc01d7eec713fbc": "activity-ela",
-  "76b607901a7d8554cf45a91593732b3f0a3a3543ecf98b916e5bc689af29aa32": "activity-math-correct",
-  "3c90952d53b9c353444657d3917ddda4ac76ee05283dfe14f7f60da968d3667c": "activity-ela-correct",
-  "b43b1228f69dfe799003e69e641153d6116ed1a5d4278d13c07ead5d3f85f902": "activity-math-general",
-  "4e260d4293dba58e8e08c1bc72463483d0de9ba673d2c63b52c3bd7265effcf1": "activity-ela-general",
-  "0f2356b0783f18fbffeb349ec6c5dac80def86bcc4f0829829806f711b18ac70": "activity-equivalent",
-  "4149db0aeeb5e9b6aad66f2d6beab2108824386a0a106c57a261915ede6e68be": "activity-toolkit-bundles",
-  "2bd2f7053955a5921d22b7c956c5b08f157a2a0a910ecdd667c88836a700a784": "activity-toolkit-sequence",
-  "6a0bb7cd0e52ca42035b69a23d49b2a20dab9c8726e1719ea193062921f856c1": "activity-toolkit-evidence",
-  "9a4b9d9212080164c9e171bd569574faa9fe821e328c9b748a7f1f8bba071544": "activity-catalog-multiplication",
-  "7ba2988b6d0fd348e7cedf6254ea589e0d31039ce078b5f18b5ef383a79b0566": "activity-catalog-division",
-  "dbe6888a62c571ee7f7b6baa41d9bdd13d13c4caf656dc4873a95c771aa2ec70": "activity-catalog-measurement",
-  "e06e955edac7cccd2bf61d49b83cb4055bd40c673ad68b7e6186430d4b3dfd1d": "activity-catalog-coordinates",
-  "6d37ced02692b0b4c9c553635463c65c3f87616022ab5a10ea6745a28bc63e68": "activity-catalog-phonics",
-  "6a94f93c2b5b6e9ef1cd22d4d7b48ef13460e63ed52c0c7cbab1e08b927c5266": "activity-catalog-fluency",
-  "95834ddafaa213618c44cd39260c28f891024c2c01b87d841e6c70f6c9e4ad78": "activity-catalog-writing",
-  "bbaa5af7c1f500826248e75867c15d31268abcb0b7f89771574e535f5657b3f0": "activity-catalog-editing",
-  "2b0108c61cece364c49433ef669c040a8295bbdfd6ca05938533f1b5f4bf6d66": "activity-catalog-handwriting",
-  "4711597c0d712c33d991c395c14106a2417e8e95387dbdb7e1e08127f726f2a4": "activity-catalog-sorting",
-  "fd56dc71f60f726b67af217fe536c20a420db983068d6ba29b25a1943d064c4a": "activity-composed-area"
+  "f9ceb2d2ef80b512391080f1f124e74d26181ba4aea779a22e1f51c5db26c50a": "game-math",
+  "76836499f209c5e74318e556af017a1ccd5f1c70bbf88db97cc01d7eec713fbc": "game-ela"
 }

@@ -1,4 +1,7 @@
-"""Feature flags for generated games. Everything defaults to the careful setting."""
+"""Settings for games. Games are how a child practices a skill, so they are on by default.
+
+The careful settings stay careful: a person approves every game before a child sees it,
+and nothing is generated in the background unless that is switched on."""
 import os
 from dataclasses import dataclass
 
@@ -26,7 +29,8 @@ class GameSettings:
         except ValueError:
             timeout = 300.0
         return cls(
-            enabled=_flag('SIDEKICK_GAMES_ENABLED', False),
+            # On unless switched off. With it off, children see no game card and cannot start a game.
+            enabled=_flag('SIDEKICK_GAMES_ENABLED', True),
             # A person must approve a generated game before any child can play it.
             require_approval=_flag('SIDEKICK_GAMES_REQUIRE_APPROVAL', True),
             autogenerate=_flag('SIDEKICK_GAMES_AUTOGENERATE', False),

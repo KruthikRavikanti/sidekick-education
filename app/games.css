@@ -47,10 +47,6 @@
   margin-top: 16px;
   max-width: 220px;
 }
-/* When a game is ready, the older card's "nothing for this skill yet" message would only confuse. */
-.game-suggestion:not(.game-suggestion-soon) + .activity-suggestion-empty {
-  display: none;
-}
 .game-suggestion-soon {
   background: #f6f1ff;
   border-color: #cdbdf0;
@@ -63,6 +59,14 @@
   font-size: 22px;
 }
 
+.game-waiting {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: center;
+  min-height: 280px;
+  font-size: 14px;
+}
 .game-player {
   max-width: 800px;
   margin: 0 auto;
@@ -117,6 +121,11 @@
   width: auto;
 }
 
+.game-history-note {
+  margin: 0 0 24px;
+  font-size: 13px;
+  color: var(--muted);
+}
 .game-history-list {
   list-style: none;
   padding: 0;

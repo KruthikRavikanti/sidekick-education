@@ -3,8 +3,8 @@ import hashlib
 import json
 import uuid
 
-from backend.activities import general
 from backend.gap.catalog import get_subskill
+from backend.gap.targets import subject_for
 
 from .config import PROMPT_VERSION
 from .frame import KIT_VERSION
@@ -60,7 +60,7 @@ def save_version(conn, now, subskill, *, title, emoji, premise, idea, code, css,
     """Store a game that passed the robot. Returns (id, created)."""
     if not report or not report.get('passed'):
         raise ValueError('Only games that passed the robot can be stored')
-    subject, grade = general.subject_for(subskill), grade_number(subskill)
+    subject, grade = subject_for(subskill), grade_number(subskill)
     if subject is None or grade is None:
         raise ValueError('Unsupported subject or grade')
     sha = source_hash(code, css)
@@ -79,7 +79,7 @@ def save_version(conn, now, subskill, *, title, emoji, premise, idea, code, css,
 def _wanted(item, subskill, only, subject, grades):
     if only and item['slug'] not in only:
         return False
-    if subject and general.subject_for(subskill or {}) != subject:
+    if subject and subject_for(subskill or {}) != subject:
         return False
     return not grades or str((subskill or {}).get('grade', '')) in grades
 
@@ -113,7 +113,7 @@ def seed_examples(db, now, *, robot=run_robot, approve=False, workers=1, only=No
             continue
         if not subskill or not subskill['active']:
             done({'slug': item['slug'], 'result': 'skill_not_in_catalog'})
-        elif general.subject_for(subskill) is None or grade_number(subskill) is None:
+        elif subject_for(subskill) is None or grade_number(subskill) is None:
             done({'slug': item['slug'], 'result': 'unsupported_grade'})
         elif known:
             if approve and known['status'] == 'verified':

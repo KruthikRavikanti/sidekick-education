@@ -63,7 +63,7 @@ function GameContent({ runId }: { runId: string }) {
     <AccountShell kind="kid" backHref="/kid">
       <section className="game-player">
         {!run && !error ? (
-          <div className="activity-waiting" role="status">
+          <div className="game-waiting" role="status">
             <LoaderCircle className="spinner" size={26} aria-hidden="true" />
             <p>Getting your game ready…</p>
           </div>

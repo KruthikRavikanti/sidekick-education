@@ -1,8 +1,8 @@
 # Sidekick
 
-Sidekick is a local K–5 family prototype built with Next.js/TypeScript, FastAPI/Pydantic, and SQLite. Parents create profiles, unlock a PIN-protected dashboard, and review uploaded student work. Children upload a photo or PDF of a worksheet, quiz, test, or other Math/ELA work and review the verbatim extraction. A reliably identified catalog skill leads to an activity composed on demand from reusable controls, followed by a fresh independent challenge. Each new live request composes an original activity; saved definitions preserve exact attempts and resume existing sessions. The former standalone Practice section and diagnostic quizzes remain retired. The existing [Sidekick design kit](https://preview--sidekick-colorway-studio.lovable.app/?__lovable_receipt=mat_6nx4bc71428r69zqdx974t1cnk), colors, components, and locally hosted fonts are retained.
+Sidekick is a local K–5 family prototype built with Next.js/TypeScript, FastAPI/Pydantic, and SQLite. Parents create profiles, unlock a PIN-protected dashboard, and review uploaded student work. Children upload a photo or PDF of a worksheet, quiz, test, or other Math/ELA work and review the verbatim extraction. When Sidekick reliably identifies the catalog skill a question is about, it offers a **game** for that skill. Every skill in the skill map ships with a game, new games can be written by a model against the Sidekick game kit, and no child sees a game until a person has approved it. The former standalone Practice section, diagnostic quizzes, and the earlier fixed-control activity system are retired. The [Sidekick design kit](https://preview--sidekick-colorway-studio.lovable.app/?__lovable_receipt=mat_6nx4bc71428r69zqdx974t1cnk), colors, components, and locally hosted fonts are retained.
 
-Parent accounts and student-work observations are already merged into `main` ([PR #1](https://github.com/KruthikRavikanti/sidekick-education/pull/1), [PR #2](https://github.com/KruthikRavikanti/sidekick-education/pull/2)). The activity milestone branches from that current implementation and keeps its account, PIN, upload, and route-protection behavior.
+The flow, end to end: **upload work → Sidekick reads it and finds the skill → a game for that skill → the parent sees how play went.** Skill observations come only from uploaded work. Games are practice and never change the skill picture.
 
 ## Local setup
 
@@ -16,7 +16,8 @@ cp -n .env.example .env.local
 cp -n backend/.env.example backend/.env
 npm run db:migrate
 npm run catalog:seed
-npm run activities:seed
+npx playwright install chromium                    # the robot that checks each game needs it
+npm run games:seed -- --subject math --grades 3    # load one grade of games to start; see Games below for the whole library
 npm run dev:all
 ```
 
@@ -28,7 +29,7 @@ backend/.venv/bin/uvicorn backend.main:app --host 127.0.0.1 --port 8000 --no-acc
 
 Retain existing credentials when pulling updates. Add new settings from `backend/.env.example` instead of overwriting `backend/.env`. FastAPI reads that file; Next.js uses `.env.local` only for its server-side `BACKEND_URL` proxy. Restart servers after changing configuration. Never put credentials in `NEXT_PUBLIC_*` variables.
 
-Set **`VISION_API_KEY`** and **`VISION_MODEL`** in `backend/.env` to enable live extraction, skill mapping, supported language grading, error-pattern observations, and on-demand activity composition through the shared adapter. The provider must support image input and strict JSON Schema on an OpenAI-compatible `/chat/completions` endpoint. `VISION_BASE_URL` defaults to `https://api.openai.com/v1`; `VISION_TIMEOUT_SECONDS` defaults to 120 (1–180). Existing `.env` files keep their explicit value; use `VISION_TIMEOUT_SECONDS=120` for slower pages. The image UI allows four minutes, and the API rewrite allows fifteen minutes to cover multi-call activity generation rather than cutting off every request after Next's default thirty seconds. Provider limits still apply. HTTPS is required except on loopback. No provider/model is silently selected.
+Set **`VISION_API_KEY`** and **`VISION_MODEL`** in `backend/.env` to enable live extraction, skill mapping, supported language grading, and error-pattern observations through the shared adapter. Writing new games uses the same adapter (see Games). The provider must support image input and strict JSON Schema on an OpenAI-compatible `/chat/completions` endpoint. `VISION_BASE_URL` defaults to `https://api.openai.com/v1`; `VISION_TIMEOUT_SECONDS` defaults to 120 (1–180). Existing `.env` files keep their explicit value; use `VISION_TIMEOUT_SECONDS=120` for slower pages. The image UI allows four minutes, and the API rewrite allows fifteen minutes so a multi-page upload is not cut off by Next's default thirty seconds. Provider limits still apply. HTTPS is required except on loopback. No provider/model is silently selected.
 
 For an offline extraction walkthrough:
 
@@ -39,22 +40,21 @@ npm run dev:demo
 
 The optional seed creates `parent@example.com` / `password`, Alex (grade 3), and Maya (grade 1). The PIN starts unset; repeated seeding preserves existing credentials and profiles. Sign in, choose Parent, verify the account password to set a 4–6 digit PIN, and unlock the dashboard. Switch profile to choose a child and tap **Upload work**.
 
-Demo mode accepts the exact bundled worksheet fixtures under `public/samples/` and labels extraction `source: "fixture"`. It creates no fabricated learning evidence. Automated tests inject explicit model stubs for student-work analysis and activity generation. Demo mode alone does not fabricate the reliable grading and skill mapping needed to suggest an activity.
+Demo mode accepts the exact bundled worksheet fixtures under `public/samples/` and labels extraction `source: "fixture"`. It creates no fabricated learning evidence. Automated tests inject explicit model stubs for student-work analysis. Demo mode alone does not fabricate the reliable grading and skill mapping needed to offer a game.
 
-## Migrations and library seeding
+## Migrations and catalog seeding
 
-Run these after pulling migrations, catalog/compiler changes, or reviewed activity-library changes:
+Run these after pulling migrations or catalog/compiler changes:
 
 ```sh
 npm run db:migrate
 npm run catalog:seed
-npm run activities:seed
 # Optional: save the import report, or import a reviewed catalog revision.
 npm run catalog:seed -- --report /tmp/sidekick-catalog-report.json
 npm run catalog:seed -- --path /path/to/reviewed-catalog.json
 ```
 
-Migrations `001`–`004` add accounts, the catalog, learning records, and private student work storage. Migration `005` retires the former check/practice workflow and preserves its historical attempts/evidence. Migration `006` adds versioned activities, child-owned sessions, attempts and retry reservations. Migration `007` adds assessment status, private voice recordings and append-only parent reviews. These do not restore retired endpoints. Already-applied migrations are skipped. `DATABASE_URL` defaults to `sqlite:///backend/data/sidekick.db`; relative SQLite paths resolve from the repository root. Back up the database and private uploads together before moving this local prototype.
+Migrations `001`–`004` add accounts, the catalog, learning records, and private student work storage. Migration `005` retires the former check/practice workflow and preserves its historical attempts/evidence. Migrations `006` and `007` created the tables of the earlier activity system (versions, sessions, attempts, private voice recordings, parent reviews). That system is retired: nothing reads or writes those tables, their rows are kept as history, and deleting a child still removes that child's rows and recordings. Migration `008` adds the game tables. None of these restore retired endpoints. Already-applied migrations are skipped. `DATABASE_URL` defaults to `sqlite:///backend/data/sidekick.db`; relative SQLite paths resolve from the repository root. Back up the database and private uploads together before moving this local prototype.
 
 `data/sidekick_skill_map_v2.json` is the supplied, unchanged draft. Its SHA-256 is `7c7b3a98cdf51bb48b53bcef4c4d5e2c0015fc0845e40f6345a4962eeab1be23`. It contains **779 skills, 1,533 subskills, and 3,066 populated seed pairs**: 867 Math, 666 Reading/ELA, and 795 K–5 subskills. K–8 grades have explicit ordering; high-school math courses and ELA bands retain their separate string labels. Profiles remain K–5.
 
@@ -62,7 +62,7 @@ The importer validates before a transaction, upserts stable IDs, preserves every
 
 The checked-in [import report](data/catalog_import_report.json) records all counts and 37 graph warnings: 28 Low-confidence roots, five upward prerequisite directions, and four cycle edges across root/skill graphs. This includes the High-confidence `A-SSE.B.3-1` ↔ `A-REI.B.4-3` cycle and Algebra 1 → Algebra 2 links. Raw links remain stored and unsafe links are marked unusable. The current student work flow does not initiate prerequisite traversal or checks.
 
-The retained catalog compiler records **101 ready, verified item specifications**, **1,941 adult-required specifications**, and **1,024 missing-context specifications**. All 3,066 seed pairs and their immutable versions remain curriculum data. The new activity composer uses the supported catalog skill and misconception; it does not turn this question bank into standalone quizzes. Missing passages, choices, plots, and dependencies are not invented.
+The retained catalog compiler records **101 ready, verified item specifications**, **1,941 adult-required specifications**, and **1,024 missing-context specifications**. All 3,066 seed pairs and their immutable versions remain curriculum data. Games use the catalog skill and its misconception; nothing turns this question bank into standalone quizzes. Missing passages, choices, plots, and dependencies are not invented.
 
 ## Student work observations
 
@@ -86,95 +86,24 @@ The parent Skills view summarizes eligible student work evidence:
 
 A repeated upload of the same question does not create a second observation. Ungraded or unmapped outcomes remain available for review without affecting skill states. The dashboard includes the source student work and any observed error pattern, parent explanation, and home tip. It does not initiate diagnostic checks, prerequisite quizzes, practice sessions, or scheduled rechecks. Student work alone does not award mastery.
 
-The parent Analytics view currently shows **Questions read**, **Correct answers**, and **Not graded yet** from stored student work problems. Questions are deduplicated by child-scoped problem fingerprint. Each distinct question uses its first usable correct/incorrect grade in chronological order; if it has no usable grade, it stays ungraded. Mapping eligibility determines skill observations separately, so an unmapped but confidently graded problem can still count as a correct answer. Session counts, time spent, and retired practice totals are not presented as activity progress. Activity attempts have their own parent history. Server timestamps and the configured application timezone, **`America/New_York`**, are retained. Conversation history remains empty until a future chat milestone.
+The parent Analytics view currently shows **Questions read**, **Correct answers**, and **Not graded yet** from stored student work problems. Questions are deduplicated by child-scoped problem fingerprint. Each distinct question uses its first usable correct/incorrect grade in chronological order; if it has no usable grade, it stays ungraded. Mapping eligibility determines skill observations separately, so an unmapped but confidently graded problem can still count as a correct answer. Session counts, time spent, and retired practice totals are not presented as progress. Games have their own parent history. Server timestamps and the configured application timezone, **`America/New_York`**, are retained. Conversation history remains empty until a future chat milestone.
 
 The former Practice URL redirects to the child's home. Authenticated calls to retired check/practice/adult-review endpoints return `410 feature_removed` after the existing mode, ownership, and CSRF checks. Old pending work is retired by migration; historical records are retained privately and cannot continue generating evidence through those endpoints.
 
-## Upload-to-activity flow
+## From uploaded work to a game
 
-After **Read my work**, the results page polls the protected server for processing progress. A clear question confidently mapped to an active K–5 Math or Reading/ELA catalog skill makes **Try an activity** available. Activity availability does not depend on an existing library match, an incorrect answer, or automatic grading being available. The server selects playable mappings first, then prioritizes eligible incorrect responses, correct work, and other reliably mapped questions in page order. An unsupported question cannot hide another reliably matched playable skill. Unreadable questions, low-confidence mappings, and teacher conflicts cannot select an activity. The child does not answer setup questions or select a grade.
+After **Read my work**, the results page asks the server what this child can play for this page. The answer comes from `backend/gap/targets.py`, which only reads:
 
-Activity availability is independent of the parent skill-status label. Correct work can remain `on_track`; an ungraded response can lead to a lesson without becoming incorrect evidence or `needs_support`. Completing an activity does not change those uploaded-work states or award mastery. Misconception tags are curriculum focus metadata, not a claim that the child made that mistake. A page without a reliable skill match asks for a clearer photo; a page with a reliable match and no library activity offers generation.
+- A question counts when it was read clearly and confidently matched to an active Math or Reading/ELA catalog skill (confidence at or above `mapping_confidence` in `backend/gap/config.json`).
+- Unreadable questions, low-confidence matches, and problems where a teacher's mark conflicts with the grading never count.
+- A reliable skill match is enough even when automatic grading abstained. Offering a game does not turn that observation into evidence.
+- Work reliably marked incorrect comes first, then correct work, then other reliable matches, in page order. A skill that already has a playable game is preferred, so one unsupported question cannot hide another that can be played.
 
-To try both paths locally with the configured live provider, select a grade-3 child and upload the included [fraction work](public/samples/activity-math-work.png) or [plural-word work](public/samples/activity-ela-work.png). These synthetic pages contain an incorrect response. The [all-correct fraction work](public/samples/activity-math-correct-work.png) and [all-correct plural-word work](public/samples/activity-ela-correct-work.png) demonstrate activities from correct responses. Tap **Read my work**, wait for analysis, then **Try an activity**. The older Fractions/Reading sample buttons remain transcription examples; fixture mode does not fabricate grading or mapping. Browser tests replace only the external decision stage in an isolated test database.
+The child sees a card with the game for that skill and taps **Play**. If the skill's game has not been approved yet, the card says a game is on the way. If nothing on the page was reliably matched, there is no card and the reading is shown as usual. The child does not answer setup questions or select a grade.
 
-The two original examples retain their specialized interactions; family profiles remain K–5:
+Parents open **Games** for a selected child to see what was played, the skill, how the last round went, hints used, and the known slips the child tried. Reviewers also get the link to the review page there.
 
-| Path | Catalog subskill | Activity and independent check |
-| --- | --- | --- |
-| Math | `3.NF.A.1-2` — know that a/b is a copies of 1/b | Build a fraction from equal pieces or place it on a number line, then answer a fresh fraction question without the visual. Denominators are restricted to 2, 3, 4, 6, and 8. |
-| ELA | `L.3.1-2` — form and use regular and irregular plural nouns | Build a plural with word tiles or choose a word form, receive pattern feedback, then write the plural of a fresh word without tiles, options, or hints. |
-
-The full K–5 catalog now has explicit activity paths: **795 subskills, including 396 Math and 399 ELA**. The existing profile/candidate grade window remains in force. Catalog bands above grade 5 are outside this expansion and show **No activity for this skill yet**. Old completed activities and unfinished sessions retain their exact saved versions.
-
-Every new live activity is composed by the shared server-side model adapter as an original **ActivitySpec**, even when the library contains a matching finished activity. An unfinished session resumes its immutable saved definition. The model chooses 3–6 scenes, teaching text, prompts, inline passages/data, controls, feedback, and state connections. A separate model review must pass before the definition is stored as verified or shown. Composition works with an empty example library and records an empty source revision without inventing references. Verified originals remain available only through the explicitly configured offline/test adapter; they cannot silently replace a failed live composition.
-
-The renderer accepts a closed vocabulary: the original fraction/plural interactions, the reusable toolkit below, and six family controls. `guided_choice` and `guided_response` may support a lesson, but question cards alone cannot satisfy a new activity's interaction requirement. Two to five guided scenes precede exactly one fresh independent scene. The independent challenge removes teaching tips, worked solutions, and hints; it may keep the same controls with new content when the child's action demonstrates the skill. Its first submitted artifact is saved separately from guided work. Controls support phones and keyboards; recording requires microphone permission on HTTPS or localhost.
-
-Before storage or rendering, Pydantic models validate bounded parameters, required materials, reachable state, exact arithmetic, linear transitions, and plain text. Schema 1.3 adds typed component-output connections and state-derived scoring, retaining schema 1.0–1.2 histories. The inspectable descriptors in [composition.py](backend/activities/composition.py) tell the model each control's child actions, visible changes, supported inputs/outputs, compatible connections, and server assessment. A separate model review must affirm target demonstration, necessary interaction, achievable goal, aligned scoring, present materials, and a fresh independent challenge. Decorative manipulation, missing visuals/audio, and unsupported automatic grading are rejected. Writing, spoken performance, drawings, and collaboration use explicit parent criteria. Semantic correctness still depends on model or parent review; broad educational efficacy remains unmeasured.
-
-The composer receives the catalog demonstration, coverage constraints, component toolkit, categorical problem type, previous interaction signatures, and a goal with only a reliable categorical observation. Worksheet wording, format, and student answers stay out of composition. Safe provider/schema/scoring/review reason codes identify failures without logging content. A scene-local failure is sent back with its specific constraint; only that scene may be replaced, preserving the others. After at most two scene repairs, one simpler composition tries the same learning goal with fewer objects/scenes. An eight-minute total generation deadline stays inside the start lease and HTTP budget, releases failed reservations for retry, and records a safe timeout code. Failed content is never saved as verified. Component-v1 through v5 sessions remain readable alongside component-v6; the current prompt version is `sidekick-activity-v7`.
-
-Reusable definitions contain catalog and interaction data, not account names, emails, profile/upload IDs, worksheet images, or original student answers. Generated definitions record model, prompt, schema/component versions, source revision, skill, and misconception tags. Child-owned sessions keep their exact activity version separately. Start and submit request keys are idempotent; refresh resumes the unfinished current scene at `/kid/activities/{sessionId}`. The child receives only the current scene's public parameters, never stored grading keys, future prompts, or the complete activity specification.
-
-Parents open **Activities** for a selected child to see the target skill, completion time, independent result, and hint usage. **View activity** opens the exact saved scene materials, resolved state connections, and actual submissions behind the PIN boundary. These are records of individual attempts. Completing an activity does **not** clear a support observation, claim mastery, or restart the retired check/practice workflow.
-
-For rectangle area (`3.MD.C.7-1`), the reusable workspace can **tile** an actual region or **design** rows and columns using a fixed tile stock. A connected expression scene receives the rectangle the child actually made; the server derives its rows × columns equality. Multiple valid factor pairs are accepted. A fresh independent design or expression uses new dimensions/stock and removes teaching cues. The generator is asked to choose a different construction action for the next activity on the same skill, rather than just changing the setting. Other supported connections carry quantity allocations into expressions, ordered/written text into revision, and selected evidence into a contextual response. Connections reference earlier guided scenes only; independent scenes cannot import guided answers.
-
-The [rectangle regression evidence](data/activities/rectangle_failure_reproduction.json) records a real upload on baseline `8856624` that mapped to `3.MD.C.7-1` and failed after two `misaligned_skill` reviews. The original synthetic [rectangle page](public/samples/activity-composed-area-work.png) includes the incorrect written answer `4 + 6 = 10 square units`. No real student work was used. Re-run current composition with `npm run activities:verify:composition:live -- --case area`.
-
-## Full K–5 family coverage
-
-The inspectable [catalog coverage map](data/activities/catalog_coverage.json) records every subskill's exact demonstration, family, compatible mechanics, assessment method, required response mode/materials, and any witnessed participation. `capabilities.py` performs an ID lookup; it has no runtime keyword gate. All 795 entries have structurally valid paths; automated constructive witnesses instantiate and validate every combination of required control, response, visual, and assessment. These witnesses prove compatibility, not that 795 AI lessons have been generated or that a child has mastered 795 skills.
-
-| Control | What changes when the child acts | Main families |
-| --- | --- | --- |
-| `quantity_lab` | Pieces move between a conserved stock and containers; groups and counts change together. | Counting, scaled place value, addition/removal, multiplication groups, division sharing. |
-| `math_workspace` | Marks, cells, plotted points, expressions, clock hands, protractor rays, counterweights, or liquid fill change on an actual board. | Measurement, time, angles, area/data, coordinates, patterns and calculation models. |
-| `sort_connect` | Pieces move into meaning groups or connect to related pieces. | Classification, vocabulary, word/sound relationships, mathematical properties. |
-| `text_editor` | The child assembles, edits, or creates the actual written artifact. | Grammar, spelling, narrative/opinion/informative writing, explanations, research and publication. |
-| `oral_studio` | The child listens where appropriate and records actual speech; the saved clip can be replayed privately. | Phonological awareness, decoding, fluency, oral retelling, counting/recall, observed performance. |
-| `drawing_studio` | Pointer/finger strokes become the actual response. | Handwriting, shape/line construction, models and drawn explanations. |
-
-Older fraction, word-tile, ordering, evidence-board, and bundling controls are reused when they meet the exact map constraints. Actual book covers/pages, charts, diagrams, solid shapes, and original SVG illustrations can accompany the new controls. Coin identification uses locally stored [U.S. Mint Coin Classroom photographs and source credits](data/activities/visual_asset_sources.json), rather than text descriptions labeled as pictures. No external image or generated program executes at runtime.
-
-Automatic grading is used only where the action has an objective supported key. A saved manual response has `correct: null` and `assessmentStatus: pending_parent_review`, not an incorrect grade. Parents unlock **Activities**, inspect the saved text, drawing, or playable voice recording against its criteria, and record **Demonstrated the goal** or **Needs another try**. Explicit collaboration, physical performance, and one-sitting requirements also require the parent to confirm they observed participation; the child sees a parent-join notice before acting. A single short attempt is not proof of sustained fluency, broad mastery, or completion of an entire standard. Independent hints remain unavailable; parent criteria and review notes stay behind the PIN boundary.
-
-Recordings are authenticated, scene-bound, idempotent, limited to 8 MB, and stored as opaque private files. The recorder stops after two minutes; server checks container signatures/size and WAV frame duration, but does not claim automatic speech recognition or full WebM/MP4 duration verification. Parent review assesses the actual performance. Child/profile deletion removes recording rows and bytes. No recording or written artifact enters model composition or application logs.
-
-The [coverage report](data/activities/coverage_report.md) leads with **current live generated** and **current live played/scored** by grade/domain, including unverified skills. Those counts require real uploads, the current component/prompt versions, an initially empty finished-activity library, and no finished activity reuse. Mapped controls and historical/controlled evidence remain separately inspectable in [per-ID evidence](data/activities/coverage_report.json). Pending parent review never counts as scored. Reports bind cases to the coverage-map and exact activity-definition hashes.
-
-```sh
-npm run db:migrate
-npm run activities:seed
-npm run activities:coverage
-npm run dev:all
-# Optional real-provider synthetic uploads; uses disposable storage:
-npm run activities:verify:catalog:live
-npm run activities:verify:composition:live
-```
-
-Migration `007_activity_family_assessment.sql` adds assessment status, private recordings, and append-only parent reviews. It preserves existing sessions, attempts, and uploaded-work observations. Existing server-side vision settings are reused; no new provider key is required. Try the new [multiplication](public/samples/activity-catalog-multiplication-work.png), [division](public/samples/activity-catalog-division-work.png), [measurement](public/samples/activity-catalog-measurement-work.png), [phonics](public/samples/activity-catalog-phonics-work.png), or [writing](public/samples/activity-catalog-writing-work.png) synthetic page. Choose an appropriate-grade child, upload, tap **Read my work → Try an activity**, and review the independent outcome in parent mode.
-
-## Playable activity toolkit
-
-The Sources-only export supplies design inspiration rather than executable controls. These are original Sidekick controls, rendered by React, with bounded declarative parameters. No model-generated code runs in the app's own page. (Generated games, described below, are the one deliberate exception, and they run only inside a locked frame.) The model invents the scenario, objects, passage or cards, goal, prompts, and feedback, then chooses among compatible controls. There is no separate player or activity template for each subskill.
-
-| Control | Child action and scene change | Server validation |
-| --- | --- | --- |
-| `bundle_builder` | Pack ten loose objects into a group, or unpack it. Object groups and the remaining count update together. | 10–60 objects, groups of ten, conserved total, reachable full-group goal. Supports ten ones becoming one ten. |
-| `tile_order` | Place and rearrange cards on a track; the assembled sequence changes with each action. | 2–6 unique, scrambled tiles and an exact reachable permutation. Number/fraction ordering is calculated with exact rational arithmetic; story/sentence order also requires independent semantic review. |
-| `evidence_board` | Select a sentence from a complete original passage and place it on a clue board. Feedback connects the evidence to the conclusion. | 2–8 distinct literal passage sentences; the key must identify an offered sentence. Independent review checks that exactly one sentence supports the claim and the feedback explains it. |
-
-The explicit per-subskill coverage map decides which controls can demonstrate the objective. A separate model call reviews the complete proposed activity. Public scenes exclude answer keys and future scenes. Parent history retains the independent material, submitted action/artifact, and automatic or parent-assessed outcome.
-
-To try the three new actions, launch `npm run dev:all`, enter child mode, and upload one of these original synthetic pages:
-
-- [Tens and ones](public/samples/activity-toolkit-bundles-work.png), ideally with a grade-1 child.
-- [Sequence of steps](public/samples/activity-toolkit-sequence-work.png), with a grade-3 child.
-- [Reading evidence](public/samples/activity-toolkit-evidence-work.png), with a grade-3 child.
-
-Tap **Read my work**, then **Try an activity**, manipulate the scene, and finish the fresh challenge. Switch to parent mode with the PIN and open **Activities** to see the outcome. These three skills have no prebuilt activity in the six-example library; live composition saves a verified reusable definition on demand. Apply migration 007 for the expanded engine. No new package dependency or provider setting is required.
+To try it locally with a configured provider, select a grade-3 child and upload the included [fraction page](public/samples/game-math-work.png) or [plural page](public/samples/game-ela-work.png). Load and approve the games for those skills first (`npm run games:seed -- --only froggys-bridge` and `--only twin-ray-zoo`, then approve them at `/parent/games`).
 
 ## Look and feel: Color Blocks
 
@@ -182,11 +111,11 @@ The visual theme lives in `app/color-blocks.css`, a layer imported last in `app/
 
 The palette is deliberately small: sun, orange, forest and lime on a cream page, with sand as the one quiet neutral. There is no pale green and no light blue. Form cards (log in, sign up, the parent PIN, the upload card) are forest with white fields and a sun button. Where the base styles used pale green tints, the theme maps them to the palette: quiet surfaces and notes are sand, a picked option is sun, and "done, correct, on track" is solid lime. The game frame's own chrome (`backend/games/kit/kit.css`) follows the same swap.
 
-The page around the panels is a small landscape, drawn in CSS behind everything (`body::before` and `body::after`, never in the way of a click). Two soft clouds sit near the top of every screen. On screens made of panels (log in, sign up, the profile picker, the parent PIN, kid home, upload and results) a sun, two hills and the mascots sit along the bottom of the screen. Where words sit straight on the page (the game and activity players, the parent side) only the clouds show, so nothing is ever behind text. The few words that do sit on the bare page on scene screens (the footer line, "Log out" on the picker, the privacy note and the results footnote) have a cream backing.
+The page around the panels is a small landscape, drawn in CSS behind everything (`body::before` and `body::after`, never in the way of a click). Two soft clouds sit near the top of every screen. On screens made of panels (log in, sign up, the profile picker, the parent PIN, kid home, upload and results) a sun, two hills and the mascots sit along the bottom of the screen. Where words sit straight on the page (the game player, the parent side) only the clouds show, so nothing is ever behind text. The few words that do sit on the bare page on scene screens (the footer line, "Log out" on the picker, the privacy note and the results footnote) have a cream backing.
 
-## Generated games (experimental, off by default)
+## Games
 
-The activity toolkit above gives every skill one of 14 fixed controls. Generated games take the other road: a model writes a small game for a skill, so the ceiling is the model's imagination and every skill in the catalog is reachable. That reverses the "model never writes code" rule, so the rule is replaced by four layers that do not depend on trusting the model.
+Games are the one way Sidekick turns a skill into something to do. A game is a small program written for one skill, either shipped in this repo or written by a model, so the ceiling is imagination and every skill in the catalog is reachable. Because a model can write code here, four layers stand between that code and a child, and none of them depends on trusting the model.
 
 **The brief.** A Sidekick game is play, not a quiz: a little world with a mission, solved by moving or changing things, where the world reacts and the skill is the rule that makes it work. Guided rounds let the child explore; the last round is a fresh version with the help taken away. If it could be printed on paper, it failed. The full brief is in `backend/games/prompts.py`.
 
@@ -198,9 +127,9 @@ The activity toolkit above gives every skill one of 14 fixed controls. Generated
 
 **4. A person.** The pipeline's best outcome is `verified`. A game becomes `approved` only when a reviewer plays it at `/parent/games` (parent PIN required) and approves it. Reviewers are the accounts in `SIDEKICK_GAME_REVIEWERS`; in development and test an empty list lets any parent review. Retired games stay retired.
 
-Games are never generated while a child waits. A build is a background job (one per skill, not retried for a day after a failure) or a CLI run. A child whose homework points at a skill with an approved game sees a card above the activity suggestion; otherwise they see the existing activity flow, which is unchanged.
+Games are never generated while a child waits. A build is a background job (one per skill, not retried for a day after a failure) or a CLI run. A child whose homework points at a skill with an approved game sees the game card. Until a game for that skill is approved, the child sees that one is on the way and nothing else to play.
 
-Game results are recorded for the parent's Activities tab. They come from the child's browser and are practice, so they do not change skill states and are not evidence.
+Game results are recorded for the parent's Games tab. They come from the child's browser and are practice, so they do not change skill states and are not evidence.
 
 ```bash
 npm run db:migrate                      # adds the game tables (migration 008)
@@ -216,7 +145,7 @@ npm run games:list
 
 `--missing` skips any skill that already has a game, shipped or generated, so the same command can be run again and again until the catalog is covered. Each build is one to four model calls plus a robot run, so cost and time scale with `--limit`.
 
-Flags, all in `backend/.env.example`: `SIDEKICK_GAMES_ENABLED` (default `false`), `SIDEKICK_GAMES_REQUIRE_APPROVAL` (default `true`; keep it on for real families), `SIDEKICK_GAMES_AUTOGENERATE` (default `false`; queue a build when homework shows a skill with no game), `SIDEKICK_GAME_REVIEWERS`, `GAMES_MODEL`, `GAMES_TIMEOUT_SECONDS`. The robot needs Node and Playwright's Chromium (`npx playwright install chromium`).
+Settings, all in `backend/.env.example`: `SIDEKICK_GAMES_ENABLED` (default `true`; set it to `false` to hide games everywhere), `SIDEKICK_GAMES_REQUIRE_APPROVAL` (default `true`; keep it on for real families), `SIDEKICK_GAMES_AUTOGENERATE` (default `false`; queue a build when homework shows a skill with no game), `SIDEKICK_GAME_REVIEWERS`, `GAMES_MODEL`, `GAMES_TIMEOUT_SECONDS`. The robot needs Node and Playwright's Chromium (`npx playwright install chromium`).
 
 **Loading the library.** `games:seed` skips games that are already stored, so it can be stopped and run again. The robot takes a few seconds per game, so the whole library is roughly an hour with `--workers 4`; loading one grade at a time (`--subject math --grades 3`) takes a few minutes and is the natural way to feed the review queue. `python -m backend.games verify` is the same robot without the database, for checking the shipped files after a kit change.
 
@@ -231,49 +160,11 @@ Read the counts before trusting the breadth. About 1,290 of the games use only t
 
 All 1,533 were written by Claude standing in for the model, to the same brief, kit and robot the pipeline uses. Every one passes the robot. None has been approved by a person: they are seeded as `verified`, so none reaches a child until a reviewer approves it. The pipeline has still not been run against a live provider. The kit has no sound, so early reading skills use pictures and letters, and open-ended writing skills are represented by a part that can be checked (ordering, choosing, fixing).
 
-**Grades.** Games cover every grade in the skill map. High school courses and bands are stored with a grade number (Algebra 1 and 9-10 as 9, Geometry as 10, Algebra 2 and 11-12 as 11, Precalculus as 12) and can be offered when homework points at those skills. The activity flow is unchanged and stays K to 8.
+**Grades.** Games cover every grade in the skill map. High school courses and bands are stored with a grade number (Algebra 1 and 9-10 as 9, Geometry as 10, Algebra 2 and 11-12 as 11, Precalculus as 12) and can be offered when homework points at those skills. Child profiles are still K to 5, and skill matching looks at most one grade above the child's, so high school games are reachable only once profiles and matching reach those grades.
 
-**What scales and what does not.** The robot checks a game in a few seconds with no person involved. Review is the bottleneck: 1,533 games for a person to play before children see them. The review page (`/parent/games`) is built for that: tabs for waiting, live and retired with counts, filters for subject and grade, search by title or skill id, and pages of 50, ordered by subject, grade and skill so a reviewer can work through one grade at a time. Start with the grades and skills real homework is hitting rather than the whole map. Many skills marked "needs an adult or AI rubric" in the skill map (open writing, read-aloud fluency, discussion) do not fit an auto-checked game well and are better served by the activity flow.
+**What scales and what does not.** The robot checks a game in a few seconds with no person involved. Review is the bottleneck: 1,533 games for a person to play before children see them. The review page (`/parent/games`) is built for that: tabs for waiting, live and retired with counts, filters for subject and grade, search by title or skill id, and pages of 50, ordered by subject, grade and skill so a reviewer can work through one grade at a time. Start with the grades and skills real homework is hitting rather than the whole map. Many skills marked "needs an adult or AI rubric" in the skill map (open writing, read-aloud fluency, discussion) do not fit an auto-checked game well. Their games check a part that can be checked, and a fuller answer for those skills is still open work.
 
 Known limits: a game shares one JavaScript realm with the kit, so a hostile game could fake what the robot sees; the robot and reviews are quality gates, and the frame is the security boundary. A frozen game can freeze its frame; the page watches a heartbeat and offers a restart. Review screenshots are not stored; reviewers play the game instead.
-
-## Equivalent fractions: split and compare
-
-New activities for `3.NF.A.3-1`, `3.NF.A.3-2`, `4.NF.A.1-1`, and `4.NF.A.1-2` require at least one guided `fraction_split_compare` scene. Previously saved question-only definitions cannot replace on-demand composition. Existing in-progress sessions keep their exact saved version when resumed; history remains readable.
-
-The model chooses the setting, whole/shaded labels, proper fractions, offered split factors, prompts, and feedback. The React interaction shows equal-size original and refined wholes; it keeps the shaded rectangle at exactly `numerator / denominator` width and animates only new subdivision lines. Selecting three pieces per half changes `1/2` to `3/6` without changing the shaded area. Children can explore other offered partitions, reset, use keyboard controls, and resume a saved choice. Reduced-motion preferences disable the animation.
-
-Server validation requires proper fractions, original denominators 2–12, two to four unique split choices from 2–6, and at most 48 refined parts. A submitted factor must be an offered choice, and the stored response records the unreduced result of multiplying both counts by that factor. The mapped subskill determines the goal. A current eligible correct/incorrect observation can refine that goal; a specific catalog pattern is used only when a matched signature has sufficient confidence. Catalog tags alone never establish a child's mistake.
-
-For fraction-generation objectives, the fresh independent scene removes the visual, teaching tips, and hints. Its private `fraction_form` key validates the requested denominator. For “Write 3/4 in eighths,” `6/8` is correct; `3/4`, `0.75`, and `12/16` do not satisfy that form. For `4.NF.A.1-2`, the exact objective is an explanation: schema 1.2 retains guided splitting but finishes with a fresh parent-reviewed written explanation of why amount stays fixed. Its library fallback is upgraded accordingly; old immutable sessions remain readable.
-
-The library retains four original verified split examples for offline/test operation. Live failures use scene repair and simpler composition for the same goal. No activity-element export was attached for this upgrade, so the existing equal-part visual and supplied design-reference notes were used without claiming a copied partner design.
-
-To try it, apply migration 007, run `npm run activities:seed`, launch `npm run dev:all`, select a grade-3 child, and upload the [synthetic equivalent-fractions page](public/samples/activity-equivalent-work.png). Tap **Read my work**, then **Try an activity**. Explore the split choices and finish the independent challenge. Live generation uses the existing server-side vision settings.
-
-## Activity sources, originals, and reseeding
-
-The supplied [Sources CSV](data/activities/sources.csv) has **11 provenance/design-reference rows**, with source title, a provided summary, use notes, and link. It has **zero executable activity-definition rows, zero reusable-component parameter rows, and zero catalog skill links**. Its original BOM and line endings are preserved; SHA-256 is `77abb65b85cdc1a8b18f2e19843f31c2bfb3b829c048c3ec938e59d099f5e3d7`. These notes are imported as source data, not instructions or independently verified research claims.
-
-The [partner workbook](https://claude.ai/artifact/NwhbGKA4BwjaEhcwaa5iAd#sheet-sht_rsb2zebb87.0) could not be inspected: the normal anonymous browser reached security verification and the workbook frame returned 403. No security challenge was bypassed and no partner activity definitions were inferred from the source notes. The [source inventory](data/activities/source_inventory.json) records this limitation.
-
-Following the brief's source-only fallback, [original_examples.json](data/activities/original_examples.json) contains six clearly labeled **original Sidekick examples**, not copied workbook activities:
-
-- `original-equal-pieces`: guided construction of 3/4, placement of 4/6 on a number line, and a fresh independent 3/8 task.
-- `original-word-lab`: guided mouse→mice tiles and man→men choices, followed by a fresh foot→feet response.
-- Four `original-split-compare-*` fallbacks: the same reusable garden-bed mechanic linked to the four equivalent-fraction subskills, with `1/2 → 3/6`, `2/3 → 4/6`, and a fresh independent `3/4` in eighths. The `4.NF.A.1-2` explanation fallback now finishes with a parent-reviewed written explanation.
-
-The [import report](data/activities/import_report.json) records **11 reference rows imported, zero workbook activity definitions imported, and six verified original examples**, with no current row issues. Source references cite the supplied notes; they do not claim those references supplied these exact activity designs.
-
-```sh
-npm run db:migrate
-npm run catalog:seed
-npm run activities:seed
-# Equivalent CLI; an explicit database override is available for local tooling.
-backend/.venv/bin/python -m backend.activities seed-library --database-url sqlite:///backend/data/sidekick.db
-```
-
-The import is transactional and idempotent. Source IDs remain stable when descriptive wording changes, and revisions retain immutable copies of the supplied source rows. Activity IDs are stable; changed content creates a new immutable version. Reseeding a reviewed manifest retires removed or invalid original definitions from future selection while preserving exact versions used in sessions and attempts. Verified model-generated activities are separate and are not retired by reseeding originals. Review reported missing skill links, unsupported interactions, missing context, invalid parameters, and unresolved source references before serving those rows. No arbitrary HTML or executable code is imported from a workbook or generated by the model.
 
 ## Privacy, storage, and configuration
 
@@ -281,7 +172,7 @@ Account sessions, parent PINs, ownership checks, sibling isolation, profile swit
 
 Original uploads and rendered pages are retained privately under the database directory's `uploads/` by default (`backend/data/uploads/`). Opaque filenames, mode 0600 files, and a mode 0700 directory are used. This location is Git-ignored and outside public assets. Override `SIDEKICK_PRIVATE_UPLOAD_DIR` only with another private, ignored directory, preferably outside the repository. Files are retrieved through authorized routes, never public URLs.
 
-Parent deletion removes an upload's original/pages, problems, and linked student work evidence, then recomputes affected states. Historical diagnostic/practice records are retained privately; the retired workflow cannot resume them. An activity session retains its immutable definition and attempt record when its originating upload is deleted; the upload link is cleared. Deleting a child cascades its private learning/activity records and cleans its private files. There is no automatic retention deadline; parents delete retained uploads explicitly. Backups need the same privacy controls.
+Parent deletion removes an upload's original/pages, problems, and linked student work evidence, then recomputes affected states. Historical diagnostic/practice records are retained privately; the retired workflow cannot resume them. A game run keeps its record when its originating upload is deleted; the upload link is cleared. Deleting a child cascades its private learning and game records, removes rows and recordings left from the retired activity system, and cleans its private files. There is no automatic retention deadline; parents delete retained uploads explicitly. Backups need the same privacy controls.
 
 Before model image calls, EXIF metadata is stripped and the top 6% of each page is masked by default. Known names/account identifiers and obvious email addresses are redacted from text model payloads. **This is not complete image de-identification:** names elsewhere in an image can reach the configured provider, and masking can hide a title or question. Model prompts treat uploaded work/catalog content as data. Private audits store internal references, task/model/prompt/catalog versions, outcome/confidence, and short redacted explanations. Ordinary errors/logs exclude uploaded page content, provider bodies, credentials, and filenames.
 
@@ -320,20 +211,20 @@ The student-work API adds:
 Kid responses contain extraction; detailed mapping, grading, signatures, and learning states belong to authorized parent routes. API errors retain `{ "error": { "code": "...", "message": "..." } }`, use safe messages, and responses are `Cache-Control: no-store`.
 
 
-The activity API is separate from retired practice routes:
+The games API is separate from retired practice routes:
 
-| Route under `/api/activities` | Purpose |
+| Route under `/api/games` | Purpose |
 | --- | --- |
-| `GET /kid/suggestion?uploadId=...` | Read an authorized suggestion for completed student work |
-| `POST /kid/start` | Start or resume an idempotent child-owned activity |
-| `GET /kid/sessions/{id}` | Read only the current scene and saved response state |
-| `POST /kid/sessions/{id}/submit` | Save an idempotent guided or independent response |
-| `POST /kid/sessions/{id}/hint`, `POST /kid/sessions/{id}/next` | Show a guided hint or advance a completed guided scene |
-| `GET /parent/{kidId}/history` | Read the selected child's activity attempts after parent authorization |
-| `POST /kid/sessions/{id}/recording` | Bounded multipart `file`, `sceneId`, `idempotencyKey`; private actual speech artifact |
-| `GET /kid/sessions/{id}/recordings/{recordingId}` | Replay only the active child's own scene-bound recording |
-| `GET /parent/{kidId}/recordings/{recordingId}` | Replay a selected child's recording after PIN authorization |
-| `POST /parent/{kidId}/sessions/{id}/review` | Record `correct`, `note`, `parentObserved`, and `idempotencyKey` against a pending parent-reviewed challenge |
+| `GET /kid/suggestion?uploadId=...` | What the active child can play for a completed upload: `ready`, `in_review`, `building`, `none`, or `off` |
+| `POST /kid/request` | Queue a background build when autogeneration is on and the skill has no game |
+| `POST /kid/start` | Start or resume an idempotent child-owned run of the approved game |
+| `GET /kid/runs/{id}`, `GET /kid/runs/{id}/frame` | The run, and the self-contained locked document the game plays in |
+| `POST /kid/runs/{id}/finish` | Save the result once, checked against the run's message token |
+| `GET /parent/{kidId}/history` | The selected child's game runs after parent authorization |
+| `GET /review/me`, `GET /review`, `GET /review/{id}`, `GET /review/{id}/frame` | Reviewer check, the filtered and paged review list, one game, and its playable frame |
+| `POST /review/{id}/decision` | Approve or retire a game (reviewers only, parent PIN required) |
+
+The routes of the retired activity system (`/api/activities/...`) and its page (`/kid/activities/...`) no longer exist.
 
 ## Verification and evaluation
 
@@ -348,38 +239,23 @@ npm run gap:evaluate
 npm run gap:evaluate:live
 # Include synthetic case IDs and expected/actual decisions, without uploaded page text:
 npm run gap:evaluate:live -- --details
-# Real photo -> support observation -> reuse -> live activity composition -> parent history:
-npm run activities:verify:live
-# Three real Math/ELA photos -> playable controls + independent review + parent outcomes:
-npm run activities:verify:toolkit:live
-# Real equivalent-fractions photo -> split mechanic -> independent form -> parent history:
-npm run activities:verify:equivalent:live
+# Play every shipped game with the robot (about an hour), or one slice of them:
+npm run games:verify
+npm run games:verify -- --subject math --grades 3
 ```
 
-Stop servers on ports 3000/8000 before Playwright; its configuration starts isolated servers. Unit/integration tests stub model calls and use temporary databases. Coverage includes authentication/PIN/CSRF, extraction preservation, invalid images/PDFs, provider failure and retry, child/account isolation and profile changes, catalog reseeding/history, distinct student work observations, retired-workflow enforcement, historical-data preservation, and real dashboard data. Browser journeys verify that the old Practice URL redirects, retired APIs cannot start questions, and private student work upload/retrieval/deletion still works. Activity verification covers Math and ELA uploads, meaningful controls and cue-free challenges, new on-demand composition, localized repair and simpler composition, historical-session resume, refresh/idempotency, source versions/history, and sibling/account isolation.
+Stop servers on ports 3000/8000 before Playwright; its configuration starts isolated servers. Unit/integration tests stub model calls and use temporary databases. Coverage includes authentication/PIN/CSRF, extraction preservation, invalid images/PDFs, provider failure and retry, child/account isolation and profile changes, catalog reseeding/history, distinct student work observations, retired-workflow enforcement, historical-data preservation, and real dashboard data. Browser journeys verify that the old Practice URL redirects, retired APIs cannot start questions, and private student work upload/retrieval/deletion still works. Game verification covers which skill an upload points at, the approval gate, the locked frame, the robot player, seeding and review at library size, and a browser journey from an uploaded page to a finished game and the parent's history.
 
 `data/evaluation_homework.json` contains 27 synthetic Math/ELA examples with expected mapping or abstention, correctness, and signature labels, including mistakes/slips, equivalent fractions, blanks, unreadable responses, shared context, missing context, and ambiguous multi-skill work. The offline command validates cases and catalog IDs; it does **not** measure model accuracy. The live command creates a temporary database/catalog and reports mapping coverage, accuracy among accepted mappings, grading accuracy, eligible incorrect signature accuracy, and provider failures. Missing credentials exit with setup instructions. No real student data is used.
 
-Verification passed **1,433 backend tests, all 57 browser cases, TypeScript, and the production build**, plus five final area/privacy browser regressions. The full backend run includes the final response-projection, deadline, connection and review refinements. The backend suite includes 795 structural witnesses for every catalog path; these are not counted as generated lessons. Ten normal mobile upload-to-parent-history journeys cover multiplication, division, measurement, coordinates, phonics, oral fluency, writing, editing, handwriting, and vocabulary sorting. Actual microphone recording, typed text and drawn strokes persist as private artifacts; manual outcomes stay null until PIN-protected parent review. Seven additional control tests inspect clocks, protractors, balances, vessels, sorting, coin faces and charts; these render tests do not claim generation/scoring coverage. Existing fraction, plural, split-and-compare, account/PIN/CSRF/profile isolation, extraction, slow-reader proxy, retry and HEIC cases remain covered. Browser model decisions are explicitly controlled fixtures in isolated databases/private folders; production APIs/auth remain intact. Headless tests cannot exercise the native macOS Photos dialog itself.
+Verification on the games-only tree, run on a clean clone: **257 backend tests** (plus 1,528 per-game robot tests behind `SIDEKICK_GAMES_VERIFY_LIBRARY=1`), **all 28 browser cases**, TypeScript, and the production build. The browser cases cover accounts and the PIN gate, the worksheet reader (including the slow-reader proxy, retry and HEIC cases), student-work observations, the review page at library size, and three game journeys: a waiting game stays hidden until a parent approves it in the review page and is then played to the end with real taps and drags inside the locked frame; a reading page leads to its own game and a second visit resumes the same run; and a page with no reliable skill match shows the reading and no card. Browser model decisions are explicitly controlled fixtures in isolated databases/private folders; production APIs/auth remain intact. Headless tests cannot exercise the native macOS Photos dialog itself.
 
-The current [composition live report](data/activities/composition_live_verification.json) verifies **seven original activities across six subskills** through real photo extraction, mapping, composition, separate review, play, resume/idempotency, independent scoring and PIN-protected exact parent history. The one-command run started with **zero finished activities**, used the configured `gpt-6.1-terra` provider without stubs, and completed all six groups in 276.48 seconds. Rectangle area was composed twice for the same child/upload: unit tiling versus fixed-stock rectangle design, each connected to the child's actual multiplication expression. The other groups cover multiplication, measurement, phonics, writing and reading evidence. Measurement and writing each needed a named-scene repair and passed a fresh review afterward; the simpler-composition path is separately covered by integration tests.
+The whole library was last replayed by the robot on a fresh database with 1,533 of 1,533 games passing; the game files, the kit and the robot have not changed since. No game has been written by a live provider, none is approved by a person, and none of this establishes real-child learning or broad model reliability.
 
-The five automatic independent challenges scored correct. The phonics recording and original writing were deliberately synthetic negative artifacts: both remained `correct:null` until explicit parent review recorded incorrect. No fabricated speech recognition or writing correctness is claimed. The seven stored original definitions also passed [final canonical-hash, schema and catalog revalidation](data/activities/composition_definition_revalidation.json). This CLI run verifies real API/data flow; React geometry, input, cue removal, actual browser recording and parent detail rendering have separate controlled browser evidence. The [coverage report](data/activities/coverage_report.md) records **six current live generated/played subskills**, ten controlled subskills and 795 mapped paths; **789 catalog subskills remain unverified through the current live flow**. These tests do not establish real-child learning or broad model reliability.
-
-The historical [K–5 catalog live report](data/activities/catalog_live_verification.json) separately verified four configured-model journeys at the previous milestone. Older-map reports remain available but are excluded from current-map coverage; they are not proof of the new composer.
-
-The earlier [live activity verification report](data/activities/live_verification.json) records real configured-provider photo extraction, a support observation, verified three-scene original reuse, and a newly composed four-scene fraction activity completed through the normal cookie/CSRF-protected API. Both final answers appeared in PIN-protected parent history and the support observation stayed unchanged. The verifier uses an isolated temporary account/database and only synthetic work; `--live` is mandatory and provider calls may incur charges. It does not modify local family records. This report covers the original Math path.
-
-A separate live all-correct Math smoke test with the configured `gpt-6.1-terra` provider passed real photo extraction, grading/mapping, activity suggestion, three-scene original reuse, completion, refresh/idempotent submit, and PIN-protected parent history. The skill remained `on_track`. It used a disposable database/private upload directory and no model stubs. This run verified reuse after correct work; new composition from correct work is covered with controlled model output in backend tests.
-
-The historical [general activity live report](data/activities/general_live_verification.json) covers the earlier question-card generator, including unit rates and reading evidence. New starts now require a suitable meaningful interaction; that older unit-rate path is unavailable until a compatible control exists. The current composition verifier replaces that smoke path. These smoke tests do not measure broad catalog accuracy or educational efficacy.
-
-The [toolkit live report](data/activities/toolkit_live_verification.json) records all three normal authenticated API journeys with real image extraction, skill analysis, new composition, separate model review, server grading, and protected parent outcomes. The provider identified `1.NBT.B.2-1`, `RI.3.3-1`, and `RL.3.1-1`; every skill had **zero prebuilt activities**. Each generated definition used a different meaningful control and passed on its first composition/review attempt in the final run. The sequence activity chose a fresh written independent question; bundling and evidence retained their controls with fresh content and teaching cues removed. All three saved results, survived refresh/idempotent submit, blocked independent hints, and left support observations unchanged. The verifier uses disposable storage with no provider stubs; on-screen geometry, keyboard, and animation evidence comes from the separate browser tests. The retained verifier filenames document that milestone; `npm run activities:verify:toolkit:live` and `activities:verify:general:live` now run the current on-demand composition verifier.
-
-The [equivalent-fractions live report](data/activities/equivalent_live_verification.json) records actual photo extraction/mapping, goal selection without inventing an error observation, new four-scene composition containing split-and-compare, separate model approval, equal-area math for all offered choices, recorded split responses, strict final denominator grading, completion, refresh/idempotency, and PIN-protected parent history. It used the configured provider without stubs and disposable storage. The browser regression supplies the separate on-screen geometry and animation evidence.
+The earlier activity system (fixed controls composed per request, its library, coverage map and live verification reports) was removed in favor of games. Its last version is in the git history at commit `d6f84a4`.
 
 The earlier [structured-decision evaluation](data/evaluation_report.json) records zero provider failures, 22/27 accepted mappings (all 22 correct), 27/27 grading matches, and 5/7 signature matches. All five expected mapping abstentions were retained. These observations never override correctness.
 
-This is an initial smoke evaluation: the 27 answer/status variants use only 12 unique question texts, with seven positive stems largely taken from the catalog. It measures decisions after transcription, not OCR accuracy or general classroom performance, and does not calibrate confidence scores. The historical [separate live smoke report](data/live_smoke_report.json) covers synthetic Math/ELA photos and the now-retired generation workflow: three addition items passed deterministic checking, independent solving, and alignment; three fraction items were aligned but correctly retained for adult adjudication. A follow-up Math photo retained the incorrect fraction after an initial exact-string comparison did not match; transcription can vary. Both subjects distinguished blank and unreadable responses. The generation results are retained as historical validation, not an active product feature. Broader transcription accuracy remains unmeasured. Missing contexts, unsupported interactions, unsafe source links, and lexical retrieval remain draft-data limitations.
+This is an initial smoke evaluation: the 27 answer/status variants use only 12 unique question texts, with seven positive stems largely taken from the catalog. It measures decisions after transcription, not OCR accuracy or general classroom performance, and does not calibrate confidence scores. The historical [separate live smoke report](data/live_smoke_report.json) covers synthetic Math/ELA photos and the now-retired practice-item generation workflow: three addition items passed deterministic checking, independent solving, and alignment; three fraction items were aligned but correctly retained for adult adjudication. A follow-up Math photo retained the incorrect fraction after an initial exact-string comparison did not match; transcription can vary. Both subjects distinguished blank and unreadable responses. The generation results are retained as historical validation, not an active product feature. Broader transcription accuracy remains unmeasured. Missing contexts, unsupported interactions, unsafe source links, and lexical retrieval remain draft-data limitations.
 
-Additional visual interaction types, automatic progress or mastery rules, games, tutoring chat, payments, email delivery/recovery, expanded grade profiles, and a visual redesign remain separate milestones.
+Automatic progress or mastery rules, tutoring chat, payments, email delivery/recovery, and expanded grade profiles remain separate milestones.

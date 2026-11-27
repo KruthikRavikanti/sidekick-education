@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./accounts.css";
 import "./learning.css";
-import "./activities.css";
 import "./games.css";
 import "./color-blocks.css";
 import { AccountSessionProvider } from "@/components/account-session";
