@@ -1,14 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { Check, LoaderCircle, RefreshCw, X } from "lucide-react";
+import {
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  LoaderCircle,
+  RefreshCw,
+  Search,
+  X,
+} from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { api, APIError, errorMessage } from "@/lib/account-api";
-import type {
-  GameReviewDetail,
-  GameReviewItem,
-  GameReviewList,
-} from "@/lib/game-types";
+import type { GameReviewDetail, GameReviewList } from "@/lib/game-types";
 import { RequireMode } from "./account-session";
 import { AccountShell, FormError } from "./account-ui";
 import { GameFrame } from "./game-frame";
@@ -26,6 +30,21 @@ const REVIEW_LABEL: Record<string, string> = {
   soloIsFresh: "The last round is fresh and unaided",
   mistakeIsRealistic: "The known mistakes are realistic",
 };
+
+const STATUS_TABS = [
+  ["waiting", "Waiting", "verified"],
+  ["approved", "Live", "approved"],
+  ["retired", "Retired", "retired"],
+] as const;
+type StatusFilter = (typeof STATUS_TABS)[number][0];
+const PAGE = 50;
+
+function gradeName(label: string) {
+  if (label === "K") return "Kindergarten";
+  if (/^\d+$/.test(label)) return `Grade ${label}`;
+  if (/^\d+-\d+$/.test(label)) return `Grades ${label}`;
+  return label;
+}
 
 function when(value: number | null) {
   if (!value) return "";
@@ -295,29 +314,63 @@ function ReviewContent() {
   const [error, setError] = useState<string | null>(null);
   const [denied, setDenied] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
-  const load = useCallback(async (signal?: AbortSignal) => {
-    try {
-      const result = await api<GameReviewList>("/api/games/review", { signal });
-      if (signal?.aborted) return;
-      setList(result);
-      setError(null);
-      setSelected((current) => current ?? result.games[0]?.id ?? null);
-    } catch (caught) {
-      if (signal?.aborted) return;
-      if (caught instanceof APIError && caught.code === "reviewer_required")
-        setDenied(true);
-      else setError(errorMessage(caught));
-    }
-  }, []);
+  const [status, setStatus] = useState<StatusFilter>("waiting");
+  const [subject, setSubject] = useState<"" | "math" | "ela">("");
+  const [grade, setGrade] = useState("");
+  const [search, setSearch] = useState("");
+  const [query, setQuery] = useState("");
+  const [offset, setOffset] = useState(0);
+
+  // Search as you type, a moment after the last key.
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setQuery(search.trim());
+      setOffset(0);
+    }, 300);
+    return () => window.clearTimeout(timer);
+  }, [search]);
+
+  const load = useCallback(
+    async (signal?: AbortSignal, keepSelection = false) => {
+      const params = new URLSearchParams({
+        status,
+        limit: String(PAGE),
+        offset: String(offset),
+      });
+      if (subject) params.set("subject", subject);
+      if (grade) params.set("grade", grade);
+      if (query) params.set("q", query);
+      try {
+        const result = await api<GameReviewList>(`/api/games/review?${params}`, {
+          signal,
+        });
+        if (signal?.aborted) return;
+        setList(result);
+        setError(null);
+        setSelected((current) =>
+          keepSelection && current ? current : (result.games[0]?.id ?? current),
+        );
+      } catch (caught) {
+        if (signal?.aborted) return;
+        if (caught instanceof APIError && caught.code === "reviewer_required")
+          setDenied(true);
+        else setError(errorMessage(caught));
+      }
+    },
+    [status, subject, grade, query, offset],
+  );
   useEffect(() => {
     const request = new AbortController();
     void load(request.signal);
     return () => request.abort();
   }, [load]);
 
-  const groups: [GameReviewItem["status"], GameReviewItem[]][] = (
-    ["verified", "approved", "retired"] as const
-  ).map((status) => [status, list?.games.filter((game) => game.status === status) ?? []]);
+  const grades = (list?.grades ?? []).filter(
+    (item) => !subject || item.subject === subject,
+  );
+  const first = list && list.total ? list.offset + 1 : 0;
+  const last = list ? list.offset + list.games.length : 0;
+  const filtered = Boolean(subject || grade || query);
 
   return (
     <AccountShell kind="parent" backHref="/parent/dashboard">
@@ -326,8 +379,8 @@ function ReviewContent() {
           <div>
             <h1>Game review</h1>
             <p>
-              Every game a model writes waits here. Nothing reaches a child until
-              someone on the team plays it and approves it.
+              Every game waits here. Nothing reaches a child until someone on the team
+              plays it and approves it.
             </p>
           </div>
         </div>
@@ -353,36 +406,127 @@ function ReviewContent() {
         {list ? (
           <div className="game-review-layout">
             <nav className="game-review-list" aria-label="Games">
-              {groups.map(([status, games]) =>
-                games.length ? (
-                  <div key={status}>
-                    <h3>
-                      {STATUS_LABEL[status]} <span>{games.length}</span>
-                    </h3>
-                    {games.map((game) => (
-                      <button
-                        key={game.id}
-                        className={selected === game.id ? "selected" : ""}
-                        aria-current={selected === game.id ? "true" : undefined}
-                        onClick={() => setSelected(game.id)}
-                      >
-                        <span aria-hidden="true">{game.emoji}</span>
-                        <span>
-                          <strong>{game.title}</strong>
-                          <small>
-                            {game.targetSkill.id} · {game.plays}{" "}
-                            {game.plays === 1 ? "play" : "plays"}
-                          </small>
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                ) : null,
-              )}
-              {list.games.length === 0 ? (
+              <div className="game-review-filters">
+                <div className="game-review-tabs" role="group" aria-label="Status">
+                  {STATUS_TABS.map(([value, label, key]) => (
+                    <button
+                      key={value}
+                      type="button"
+                      className={status === value ? "selected" : ""}
+                      aria-pressed={status === value}
+                      onClick={() => {
+                        setStatus(value);
+                        setOffset(0);
+                      }}
+                    >
+                      {label} <span>{list.counts[key].toLocaleString()}</span>
+                    </button>
+                  ))}
+                </div>
+                <label className="game-review-search">
+                  <Search size={15} aria-hidden="true" />
+                  <span className="sr-only">Search games</span>
+                  <input
+                    type="search"
+                    value={search}
+                    maxLength={80}
+                    placeholder="Title or skill, like 3.NF"
+                    onChange={(event) => setSearch(event.target.value)}
+                  />
+                </label>
+                <div className="game-review-selects">
+                  <label>
+                    <span className="sr-only">Subject</span>
+                    <select
+                      value={subject}
+                      onChange={(event) => {
+                        setSubject(event.target.value as "" | "math" | "ela");
+                        setGrade("");
+                        setOffset(0);
+                      }}
+                    >
+                      <option value="">All subjects</option>
+                      <option value="math">Math</option>
+                      <option value="ela">Reading and writing</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span className="sr-only">Grade</span>
+                    <select
+                      value={grade}
+                      onChange={(event) => {
+                        setGrade(event.target.value);
+                        setOffset(0);
+                      }}
+                    >
+                      <option value="">All grades</option>
+                      {[...new Map(grades.map((item) => [item.grade, item])).values()].map(
+                        (item) => {
+                          const waiting = grades
+                            .filter((other) => other.grade === item.grade)
+                            .reduce((sum, other) => sum + other.waiting, 0);
+                          return (
+                            <option key={item.grade} value={item.grade}>
+                              {gradeName(item.grade)}
+                              {waiting ? ` (${waiting} waiting)` : ""}
+                            </option>
+                          );
+                        },
+                      )}
+                    </select>
+                  </label>
+                </div>
+              </div>
+              <p className="game-review-count" role="status">
+                {list.total
+                  ? `Showing ${first.toLocaleString()} to ${last.toLocaleString()} of ${list.total.toLocaleString()}`
+                  : filtered
+                    ? "No games match these filters."
+                    : status === "waiting"
+                      ? "Nothing is waiting for review."
+                      : "No games here yet."}
+              </p>
+              {list.games.map((game) => (
+                <button
+                  key={game.id}
+                  className={selected === game.id ? "selected" : ""}
+                  aria-current={selected === game.id ? "true" : undefined}
+                  onClick={() => setSelected(game.id)}
+                >
+                  <span aria-hidden="true">{game.emoji}</span>
+                  <span>
+                    <strong>{game.title}</strong>
+                    <small>
+                      {game.targetSkill.id} · {gradeName(game.gradeLabel)}
+                      {game.plays
+                        ? ` · ${game.plays} ${game.plays === 1 ? "play" : "plays"}`
+                        : ""}
+                    </small>
+                  </span>
+                </button>
+              ))}
+              {list.total > list.limit ? (
+                <div className="game-review-pager">
+                  <button
+                    type="button"
+                    disabled={list.offset === 0}
+                    onClick={() => setOffset(Math.max(0, list.offset - list.limit))}
+                  >
+                    <ChevronLeft size={16} aria-hidden="true" /> Previous
+                  </button>
+                  <button
+                    type="button"
+                    disabled={last >= list.total}
+                    onClick={() => setOffset(list.offset + list.limit)}
+                  >
+                    Next <ChevronRight size={16} aria-hidden="true" />
+                  </button>
+                </div>
+              ) : null}
+              {list.counts.verified + list.counts.approved + list.counts.retired === 0 ? (
                 <p className="game-review-note">
-                  No games yet. Run <code>npm run games:seed</code> to load the reference
-                  games.
+                  No games are loaded yet. Run <code>npm run games:seed</code> to load the
+                  games that ship with the app.
                 </p>
               ) : null}
               {list.jobs.length ? (
@@ -408,7 +552,11 @@ function ReviewContent() {
               ) : null}
             </nav>
             {selected ? (
-              <Detail key={selected} id={selected} onChanged={() => void load()} />
+              <Detail
+                key={selected}
+                id={selected}
+                onChanged={() => void load(undefined, true)}
+              />
             ) : (
               <div className="game-review-detail">
                 <p className="game-review-note">Pick a game to review.</p>

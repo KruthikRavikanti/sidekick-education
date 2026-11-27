@@ -19,6 +19,22 @@ def uid():
     return uuid.uuid4().hex
 
 
+# The skill map names high school by course or band. Games cover all of it, so each gets a sortable number.
+_COURSE_GRADES = {'algebra 1': 9, 'geometry': 10, 'algebra 2': 11, '9-10': 9, '11-12': 11}
+SUBJECT_LABELS = {'math': 'Math', 'ela': 'Reading/ELA'}
+
+
+def grade_number(subskill):
+    """K is 0, grades 1 to 8 are themselves, and high school courses and bands map to 9 to 12. None when unknown."""
+    value = str((subskill or {}).get('grade', '')).strip()
+    if value == 'K':
+        return 0
+    if value.isascii() and value.isdigit():
+        return int(value) if 0 <= int(value) <= 12 else None
+    lowered = value.casefold()
+    return 12 if lowered.startswith('precalculus') else _COURSE_GRADES.get(lowered)
+
+
 def source_hash(code, css=''):
     return hashlib.sha256((code + '\x00' + (css or '')).encode('utf-8')).hexdigest()
 
@@ -44,7 +60,7 @@ def save_version(conn, now, subskill, *, title, emoji, premise, idea, code, css,
     """Store a game that passed the robot. Returns (id, created)."""
     if not report or not report.get('passed'):
         raise ValueError('Only games that passed the robot can be stored')
-    subject, grade = general.subject_for(subskill), general.grade_for(subskill)
+    subject, grade = general.subject_for(subskill), grade_number(subskill)
     if subject is None or grade is None:
         raise ValueError('Unsupported subject or grade')
     sha = source_hash(code, css)
@@ -60,35 +76,69 @@ def save_version(conn, now, subskill, *, title, emoji, premise, idea, code, css,
     return version_id, True
 
 
-def seed_examples(db, now, *, robot=run_robot, approve=False):
-    """Load every game shipped with the repo. Each one must pass the robot first.
+def _wanted(item, subskill, only, subject, grades):
+    if only and item['slug'] not in only:
+        return False
+    if subject and general.subject_for(subskill or {}) != subject:
+        return False
+    return not grades or str((subskill or {}).get('grade', '')) in grades
+
+
+def seed_examples(db, now, *, robot=run_robot, approve=False, workers=1, only=None, subject=None, grades=None, limit=None, progress=None):
+    """Load the games shipped with the repo. Each one must pass the robot on this machine first.
 
     They are stored as `verified`, like any other game, and wait for a person in the
     review page unless `approve` is passed explicitly (local development only).
+
+    The library is large, so a run can be narrowed (`only` folder names, `subject` 'math' or 'ela',
+    `grades` as the skill map writes them, `limit` on robot runs) and the robot can play several
+    games at once (`workers`). Games already stored are skipped, so a run can be repeated or resumed.
+    `progress` is called with each finished entry.
     """
-    out = []
+    only, grades = set(only or ()), {str(g) for g in (grades or ())}
+    out, todo = [], []
+
+    def done(entry):
+        out.append(entry)
+        if progress:
+            progress(entry)
+
     for item in prompts.load_library():
         with db.transaction() as conn:
             subskill = get_subskill(conn, item['subskillId'])
             known = conn.execute('SELECT id,status FROM game_versions WHERE source_sha256=?', (source_hash(item['code'], item['css']),)).fetchone()
-        if not subskill or not subskill['active']:
-            out.append({'slug': item['slug'], 'result': 'skill_not_in_catalog'})
+        if not _wanted(item, subskill, only, subject, grades):
             continue
-        if known:
+        if not subskill or not subskill['active']:
+            done({'slug': item['slug'], 'result': 'skill_not_in_catalog'})
+        elif general.subject_for(subskill) is None or grade_number(subskill) is None:
+            done({'slug': item['slug'], 'result': 'unsupported_grade'})
+        elif known:
             if approve and known['status'] == 'verified':
                 with db.transaction() as conn:
                     conn.execute("UPDATE game_versions SET status='approved',decided_at=? WHERE id=? AND status='verified'", (now, known['id']))
-            out.append({'slug': item['slug'], 'result': 'unchanged', 'id': known['id']})
-            continue
-        report = robot(item['code'], item['css'])
+            done({'slug': item['slug'], 'result': 'unchanged', 'id': known['id']})
+        elif limit is None or len(todo) < limit:
+            todo.append((item, subskill))
+
+    def save(item, subskill, report):
         if not report.get('passed'):
-            out.append({'slug': item['slug'], 'result': 'robot_failed', 'problems': failures(report)})
-            continue
+            return {'slug': item['slug'], 'result': 'robot_failed', 'problems': failures(report)}
         with db.transaction() as conn:
             version_id, _ = save_version(conn, now, subskill, title=item['title'], emoji=item.get('emoji', '🎮'), premise=item['premise'], idea=item.get('idea', ''),
                                          code=item['code'], css=item['css'], report=report, review=None, origin='seed_example',
                                          model=item.get('author', 'hand-written'), status='approved' if approve else 'verified')
-        out.append({'slug': item['slug'], 'result': 'added', 'id': version_id})
+        return {'slug': item['slug'], 'result': 'added', 'id': version_id}
+
+    if workers <= 1 or len(todo) <= 1:
+        for item, subskill in todo:
+            done(save(item, subskill, robot(item['code'], item['css'])))
+    else:
+        from concurrent.futures import ThreadPoolExecutor
+        # The robot (a browser) runs in the pool. Every database write stays on this thread.
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            for (item, subskill), report in zip(todo, pool.map(lambda pair: robot(pair[0]['code'], pair[0]['css']), todo)):
+                done(save(item, subskill, report))
     return out
 
 

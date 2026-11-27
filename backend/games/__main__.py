@@ -1,10 +1,11 @@
 """Local tools for generated games.
 
-  python -m backend.games seed                 load the reference games (each must pass the robot)
+  python -m backend.games seed                 load every shipped game (each must pass the robot here first)
+  python -m backend.games seed --subject math --grades K,1,2 --workers 4      one slice at a time; safe to repeat or resume
   python -m backend.games robot <folder>       play one game folder (game.js, optional game.css) with the robot
   python -m backend.games generate --subskill 3.NF.A.1-2
   python -m backend.games generate --missing --grades K,1,2,3,4,5 --subject math --limit 50 --workers 3
-  python -m backend.games verify               play every shipped game with the robot
+  python -m backend.games verify               play every shipped game with the robot (--subject, --grades, --only narrow it)
   python -m backend.games coverage             which skills in the skill map have a game (writes data/games/COVERAGE.md)
   python -m backend.games list
 """
@@ -56,13 +57,28 @@ def _robot(args):
     return 0 if report['passed'] else 1
 
 
-GRADE_ORDER = ['K', '1', '2', '3', '4', '5', '6', '7', '8']
+GRADE_ORDER = ['K', '1', '2', '3', '4', '5', '6', '7', '8', '9-10', '11-12', 'Algebra 1', 'Geometry', 'Algebra 2', 'Precalculus / advanced (+)']
+
+
+def _grades(value):
+    return [g.strip() for g in (value or '').split(',') if g.strip()]
+
+
+def _skill_scope(args):
+    """Skill ids allowed by --subject and --grades, or None when neither was given."""
+    grades, subject = set(_grades(getattr(args, 'grades', None))), getattr(args, 'subject', None)
+    if not grades and not subject:
+        return None
+    catalog = json.loads((ROOT / 'data' / 'sidekick_skill_map_v2.json').read_text(encoding='utf-8'))
+    wanted = {'math': 'Math', 'ela': 'Reading/ELA'}.get(subject)
+    return {item['subskill_id'] for item in catalog if (not wanted or item['subject'] == wanted) and (not grades or str(item['grade']) in grades)}
 
 
 def _verify(args):
     """Play every shipped game with the robot. This is the gate a game passes before review."""
     from concurrent.futures import ThreadPoolExecutor
-    games = [g for g in prompts.load_library() if not args.only or g['slug'] in args.only]
+    scope = _skill_scope(args)
+    games = [g for g in prompts.load_library() if (not args.only or g['slug'] in args.only) and (scope is None or g['subskillId'] in scope)]
     if not games:
         print('no games match')
         return 1
@@ -81,6 +97,26 @@ def _verify(args):
                 print('    -', line)
     print(f'{len(games) - failed} of {len(games)} games passed')
     return 1 if failed else 0
+
+
+def _seed(args, database):
+    """Load shipped games into the database. Skips what is already stored, so it can be repeated or resumed."""
+    counts, started = collections.Counter(), time.time()
+
+    def progress(entry):
+        counts[entry['result']] += 1
+        if args.json or entry['result'] == 'unchanged':
+            return
+        print(f"{entry['result']:20} {entry['slug']}", flush=True)
+        for line in entry.get('problems', [])[:6]:
+            print('    -', line, flush=True)
+
+    results = library.seed_examples(database, time.time(), approve=args.approve, workers=max(1, args.workers), only=args.only,
+                                    subject=args.subject, grades=_grades(args.grades), limit=args.limit, progress=progress)
+    if args.json:
+        print(json.dumps(results, indent=2, ensure_ascii=False))
+    print(json.dumps({'games': len(results), **dict(sorted(counts.items())), 'seconds': round(time.time() - started)}, indent=2))
+    return 1 if counts.get('robot_failed') else 0
 
 
 def _coverage(args):
@@ -129,7 +165,7 @@ async def _generate(args, database):
             targets = list(args.subskill)
         else:
             marks, values = '', []
-            grades = [g.strip() for g in (args.grades or '').split(',') if g.strip()] + ([args.grade] if args.grade else [])
+            grades = _grades(args.grades) + ([args.grade] if args.grade else [])
             if grades:
                 marks += ' AND s.grade IN (' + ','.join('?' for _ in grades) + ')'
                 values += grades
@@ -137,14 +173,12 @@ async def _generate(args, database):
                 marks += ' AND s.subject=?'
                 values.append('Math' if args.subject == 'math' else 'Reading/ELA')
             # A skill with a game shipped in data/games counts as covered even before `seed` has run.
-            shipped = sorted({game['subskillId'] for game in prompts.load_library()})
-            if shipped:
-                marks += ' AND s.id NOT IN (' + ','.join('?' for _ in shipped) + ')'
-                values += shipped
+            # The shipped set is filtered here, not in SQL: it is far larger than a query's parameter limit on older SQLite.
+            shipped = {game['subskillId'] for game in prompts.load_library()}
             targets = [row[0] for row in conn.execute(
                 f"""SELECT s.id FROM catalog_subskills s WHERE s.active=1{marks}
                     AND NOT EXISTS (SELECT 1 FROM game_versions v WHERE v.subskill_id=s.id AND v.status!='retired')
-                    ORDER BY s.grade, s.id LIMIT ?""", (*values, args.limit))]
+                    ORDER BY s.grade, s.id""", values) if row[0] not in shipped][:max(0, args.limit)]
             print(len(targets), 'skills to build', flush=True)
     clock = _Clock()
     gate = asyncio.Semaphore(max(1, args.workers))
@@ -179,8 +213,14 @@ def main():
     parser = argparse.ArgumentParser(description='Sidekick generated games')
     parser.add_argument('--database-url', default=os.getenv('DATABASE_URL', 'sqlite:///backend/data/sidekick.db'))
     commands = parser.add_subparsers(dest='command', required=True)
-    seed = commands.add_parser('seed', help='load the reference games')
+    seed = commands.add_parser('seed', help='load the shipped games; each must pass the robot first')
     seed.add_argument('--approve', action='store_true', help='also approve them (local development only)')
+    seed.add_argument('--workers', type=int, default=2, help='games the robot plays at the same time')
+    seed.add_argument('--subject', choices=['math', 'ela'])
+    seed.add_argument('--grades', help='comma-separated, as the skill map writes them: K,1,2 or "Algebra 1",9-10')
+    seed.add_argument('--only', action='append', help='a game folder name; repeat for more')
+    seed.add_argument('--limit', type=int, help='stop after this many robot runs')
+    seed.add_argument('--json', action='store_true', help='print every result as JSON instead of progress lines')
     robot = commands.add_parser('robot', help='play one game with the robot')
     robot.add_argument('path')
     robot.add_argument('--seed', type=int)
@@ -197,6 +237,8 @@ def main():
     verify = commands.add_parser('verify', help='play every shipped game with the robot')
     verify.add_argument('--only', action='append', help='a game folder name; repeat for more')
     verify.add_argument('--workers', type=int, default=3)
+    verify.add_argument('--subject', choices=['math', 'ela'])
+    verify.add_argument('--grades', help='comma-separated, as the skill map writes them')
     verify.add_argument('--shots', help='folder for screenshots')
     commands.add_parser('list', help='every stored game')
     commands.add_parser('coverage', help='which skills in the skill map have a game')
@@ -210,7 +252,7 @@ def main():
     database = Database(args.database_url)
     database.assert_migrated()
     if args.command == 'seed':
-        print(json.dumps(library.seed_examples(database, time.time(), approve=args.approve), indent=2, ensure_ascii=False))
+        sys.exit(_seed(args, database))
     elif args.command == 'generate':
         if not args.subskill and not args.missing:
             parser.error('generate needs --subskill ID or --missing')

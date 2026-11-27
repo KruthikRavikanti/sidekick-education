@@ -68,6 +68,8 @@ export type GameReviewItem = {
   origin: "seed_example" | "model_generated";
   model: string;
   grade: number;
+  // The skill map's own label: "K", "5", "Algebra 1", "9-10".
+  gradeLabel: string;
   subject: "math" | "ela";
   createdAt: number;
   decidedAt: number | null;
@@ -97,7 +99,13 @@ export type GameReviewList = {
   requireApproval: boolean;
   autogenerate: boolean;
   modelConfigured: boolean;
+  // One page of games that match the filters, and how many match in all.
   games: GameReviewItem[];
+  total: number;
+  offset: number;
+  limit: number;
+  counts: { verified: number; approved: number; retired: number };
+  grades: { subject: "math" | "ela"; grade: string; waiting: number; total: number }[];
   jobs: {
     id: string;
     status: "queued" | "running" | "failed";

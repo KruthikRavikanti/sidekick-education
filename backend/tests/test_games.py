@@ -208,6 +208,94 @@ def test_seed_examples_wait_for_review_and_skip_games_the_robot_rejects(family, 
     assert all(item['result'] in {'unchanged', 'robot_failed'} for item in library.seed_examples(security_context.db, 6.0, robot=robot))
 
 
+def test_every_grade_in_the_skill_map_has_a_game_grade_number():
+    from backend.activities import general
+    catalog = json.loads((prompts.ROOT / 'data' / 'sidekick_skill_map_v2.json').read_text(encoding='utf-8'))
+    numbers = {str(item['grade']): library.grade_number(item) for item in catalog}
+    assert all(number is not None and 0 <= number <= 12 for number in numbers.values()), numbers
+    assert numbers['K'] == 0 and numbers['8'] == 8 and numbers['Algebra 1'] == 9 and numbers['Geometry'] == 10
+    assert numbers['Algebra 2'] == 11 and numbers['Precalculus / advanced (+)'] == 12 and numbers['9-10'] == 9 and numbers['11-12'] == 11
+    assert library.grade_number({'grade': 'College'}) is None and library.grade_number({}) is None
+    # Activities stay K to 8. Only games use the wider mapping.
+    assert general.grade_for({'grade': 'Algebra 1'}) is None
+
+
+def test_seeding_can_be_narrowed_run_in_parallel_and_resumed(family, security_context):
+    catalog = {item['subskill_id']: item for item in json.loads((prompts.ROOT / 'data' / 'sidekick_skill_map_v2.json').read_text(encoding='utf-8'))}
+    k_math = {slug for slug, game in SHIPPED.items() if catalog[game['subskillId']]['subject'] == 'Math' and str(catalog[game['subskillId']]['grade']) == 'K'}
+    assert len(k_math) >= 5
+    plays, heard = [], []
+
+    def robot(code, css):
+        plays.append(code)
+        return PASSING
+    first = library.seed_examples(security_context.db, 5.0, robot=robot, subject='math', grades=['K'], workers=3, progress=heard.append)
+    assert {item['slug'] for item in first} == k_math and all(item['result'] == 'added' for item in first)
+    assert len(plays) == len(k_math) and heard == first
+    # A repeat run finds everything stored and never starts the robot.
+    again = library.seed_examples(security_context.db, 6.0, robot=robot, subject='math', grades=['K'], workers=3)
+    assert all(item['result'] == 'unchanged' for item in again) and len(plays) == len(k_math)
+    # A limit caps robot runs, and `only` names single folders.
+    some = library.seed_examples(security_context.db, 7.0, robot=robot, subject='ela', grades=['1'], limit=4)
+    assert [item['result'] for item in some] == ['added'] * 4
+    one = library.seed_examples(security_context.db, 8.0, robot=robot, only=['froggys-bridge'])
+    assert [(item['slug'], item['result']) for item in one] == [('froggys-bridge', 'added')]
+    with security_context.db.transaction() as conn:
+        assert conn.execute('SELECT COUNT(*) FROM game_versions').fetchone()[0] == len(k_math) + 5
+
+
+def test_high_school_games_are_stored_and_offered(family, security_context, games_on):
+    child, client = family
+    game = next(item for item in SHIPPED.values() if item['subskillId'] == 'A-APR.B.2-1')
+    report = library.seed_examples(security_context.db, 5.0, robot=lambda code, css: PASSING, only=[game['slug']], approve=True)
+    assert report[0]['result'] == 'added'
+    with security_context.db.transaction() as conn:
+        row = conn.execute('SELECT grade,subject,status FROM game_versions WHERE id=?', (report[0]['id'],)).fetchone()
+    assert (row['grade'], row['subject'], row['status']) == (11, 'math', 'approved')
+    upload_id = upload(security_context, child, subskill='A-APR.B.2-1')
+    view = client.get('/api/games/kid/suggestion', params={'uploadId': upload_id}).json()
+    assert view['state'] == 'ready' and view['game']['title'] == game['title'] and view['targetSkill']['id'] == 'A-APR.B.2-1'
+
+
+def test_review_list_filters_searches_pages_and_counts(family, security_context, games_on):
+    child, client = family
+    robot = lambda code, css: PASSING  # noqa: E731
+    library.seed_examples(security_context.db, 5.0, robot=robot, subject='math', grades=['K'])
+    library.seed_examples(security_context.db, 5.0, robot=robot, subject='ela', grades=['9-10'], limit=7)
+    library.seed_examples(security_context.db, 5.0, robot=robot, subject='math', grades=['Algebra 1'], limit=3)
+    picker(client); unlock(client)
+    with security_context.db.transaction() as conn:
+        k_math = conn.execute("SELECT COUNT(*) FROM game_versions WHERE subject='math' AND grade=0").fetchone()[0]
+    total = k_math + 10
+    page = client.get('/api/games/review').json()
+    assert page['total'] == total and page['limit'] == 50 and page['offset'] == 0 and len(page['games']) == 50
+    assert page['counts'] == {'verified': total, 'approved': 0, 'retired': 0}
+    # Math comes first, in grade order, so a reviewer can work through one grade at a time.
+    assert all(game['subject'] == 'math' and game['gradeLabel'] == 'K' for game in page['games'])
+    rest = client.get('/api/games/review', params={'offset': 50, 'limit': 100}).json()
+    assert len(rest['games']) == total - 50 and rest['games'][-1]['gradeLabel'] == '9-10'
+    assert {game['id'] for game in page['games']}.isdisjoint(game['id'] for game in rest['games'])
+    assert {(item['subject'], item['grade'], item['waiting']) for item in page['grades']} == {('math', 'K', k_math), ('math', 'Algebra 1', 3), ('ela', '9-10', 7)}
+    # Filters narrow the list. The counts beside the tabs stay whole.
+    ela = client.get('/api/games/review', params={'subject': 'ela'}).json()
+    assert ela['total'] == 7 and all(game['subject'] == 'ela' for game in ela['games']) and ela['counts']['verified'] == total
+    algebra = client.get('/api/games/review', params={'grade': 'Algebra 1'}).json()
+    assert algebra['total'] == 3 and all(game['gradeLabel'] == 'Algebra 1' and game['grade'] == 9 for game in algebra['games'])
+    target = algebra['games'][0]
+    by_skill = client.get('/api/games/review', params={'q': target['targetSkill']['id']}).json()
+    assert target['id'] in {game['id'] for game in by_skill['games']} and by_skill['total'] < total
+    by_title = client.get('/api/games/review', params={'q': target['title']}).json()
+    assert [game['id'] for game in by_title['games']] == [target['id']]
+    assert client.get('/api/games/review', params={'q': '100%_nothing'}).json()['total'] == 0
+    # Deciding moves a game between tabs.
+    assert mutate(client, 'POST', f"/api/games/review/{target['id']}/decision", json={'decision': 'approve'}).status_code == 200
+    assert client.get('/api/games/review', params={'grade': 'Algebra 1'}).json()['total'] == 2
+    live = client.get('/api/games/review', params={'status': 'approved'}).json()
+    assert [game['id'] for game in live['games']] == [target['id']] and live['counts'] == {'verified': total - 1, 'approved': 1, 'retired': 0}
+    assert client.get('/api/games/review', params={'status': 'all'}).json()['total'] == total
+    assert client.get('/api/games/review', params={'limit': 5000, 'offset': -3}).json()['limit'] == 100
+
+
 # ------------------------------------------------------------------ play, privacy and the review gate
 
 def test_games_are_off_by_default(family, security_context, monkeypatch):

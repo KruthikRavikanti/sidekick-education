@@ -26,8 +26,11 @@ def target_view(target):
     return dict(id=target['subskill_id'], name=target['subskill'], subject=general.subject_for(target))
 
 
-def _candidates(conn, security, kid_id, upload_id, active):
-    """Every reliably matched skill on an owned upload, as (priority, skill, evidence id)."""
+def _candidates(conn, security, kid_id, upload_id, active, grade_of=general.grade_for):
+    """Every reliably matched skill on an owned upload, as (priority, skill, evidence id).
+
+    `grade_of` decides which grades count. Activities cover K to 8; games pass their own, wider mapping.
+    """
     authorize(security, conn, kid_id, active, 'kid')
     upload = conn.execute('SELECT * FROM homework_uploads WHERE id=? AND kid_id=?', (upload_id, kid_id)).fetchone()
     if not upload:
@@ -63,7 +66,7 @@ def _candidates(conn, security, kid_id, upload_id, active):
         else:
             continue
         target = get_subskill(conn, subskill)
-        if not target or not target['active'] or general.subject_for(target) is None or general.grade_for(target) is None:
+        if not target or not target['active'] or general.subject_for(target) is None or grade_of(target) is None:
             continue
         priority = 0 if row['evidence_eligible'] and row['evidence_correctness'] == 'incorrect' else 1 if row['evidence_correctness'] == 'correct' else 2
         candidates.append((priority, target, row['evidence_id']))

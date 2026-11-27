@@ -186,6 +186,105 @@
   gap: 24px;
   align-items: start;
 }
+.game-review-filters {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.game-review-list .game-review-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+.game-review-list .game-review-tabs button {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  margin: 0;
+  padding: 8px 4px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.game-review-list .game-review-tabs button > span:first-child,
+.game-review-list .game-review-tabs button > span:last-child {
+  display: block;
+  font-size: 15px;
+  line-height: 1.1;
+}
+.game-review-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 0 10px;
+  color: var(--muted);
+}
+.game-review-search:focus-within {
+  border-color: var(--forest);
+}
+.game-review-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  color: var(--forest);
+  padding: 9px 0;
+}
+.game-review-selects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.game-review-selects select {
+  width: 100%;
+  font: inherit;
+  font-size: 13px;
+  color: var(--forest);
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 8px;
+}
+.game-review-count {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 0 0 8px;
+}
+.game-review-list .game-review-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 4px 0 12px;
+}
+.game-review-list .game-review-pager button {
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.game-review-list .game-review-pager button > span:first-child {
+  font-size: inherit;
+}
+.game-review-list button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.game-review .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
 .game-review-list h3 {
   font-size: 13px;
   letter-spacing: 0.08em;

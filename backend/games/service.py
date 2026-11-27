@@ -32,7 +32,8 @@ def game_view(version):
 
 def _pick(conn, security, kid_id, upload_id, active, settings):
     """The skill on this upload to play, preferring one that already has a game."""
-    candidates, reason = _candidates(conn, security, kid_id, upload_id, active)
+    # Games exist for every grade in the skill map, high school included, so they use their own grade mapping.
+    candidates, reason = _candidates(conn, security, kid_id, upload_id, active, grade_of=library.grade_number)
     if not candidates:
         return None, None, reason or 'no_supported_skill'
     ranked = []
@@ -201,7 +202,8 @@ def _review_row(conn, row, full=False):
     report = library.decode(row['robot_report_json'], {}) or {}
     plays = conn.execute('SELECT COUNT(*) FROM game_runs WHERE game_version_id=?', (row['id'],)).fetchone()[0]
     view = dict(id=row['id'], title=row['title'], emoji=row['emoji'], premise=row['premise'], idea=row['idea'], status=row['status'], origin=row['origin'],
-                model=row['model'], grade=row['grade'], subject=row['subject'], createdAt=row['created_at'], decidedAt=row['decided_at'], plays=plays,
+                model=row['model'], grade=row['grade'], gradeLabel=str((subskill or {}).get('grade', row['grade'])), subject=row['subject'],
+                createdAt=row['created_at'], decidedAt=row['decided_at'], plays=plays,
                 targetSkill=dict(id=row['subskill_id'], name=subskill['subskill'] if subskill else row['subskill_id'],
                                  misconception=(subskill or {}).get('common_misconception', '')),
                 robot=dict(passed=bool(report.get('passed')), checks=len(report.get('checks', [])), stats=report.get('stats', {})))
@@ -214,13 +216,49 @@ def _review_row(conn, row, full=False):
     return view
 
 
-def review_list(security, active):
+REVIEW_PAGE = 50
+_REVIEW_STATUS = {'waiting': 'verified', 'verified': 'verified', 'approved': 'approved', 'retired': 'retired'}
+
+
+def review_list(security, active, *, status='waiting', subject=None, grade=None, q=None, limit=REVIEW_PAGE, offset=0):
+    """One page of games for reviewers, with counts for every filter.
+
+    The library holds a game for every skill, so the list is filtered (status, subject, grade, search)
+    and paged. Games are ordered by subject, grade and skill so a reviewer can work through a grade.
+    """
+    limit, offset = max(1, min(int(limit or REVIEW_PAGE), 100)), max(0, int(offset or 0))
+    where, values = [], []
+    if status in _REVIEW_STATUS:
+        where.append('v.status=?')
+        values.append(_REVIEW_STATUS[status])
+    if subject in library.SUBJECT_LABELS:
+        where.append('v.subject=?')
+        values.append(subject)
+    if grade not in (None, ''):
+        # The skill map's own label ('K', '5', 'Algebra 1', '9-10'), so bands that share a number stay apart.
+        where.append('s.grade=?')
+        values.append(str(grade))
+    text = ' '.join(str(q or '').split())[:80]
+    if text:
+        like = '%' + text.replace('\\', '\\\\').replace('%', '\\%').replace('_', '\\_') + '%'
+        where.append("(v.title LIKE ? ESCAPE '\\' OR v.subskill_id LIKE ? ESCAPE '\\' OR s.name LIKE ? ESCAPE '\\')")
+        values += [like, like, like]
+    clause = (' WHERE ' + ' AND '.join(where)) if where else ''
+    source = 'FROM game_versions v JOIN catalog_subskills s ON s.id=v.subskill_id'
     with security.db.transaction() as conn:
         settings = _reviewer(security, conn, active)
-        rows = conn.execute("SELECT * FROM game_versions ORDER BY CASE status WHEN 'verified' THEN 0 WHEN 'approved' THEN 1 ELSE 2 END, created_at DESC LIMIT 200").fetchall()
+        total = conn.execute(f'SELECT COUNT(*) {source}{clause}', values).fetchone()[0]
+        rows = conn.execute(f"""SELECT v.* {source}{clause}
+            ORDER BY CASE v.status WHEN 'verified' THEN 0 WHEN 'approved' THEN 1 ELSE 2 END, v.subject DESC, v.grade, s.grade, v.subskill_id, v.created_at DESC
+            LIMIT ? OFFSET ?""", (*values, limit, offset)).fetchall()
+        counts = {row[0]: row[1] for row in conn.execute('SELECT status,COUNT(*) FROM game_versions GROUP BY status')}
+        grades = [dict(subject=row['subject'], grade=row['label'], waiting=row['waiting'], total=row['total']) for row in conn.execute(
+            f"""SELECT v.subject AS subject, s.grade AS label, MIN(v.grade) AS number, SUM(v.status='verified') AS waiting, COUNT(*) AS total
+                {source} GROUP BY v.subject, s.grade ORDER BY v.subject DESC, number, s.grade""")]
         jobs = conn.execute("SELECT j.*, s.name AS skill_name FROM game_jobs j JOIN catalog_subskills s ON s.id=j.subskill_id WHERE j.status!='done' ORDER BY j.updated_at DESC LIMIT 30").fetchall()
         return dict(enabled=settings.enabled, requireApproval=settings.require_approval, autogenerate=settings.autogenerate, modelConfigured=model_configured(),
-                    games=[_review_row(conn, row) for row in rows],
+                    games=[_review_row(conn, row) for row in rows], total=total, offset=offset, limit=limit,
+                    counts=dict(verified=counts.get('verified', 0), approved=counts.get('approved', 0), retired=counts.get('retired', 0)), grades=grades,
                     jobs=[dict(id=j['id'], status=j['status'], skill=dict(id=j['subskill_id'], name=j['skill_name']), updatedAt=j['updated_at'],
                                failure=_failure_view(library.decode(j['failure_json']))) for j in jobs])
 

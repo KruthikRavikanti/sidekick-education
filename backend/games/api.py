@@ -68,8 +68,9 @@ def reviewer(request: Request):
 
 
 @router.get('/review')
-def review_list(request: Request):
-    return service.review_list(get_security(request), require_parent(request))
+def review_list(request: Request, status: str = 'waiting', subject: str | None = None, grade: str | None = None, q: str | None = None,
+                limit: int = service.REVIEW_PAGE, offset: int = 0):
+    return service.review_list(get_security(request), require_parent(request), status=status, subject=subject, grade=grade, q=q, limit=limit, offset=offset)
 
 
 @router.get('/review/{version_id}')
