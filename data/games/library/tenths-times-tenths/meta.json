@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NBT.B.7-2",
+  "title": "Tenths Times Tenths",
+  "emoji": "🧇",
+  "premise": "A waffle of 100 squares shows what happens when tenths multiply tenths: you get hundredths.",
+  "idea": "Multiplying decimals: 0.6 × 0.4 = 0.24, shown on a hundred grid. Placing the decimal point by lining it up (2.4) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "paint+type"
+}

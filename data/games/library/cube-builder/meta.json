@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.MD.C.4-1",
+  "title": "Cube Builder",
+  "emoji": "🏗️",
+  "premise": "Build a box out of unit cubes, then count how many it took. Count whole cubes, not the little squares on the outside.",
+  "idea": "Measuring volume by counting unit cubes. Counting the square faces that show instead of the cubes is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial+type"
+}

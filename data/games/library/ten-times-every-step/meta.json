@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NBT.A.1-1",
+  "title": "Ten Times, Every Step",
+  "emoji": "🪜",
+  "premise": "Each step to the left on the place value ladder is worth ten times more. The ladder keeps going past the decimal point.",
+  "idea": "A digit in one place represents 10 times what it represents in the place to its right, including across the decimal point. Thinking the relationship stops at the decimal point is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

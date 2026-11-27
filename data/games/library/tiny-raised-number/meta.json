@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NBT.A.2-3",
+  "title": "Tiny Raised Number",
+  "emoji": "🎈",
+  "premise": "The small raised number tells how many tens are multiplied together. 10³ is three tens multiplied, not 10 times 3.",
+  "idea": "Using whole-number exponents to denote powers of 10. Reading 10³ as 10 × 3 = 30 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

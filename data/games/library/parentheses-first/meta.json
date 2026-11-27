@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.OA.A.1-1",
+  "title": "Parentheses First",
+  "emoji": "🥚",
+  "premise": "Parentheses are like an eggshell around part of a problem. Crack that part open and work it out first.",
+  "idea": "Evaluating expressions with parentheses and brackets: the grouped part is computed first. Ignoring the grouping symbols is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

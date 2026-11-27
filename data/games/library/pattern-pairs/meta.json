@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.OA.B.3-2",
+  "title": "Pattern Pairs",
+  "emoji": "🪁",
+  "premise": "Take one number from each pattern, in order, and you get a point. Plot the pairs and watch them line up.",
+  "idea": "Forming ordered pairs from corresponding terms of two patterns and graphing them. Mismatching the terms, or swapping the order in the pair, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

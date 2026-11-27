@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NF.B.6-2",
+  "title": "Part of a Part",
+  "emoji": "🧁",
+  "premise": "Two thirds OF three fourths means: first mark three fourths, then take two thirds of just that part.",
+  "idea": "Using an area model for a product of fractions: 2/3 of 3/4 is 6 of 12 parts. Taking the fraction of the whole instead of the part is the known slip.",
+  "author": "claude-stand-in",
+  "play": "paint+type"
+}

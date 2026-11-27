@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NF.B.7-2",
+  "title": "How Many Little Pieces?",
+  "emoji": "🧩",
+  "premise": "4 ÷ one fifth asks: how many fifths are in 4 wholes? Every whole holds 5 of them.",
+  "idea": "Dividing a whole number by a unit fraction: 4 ÷ 1/5 = 20. Dividing 4 by 5 instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

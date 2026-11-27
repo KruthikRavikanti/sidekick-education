@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.G.A.1-2",
+  "title": "Star Chart",
+  "emoji": "🌟",
+  "premise": "Each star has an address made of two numbers. Count the steps from the origin to put each star in its place.",
+  "idea": "Locating points from ordered pairs in the first quadrant. Reversing the coordinates or miscounting from the origin is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

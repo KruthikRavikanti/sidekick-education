@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.MD.A.1-2",
+  "title": "Inches, Ounces, Quarts",
+  "emoji": "🧰",
+  "premise": "Customary units each have their own number: 12 inches in a foot, 16 ounces in a pound, 4 quarts in a gallon.",
+  "idea": "Converting among customary units in both directions. Using 10 instead of 12 or 16 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

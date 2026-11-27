@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NF.B.4-3",
+  "title": "Fraction Garden Plot",
+  "emoji": "🌱",
+  "premise": "A garden plot can be less than one foot on each side. Its area is still length times width.",
+  "idea": "Finding the area of a rectangle with fractional side lengths by tiling and by multiplying: 1/2 × 3/4 = 3/8. Adding the side lengths is the known slip.",
+  "author": "claude-stand-in",
+  "play": "paint+type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NF.B.3-1",
+  "title": "Fraction Bar Means Divide",
+  "emoji": "➗",
+  "premise": "A fraction and a division are the same thing written two ways. 3 ÷ 4 is three fourths.",
+  "idea": "Interpreting a fraction as division of the numerator by the denominator: 3 ÷ 4 = 3/4. Flipping the fraction is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

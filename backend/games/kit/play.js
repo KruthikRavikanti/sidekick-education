@@ -183,6 +183,31 @@
     if (c.icon) out += T(ex, ey, 44, c.icon);
     return svg(W, H, out);
   } };
+  // boxes of unit cubes: `d: [long, wide, high]` (a number, or 'x' 'y' 'z' for a dial), or `parts: [[l,w,h], ...]` side by side.
+  // `solid: true` draws plain faces (for big boxes), `l: ['5 cm', '3 cm', '2 cm']` labels length, width, height, `calc: true` counts the cubes while exploring.
+  VIEWS.cubes = { h: 44, draw(v, c, W, H, live) {
+    const pickD = (q, i) => q === 'x' ? v[0] : q === 'y' ? v[1] : q === 'z' ? v[2] : q;
+    const parts = (c.parts || [c.d ? c.d.map(pickD) : [v[0], v[1], v[2]]]).map((d) => d.map((q) => Math.max(0, Math.round(Number(q) || 0))));
+    const KX = 0.5, KY = 0.36, gap = 0.7, wide = parts.reduce((a, d) => a + d[0] + KX * d[1], 0) + gap * (parts.length - 1), high = Math.max.apply(null, parts.map((d) => d[2] + KY * d[1]));
+    const foot = c.l ? 44 : 14, u = Math.min(84, (W - (c.l ? 150 : 60)) / Math.max(1, wide), (H - foot - (c.calc ? 52 : 14)) / Math.max(1, high)), base = H - foot;
+    const quad = (pts, fill) => '<path d="M ' + pts.map((q) => nice(q[0]) + ' ' + nice(q[1])).join(' L ') + ' Z" fill="' + fill + '" stroke="' + C.forest + '" stroke-width="' + (c.solid ? 5 : 3) + '" stroke-linejoin="round"/>';
+    let out = '', x0 = (W - wide * u) / 2, total = 0;
+    parts.forEach((d) => {
+      const l = d[0], w = d[1], h = d[2], dx = KX * u, dy = KY * u, top = base - h * u, xr = x0 + l * u; total += l * w * h;
+      if (l && w && h) {
+        if (c.solid) { out += quad([[x0, base], [xr, base], [xr, top], [x0, top]], C.orange) + quad([[x0, top], [xr, top], [xr + w * dx, top - w * dy], [x0 + w * dx, top - w * dy]], C.sun) + quad([[xr, base], [xr + w * dx, base - w * dy], [xr + w * dx, top - w * dy], [xr, top]], '#e2783c'); }
+        else {
+          for (let i = 0; i < l; i++) for (let j = 0; j < h; j++) out += quad([[x0 + i * u, base - j * u], [x0 + (i + 1) * u, base - j * u], [x0 + (i + 1) * u, base - (j + 1) * u], [x0 + i * u, base - (j + 1) * u]], C.orange);
+          for (let i = 0; i < l; i++) for (let k = 0; k < w; k++) out += quad([[x0 + i * u + k * dx, top - k * dy], [x0 + (i + 1) * u + k * dx, top - k * dy], [x0 + (i + 1) * u + (k + 1) * dx, top - (k + 1) * dy], [x0 + i * u + (k + 1) * dx, top - (k + 1) * dy]], C.sun);
+          for (let k = 0; k < w; k++) for (let j = 0; j < h; j++) out += quad([[xr + k * dx, base - j * u - k * dy], [xr + (k + 1) * dx, base - j * u - (k + 1) * dy], [xr + (k + 1) * dx, base - (j + 1) * u - (k + 1) * dy], [xr + k * dx, base - (j + 1) * u - k * dy]], '#e2783c');
+        }
+        if (c.l && parts.length === 1) { if (c.l[0]) out += T(x0 + l * u / 2, base + 24, 30, c.l[0]); if (c.l[1]) out += T(xr + w * dx / 2 + 44, base - w * dy / 2 + 14, 30, c.l[1]); if (c.l[2]) out += T(x0 - 48, base - h * u / 2, 30, c.l[2]); }
+      }
+      x0 += (l + KX * w + gap) * u;
+    });
+    if (c.calc && live) out += T(W / 2, 26, 34, total + (total === 1 ? ' cube' : ' cubes'));
+    return svg(W, H, out);
+  } };
   // a bar chart: `given` bars are fixed, one more bar per dial
   VIEWS.bars = { h: 46, draw(v, c, W, H, live) {
     const bars = (c.given || []).map((g) => ({ name: String(g[0]), val: g[1], col: C.sky })).concat(v.map((val, i) => ({ name: String((c.names || [])[i] || ''), val: val, col: C.orange })));
@@ -323,7 +348,7 @@
   VIEWS.tape = { h: 34, draw(v, c, W, H, live) {
     const val = (q) => q === 'x' ? v[0] : q === 'y' ? v[1] : q, rows = [c.top || [], c.rep ? range(Math.max(0, Math.min(14, Math.round(v[0] || 0)))).map(() => c.rep) : (c.bottom || [])], sums = rows.map((r) => r.reduce((a, q) => a + Math.max(0, val(q)), 0)), span = Math.max(c.cap || 0, sums[0], sums[1], 1), k = (W - 60) / span, names = c.names || []; let out = '';
     rows.forEach((r, ri) => { let x = 30; const y = 40 + ri * 130, cols = ri ? [C.orange, C.lime, C.berry] : [C.sky, C.sun, C.mint];
-      r.forEach((q, i) => { const n = Math.max(0, val(q)), w = n * k, unknown = q === 'x' || q === 'y'; if (w <= 0) return; out += R(x, y, w, 76, unknown ? C.white : cols[i % cols.length], 'rx="10" stroke="' + C.forest + '" stroke-width="5" ' + (unknown ? 'stroke-dasharray="14 10"' : '')); if (w > 44) out += T(x + w / 2, y + 38, 34, unknown ? (live || c.show ? n : '?') : (c.hide && c.hide[ri] && c.hide[ri][i] ? '?' : n)); x += w; });
+      r.forEach((q, i) => { const n = Math.max(0, val(q)), w = n * k, unknown = q === 'x' || q === 'y'; if (w <= 0) return; out += R(x, y, w, 76, unknown ? C.white : cols[i % cols.length], 'rx="10" stroke="' + C.forest + '" stroke-width="5" ' + (unknown ? 'stroke-dasharray="14 10"' : '')); const lab = String(unknown ? (live || c.show ? n : '?') : (c.hide && c.hide[ri] && c.hide[ri][i] ? '?' : n)), fz = Math.min(34, (w - 10) / (lab.length * 0.62)); if (fz >= 17) out += T(x + w / 2, y + 38, nice(fz), lab); x += w; });
       if (names[ri]) out += T(30 + em(String(names[ri])) * 13, y - 20, 26, names[ri]); });
     return svg(W, H, out);
   } };

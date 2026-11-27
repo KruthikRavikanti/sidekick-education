@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NF.B.4-2",
+  "title": "Straight Across",
+  "emoji": "🪜",
+  "premise": "To multiply two fractions, go straight across: top times top, and bottom times bottom.",
+  "idea": "Multiplying two fractions: 2/3 × 4/5 = 8/15. Cross-multiplying is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

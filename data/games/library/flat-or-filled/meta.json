@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.MD.C.3-1",
+  "title": "Flat or Filled?",
+  "emoji": "📦",
+  "premise": "Area covers a flat surface with squares. Volume fills a space with cubes. Decide which one each job needs.",
+  "idea": "Volume is measured with unit cubes, in cubic units, and is different from area. Confusing volume with area is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

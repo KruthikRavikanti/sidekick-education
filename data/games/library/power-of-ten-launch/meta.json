@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NBT.A.2-1",
+  "title": "Power of Ten Launch",
+  "emoji": "🚀",
+  "premise": "Multiplying by 10, 100 or 1,000 shifts every digit to a bigger place. It is not just about sticking zeros on the end.",
+  "idea": "Explaining patterns in the zeros of a product when multiplying by powers of 10. Adding zeros to a decimal (3.2 × 10 = 3.20) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

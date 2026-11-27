@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NF.A.1-3",
+  "title": "Mixed and Unlike",
+  "emoji": "🫙",
+  "premise": "These mixed numbers have different size pieces. Rename the fraction parts first, then add or subtract.",
+  "idea": "Adding and subtracting mixed numbers with unlike denominators: 2 1/2 + 1 2/3 = 4 1/6. Regrouping incorrectly is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

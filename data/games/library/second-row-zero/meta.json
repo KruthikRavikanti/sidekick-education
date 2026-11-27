@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NBT.B.5-1",
+  "title": "Second Row Zero",
+  "emoji": "🏗️",
+  "premise": "When you multiply by the tens digit, you are multiplying by tens. That row needs a zero to hold the ones place.",
+  "idea": "Multiplying multi-digit whole numbers with the standard algorithm. Forgetting the placeholder zero in the second partial product is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

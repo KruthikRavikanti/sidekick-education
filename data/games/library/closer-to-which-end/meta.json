@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NBT.A.4-2",
+  "title": "Closer To Which End?",
+  "emoji": "🚩",
+  "premise": "Zoom in on the number line. A decimal rounds to whichever end it sits closer to.",
+  "idea": "Using a number line to justify rounding decimals: 6.37 is past the midpoint 6.35, so it rounds to 6.4. Placing decimals incorrectly is the known slip.",
+  "author": "claude-stand-in",
+  "play": "line+type"
+}

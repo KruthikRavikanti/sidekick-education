@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.OA.A.2-1",
+  "title": "Words to Expression",
+  "emoji": "📝",
+  "premise": "Turn a sentence into numbers and symbols. Parentheses keep a sum or difference together.",
+  "idea": "Writing an expression for a calculation given in words: twice the sum of 8 and 7 is 2 × (8 + 7). Leaving out the parentheses is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

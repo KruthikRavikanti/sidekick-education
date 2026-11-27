@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NF.A.2-2",
+  "title": "Benchmark Check",
+  "emoji": "🤔",
+  "premise": "Before you trust a fraction answer, compare it with one half and with one whole. Some answers cannot be right.",
+  "idea": "Using benchmark fractions to judge reasonableness: 1/2 + 1/3 cannot be 2/5, because 2/5 is less than 1/2.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NBT.B.7-3",
+  "title": "How Many Fit?",
+  "emoji": "🧵",
+  "premise": "Dividing by a decimal asks how many of that small piece fit. Lots of small pieces can fit in a short length.",
+  "idea": "Dividing decimals: 7.2 ÷ 0.8 = 9, shown as copies of 0.8 laid along 7.2. Ignoring the decimal in the divisor (0.9) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

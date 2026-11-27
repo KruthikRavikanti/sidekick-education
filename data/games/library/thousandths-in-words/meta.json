@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NBT.A.3-1",
+  "title": "Thousandths in Words",
+  "emoji": "🔤",
+  "premise": "Read a decimal by its last place. 0.305 ends in the thousandths place, so it is counted in thousandths.",
+  "idea": "Reading and writing decimals to thousandths in standard, word and expanded form. Reading 0.305 as three hundred five is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NF.A.2-1",
+  "title": "Fraction Stories",
+  "emoji": "🚶",
+  "premise": "Read the story, decide whether the amounts are joined or taken away, then rename the fractions and compute.",
+  "idea": "Word problems adding and subtracting fractions with unlike denominators. Choosing the other operation is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

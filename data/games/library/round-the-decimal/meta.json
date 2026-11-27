@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NBT.A.4-1",
+  "title": "Round the Decimal",
+  "emoji": "🎳",
+  "premise": "Rounding decimals works like rounding whole numbers. Find the place, look one digit to the right.",
+  "idea": "Rounding decimals to any place. Rounding to a different place than the one asked for is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

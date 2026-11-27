@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NF.B.5-1",
+  "title": "Bigger or Smaller Than 20?",
+  "emoji": "🎚️",
+  "premise": "Multiplying does not always make a number bigger. Look at the fraction: is it more than 1, less than 1, or exactly 1?",
+  "idea": "Comparing the size of a product to one factor without multiplying, based on the size of the other factor. Thinking multiplication always makes bigger is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.MD.C.5-3",
+  "title": "Two Box Building",
+  "emoji": "🏬",
+  "premise": "A building made of two boxes has the volume of both boxes together. Find each one, then add.",
+  "idea": "Finding the volume of a solid made of two non-overlapping rectangular prisms by adding. Using only one part, or combining the parts incorrectly, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}
