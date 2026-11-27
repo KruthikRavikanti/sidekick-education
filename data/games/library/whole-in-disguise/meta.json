@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.NF.A.3-3",
+  "title": "Whole in Disguise",
+  "emoji": "🥸",
+  "premise": "Some fractions are whole numbers wearing a costume. Unmask them and sort them by what they are worth.",
+  "idea": "Whole numbers as fractions: 4/4 is 1 and 3/1 is 3. Not seeing 4/4 as a whole is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

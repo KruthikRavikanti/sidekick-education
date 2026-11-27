@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.B.5-2",
+  "title": "Group to Multiply",
+  "emoji": "🫧",
+  "premise": "With three numbers to multiply, you choose which two go first. Look for a pair that makes ten.",
+  "idea": "The associative property of multiplication: 3 × 5 × 2 = 3 × 10. Always multiplying the first two is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

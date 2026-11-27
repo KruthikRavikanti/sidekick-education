@@ -1,0 +1,9 @@
+{
+  "subskillId": "GA-3-NR.1.1-1",
+  "title": "Thousands Speller",
+  "emoji": "🏛️",
+  "premise": "Four-digit numbers need all four places filled, even when a place is empty. Write each number with digits.",
+  "idea": "Reading and writing four-digit numbers: zeros hold empty places. Leaving out a zero (345 for 3,045) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

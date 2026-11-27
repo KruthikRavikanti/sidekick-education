@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.A.1-1",
+  "title": "To the Minute",
+  "emoji": "⌚",
+  "premise": "Now the long hand stops between the numbers. Count by fives, then count the little marks, to read the exact minute.",
+  "idea": "Telling time to the nearest minute: count by fives to the last numeral and then by ones. Reading the nearby numeral as the minutes is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

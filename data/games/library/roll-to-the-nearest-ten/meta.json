@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.NBT.A.1-3",
+  "title": "Roll to the Nearest Ten",
+  "emoji": "⚽",
+  "premise": "The ball sits on a number between two tens. Roll it to the ten it is closer to.",
+  "idea": "Using a number line to round: the ball starts on the number and rolls to the nearer ten. Rolling the other way is the known slip.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

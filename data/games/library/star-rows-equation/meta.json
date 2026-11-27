@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.A.1-3",
+  "title": "Star Rows Equation",
+  "emoji": "⭐",
+  "premise": "Stars shine in neat rows. Write the multiplication sentence that tells how many stars there are.",
+  "idea": "Writing a multiplication equation for an array: rows times the number in each row equals the total. Adding the two numbers is the tempting slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

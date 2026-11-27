@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.B.3-1",
+  "title": "Scaled Graph",
+  "emoji": "🏟️",
+  "premise": "On this graph, each line going up stands for 5 votes, not 1. Read the bars with the scale in mind.",
+  "idea": "Reading a scaled bar graph where each step is five: the bar height is the number of steps times five. Counting each step as one is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

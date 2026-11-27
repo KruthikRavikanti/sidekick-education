@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.NBT.A.2-3",
+  "title": "Proof by Adding",
+  "emoji": "🧾",
+  "premise": "Every subtraction can be proved by adding back. Sort the answers whose proof really lands on the starting number.",
+  "idea": "Checking three-digit subtraction with addition: each card shows the subtraction and its check, and only correct ones add back to the starting number.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

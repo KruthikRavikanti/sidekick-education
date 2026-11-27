@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.C.7-1",
+  "title": "Zero the Hero",
+  "emoji": "🦸",
+  "premise": "Times zero wipes everything out, and times one changes nothing. Send each fact to its product.",
+  "idea": "Multiplication facts for 0, 1, 2, 5 and 10: the zero and one facts sit side by side, so treating n × 0 as n is caught.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

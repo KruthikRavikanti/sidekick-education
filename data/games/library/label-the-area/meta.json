@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.C.6-2",
+  "title": "Label the Area",
+  "emoji": "🔖",
+  "premise": "An area is counted in squares, so its label has to say square. Pick the right label for each area.",
+  "idea": "Labelling area with square units: an area of 12 squares one foot on a side is 12 square feet. A plain length unit is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.C.7-2",
+  "title": "One More Group",
+  "emoji": "➕",
+  "premise": "A fact you do not know is often one group more than a fact you do know. Build it from there.",
+  "idea": "Facts for 3, 4 and 6 from known facts: 6 × 7 is 5 × 7 plus one more 7. Adding the other factor instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.NBT.A.2-2",
+  "title": "Across the Zeros",
+  "emoji": "🕳️",
+  "premise": "A zero has nothing to lend. Reach across it to the next place, then finish the subtraction.",
+  "idea": "Subtracting three-digit numbers with regrouping across zeros. Taking the smaller digit from the larger in each place is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

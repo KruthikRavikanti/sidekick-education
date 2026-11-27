@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.A.1-2",
+  "title": "Equal Groups Garden",
+  "emoji": "🌷",
+  "premise": "Plant flowers in equal groups to show a multiplication fact. The first number is how many groups.",
+  "idea": "Showing a product as equal groups: 3 × 4 is 3 groups with 4 in each. Building 4 groups of 3 instead is the known slip, and the total is shown only in the guided rounds.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

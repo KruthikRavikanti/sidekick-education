@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.D.9-1",
+  "title": "Table Patterns",
+  "emoji": "🕸️",
+  "premise": "The times table is full of patterns. Look at one row and tap everything that is true about every number in it.",
+  "idea": "Finding patterns in the multiplication table: the child tests statements against every number in a row, instead of just listing the numbers.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

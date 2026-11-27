@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.G.A.2-2",
+  "title": "Unit Fraction Tags",
+  "emoji": "🎫",
+  "premise": "One equal part of each shape is shaded. Give the shaded part its fraction name.",
+  "idea": "Naming each equal part as a unit fraction of the whole: one of eight equal parts is 1/8. Naming the part by the count of parts (8) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

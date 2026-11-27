@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.D.8-2",
+  "title": "Missing Side",
+  "emoji": "🖼️",
+  "premise": "You know the distance all the way around the frame, and one side. Work back to find the side that is missing.",
+  "idea": "Finding an unknown side length from the perimeter. Subtracting only one known side is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

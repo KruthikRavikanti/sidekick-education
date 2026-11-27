@@ -1,0 +1,9 @@
+{
+  "subskillId": "GA-3-GSR.6.1-1",
+  "title": "Tilted but Parallel",
+  "emoji": "🛤️",
+  "premise": "Parallel lines never meet, even when they lean. Perpendicular lines make a square corner, even when turned.",
+  "idea": "Parallel and perpendicular segments: tilted pairs are included so the child uses the definition. Believing such lines must be level or straight up is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

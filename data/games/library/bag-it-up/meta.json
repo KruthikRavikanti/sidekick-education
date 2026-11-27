@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.A.2-2",
+  "title": "Bag It Up",
+  "emoji": "🥡",
+  "premise": "This time you know how many go in each bag. Add bags until all the fruit is packed.",
+  "idea": "Division as how many groups: the group size is fixed and the child finds the number of groups that uses up the total. Giving the group size as the answer is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

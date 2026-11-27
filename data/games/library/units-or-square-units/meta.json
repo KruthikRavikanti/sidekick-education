@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.C.5-1",
+  "title": "Units or Square Units?",
+  "emoji": "⬛",
+  "premise": "Length is measured along a line. Area is the space something covers. Sort each job by what it measures.",
+  "idea": "A unit square measures area: jobs that cover a surface are sorted from jobs that measure along an edge. Confusing area with length is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

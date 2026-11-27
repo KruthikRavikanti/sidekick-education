@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.A.3-4",
+  "title": "Deal the Cards",
+  "emoji": "🃏",
+  "premise": "Each story is about equal groups. Build the number sentence, with a ? for what you need to find.",
+  "idea": "Representing an equal-groups problem with an equation and a symbol for the unknown. Using the other operation is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

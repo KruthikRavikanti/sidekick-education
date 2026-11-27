@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.NBT.A.1-1",
+  "title": "Between the Tens",
+  "emoji": "🚏",
+  "premise": "Every number sits between two tens, and between two hundreds. Plant a flag on each neighbor.",
+  "idea": "Finding the two tens or hundreds a number lies between, the first step of rounding. Picking the wrong pair is the known slip.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

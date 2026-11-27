@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.B.4-1",
+  "title": "Quarter Inch Detective",
+  "emoji": "🔩",
+  "premise": "The ruler has little marks between the inches for halves and quarters. Slide the pointer to where the thing ends.",
+  "idea": "Reading a ruler to the nearest half and quarter inch: the pointer is set to where the object ends. Reading a between-mark as the next whole inch is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

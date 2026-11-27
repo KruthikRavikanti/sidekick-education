@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.A.1-2",
+  "title": "How Long Was It?",
+  "emoji": "⏳",
+  "premise": "Something starts at one time and ends at another. Work out how many minutes went by.",
+  "idea": "Finding elapsed time in minutes, including across the hour. Subtracting clock times as plain numbers (2:10 − 1:50 = 60) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

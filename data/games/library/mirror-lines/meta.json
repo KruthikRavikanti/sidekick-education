@@ -1,0 +1,9 @@
+{
+  "subskillId": "GA-3-GSR.6.3-1",
+  "title": "Mirror Lines",
+  "emoji": "❄️",
+  "premise": "A line of symmetry is a fold that makes two matching halves. Some shapes have several. Some lines only look like one.",
+  "idea": "Lines of symmetry in polygons: the diagonal of a rectangle is not a line of symmetry, though it passes through the middle. That is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+dial"
+}

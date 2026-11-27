@@ -45,7 +45,7 @@
     const frac = (a[0] || '0/1').split('/').map(Number), n = frac[0], d = frac[1] || 1;
     if (name === 'pie') { if (d === 1) out += '<circle cx="50" cy="50" r="42" fill="' + (n ? FC.shade : FC.pale) + '" stroke="' + FC.line + '" stroke-width="4"/>'; else for (let i = 0; i < d; i++) { const a0 = -Math.PI / 2 + i * TAU / d, a1 = a0 + TAU / d; out += '<path d="M 50 50 L ' + (50 + 42 * Math.cos(a0)).toFixed(1) + ' ' + (50 + 42 * Math.sin(a0)).toFixed(1) + ' A 42 42 0 ' + (d === 1 ? 1 : 0) + ' 1 ' + (50 + 42 * Math.cos(a1)).toFixed(1) + ' ' + (50 + 42 * Math.sin(a1)).toFixed(1) + ' Z" fill="' + (i < n ? FC.shade : FC.pale) + '" stroke="' + FC.line + '" stroke-width="4" stroke-linejoin="round"/>'; } }
     else if (name === 'pieU') { out += '<circle cx="50" cy="50" r="42" fill="' + FC.pale + '" stroke="' + FC.line + '" stroke-width="4"/>'; const cuts = { 2: [[30, 13, 30, 87]], 3: [[26, 15, 26, 85], [44, 8, 44, 92]], 4: [[30, 13, 30, 87], [8, 62, 92, 62]] }[+a[0]] || [[30, 13, 30, 87]]; cuts.forEach((c) => { out += '<line x1="' + c[0] + '" y1="' + c[1] + '" x2="' + c[2] + '" y2="' + c[3] + '" stroke="' + FC.line + '" stroke-width="4"/>'; }); }
-    else if (name === 'bar' || name === 'barU') { const even = name === 'bar', k = even ? d : +a[0], cuts = even ? Array.from({ length: k + 1 }, (_, i) => i / k) : ({ 2: [0, 0.3, 1], 3: [0, 0.2, 0.5, 1], 4: [0, 0.15, 0.4, 0.6, 1] }[k] || [0, 0.3, 1]); for (let i = 0; i < k; i++) out += '<rect x="' + (6 + 88 * cuts[i]).toFixed(1) + '" y="26" width="' + (88 * (cuts[i + 1] - cuts[i])).toFixed(1) + '" height="48" fill="' + (even && i < n ? FC.shade : FC.pale) + '" stroke="' + FC.line + '" stroke-width="4"/>'; }
+    else if (name === 'bar' || name === 'barU') { const even = name === 'bar', k = even ? d : +a[0], cuts = even ? Array.from({ length: k + 1 }, (_, i) => i / k) : ({ 2: [0, 0.3, 1], 3: [0, 0.2, 0.5, 1], 4: [0, 0.15, 0.4, 0.6, 1] }[k] || [0, 0.3, 1]); for (let i = 0; i < k; i++) out += '<rect x="' + (6 + 88 * cuts[i]).toFixed(1) + '" y="26" width="' + (88 * (cuts[i + 1] - cuts[i])).toFixed(1) + '" height="48" fill="' + ((even ? i < n : i < (+a[1] || 0)) ? FC.shade : FC.pale) + '" stroke="' + FC.line + '" stroke-width="4"/>'; }
     else if (name === 'sq4') { for (let i = 0; i < 4; i++) out += '<rect x="' + (10 + (i % 2) * 40) + '" y="' + (10 + Math.floor(i / 2) * 40) + '" width="40" height="40" fill="' + (i < n ? FC.shade : FC.pale) + '" stroke="' + FC.line + '" stroke-width="4"/>'; }
     else if (name === 'ngon') { const k = +a[0] || 5; out += poly(Array.from({ length: k }, (_, i) => { const t = -Math.PI / 2 + (k % 2 ? 0 : Math.PI / k) + i * TAU / k; return [50 + 42 * Math.cos(t), 52 + 42 * Math.sin(t)]; })); }
     else if (name === 'open') { const k = +a[0] || 3, pts = Array.from({ length: k + 1 }, (_, i) => { const t = -Math.PI / 2 + i * TAU / k; return [50 + 40 * Math.cos(t), 54 + 40 * Math.sin(t)]; }); pts[k] = [(pts[k - 1][0] + pts[0][0] * 1.2) / 2.2, (pts[k - 1][1] + pts[0][1] * 1.2) / 2.2 + 8]; out += '<polyline points="' + pts.map((q) => q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' ') + '" fill="none" stroke="' + FC.line + '" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>'; }
@@ -58,7 +58,7 @@
     else if (name === 'clock') { const hr = +a[0] || 12, mn = +a[1] || 0, ha = ((hr % 12) + mn / 60) * Math.PI / 6, ma = mn * Math.PI / 30; out += '<circle cx="50" cy="50" r="44" fill="#fff" stroke="' + FC.line + '" stroke-width="4"/>'; for (let i = 1; i <= 12; i++) out += '<text x="' + (50 + 34 * Math.sin(i * Math.PI / 6)).toFixed(1) + '" y="' + (50 - 34 * Math.cos(i * Math.PI / 6)).toFixed(1) + '" font-size="11" font-family="Fredoka, sans-serif" font-weight="600" fill="' + FC.line + '" text-anchor="middle" dominant-baseline="central">' + i + '</text>'; out += '<line x1="50" y1="50" x2="' + (50 + 20 * Math.sin(ha)).toFixed(1) + '" y2="' + (50 - 20 * Math.cos(ha)).toFixed(1) + '" stroke="' + FC.line + '" stroke-width="6" stroke-linecap="round"/><line x1="50" y1="50" x2="' + (50 + 31 * Math.sin(ma)).toFixed(1) + '" y2="' + (50 - 31 * Math.cos(ma)).toFixed(1) + '" stroke="' + FC.shade + '" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="50" r="4" fill="' + FC.line + '"/>'; }
     else if (name === 'arr') { const rc = (a[0] || '2x3').split('x').map(Number), cell = Math.min(88 / rc[1], 88 / rc[0]); for (let r = 0; r < rc[0]; r++) for (let c = 0; c < rc[1]; c++) out += '<circle cx="' + (50 + (c - (rc[1] - 1) / 2) * cell).toFixed(1) + '" cy="' + (50 + (r - (rc[0] - 1) / 2) * cell).toFixed(1) + '" r="' + (cell * 0.36).toFixed(1) + '" fill="' + FC.shade + '" stroke="' + FC.line + '" stroke-width="2.5"/>'; }
     else if (name === 'dots') { const k = +a[0] || 0; for (let i = 0; i < 10; i++) { const x = 8 + (i % 5) * 17, y = 32 + Math.floor(i / 5) * 18; out += '<rect x="' + x + '" y="' + y + '" width="17" height="18" fill="#fff" stroke="' + FC.line + '" stroke-width="2.5"/>' + (i < k ? '<circle cx="' + (x + 8.5) + '" cy="' + (y + 9) + '" r="5.6" fill="' + FC.shade + '"/>' : ''); } }
-    else if (name === 'lines') { const L = (x1, y1, x2, y2) => '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + FC.line + '" stroke-width="5" stroke-linecap="round"/>'; out += a[0] === 'par' ? L(10, 34, 90, 34) + L(10, 66, 90, 66) : a[0] === 'perp' ? L(10, 50, 90, 50) + L(50, 10, 50, 90) + '<rect x="50" y="38" width="12" height="12" fill="none" stroke="' + FC.shade + '" stroke-width="3"/>' : L(10, 30, 90, 70) + L(12, 78, 88, 22); }
+    else if (name === 'lines') { const L = (x1, y1, x2, y2) => '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + FC.line + '" stroke-width="5" stroke-linecap="round"/>'; out += a[0] === 'par' ? L(10, 34, 90, 34) + L(10, 66, 90, 66) : a[0] === 'par2' ? L(12, 60, 70, 14) + L(30, 86, 88, 40) : a[0] === 'perp2' ? L(14, 30, 86, 70) + L(64, 14, 36, 86) + '<path d="M 60 55.6 L 55 64.6 L 46 59.6" fill="none" stroke="' + FC.shade + '" stroke-width="3"/>' : a[0] === 'x2' ? L(10, 40, 90, 52) + L(14, 84, 86, 30) : a[0] === 'perp' ? L(10, 50, 90, 50) + L(50, 10, 50, 90) + '<rect x="50" y="38" width="12" height="12" fill="none" stroke="' + FC.shade + '" stroke-width="3"/>' : L(10, 30, 90, 70) + L(12, 78, 88, 22); }
     else if (name === 'rod') { const tens = +a[0] || 0, ones = +a[1] || 0; for (let i = 0; i < tens; i++) out += '<rect x="' + (6 + i * 10) + '" y="10" width="8" height="80" fill="#b7ce63" stroke="' + FC.line + '" stroke-width="2"/>'; for (let i = 0; i < ones; i++) out += '<rect x="' + (10 + tens * 10 + Math.floor(i / 5) * 11) + '" y="' + (82 - (i % 5) * 11) + '" width="8" height="8" fill="' + FC.shade + '" stroke="' + FC.line + '" stroke-width="2"/>'; }
     else if (name === 'poly') out += poly(String(a[0] || '').split(';').map((q) => q.split(',').map(Number)));
     else if (name === 'sym') { const shape = a[0] || 'heart', line = a[1] || 'v';
@@ -183,7 +183,7 @@
   VIEWS.bars = { h: 46, draw(v, c, W, H, live) {
     const bars = (c.given || []).map((g) => ({ name: String(g[0]), val: g[1], col: C.sky })).concat(v.map((val, i) => ({ name: String((c.names || [])[i] || ''), val: val, col: C.orange })));
     const cap = c.cap || Math.max.apply(null, bars.map((b) => b.val).concat([1])), tick = c.tick || (cap <= 12 ? 1 : cap <= 24 ? 2 : cap <= 60 ? 5 : cap / 10), left = 80, base = H - 66, top = 44, bw = (W - left - 20) / bars.length; let out = '';
-    for (let t = 0; t <= cap + 1e-9; t += tick) { const y = base - (base - top) * t / cap; out += Ln(left, y, W - 10, y, 2, C.soft) + T(left - 34, y, 28, nice(t)); }
+    for (let t = 0; t <= cap + 1e-9; t += tick) { const y = base - (base - top) * t / cap; out += Ln(left, y, W - 10, y, 2, C.soft) + (c.bare ? '' : T(left - 34, y, 28, nice(t))); }
     bars.forEach((b, i) => { const hgt = (base - top) * Math.min(b.val, cap) / cap, x = left + i * bw + bw * 0.16; if (c.stack) { for (let k = 0; k < b.val; k++) out += T(x + bw * 0.34, base - (base - top) * (k + 0.5) / cap, Math.min(46, (base - top) / cap * 0.9), '✕', 'fill="' + b.col + '"'); out += T(x + bw * 0.34, base + 34, Math.min(44, bw * 0.42), b.name); return; } out += R(x, base - hgt, bw * 0.68, hgt, b.col) + T(x + bw * 0.34, base + 34, Math.min(44, bw * 0.42), b.name); if (live || c.values) out += T(x + bw * 0.34, base - hgt - 20, 28, b.val); });
     return svg(W, H, out + Ln(left, base, W - 10, base, 5) + Ln(left, base, left, top - 6, 5));
   } };
@@ -225,19 +225,23 @@
   } };
   // a rectangle drawn to scale with its sides labelled: d [w, h], l ['8 cm', '3 cm'], grid shows unit squares
   VIEWS.rect = { h: 34, draw(v, c, W, H) {
-    const d = c.d || [v[0], v[1] || v[0]], l = c.l || [], k = Math.min((W - 260) / d[0], (H - 100) / d[1]), w = d[0] * k, h = d[1] * k, x = (W - w) / 2, y = (H - h) / 2 + 8; let out = R(x, y, w, h, C[c.color] || C.lime);
+    const d = c.d || [Math.max(1, v[0]), Math.max(1, v[1] || v[0])], l = c.l || [], k = Math.min((W - 260) / d[0], (H - 100 - (c.calc ? 40 : 0)) / d[1], c.unit || 999), w = d[0] * k, h = d[1] * k, x = (W - w) / 2, y = (H - h) / 2 + 8; let out = R(x, y, w, h, C[c.color] || C.lime);
+    if (c.split) out += R(x + c.split * k, y, w - c.split * k, h, C.sky);
     if (c.grid) { for (let i = 1; i < d[0]; i++) out += Ln(x + i * k, y, x + i * k, y + h, 2); for (let j = 1; j < d[1]; j++) out += Ln(x, y + j * k, x + w, y + j * k, 2); }
+    if (c.split) out += Ln(x + c.split * k, y - 8, x + c.split * k, y + h + 8, 7, C.orange);
     if (l[0] != null) out += T(x + w / 2, y - 26, 32, l[0]);
     if (l[1] != null) out += T(x + w + 20 + em(String(l[1])) * 16, y + h / 2, 32, l[1]);
     if (l[2] != null) out += T(x + w / 2, y + h + 26, 32, l[2]);
     if (l[3] != null) out += T(x - 20 - em(String(l[3])) * 16, y + h / 2, 32, l[3]);
+    if (c.calc) out += T(W / 2, H - 22, 30, (c.calc === 'area' ? '' : 'around ' + 2 * (d[0] + d[1])) + (c.calc === true ? '   ·   ' : '') + (c.calc === 'around' ? '' : 'inside ' + d[0] * d[1]));
     return svg(W, H, out);
   } };
   // a triangle (or any polygon) with labels: pts in a 0..100 box, sides and angles labelled in order, right marks a square corner
   VIEWS.poly = { h: 40, draw(v, c, W, H) {
     const raw = c.pts || [[10, 90], [90, 90], [10, 20]], k = Math.min((W - 240) / 100, (H - 90) / 100), x0 = (W - 100 * k) / 2, y0 = (H - 100 * k) / 2, P = raw.map((p) => [x0 + p[0] * k, y0 + p[1] * k]), n = P.length;
     const cx = P.reduce((a, p) => a + p[0], 0) / n, cy = P.reduce((a, p) => a + p[1], 0) / n; let out = '<polygon points="' + P.map((p) => nice(p[0]) + ',' + nice(p[1])).join(' ') + '" fill="' + (C[c.color] || C.sun) + '" stroke="' + C.forest + '" stroke-width="6" stroke-linejoin="round"/>';
-    (c.sides || []).forEach((text, i) => { if (text == null || text === '') return; const a = P[i], b = P[(i + 1) % n], mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, dx = mx - cx, dy = my - cy, m = Math.hypot(dx, dy) || 1; out += T(mx + dx / m * (26 + em(String(text)) * 9), my + dy / m * 32, 30, text); });
+    const inside = (x, y) => { let hit = false; for (let i = 0, j = n - 1; i < n; j = i++) { if ((P[i][1] > y) !== (P[j][1] > y) && x < (P[j][0] - P[i][0]) * (y - P[i][1]) / (P[j][1] - P[i][1]) + P[i][0]) hit = !hit; } return hit; };
+    (c.sides || []).forEach((text, i) => { if (text == null || text === '') return; const a = P[i], b = P[(i + 1) % n], mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, len = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1; let nx = (b[1] - a[1]) / len, ny = -(b[0] - a[0]) / len; if (inside(mx + nx * 6, my + ny * 6)) { nx = -nx; ny = -ny; } out += T(mx + nx * (24 + em(String(text)) * 10), my + ny * 30, 30, text); });
     (c.angles || []).forEach((text, i) => { if (text == null || text === '') return; const a = P[i], dx = cx - a[0], dy = cy - a[1], m = Math.hypot(dx, dy) || 1; out += T(a[0] + dx / m * 54, a[1] + dy / m * 46, 26, text); });
     (c.names || []).forEach((text, i) => { if (!text) return; const a = P[i], dx = a[0] - cx, dy = a[1] - cy, m = Math.hypot(dx, dy) || 1; out += T(a[0] + dx / m * 30, a[1] + dy / m * 30, 30, text); });
     if (c.right != null) { const a = P[c.right], b = P[(c.right + 1) % n], d = P[(c.right + n - 1) % n], u = [(b[0] - a[0]), (b[1] - a[1])], w = [(d[0] - a[0]), (d[1] - a[1])], lu = Math.hypot(u[0], u[1]), lw = Math.hypot(w[0], w[1]), s = 26; out += '<path d="M ' + nice(a[0] + u[0] / lu * s) + ' ' + nice(a[1] + u[1] / lu * s) + ' L ' + nice(a[0] + u[0] / lu * s + w[0] / lw * s) + ' ' + nice(a[1] + u[1] / lu * s + w[1] / lw * s) + ' L ' + nice(a[0] + w[0] / lw * s) + ' ' + nice(a[1] + w[1] / lw * s) + '" fill="none" stroke="' + C.forest + '" stroke-width="4"/>'; }
@@ -260,10 +264,10 @@
     return svg(W, H, out);
   } };
   // a row of pictures split into equal groups: dials are groups and how many in each
-  VIEWS.groups = { h: 34, draw(v, c, W, H) {
+  VIEWS.groups = { h: 34, draw(v, c, W, H, live) {
     const g = Math.max(0, v[0]), each = v.length > 1 ? v[1] : (c.each || 1); if (!g) return svg(W, H, '');
-    const gw = Math.min(W / g, 260), cols = Math.ceil(Math.sqrt(Math.max(each, 1))), rows = Math.ceil(Math.max(each, 1) / cols), cell = Math.min((gw - 30) / cols, (H - 40) / rows, 80); let out = '';
-    for (let k = 0; k < g; k++) { const x = (W - g * gw) / 2 + k * gw; out += R(x + 8, 12, gw - 16, H - 24, C.white, 'rx="24" stroke="' + C.forest + '" stroke-width="4"'); for (let i = 0; i < each; i++) out += T(x + gw / 2 + ((i % cols) - (cols - 1) / 2) * cell, H / 2 + (Math.floor(i / cols) - (rows - 1) / 2) * cell, nice(cell * 0.74), c.icon || '🟡'); }
+    const gw = Math.min((W - (live ? 110 : 0)) / g, 260), cols = Math.ceil(Math.sqrt(Math.max(each, 1))), rows = Math.ceil(Math.max(each, 1) / cols), cell = Math.min((gw - 30) / cols, (H - 40) / rows, 80); let out = '';
+    if (live) out += T(W - 58, H / 2, 44, g * each); for (let k = 0; k < g; k++) { const x = (W - (live ? 110 : 0) - g * gw) / 2 + k * gw; out += R(x + 8, 12, gw - 16, H - 24, C.white, 'rx="24" stroke="' + C.forest + '" stroke-width="4"'); for (let i = 0; i < each; i++) out += T(x + gw / 2 + ((i % cols) - (cols - 1) / 2) * cell, H / 2 + (Math.floor(i / cols) - (rows - 1) / 2) * cell, nice(cell * 0.74), c.icon || '🟡'); }
     return svg(W, H, out);
   } };
 
@@ -288,7 +292,7 @@
     bigsquare: [[[0, 0], [1, 0], [1, 1], [0, 1]], [[1, 0], [2, 0], [2, 1], [1, 1]], [[0, 1], [1, 1], [1, 2], [0, 2]], [[1, 1], [2, 1], [2, 2], [1, 2]]],
   };
   VIEWS.fillshape = { h: 40, draw(v, c, W, H) {
-    const parts = PIECES[c.shape] || PIECES.hex, all = [].concat.apply([], parts), xs = all.map((q) => q[0]), ys = all.map((q) => q[1]), x0 = Math.min.apply(null, xs), y0 = Math.min.apply(null, ys), bw = Math.max.apply(null, xs) - x0, bh = Math.max.apply(null, ys) - y0;
+    const gm = /^grid:(\d+)x(\d+)$/.exec(String(c.shape || '')), parts = gm ? [].concat.apply([], range(+gm[2]).map((r) => range(+gm[1]).map((q) => [[q, r], [q + 1, r], [q + 1, r + 1], [q, r + 1]]))) : (PIECES[c.shape] || PIECES.hex), all = [].concat.apply([], parts), xs = all.map((q) => q[0]), ys = all.map((q) => q[1]), x0 = Math.min.apply(null, xs), y0 = Math.min.apply(null, ys), bw = Math.max.apply(null, xs) - x0, bh = Math.max.apply(null, ys) - y0;
     const k = Math.min((W - 300) / bw, (H - 60) / bh), ox = (W - 150 - bw * k) / 2, oy = (H - bh * k) / 2, pt = (q) => nice(ox + (q[0] - x0) * k) + ',' + nice(oy + (q[1] - y0) * k), cols = [C.orange, C.sky, C.lime, C.berry, C.sun, C.coral], n = Math.max(0, v[0]); let out = '';
     parts.forEach((poly, i) => { out += '<polygon points="' + poly.map(pt).join(' ') + '" fill="' + (i < n ? cols[i % cols.length] : C.white) + '" stroke="' + C.forest + '" stroke-width="' + (i < n ? 5 : 3) + '" ' + (i < n ? '' : 'stroke-dasharray="10 10"') + ' stroke-linejoin="round"/>'; });
     if (n > parts.length) out += T(W - 110, H / 2, 34, '+' + (n - parts.length) + ' extra');
@@ -303,9 +307,10 @@
 
   // measuring with units laid end to end: an object `len` units long, and as many units as the dial (or `sizes` for a still picture)
   VIEWS.units = { h: 30, draw(v, c, W, H) {
-    const len = c.len || 5, sizes = c.sizes || range(Math.max(0, v[0] || 0)).map(() => c.size || 1), span = Math.max(len, sizes.reduce((a, b) => a + b, 0) + (c.gaps || 0) * Math.max(0, sizes.length - 1), c.span || 0) + 0.6, u = (W - 60) / span, x0 = 30; let out = '', x = x0;
+    const len = c.len || 5, sizes = c.ruler ? [] : c.sizes || range(Math.max(0, v[0] || 0)).map(() => c.size || 1), span = Math.max(len, sizes.reduce((a, b) => a + b, 0) + (c.gaps || 0) * Math.max(0, sizes.length - 1), c.span || 0) + 0.6, u = (W - 60) / span, x0 = 30; let out = '', x = x0;
     out += R(x0, 34, len * u, 70, C[c.color] || C.sun, 'rx="18" stroke="' + C.forest + '" stroke-width="5"') + (c.icon ? T(x0 + len * u / 2, 70, 52, c.icon) : '');
     sizes.forEach((sz, i) => { out += R(x + 3, 150, sz * u - 6, 56, i % 2 ? C.sky : C.orange, 'rx="14" stroke="' + C.forest + '" stroke-width="4"'); x += sz * u + (c.gaps || 0) * u; });
+    if (c.ruler) { const tick = c.tick || 0.5, top = 132; out += R(x0 - 22, top, (span - 0.2) * u + 44, 110, '#fff3c4', 'rx="10" stroke="' + C.forest + '" stroke-width="4"'); for (let t = 0; t <= span - 0.4 + 1e-9; t += tick) { const whole = near(Math.round(t), t), half = near(Math.round(t * 2), t * 2); out += Ln(x0 + t * u, top, x0 + t * u, top + (whole ? 46 : half ? 32 : 20), whole ? 4 : 3); if (whole) out += T(x0 + t * u, top + 76, 30, Math.round(t)); } if (v && v.length) out += T(x0 + v[0] * u, top - 20, 44, '🔻'); out += Ln(x0 + len * u, 30, x0 + len * u, top, 3, C.forest, 'stroke-dasharray="8 8"'); return svg(W, H, out); }
     out += Ln(x0, 120, x0, 226, 3, C.forest, 'stroke-dasharray="8 8"') + Ln(x0 + len * u, 120, x0 + len * u, 226, 3, C.forest, 'stroke-dasharray="8 8"');
     return svg(W, H, out);
   } };
@@ -550,7 +555,8 @@
 
   // DIAL: set one to three dials and watch the picture change
   KINDS.dial = function (o, solo, y0) {
-    const dials = (o.dials || []).map((d) => isArr(d) ? { label: d[0], min: d[1], max: d[2], step: d[3] || 1, start: d[4] != null ? d[4] : d[1], unit: d[5] } : d);
+    const dials = (o.dials || []).map((d) => isArr(d) ? { label: d[0], min: d[1], max: d[2], step: d[3] || 1, start: d[4] != null ? d[4] : d[1], unit: d[5], den: d[6] } : Object.assign({ step: 1, start: d.min }, d));
+    const mixed = (v, den) => { const k = Math.round(v * den), w = Math.trunc(k / den), r = Math.abs(k % den); return (k < 0 ? '−' : '') + (r ? (Math.abs(w) ? Math.abs(w) + ' ' : '') + r + '/' + den : String(Math.abs(w))); };
     const ans = [].concat(o.ans), alts = [ans].concat((o.also || []).map((a) => [].concat(a))), n = dials.length;
     if (n < 1 || n > 3 || ans.length !== n) fail('dial', 'give 1 to 3 dials and one answer for each');
     dials.forEach((d, i) => { alts.forEach((a) => { if (a[i] < d.min || a[i] > d.max || !near(Math.round((a[i] - d.min) / d.step) * d.step + d.min, a[i])) fail('dial', 'answer ' + a[i] + ' is not on dial ' + (i + 1)); }); if (Math.abs(ans[i] - d.start) / d.step > 60) fail('dial', 'answer is too many steps from the start'); });
@@ -564,7 +570,7 @@
       setup(stage) {
         const paint = drawView(stage, { x: 50 - vw / 2, y: y0, w: vw, h: vh }, cfg, !solo, dials.map((d) => d.start), dials.map((d) => d.label));
         dials.forEach((d, i) => { const x = pos[i][0], y = yd + pos[i][1] * rowH; if (d.label) stage.label({ text: d.label, x: x, y: y + 2.4, size: 3.2, card: true });
-          stage.stepper({ id: 'd' + (i + 1), x: x, y: y + 11.6, min: d.min, max: d.max, step: d.step, value: d.start, unit: d.unit, format: d.unit ? null : (v) => String(nice(v)).replace('-', '−') }); });
+          stage.stepper({ id: 'd' + (i + 1), x: x, y: y + 11.6, min: d.min, max: d.max, step: d.step, value: d.start, unit: d.unit, format: d.den ? (v) => mixed(v, d.den) : d.unit ? null : (v) => String(nice(v)).replace('-', '−') }); });
         stage.on('change', () => paint(vals(stage)));
       },
       ok: (stage) => { const cur = vals(stage); return alts.some((a) => eq(cur, a)); },
@@ -576,14 +582,14 @@
   // LINE: slide the marker along the number line
   KINDS.line = function (o, solo, y0) {
     const L = o.line || [0, 10, 1], min = L[0], max = L[1], step = L[2] || 1, count = Math.round((max - min) / step), ans = [].concat(o.ans), m = ans.length;
-    const from = o.from != null ? [].concat(o.from) : ans.map(() => min), onLine = (v) => v >= min - 1e-9 && v <= max + 1e-9 && near(Math.round((v - min) / step) * step + min, v);
+    const from = o.from != null ? [].concat(o.from) : ans.map(() => min), onLine = (v) => v >= min - 1e-6 && v <= max + 1e-6 && Math.abs(Math.round((v - min) / step) * step + min - v) < 1e-5;
     if (count < 3 || count > 120 || m < 1 || m > 2 || !ans.every(onLine) || !from.every(onLine)) fail('line', 'the answer must sit on a line of 3 to 120 steps');
-    if (ans.every((a, i) => near(a, from[i]))) fail('line', 'the marker starts on the answer');
+    if (ans.every((a, i) => Math.abs(a - from[i]) < 1e-5)) fail('line', 'the marker starts on the answer');
     const kinds = String(o.fmt || '').split(':'), den = +kinds[1] || 0;
-    const fmt = (v) => { if (kinds[0] === 'frac' || kinds[0] === 'mixed') { const k = Math.round(v * den), w = Math.trunc(k / den), r = Math.abs(k % den); if (!r) return String(w).replace('-', '−'); return kinds[0] === 'mixed' && w ? String(w).replace('-', '−') + ' {' + r + '/' + den + '}' : '{' + String(k).replace('-', '−') + '/' + den + '}'; } return (o.pre || '') + String(nice(v)).replace('-', '−') + (o.unit || ''); };
+    const fmt = (v) => { if (kinds[0] === 'clock') { const t = (+kinds[1] || 12) * 60 + Math.round(v), hh = Math.floor(t / 60) % 12 || 12; return hh + ':' + String(t % 60).padStart(2, '0'); } if (kinds[0] === 'frac' || kinds[0] === 'mixed') { const k = Math.round(v * den), w = Math.trunc(k / den), r = Math.abs(k % den); if (!r) return String(w).replace('-', '−'); return kinds[0] === 'mixed' && w ? String(w).replace('-', '−') + ' {' + r + '/' + den + '}' : '{' + String(k).replace('-', '−') + '/' + den + '}'; } return (o.pre || '') + String(nice(v)).replace('-', '−') + (o.unit || ''); };
     const every = L[3] || [1, 2, 4, 5, 10, 20, 25, 50].find((e) => count / e <= (den ? 8 : 10)) || 50, icons = [o.icon || '📍', o.icon2 || '🚩'], ty = y0 + 17;
-    const cur = (stage) => range(m).map((i) => stage.get('m' + (i + 1)).value), eq = (c, a) => a.every((v, i) => near(c[i], v));
-    const slides = (a) => a.map((v, i) => ({ slide: 'm' + (i + 1), value: v })).filter((s, i) => !near(s.value, from[i]));
+    const srt = (list) => o.pair ? list.slice().sort((a, b) => a - b) : list, cur = (stage) => range(m).map((i) => stage.get('m' + (i + 1)).value), eq = (c, a) => { const x = srt(c), y = srt(a); return y.every((v, i) => Math.abs(x[i] - v) < 1e-5); };
+    const slides = (a) => a.map((v, i) => ({ slide: 'm' + (i + 1), value: v })).filter((s, i) => Math.abs(s.value - from[i]) > 1e-5);
     return {
       height: ty + 14 + (solo && !o.readout ? 0 : 9) + 3,
       setup(stage) {

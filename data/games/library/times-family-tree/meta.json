@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.B.6-2",
+  "title": "Times Family Tree",
+  "emoji": "🌳",
+  "premise": "Three numbers make a family of multiplication and division facts. Tap every fact that truly belongs.",
+  "idea": "Related multiplication and division facts: the product is the whole in all four facts. Facts with the product in the place of a factor are the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

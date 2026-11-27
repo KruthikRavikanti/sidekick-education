@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.A.2-2",
+  "title": "Kilos and Liters",
+  "emoji": "⚗️",
+  "premise": "The kitchen lab weighs and pours all day. Read each problem and key in the amount.",
+  "idea": "One-step word problems with masses and liquid volumes in the same unit. Choosing the opposite operation is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

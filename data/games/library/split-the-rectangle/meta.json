@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.C.7-3",
+  "title": "Split the Rectangle",
+  "emoji": "🧮",
+  "premise": "Cut a rectangle into two smaller ones along the orange line. Their areas add up to the whole.",
+  "idea": "Area models for the distributive property: a 4 by 7 rectangle is a 4 by 5 and a 4 by 2 together. Forgetting the second part is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.A.4-2",
+  "title": "Flashlight Find",
+  "emoji": "🔦",
+  "premise": "Part of each division fact is hidden in the dark. Shine the light on the number that belongs there.",
+  "idea": "Finding the unknown in division equations with the unknown in different places. Dividing the two numbers that are shown is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

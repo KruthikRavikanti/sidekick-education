@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.A.3-2",
+  "title": "Garden Rows",
+  "emoji": "🥬",
+  "premise": "The farmer plants in rows. Count the plants inside the garden, not the path around it.",
+  "idea": "Array and area word problems: rows times columns gives the total inside. Adding the sides, or going around the outside, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

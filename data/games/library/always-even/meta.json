@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.D.9-2",
+  "title": "Always Even?",
+  "emoji": "🎭",
+  "premise": "Some products come out even every single time. Find out which ones, and why.",
+  "idea": "Explaining arithmetic patterns with properties: a multiple of an even number is always even because it contains a factor of 2.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}
