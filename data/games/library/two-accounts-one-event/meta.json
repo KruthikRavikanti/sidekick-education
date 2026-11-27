@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.5.6-1",
+  "title": "Two Accounts, One Event",
+  "emoji": "📰",
+  "premise": "Two people can describe the same event very differently. Notice what they agree on and where their views split.",
+  "idea": "Analyzing multiple accounts of the same event, noting similarities and differences in point of view. Treating the accounts as identical is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

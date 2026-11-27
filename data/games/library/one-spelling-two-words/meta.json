@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.5.5-3",
+  "title": "One Spelling, Two Words",
+  "emoji": "🎸",
+  "premise": "Homographs are spelled the same but mean different things, like bass the fish and bass the low sound.",
+  "idea": "Using the relationship between particular words (synonyms, antonyms, homographs) to better understand each of the words. Confusing homographs is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

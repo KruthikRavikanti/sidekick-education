@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.5.4-3",
+  "title": "Say It, Mean It",
+  "emoji": "🔊",
+  "premise": "A dictionary shows how to say a word and lists its meanings. Check both, and pick the meaning that fits.",
+  "idea": "Consulting reference materials to find the pronunciation and determine the precise meaning of key words. Picking the incorrect definition is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.5.4-1",
+  "title": "Sum It Up",
+  "emoji": "🦅",
+  "premise": "Understanding a passage means you can boil it down to its main points without losing the meaning.",
+  "idea": "Reading grade-level text with purpose and understanding, shown by choosing an accurate summary. Reading without understanding is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

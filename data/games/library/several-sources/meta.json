@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.5.7-1",
+  "title": "Several Sources",
+  "emoji": "📚",
+  "premise": "Good research checks several sources. Each one adds something the others leave out.",
+  "idea": "Conducting short research projects that use several sources. Using one source is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.5.5-1",
+  "title": "Compare the Structures",
+  "emoji": "🏗️",
+  "premise": "Two texts on the same topic can be organized in different ways. Name how each one is built.",
+  "idea": "Comparing and contrasting the overall structure of events, ideas or information in two or more texts. Not being able to name the structures is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

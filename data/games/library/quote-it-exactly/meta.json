@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.5.1-1",
+  "title": "Quote It Exactly",
+  "emoji": "❝",
+  "premise": "A quote uses the exact words from the text, inside quotation marks. Changing a word makes it a misquote.",
+  "idea": "Quoting accurately from a text when explaining what it says and when drawing inferences. Paraphrasing loosely or misquoting is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

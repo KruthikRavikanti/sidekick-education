@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.5.9-1",
+  "title": "Evidence for Analysis",
+  "emoji": "🧾",
+  "premise": "When you analyze a text, every claim needs proof from the text. Without evidence it is only an opinion.",
+  "idea": "Drawing evidence from literary or informational texts to support analysis, reflection and research. Writing without evidence is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

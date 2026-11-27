@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.5.8-1",
+  "title": "Paraphrase, Do Not Copy",
+  "emoji": "🔁",
+  "premise": "Paraphrasing means saying the same idea in your own words and sentence shape. Changing one word is still copying.",
+  "idea": "Summarizing or paraphrasing information in notes and finished work, and providing a list of sources. Copying text word for word is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.5.4-2",
+  "title": "Right Speed Reader",
+  "emoji": "🐇",
+  "premise": "Racing through the words is not good reading. Change your speed to fit the text so you can still understand it.",
+  "idea": "Reading with appropriate rate and expression. Reading too fast to understand is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.5.7-1",
+  "title": "Find It in Two Sources",
+  "emoji": "🌉",
+  "premise": "One source may not hold the whole answer. Pull facts from two and put them together.",
+  "idea": "Drawing on information from multiple print or digital sources to locate an answer or solve a problem. Relying on one source is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

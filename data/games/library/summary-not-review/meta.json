@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.5.2-2",
+  "title": "Summary, Not Review",
+  "emoji": "📝",
+  "premise": "A summary reports what happened. It leaves out what you thought of it. I loved it belongs in a review.",
+  "idea": "Summarizing a text. Including opinions in the summary is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

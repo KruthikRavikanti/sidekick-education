@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.5.6-1",
+  "title": "Type and Collaborate",
+  "emoji": "💻",
+  "premise": "Technology lets writers draft long pieces, get comments from others and publish their work.",
+  "idea": "Using technology to produce and publish writing and to interact and collaborate with others, with sufficient keyboarding skills. Slow typing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+row"
+}

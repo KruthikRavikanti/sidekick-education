@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.5.2-1",
+  "title": "Two Main Ideas",
+  "emoji": "✌️",
+  "premise": "A longer article can make more than one big point. Find both, and tell them from the details.",
+  "idea": "Determining two or more main ideas of a text. Finding only one is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}
