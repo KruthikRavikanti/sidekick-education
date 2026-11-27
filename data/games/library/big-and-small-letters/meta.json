@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.K.1-1",
+  "title": "Big and Small Letters",
+  "emoji": "🅰️",
+  "premise": "Every letter comes in two sizes: uppercase and lowercase. A name starts with an uppercase letter.",
+  "idea": "Printing upper- and lowercase letters: letters are sorted by case and a name is built with correct capitalization. Mixing upper and lowercase at random is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+row"
+}

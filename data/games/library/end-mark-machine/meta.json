@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.K.2-2",
+  "title": "End Mark Machine",
+  "emoji": "❓",
+  "premise": "Every sentence ends with a mark. Telling gets a period, asking gets a question mark, and shouting gets an exclamation point.",
+  "idea": "Recognizing and naming end punctuation. Leaving off end marks or using a period for a question is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

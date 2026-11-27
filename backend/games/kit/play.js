@@ -369,8 +369,9 @@
     const cast = bare || o.cast === '' || o.cast === false || o.kind === 'type' ? [] : toks(o.cast).filter(isIcon);
     if (o.pic != null) { const size = o.picSize || 7.5, lines = Math.max(1, Math.ceil(em(String(o.pic)) * size * 1.05 / 88)); parts.pic = { size: size, h: lines * size * 1.3 + 1 }; h += parts.pic.h + 1; }
     if (o.fig) { const cfg = viewCfg(o.fig); if (!VIEWS[cfg.type]) fail('fig', 'unknown figure "' + cfg.type + '"'); parts.fig = { cfg: cfg, h: viewH(cfg), w: cfg.w || (VIEWS[cfg.type].w || 80) }; h += parts.fig.h + 1.5; }
-    if (o.q != null) { const text = String(o.q), hero = cast.length ? cast[0] : null, w = hero ? 80 : 92, size = o.qSize || (em(text) > 80 ? 3.7 : em(text) <= 9 ? 7 : 4.3), lines = estLines(text, w - 6, size); parts.q = { size: size, w: w, hero: hero, h: Math.max(hero ? 10.5 : 0, lines * size * 1.2 + 3.4) }; h += parts.q.h + 1.5; }
-    else if (cast.length && !parts.pic && !parts.fig) { parts.cast = { list: cast.slice(0, 6), h: 11 }; h += 11.5; }
+    if (o.read != null) { const text = String(o.read), rows = text.split(' / '), size = o.readSize || (em(text) > 120 ? 3.7 : em(text) > 70 ? 4.1 : em(text) > 26 ? 4.7 : 6), lines = rows.reduce((a, r) => a + estLines(r, 90, size), 0); parts.read = { size: size, rows: rows, h: lines * size * 1.3 + 3.6 + (o.readTitle ? size * 1.5 : 0) }; h += parts.read.h + 1.5; }
+    if (o.q != null) { const text = String(o.q), hero = cast.length && !parts.read ? cast[0] : null, w = hero ? 80 : 92, size = o.qSize || (em(text) > 80 ? 3.7 : em(text) <= 9 ? 7 : 4.3), lines = estLines(text, w - 6, size); parts.q = { size: size, w: w, hero: hero, h: Math.max(hero ? 10.5 : 0, lines * size * 1.2 + 3.4) }; h += parts.q.h + 1.5; }
+    else if (cast.length && !parts.pic && !parts.fig && !parts.read) { parts.cast = { list: cast.slice(0, 6), h: 11 }; h += 11.5; }
     return { h: h, parts: parts };
   }
   function drawHead(stage, o, head) {
@@ -378,6 +379,7 @@
     if (p.cast) { const n = p.cast.list.length; p.cast.list.forEach((icon, i) => stage.sprite({ id: i ? 'cast' + i : 'hero', emoji: icon, size: i ? 6.6 : 9, x: i ? 26 + (i - 1) * (66 / Math.max(1, n - 2)) + (n === 2 ? 33 : 0) : 9, y: y + (i ? 5.2 + (i % 2) * 1.6 : 5.6), float: !i, z: 3 })); y += 11.5; }
     if (p.pic) { stage.label({ id: 'pic', text: String(o.pic), x: 50, y: y + p.pic.h / 2, w: 94, size: p.pic.size }); y += p.pic.h + 1; }
     if (p.fig) { drawView(stage, { x: 50 - p.fig.w / 2, y: y, w: p.fig.w, h: p.fig.h }, p.fig.cfg, p.fig.cfg.live === true); y += p.fig.h + 1.5; }
+    if (p.read) { const el = stage.add('<div class="skp-page" style="font-size:' + p.read.size + 'cqw">' + (o.readTitle ? '<b>' + rich(o.readTitle) + '</b>' : '') + p.read.rows.map((r) => '<span>' + rich(r) + '</span>').join('') + '</div>', { x: 3, y: y, w: 94, h: p.read.h, z: 2 }); el.style.pointerEvents = 'none'; y += p.read.h + 1.5; }
     if (p.q) { if (p.q.hero) stage.sprite({ id: 'hero', emoji: p.q.hero, size: 8.6, x: 8, y: y + p.q.h / 2, float: true, z: 3 }); stage.label({ id: 'q', text: String(o.q), x: p.q.hero ? 57 : 50, y: y + p.q.h / 2, w: p.q.w, size: p.q.size, card: true }); y += p.q.h + 1.5; }
     return y;
   }
@@ -505,9 +507,11 @@
 
   // PICK: tap every one that fits (and leave the rest)
   KINDS.pick = function (o, solo, y0) {
-    const yes = toks(o.yes), no = toks(o.no);
+    const marked = o.mark != null ? (isArr(o.mark) ? o.mark.map(String) : toks(o.mark)).map((w) => w.charAt(0) === '*' ? { t: w.replace(/^\*|\*$/g, ''), y: true } : { t: w, y: false }) : null;
+    const yes = marked ? marked.filter((x) => x.y).map((x) => x.t) : toks(o.yes), no = marked ? marked.filter((x) => !x.y).map((x) => x.t) : toks(o.no);
     if (!yes.length || yes.length + no.length < 4) fail('pick', 'give at least 4 things, with at least one that fits');
-    let items = order(yes.map((t) => ({ t: t, y: true })).concat(no.map((t) => ({ t: t, y: false }))), o, solo);
+    if (solo && yes.length === 1 && yes.length + no.length < 6) fail('pick', 'one right answer among fewer than 6 choices is too easy to guess in the last round: add choices, or make two of them fit');
+    let items = marked || order(yes.map((t) => ({ t: t, y: true })).concat(no.map((t) => ({ t: t, y: false }))), o, solo);
     items.forEach((x, i) => { x.id = 't' + (i + 1); });
     const opt = { cardW: o.cardW || (items.some((x) => em(x.t) > 30) ? 92 : 45), maxW: 44, fs: o.fs, icon: o.icon || 11, figW: o.figW }, sizes = items.map((x) => tileSize(x.t, opt));
     const fieldH = flowH(sizes, 92, 2.2) + 4, noteH = solo ? 0 : 8, byT = (t) => items.find((x) => x.t === t);
@@ -719,6 +723,8 @@
     if (!make) fail('game', 'unknown kind "' + o.kind + '"');
     let head = headSize(o), p = make(o, solo, 2 + head.h); const mistakes = [];
     if (p.height > 130.5 && (head.parts.cast || (head.parts.q && head.parts.q.hero))) { head = headSize(o, true); p = make(o, solo, 2 + head.h); }
+    // the last round shuffles its pieces, and a shuffle can wrap onto one more line: deal again rather than give up
+    for (let again = 0; solo && p.height > 130.5 && again < 12 && !(S.play && S.play.strict); again++) p = make(o, solo, 2 + head.h);
     if (p.height > 130.5) fail(o.kind, 'this round is too tall for the stage (' + Math.round(p.height) + ' of 130). Use fewer or shorter pieces.');
     ['', '2', '3'].forEach((n) => {
       const what = o['trap' + n]; if (what == null) return;

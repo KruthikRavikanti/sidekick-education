@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.K.1-2",
+  "title": "Naming or Doing",
+  "emoji": "🏃",
+  "premise": "Some words name a thing. Other words tell what something does. A sentence needs both.",
+  "idea": "Using frequently occurring nouns and verbs: words are sorted into naming words and doing words. Leaving out or not recognizing the verb is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

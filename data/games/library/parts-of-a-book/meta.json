@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.K.5-1",
+  "title": "Parts of a Book",
+  "emoji": "📕",
+  "premise": "A book has a front cover, a back cover and a title page. Each one is in its own place.",
+  "idea": "Identifying the front cover, back cover and title page of a book. Calling the title page the cover is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

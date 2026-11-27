@@ -176,6 +176,9 @@ button { font: inherit; color: inherit; }
 .skp-table { border-collapse: collapse; background: #fff; font: 600 4.2cqw/1.1 "Fredoka", sans-serif; border-radius: 2cqw; overflow: hidden; box-shadow: 0 0 0 .5cqw var(--sk-forest); }
 .skp-table th, .skp-table td { padding: 1.4cqw 3cqw; border: .3cqw solid var(--sk-border); text-align: center; }
 .skp-table th { background: var(--sk-sun); }
+.skp-page { width: 100%; height: 100%; overflow: hidden; display: flex; flex-direction: column; justify-content: center; font-family: "Nunito", sans-serif; font-weight: 700; line-height: 1.3; text-align: left; color: var(--sk-forest); background: #fffdf6; border: .4cqw solid var(--sk-border); border-left: 1.4cqw solid var(--sk-sun); border-radius: 2.4cqw; padding: 1cqw 3cqw; }
+.skp-page > b { display: block; font-family: "Fredoka", sans-serif; font-size: 1.12em; margin-bottom: .2em; }
+.skp-page > span { display: block; }
 .skp-fig { width: 100%; height: 100%; padding: .7cqw; background: #fff; border: .5cqw solid var(--sk-forest); border-radius: 2.2cqw; box-shadow: 0 .8cqw 0 var(--sk-forest); }
 .skp-fig > svg { width: 100%; height: 100%; display: block; }
 .sk-sprite.skp-on > .skp-fig { background: var(--sk-sun); }

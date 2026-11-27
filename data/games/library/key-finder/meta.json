@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.K.6-1",
+  "title": "Key Finder",
+  "emoji": "⌨️",
+  "premise": "Writers can type their words with keys. Find each letter key, in order, to type the word.",
+  "idea": "Exploring digital tools to produce writing: the child finds letter keys in order to type a word and learns what the space and delete keys do.",
+  "author": "claude-stand-in",
+  "play": "row+fill"
+}

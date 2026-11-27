@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.K.1-1",
+  "title": "Who, What, Where",
+  "emoji": "🐻",
+  "premise": "After a story, good readers can say who was in it, what happened, and where it took place.",
+  "idea": "Answering who, what and where questions about key details in a story. Answering from pictures or personal experience instead of the story is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

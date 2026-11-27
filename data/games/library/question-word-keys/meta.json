@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.K.1-4",
+  "title": "Question Word Keys",
+  "emoji": "🗝️",
+  "premise": "Each question word opens a different kind of answer. Who is for people, where is for places, when is for time.",
+  "idea": "Understanding and using question words: each question word is matched to the kind of answer it asks for. Answering where with a time is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

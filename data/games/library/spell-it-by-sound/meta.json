@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.K.2-4",
+  "title": "Spell It by Sound",
+  "emoji": "🐖",
+  "premise": "Say the word slowly and stretch it out. Then put down one letter for each sound you hear.",
+  "idea": "Spelling simple words phonetically using sound-letter knowledge. Using letters that do not match the sounds is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.K.5-1",
+  "title": "Story or Poem?",
+  "emoji": "📜",
+  "premise": "Stories and poems look and sound different. Poems have short lines, a beat, and often words that rhyme.",
+  "idea": "Recognizing common types of texts: storybooks and poems are told apart by their features. Not knowing how a poem differs from a story is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

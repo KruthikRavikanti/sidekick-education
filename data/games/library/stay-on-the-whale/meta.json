@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.K.10-1",
+  "title": "Stay on the Whale",
+  "emoji": "🐋",
+  "premise": "When we read a fact book together, good listeners think and talk about the topic of the book.",
+  "idea": "Engaging in group reading of informational text with purpose: comments are sorted by whether they are about the topic. Losing focus when there is no story is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.K.1-1",
+  "title": "Reading Road",
+  "emoji": "🚗",
+  "premise": "Words are read like a road: start at the left, drive to the right, then go down to the next line.",
+  "idea": "Following print left to right and top to bottom: the child rebuilds a sentence in reading order. Reading right to left, or starting on the lower line, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

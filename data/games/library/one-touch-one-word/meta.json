@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.K.1-2",
+  "title": "One Touch, One Word",
+  "emoji": "👆",
+  "premise": "Every word you say matches one word on the page. Touch each word once as you read it.",
+  "idea": "Matching spoken words to written words: one finger is placed for each word in a sentence. Touching once per syllable is the known slip.",
+  "author": "claude-stand-in",
+  "play": "build"
+}

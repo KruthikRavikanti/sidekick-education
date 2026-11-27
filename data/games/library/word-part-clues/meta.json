@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.K.4-2",
+  "title": "Word Part Clues",
+  "emoji": "🔧",
+  "premise": "Little parts added to a word change what it means. Un means not. Re means again.",
+  "idea": "Using common inflections and affixes as clues to meaning: unhappy means not happy. Ignoring the added word part is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

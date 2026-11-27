@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.K.2-1",
+  "title": "Tell It Again",
+  "emoji": "🌱",
+  "premise": "Retelling a story means telling the big things that happened, in the same order as the book.",
+  "idea": "Retelling a familiar story with key details in order. Retelling only the ending or one favorite part first is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

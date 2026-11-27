@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.K.9-1",
+  "title": "Two Frog Books",
+  "emoji": "📚",
+  "premise": "Two books on the same topic share some facts. Each one also tells something the other does not.",
+  "idea": "Identifying basic similarities and differences between two texts on the same topic. Talking about only one text is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

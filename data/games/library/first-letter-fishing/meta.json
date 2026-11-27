@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.K.3-1",
+  "title": "First Letter Fishing",
+  "emoji": "🎣",
+  "premise": "Each picture word starts with one sound. Catch the letter that makes that first sound.",
+  "idea": "Knowing the most common sound for each consonant: each picture is matched to the letter of its first sound.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

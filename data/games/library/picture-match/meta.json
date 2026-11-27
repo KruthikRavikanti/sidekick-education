@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.K.7-1",
+  "title": "Picture Match",
+  "emoji": "🖼️",
+  "premise": "The pictures in a book show what the words are telling. Match each picture to its part of the story.",
+  "idea": "Describing the relationship between illustrations and the story: each sentence is matched to the picture that shows it. Describing pictures without linking them to the words is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

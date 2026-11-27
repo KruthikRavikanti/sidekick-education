@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.K.8-1",
+  "title": "Where to Look",
+  "emoji": "🧭",
+  "premise": "To answer a question you have to know where to look: in a book, out the window, or in your own memory.",
+  "idea": "Recalling information from experience or gathering it from provided sources to answer a question. Answering off topic is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}
