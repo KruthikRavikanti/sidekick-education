@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.OA.B.4-3",
+  "title": "Prime Time",
+  "emoji": "👑",
+  "premise": "A prime number has exactly two factors: 1 and itself. Everything else bigger than 1 can be broken into smaller factors.",
+  "idea": "Telling prime from composite: odd composites such as 9, 21 and 51 catch the idea that all odd numbers are prime, and 1 is neither.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

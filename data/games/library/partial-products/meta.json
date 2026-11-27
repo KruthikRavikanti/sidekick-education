@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NBT.B.5-3",
+  "title": "Partial Products",
+  "emoji": "🗃️",
+  "premise": "The box is drawn, but its rooms are empty. Fill each room with the product of its row and its column.",
+  "idea": "Connecting partial products to the area model: each cell is the product of its row and column values. Losing a zero (20 × 40 = 80) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

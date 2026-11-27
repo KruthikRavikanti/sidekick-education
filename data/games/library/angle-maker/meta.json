@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.MD.C.6-2",
+  "title": "Angle Maker",
+  "emoji": "🦾",
+  "premise": "Swing the arm open until it points at the right mark on the protractor. No number will help you, so read the marks.",
+  "idea": "Sketching angles of a given measure: the arm is opened against a protractor with no number readout. Using the other scale is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

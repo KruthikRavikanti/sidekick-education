@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.G.A.3-2",
+  "title": "Every Fold Line",
+  "emoji": "🦋",
+  "premise": "A line of symmetry can be straight up, flat, or slanted. Find every fold that makes the two halves match.",
+  "idea": "Finding all lines of symmetry of a figure, including horizontal and diagonal ones. Drawing only vertical lines is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+fill"
+}

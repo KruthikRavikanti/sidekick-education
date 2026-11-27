@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NBT.B.4-2",
+  "title": "Zero Canyon",
+  "emoji": "🏜️",
+  "premise": "A row of zeros stretches across the number like a canyon. Trade your way across it, one place at a time.",
+  "idea": "Subtracting multi-digit numbers across zeros. Taking the smaller digit from the larger in each place is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

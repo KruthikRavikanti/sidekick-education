@@ -39,7 +39,7 @@
   const poly = (pts, fill, more) => '<polygon points="' + pts.map((q) => Number(q[0].toFixed(1)) + ',' + Number(q[1].toFixed(1))).join(' ') + '" fill="' + (fill || FC.fill) + '" stroke="' + FC.line + '" stroke-width="4" stroke-linejoin="round" ' + (more || '') + '/>';
   const TAU = 2 * Math.PI;
   const TRI = { e: [[50, 12], [92, 86], [8, 86]], r: [[14, 14], [14, 86], [88, 86]], s: [[10, 84], [94, 84], [66, 22]], i: [[50, 8], [78, 90], [22, 90]], o: [[6, 84], [70, 84], [96, 40]], t: [[50, 30], [62, 70], [38, 70]] };
-  const QUAD = { sq: [[16, 16], [84, 16], [84, 84], [16, 84]], rect: [[8, 28], [92, 28], [92, 72], [8, 72]], tall: [[30, 6], [70, 6], [70, 94], [30, 94]], rhomb: [[50, 8], [88, 50], [50, 92], [12, 50]], trap: [[30, 26], [70, 26], [94, 76], [6, 76]], para: [[28, 26], [94, 26], [72, 76], [6, 76]], kite: [[50, 6], [80, 36], [50, 94], [20, 36]], odd: [[12, 20], [80, 12], [92, 70], [30, 88]] };
+  const QUAD = { sq: [[16, 16], [84, 16], [84, 84], [16, 84]], rect: [[8, 28], [92, 28], [92, 72], [8, 72]], tall: [[30, 6], [70, 6], [70, 94], [30, 94]], rhomb: [[50, 22], [96, 50], [50, 78], [4, 50]], trap: [[30, 26], [70, 26], [94, 76], [6, 76]], para: [[28, 26], [94, 26], [72, 76], [6, 76]], kite: [[50, 6], [80, 36], [50, 94], [20, 36]], odd: [[12, 20], [80, 12], [92, 70], [30, 88]] };
   function mini(token) {
     const parts = String(token).slice(1).split(':'), name = parts[0], a = parts.slice(1); let out = '';
     const frac = (a[0] || '0/1').split('/').map(Number), n = frac[0], d = frac[1] || 1;
@@ -54,16 +54,18 @@
     else if (name === 'quad') out += poly(QUAD[a[0]] || QUAD.sq);
     else if (name === 'circle') out += '<circle cx="50" cy="50" r="' + (a[0] === 's' ? 16 : 42) + '" fill="' + FC.fill + '" stroke="' + FC.line + '" stroke-width="4"/>';
     else if (name === 'oval') out += '<ellipse cx="50" cy="50" rx="44" ry="26" fill="' + FC.fill + '" stroke="' + FC.line + '" stroke-width="4"/>';
-    else if (name === 'ang') { const t = (+a[0] || 60) * Math.PI / 180; out += '<path d="M 44 78 A 26 26 0 ' + (+a[0] > 180 ? 1 : 0) + ' 0 ' + (18 + 26 * Math.cos(t)).toFixed(1) + ' ' + (78 - 26 * Math.sin(t)).toFixed(1) + '" fill="none" stroke="' + FC.shade + '" stroke-width="5"/><line x1="18" y1="78" x2="92" y2="78" stroke="' + FC.line + '" stroke-width="5" stroke-linecap="round"/><line x1="18" y1="78" x2="' + (18 + 70 * Math.cos(t)).toFixed(1) + '" y2="' + (78 - 70 * Math.sin(t)).toFixed(1) + '" stroke="' + FC.line + '" stroke-width="5" stroke-linecap="round"/>'; }
+    else if (name === 'ang') { const t = (+a[0] || 60) * Math.PI / 180, RL = a[1] === 's' ? 40 : 70; out += '<path d="M 44 78 A 26 26 0 ' + (+a[0] > 180 ? 1 : 0) + ' 0 ' + (18 + 26 * Math.cos(t)).toFixed(1) + ' ' + (78 - 26 * Math.sin(t)).toFixed(1) + '" fill="none" stroke="' + FC.shade + '" stroke-width="5"/><line x1="18" y1="78" x2="' + (18 + RL + 4) + '" y2="78" stroke="' + FC.line + '" stroke-width="5" stroke-linecap="round"/><line x1="18" y1="78" x2="' + (18 + RL * Math.cos(t)).toFixed(1) + '" y2="' + (78 - RL * Math.sin(t)).toFixed(1) + '" stroke="' + FC.line + '" stroke-width="5" stroke-linecap="round"/>'; }
     else if (name === 'clock') { const hr = +a[0] || 12, mn = +a[1] || 0, ha = ((hr % 12) + mn / 60) * Math.PI / 6, ma = mn * Math.PI / 30; out += '<circle cx="50" cy="50" r="44" fill="#fff" stroke="' + FC.line + '" stroke-width="4"/>'; for (let i = 1; i <= 12; i++) out += '<text x="' + (50 + 34 * Math.sin(i * Math.PI / 6)).toFixed(1) + '" y="' + (50 - 34 * Math.cos(i * Math.PI / 6)).toFixed(1) + '" font-size="11" font-family="Fredoka, sans-serif" font-weight="600" fill="' + FC.line + '" text-anchor="middle" dominant-baseline="central">' + i + '</text>'; out += '<line x1="50" y1="50" x2="' + (50 + 20 * Math.sin(ha)).toFixed(1) + '" y2="' + (50 - 20 * Math.cos(ha)).toFixed(1) + '" stroke="' + FC.line + '" stroke-width="6" stroke-linecap="round"/><line x1="50" y1="50" x2="' + (50 + 31 * Math.sin(ma)).toFixed(1) + '" y2="' + (50 - 31 * Math.cos(ma)).toFixed(1) + '" stroke="' + FC.shade + '" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="50" r="4" fill="' + FC.line + '"/>'; }
     else if (name === 'arr') { const rc = (a[0] || '2x3').split('x').map(Number), cell = Math.min(88 / rc[1], 88 / rc[0]); for (let r = 0; r < rc[0]; r++) for (let c = 0; c < rc[1]; c++) out += '<circle cx="' + (50 + (c - (rc[1] - 1) / 2) * cell).toFixed(1) + '" cy="' + (50 + (r - (rc[0] - 1) / 2) * cell).toFixed(1) + '" r="' + (cell * 0.36).toFixed(1) + '" fill="' + FC.shade + '" stroke="' + FC.line + '" stroke-width="2.5"/>'; }
     else if (name === 'dots') { const k = +a[0] || 0; for (let i = 0; i < 10; i++) { const x = 8 + (i % 5) * 17, y = 32 + Math.floor(i / 5) * 18; out += '<rect x="' + x + '" y="' + y + '" width="17" height="18" fill="#fff" stroke="' + FC.line + '" stroke-width="2.5"/>' + (i < k ? '<circle cx="' + (x + 8.5) + '" cy="' + (y + 9) + '" r="5.6" fill="' + FC.shade + '"/>' : ''); } }
-    else if (name === 'lines') { const L = (x1, y1, x2, y2) => '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + FC.line + '" stroke-width="5" stroke-linecap="round"/>'; out += a[0] === 'par' ? L(10, 34, 90, 34) + L(10, 66, 90, 66) : a[0] === 'par2' ? L(12, 60, 70, 14) + L(30, 86, 88, 40) : a[0] === 'perp2' ? L(14, 30, 86, 70) + L(64, 14, 36, 86) + '<path d="M 60 55.6 L 55 64.6 L 46 59.6" fill="none" stroke="' + FC.shade + '" stroke-width="3"/>' : a[0] === 'x2' ? L(10, 40, 90, 52) + L(14, 84, 86, 30) : a[0] === 'perp' ? L(10, 50, 90, 50) + L(50, 10, 50, 90) + '<rect x="50" y="38" width="12" height="12" fill="none" stroke="' + FC.shade + '" stroke-width="3"/>' : L(10, 30, 90, 70) + L(12, 78, 88, 22); }
+    else if (name === 'lines') { const L = (x1, y1, x2, y2) => '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + FC.line + '" stroke-width="5" stroke-linecap="round"/>'; out += a[0] === 'par' ? L(10, 34, 90, 34) + L(10, 66, 90, 66) : a[0] === 'par2' ? L(12, 60, 70, 14) + L(30, 86, 88, 40) : a[0] === 'par3' ? L(10, 34, 90, 34) + L(34, 66, 66, 66) : a[0] === 'perp2' ? L(14, 30, 86, 70) + L(64, 14, 36, 86) + '<path d="M 60 55.6 L 55 64.6 L 46 59.6" fill="none" stroke="' + FC.shade + '" stroke-width="3"/>' : a[0] === 'x2' ? L(10, 40, 90, 52) + L(14, 84, 86, 30) : a[0] === 'perp' ? L(10, 50, 90, 50) + L(50, 10, 50, 90) + '<rect x="50" y="38" width="12" height="12" fill="none" stroke="' + FC.shade + '" stroke-width="3"/>' : L(10, 30, 90, 70) + L(12, 78, 88, 22); }
     else if (name === 'rod') { const tens = +a[0] || 0, ones = +a[1] || 0; for (let i = 0; i < tens; i++) out += '<rect x="' + (6 + i * 10) + '" y="10" width="8" height="80" fill="#b7ce63" stroke="' + FC.line + '" stroke-width="2"/>'; for (let i = 0; i < ones; i++) out += '<rect x="' + (10 + tens * 10 + Math.floor(i / 5) * 11) + '" y="' + (82 - (i % 5) * 11) + '" width="8" height="8" fill="' + FC.shade + '" stroke="' + FC.line + '" stroke-width="2"/>'; }
+    else if (name === 'geo') { const kind = a[0] || 'seg', dot = (x, y) => '<circle cx="' + x + '" cy="' + y + '" r="6" fill="' + FC.line + '"/>', arrow = (x, y, dx, dy) => '<path d="M ' + x + ' ' + y + ' l ' + (-dx * 12 - dy * 7) + ' ' + (-dy * 12 + dx * 7) + ' M ' + x + ' ' + y + ' l ' + (-dx * 12 + dy * 7) + ' ' + (-dy * 12 - dx * 7) + '" stroke="' + FC.line + '" stroke-width="5" fill="none" stroke-linecap="round"/>', u = [0.94, -0.34], x1 = 14, y1 = 66, x2 = 86, y2 = 40;
+      if (kind === 'point') out += dot(50, 50); else { out += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + FC.line + '" stroke-width="5" stroke-linecap="round"/>'; if (kind === 'seg') out += dot(x1, y1) + dot(x2, y2); else if (kind === 'ray') out += dot(x1, y1) + arrow(x2, y2, u[0], u[1]); else out += arrow(x2, y2, u[0], u[1]) + arrow(x1, y1, -u[0], -u[1]); } }
     else if (name === 'poly') out += poly(String(a[0] || '').split(';').map((q) => q.split(',').map(Number)));
     else if (name === 'sym') { const shape = a[0] || 'heart', line = a[1] || 'v';
       out += shape === 'heart' ? '<path d="M 50 86 C 10 56 8 26 30 20 C 42 17 50 26 50 34 C 50 26 58 17 70 20 C 92 26 90 56 50 86 Z" fill="' + FC.fill + '" stroke="' + FC.line + '" stroke-width="4" stroke-linejoin="round"/>' : shape === 'circle' ? '<circle cx="50" cy="50" r="36" fill="' + FC.fill + '" stroke="' + FC.line + '" stroke-width="4"/>' : shape === 'tri' ? poly([[50, 14], [80, 84], [20, 84]]) : shape === 'sq' ? poly([[20, 20], [80, 20], [80, 80], [20, 80]]) : shape === 'arrow' ? poly([[50, 12], [84, 46], [62, 46], [62, 86], [38, 86], [38, 46], [16, 46]]) : shape === 'flag' ? poly([[24, 16], [84, 34], [24, 52], [24, 86], [18, 86], [18, 16]]) : poly([[14, 30], [86, 30], [86, 70], [14, 70]]);
-      const ends = { v: [50, 4, 50, 96], h: [4, 50, 96, 50], d: [8, 8, 92, 92], o: [34, 4, 34, 96], u: [4, 38, 96, 38] }[line] || [50, 4, 50, 96];
+      const ends = { v: [50, 4, 50, 96], h: [4, 50, 96, 50], d: [8, 8, 92, 92], e: [92, 8, 8, 92], o: [34, 4, 34, 96], u: [4, 38, 96, 38] }[line] || [50, 4, 50, 96];
       out += '<line x1="' + ends[0] + '" y1="' + ends[1] + '" x2="' + ends[2] + '" y2="' + ends[3] + '" stroke="' + FC.shade + '" stroke-width="5" stroke-dasharray="9 7" stroke-linecap="round"/>'; }
     else if (name === 'sqcut') { const cut = a[0] || 'v', sh = +a[1] || 0, P = { v: [[[14, 14], [50, 14], [50, 86], [14, 86]], [[50, 14], [86, 14], [86, 86], [50, 86]]], h: [[[14, 14], [86, 14], [86, 50], [14, 50]], [[14, 50], [86, 50], [86, 86], [14, 86]]], d: [[[14, 14], [86, 14], [14, 86]], [[86, 14], [86, 86], [14, 86]]], u: [[[14, 14], [36, 14], [36, 86], [14, 86]], [[36, 14], [86, 14], [86, 86], [36, 86]]], t: [[[14, 14], [38, 14], [38, 86], [14, 86]], [[38, 14], [62, 14], [62, 86], [38, 86]], [[62, 14], [86, 14], [86, 86], [62, 86]]], w: [[[14, 14], [86, 14], [86, 38], [14, 38]], [[14, 38], [86, 38], [86, 62], [14, 62]], [[14, 62], [86, 62], [86, 86], [14, 86]]], q: [[[14, 14], [50, 14], [50, 50], [14, 50]], [[50, 14], [86, 14], [86, 50], [50, 50]], [[14, 50], [50, 50], [50, 86], [14, 86]], [[50, 50], [86, 50], [86, 86], [50, 86]]], x: [[[14, 14], [86, 14], [50, 50]], [[86, 14], [86, 86], [50, 50]], [[86, 86], [14, 86], [50, 50]], [[14, 86], [14, 14], [50, 50]]] }[cut];
       (P || []).forEach((q, i) => { out += poly(q, i < sh ? FC.shade : FC.pale); }); }
@@ -77,9 +79,10 @@
     if (isFig(t)) { mini(t); const fw = opt.figW || 15; return { type: 'fig', w: fw, h: fw }; }
     if (isIcon(t)) { const s = opt.icon || 10.5; return { type: 'icon', s: s, w: s * 1.18, h: s * 1.18 }; }
     const fs = opt.fs || 4.4, w = Math.max(9.5, em(t) * fs + 5.8);
-    if (w <= (opt.maxW || 40)) return { type: 'text', s: fs, w: w, h: Math.max(9.5, fs * 1.05 + 3) };
+    const fr = String(t).indexOf('{') >= 0;
+    if (w <= (opt.maxW || 40)) return { type: 'text', s: fs, w: w, h: Math.max(9.5, fs * (fr ? 1.75 : 1.05) + 3) };
     const cw = opt.cardW || 44, lines = Math.max(1, Math.ceil(em(t) * 3.7 * 1.12 / (cw - 5.2)));
-    return { type: 'card', w: cw, h: Math.max(9.5, lines * 4.45 + 4.4) };
+    return { type: 'card', w: cw, h: Math.max(9.5, lines * 4.45 + 4.4 + (fr ? Math.min(lines, String(t).split('{').length - 1) * 2.4 : 0)) };
   }
   function tile(stage, o) {
     const z = tileSize(o.t, o);
@@ -88,7 +91,7 @@
     if (z.type === 'fig') sp = stage.sprite(Object.assign(base, { html: mini(o.t), w: z.w, h: z.h }));
     else if (z.type === 'icon') sp = stage.sprite(Object.assign(base, { emoji: o.t, size: z.s }));
     else if (z.type === 'text') sp = stage.sprite(Object.assign(base, { text: o.t, size: z.s, color: o.color }));
-    else { sp = stage.sprite(Object.assign(base, { html: '<div class="skp-card">' + rich(o.t) + '</div>', w: z.w, h: z.h })); sp.el.style.height = 'auto'; }
+    else { sp = stage.sprite(Object.assign(base, { html: '<div class="skp-card"><span>' + rich(o.t) + '</span></div>', w: z.w, h: z.h })); sp.el.style.height = 'auto'; }
     if (o.zone) { sp.homeZone = o.zone; sp.place(o.zone); }
     return sp;
   }
@@ -172,6 +175,7 @@
   VIEWS.angle = { h: 40, draw(v, c, W, H) {
     const full = c.full || v[0] > 180, cx = W / 2, cy = full ? H / 2 : H - 34, L = Math.min(W / 2 - 60, full ? H / 2 - 20 : H - 60), a = v[0] * Math.PI / 180, ar = Math.min(70, L * 0.45);
     const ex = cx + Math.cos(a) * L, ey = cy - Math.sin(a) * L; let out = '';
+    if (c.protractor) { out += '<path d="M ' + (cx - L) + ' ' + cy + ' A ' + L + ' ' + L + ' 0 0 1 ' + (cx + L) + ' ' + cy + ' Z" fill="rgba(110,195,244,.22)" stroke="' + C.forest + '" stroke-width="4"/>'; for (let t = 0; t <= 180; t += 10) { const r = t * Math.PI / 180, big = t % 30 === 0; out += Ln(cx + Math.cos(r) * L, cy - Math.sin(r) * L, cx + Math.cos(r) * (L - (big ? 22 : 12)), cy - Math.sin(r) * (L - (big ? 22 : 12)), big ? 4 : 2); if (big) { const end = t === 0 || t === 180, up = end ? 26 : 0; out += T(cx + Math.cos(r) * (L - 48), cy - Math.sin(r) * (L - 48) - up, 38, t) + (c.twoScales && !end ? T(cx + Math.cos(r) * (L - 92), cy - Math.sin(r) * (L - 92), 30, 180 - t, 'style="fill:' + C.berry + '"') : ''); } } }
     if (c.ref != null) { const b = c.ref * Math.PI / 180; out += Ln(cx, cy, cx + Math.cos(b) * L, cy - Math.sin(b) * L, 5, C.sky, 'stroke-dasharray="14 12"'); }
     if (v[0] > 0) out += '<path d="M ' + (cx + ar) + ' ' + cy + ' A ' + ar + ' ' + ar + ' 0 ' + (v[0] > 180 ? 1 : 0) + ' 0 ' + nice(cx + Math.cos(a) * ar) + ' ' + nice(cy - Math.sin(a) * ar) + '" fill="none" stroke="' + C.orange + '" stroke-width="8"/>';
     if (v[0] === 90) out += R(cx, cy - 34, 34, 34, 'none', 'stroke="' + C.orange + '" stroke-width="6"');
@@ -317,7 +321,7 @@
 
   // a tape (bar) diagram: two rows of segments on one scale. A segment is a number, or 'x' for the first dial, 'y' for the second.
   VIEWS.tape = { h: 34, draw(v, c, W, H, live) {
-    const val = (q) => q === 'x' ? v[0] : q === 'y' ? v[1] : q, rows = [c.top || [], c.bottom || []], sums = rows.map((r) => r.reduce((a, q) => a + Math.max(0, val(q)), 0)), span = Math.max(c.cap || 0, sums[0], sums[1], 1), k = (W - 60) / span, names = c.names || []; let out = '';
+    const val = (q) => q === 'x' ? v[0] : q === 'y' ? v[1] : q, rows = [c.top || [], c.rep ? range(Math.max(0, Math.min(14, Math.round(v[0] || 0)))).map(() => c.rep) : (c.bottom || [])], sums = rows.map((r) => r.reduce((a, q) => a + Math.max(0, val(q)), 0)), span = Math.max(c.cap || 0, sums[0], sums[1], 1), k = (W - 60) / span, names = c.names || []; let out = '';
     rows.forEach((r, ri) => { let x = 30; const y = 40 + ri * 130, cols = ri ? [C.orange, C.lime, C.berry] : [C.sky, C.sun, C.mint];
       r.forEach((q, i) => { const n = Math.max(0, val(q)), w = n * k, unknown = q === 'x' || q === 'y'; if (w <= 0) return; out += R(x, y, w, 76, unknown ? C.white : cols[i % cols.length], 'rx="10" stroke="' + C.forest + '" stroke-width="5" ' + (unknown ? 'stroke-dasharray="14 10"' : '')); if (w > 44) out += T(x + w / 2, y + 38, 34, unknown ? (live || c.show ? n : '?') : (c.hide && c.hide[ri] && c.hide[ri][i] ? '?' : n)); x += w; });
       if (names[ri]) out += T(30 + em(String(names[ri])) * 13, y - 20, 26, names[ri]); });
@@ -436,7 +440,7 @@
     const psize = o.pSize || 3.9, geo = []; let y = y0;
     if (mode === 'cols') { rows.forEach((r, i) => geo.push({ px: 3 + i * colW + colW / 2, py: y0 + top / 2 - 0.5, sx: 3 + i * colW + 1, sy: y0 + top, sw: colW - 2 })); y = y0 + top + slotH; }
     else rows.forEach((r) => {
-      const pw = mode === 'side' ? 60 : 92, ps = /[A-Za-z0-9]/.test(r.p) ? psize : 6.4, ph = estLines(r.p, pw - 2, ps) * ps * 1.2 + 3.4;
+      const pw = mode === 'side' ? 60 : 92, ps = /[A-Za-z0-9]/.test(r.p) ? psize : 6.4, ph = isFig(r.p) ? 15 : estLines(r.p, pw - 2, ps) * ps * 1.2 + 3.4;
       if (mode === 'side') { const rh = Math.max(ph, slotH); geo.push({ px: 3 + pw / 2, py: y + rh / 2, pw: pw, ps: ps, sx: 65, sy: y + (rh - slotH) / 2, sw: 32 }); y += rh + 2.2; }
       else { const sw = Math.min(94, tw + 5); geo.push({ px: 50, py: y + ph / 2, pw: pw, ps: ps, sx: 50 - sw / 2, sy: y + ph + 1, sw: sw }); y += ph + slotH + 3.4; }
     });
@@ -451,6 +455,7 @@
         rows.forEach((r, i) => {
           const g = geo[i];
           if (mode === 'cols') { if (isFig(r.p)) stage.sprite({ id: 'p' + (i + 1), html: mini(r.p), w: 20, h: 20, x: g.px, y: g.py, label: 'picture ' + (i + 1) }); else if (isIcon(r.p)) stage.sprite({ id: 'p' + (i + 1), emoji: r.p, size: 11, x: g.px, y: g.py }); else stage.label({ id: 'p' + (i + 1), text: r.p, x: g.px, y: g.py, size: 6, card: true }); }
+          else if (isFig(r.p)) stage.sprite({ id: 'p' + (i + 1), html: mini(r.p), w: 14, h: 14, x: g.px, y: g.py, label: 'picture ' + (i + 1) });
           else stage.label({ id: 'p' + (i + 1), text: r.p, x: g.px, y: g.py, w: g.pw, size: g.ps, card: true });
           stage.zone({ id: 'slot' + (i + 1), x: g.sx, y: g.sy, w: g.sw, h: slotH, look: 'slot', label: 'Place ' + (i + 1), showLabel: false, layout: 'grid', cols: 1, rows: 1, capacity: 1, swap: true });
         });
@@ -570,7 +575,7 @@
       setup(stage) {
         const paint = drawView(stage, { x: 50 - vw / 2, y: y0, w: vw, h: vh }, cfg, !solo, dials.map((d) => d.start), dials.map((d) => d.label));
         dials.forEach((d, i) => { const x = pos[i][0], y = yd + pos[i][1] * rowH; if (d.label) stage.label({ text: d.label, x: x, y: y + 2.4, size: 3.2, card: true });
-          stage.stepper({ id: 'd' + (i + 1), x: x, y: y + 11.6, min: d.min, max: d.max, step: d.step, value: d.start, unit: d.unit, format: d.den ? (v) => mixed(v, d.den) : d.unit ? null : (v) => String(nice(v)).replace('-', '−') }); });
+          stage.stepper({ id: 'd' + (i + 1), x: x, y: y + 11.6, min: d.min, max: d.max, step: d.step, value: d.start, unit: d.unit, format: (o.blind || d.blind) ? () => '↻' : d.den ? (v) => mixed(v, d.den) : d.unit ? null : (v) => String(nice(v)).replace('-', '−') }); });
         stage.on('change', () => paint(vals(stage)));
       },
       ok: (stage) => { const cur = vals(stage); return alts.some((a) => eq(cur, a)); },
@@ -664,7 +669,7 @@
   // TYPE: key in a number and send it
   KINDS.type = function (o, solo, y0) {
     const ans = String(o.ans), also = [ans].concat((o.also || []).map(String)), all = also.concat(['trap', 'trap2', 'trap3'].filter((k) => o[k] != null).map((k) => String(o[k])));
-    const keys = all.some((t) => t.indexOf('/') >= 0) ? 'fraction' : all.some((t) => t.indexOf('.') >= 0) ? 'decimal' : null, maxLength = keys ? 7 : 5;
+    const keys = all.some((t) => t.indexOf('/') >= 0) ? 'fraction' : all.some((t) => t.indexOf('.') >= 0) ? 'decimal' : null, maxLength = o.maxLength || (keys ? 7 : 6);
     const num = (t) => { const p = String(t).split('/'); return p.length === 2 ? Number(p[0]) / Number(p[1]) : Number(t); };
     all.forEach((t) => { if (!/^[0-9./]+$/.test(t) || t.length > maxLength || !isFinite(num(t))) fail('type', '"' + t + '" cannot be typed on the keypad'); });
     const cfg = viewCfg(o.view), vh = cfg ? viewH(cfg) : 0, is = (stage, t) => { const kp = stage.get('k'); if (!kp.value) return false; return o.exact ? kp.value === String(t) : near(kp.number, num(t)); };

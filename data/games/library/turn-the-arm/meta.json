@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.MD.C.5-2",
+  "title": "Turn the Arm",
+  "emoji": "🎡",
+  "premise": "An angle is a turn. A full turn goes all the way around the circle, and every other angle is a fraction of that.",
+  "idea": "Measuring an angle as a fraction of a full turn: a quarter turn is 1/4 of the circle, or 90 degrees. Not relating angles to turns is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+dial"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NF.B.3-1",
+  "title": "Fifths Join Up",
+  "emoji": "🧩",
+  "premise": "Adding fractions joins pieces of the same size. The pieces do not change size when you join them.",
+  "idea": "Adding and subtracting fractions as joining and separating parts of the same whole. Adding the denominators too (1/5 + 2/5 = 3/10) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NBT.B.6-2",
+  "title": "Chunk It Out",
+  "emoji": "🥖",
+  "premise": "Take away big friendly chunks of the divisor, one at a time. Add up the chunks to get the answer.",
+  "idea": "Dividing with partial quotients: easy multiples of the divisor are subtracted and the partial quotients are added. Writing the partial quotients side by side instead of adding is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

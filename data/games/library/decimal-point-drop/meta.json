@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NF.C.6-1",
+  "title": "Decimal Point Drop",
+  "emoji": "💧",
+  "premise": "A decimal is another way to write tenths and hundredths. The first place after the point is tenths, the second is hundredths.",
+  "idea": "Writing tenths and hundredths as decimals: 7/100 is 0.07. Writing 0.7 for 7/100 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

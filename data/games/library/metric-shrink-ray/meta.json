@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.MD.A.1-1",
+  "title": "Metric Shrink Ray",
+  "emoji": "🔬",
+  "premise": "Zap a measurement into a smaller unit. Smaller units means you need more of them.",
+  "idea": "Converting within the metric system from a larger unit to a smaller one. Dividing when the unit gets smaller is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

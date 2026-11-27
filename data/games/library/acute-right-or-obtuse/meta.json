@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.G.A.1-2",
+  "title": "Acute, Right or Obtuse",
+  "emoji": "🦈",
+  "premise": "A right angle is a square corner, exactly 90 degrees. Acute angles are smaller and obtuse angles are bigger.",
+  "idea": "Classifying angles as acute, right or obtuse by comparing with 90 degrees. Judging by how wide it looks without checking against 90 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

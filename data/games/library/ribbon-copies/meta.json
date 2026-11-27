@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.OA.A.2-2",
+  "title": "Ribbon Copies",
+  "emoji": "🧣",
+  "premise": "How many copies of the short one fit along the long one? Key in a number and watch the copies line up.",
+  "idea": "Solving how-many-times-as-many problems with division: the typed number lays that many copies of the smaller amount under the larger. Subtracting is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

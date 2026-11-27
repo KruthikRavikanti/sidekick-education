@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.MD.B.4-1",
+  "title": "Eighths Line Plot",
+  "emoji": "🐛",
+  "premise": "The bug lengths are measured in halves, quarters and eighths. Put them on a line plot, one X each.",
+  "idea": "Making a line plot of measurements in halves, fourths and eighths: marks are evenly spaced and equivalent fractions share a position. Spacing fractions unevenly is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+dial"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NBT.B.5-2",
+  "title": "Four Rooms",
+  "emoji": "🏘️",
+  "premise": "Split each number into tens and ones and you get a house with four rooms. Every room is part of the product.",
+  "idea": "Multiplying two two-digit numbers with an area model: there are four partial products. Using only tens times tens and ones times ones is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NBT.B.6-3",
+  "title": "Leftovers",
+  "emoji": "🧆",
+  "premise": "Sometimes a few are left after sharing equally. The leftover must be too small to make another group.",
+  "idea": "Interpreting remainders: the remainder must be less than the divisor. A remainder larger than the divisor is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

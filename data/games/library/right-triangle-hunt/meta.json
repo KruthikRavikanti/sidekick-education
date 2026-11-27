@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.G.A.2-2",
+  "title": "Right Triangle Hunt",
+  "emoji": "⛰️",
+  "premise": "A right triangle has one square corner. It is still a right triangle when the square corner is on its roof or its side.",
+  "idea": "Classifying figures by angle size and identifying right triangles in any orientation. Thinking right triangles must face one way is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+pick"
+}

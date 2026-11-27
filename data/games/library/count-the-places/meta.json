@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NBT.A.2-2",
+  "title": "Count the Places",
+  "emoji": "🐋",
+  "premise": "Before comparing big numbers, count how many places each one has. More places means a bigger number.",
+  "idea": "Comparing multi-digit numbers by place value: 98,765 is less than 123,456 because it has fewer digits. Comparing only the first digits is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

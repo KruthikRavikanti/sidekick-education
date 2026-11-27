@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.OA.A.2-1",
+  "title": "Marble Multiplier",
+  "emoji": "🪩",
+  "premise": "One friend has some. The other has several times as many. Key in the bigger amount.",
+  "idea": "Solving times-as-many problems with multiplication: a bar picture shows copies of the smaller amount. Adding the two numbers is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.MD.C.6-1",
+  "title": "Protractor Reader",
+  "emoji": "📐",
+  "premise": "A protractor has two rows of numbers. Decide first if the angle is smaller or bigger than a square corner, then pick the number that fits.",
+  "idea": "Measuring angles with a protractor that shows two scales. Reading the other scale (120 for 60) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

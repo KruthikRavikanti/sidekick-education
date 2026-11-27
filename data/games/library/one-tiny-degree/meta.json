@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.MD.C.5-3",
+  "title": "One Tiny Degree",
+  "emoji": "🧿",
+  "premise": "Cut a full turn into 360 equal tiny turns. Each one is one degree. Degrees measure turning, not length.",
+  "idea": "One degree is 1/360 of a circle and an angle of n degrees is n one-degree turns. Thinking a degree is a length is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type"
+}

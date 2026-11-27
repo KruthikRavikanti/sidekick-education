@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NF.B.4-1",
+  "title": "Unit Fraction Stack",
+  "emoji": "🧱",
+  "premise": "Every fraction is built from copies of one small piece. Three fourths is three copies of one fourth.",
+  "idea": "Understanding a/b as a multiple of 1/b: three fourths is 3 × 1/4. Using the denominator as the number of copies is the known slip.",
+  "author": "claude-stand-in",
+  "play": "build+fill"
+}

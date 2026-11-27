@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NF.C.7-1",
+  "title": "Decimal Lineup",
+  "emoji": "🐧",
+  "premise": "The penguins line up from least to greatest. A longer decimal is not always a bigger one.",
+  "idea": "Comparing decimals to hundredths by reasoning about size: 0.5 is greater than 0.25. Thinking longer decimals are greater is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

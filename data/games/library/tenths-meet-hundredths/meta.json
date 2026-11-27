@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NF.C.5-2",
+  "title": "Tenths Meet Hundredths",
+  "emoji": "🪙",
+  "premise": "Tenths and hundredths are different size pieces. Rename the tenths as hundredths, then add.",
+  "idea": "Adding tenths and hundredths by renaming: 3/10 + 4/100 = 34/100. Adding tops and bottoms (7/110) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "paint+type"
+}

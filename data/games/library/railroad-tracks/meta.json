@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.G.A.1-3",
+  "title": "Railroad Tracks",
+  "emoji": "🚂",
+  "premise": "Parallel lines never meet, like railroad tracks. Perpendicular lines cross at square corners.",
+  "idea": "Identifying parallel and perpendicular lines. Thinking lines must be the same length to be parallel is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

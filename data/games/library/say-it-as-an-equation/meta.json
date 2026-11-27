@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.OA.A.1-2",
+  "title": "Say It as an Equation",
+  "emoji": "🖊️",
+  "premise": "Turn each comparison in words into an equation. Times as many means multiply.",
+  "idea": "Writing a multiplicative comparison as an equation: 18 is 3 times as many as 6 becomes 18 = 3 × 6. Using addition is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NF.B.4-2",
+  "title": "Copy Machine Fractions",
+  "emoji": "🖨️",
+  "premise": "The copy machine makes copies of a fraction. More copies means more pieces, but the pieces stay the same size.",
+  "idea": "Multiplying a fraction by a whole number: 3 × 2/5 = 6/5. Multiplying both the numerator and the denominator is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial+type"
+}

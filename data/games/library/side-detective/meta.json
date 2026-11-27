@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.G.A.2-1",
+  "title": "Side Detective",
+  "emoji": "🕵️",
+  "premise": "Look closely at the sides of each shape. Parallel sides can hide when the shape is turned.",
+  "idea": "Classifying two-dimensional figures by parallel or perpendicular sides. Missing parallel sides that are not horizontal is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

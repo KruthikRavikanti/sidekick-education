@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NF.A.2-2",
+  "title": "Halfway Mark",
+  "emoji": "🚩",
+  "premise": "One half is a handy landmark. Decide whether each fraction falls short of it or goes past it.",
+  "idea": "Comparing fractions with the benchmark one half: the numerator is compared with half the denominator.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -161,7 +161,7 @@
     var el = this.el;
     ['sk-emoji', 'sk-text', 'sk-shape', 'sk-custom', 'circle', 'plain'].forEach(function (c) { el.classList.remove(c); });
     if (o.emoji != null) { el.classList.add('sk-emoji'); el.textContent = o.emoji; this.emoji = o.emoji; }
-    else if (o.text != null) { el.classList.add('sk-text'); if (o.plain) el.classList.add('plain'); el.innerHTML = rich(o.text); this.text = String(o.text); if (o.color) el.style.setProperty('--tc', color(o.color)); if (o.size == null && !this._sized) this.size = 4.4; }
+    else if (o.text != null) { el.classList.add('sk-text'); if (o.plain) el.classList.add('plain'); var rt = rich(o.text); el.innerHTML = rt.indexOf('sk-frac') >= 0 ? '<span>' + rt + '</span>' : rt; this.text = String(o.text); if (o.color) el.style.setProperty('--tc', color(o.color)); if (o.size == null && !this._sized) this.size = 4.4; }
     else if (o.shape) { el.classList.add('sk-shape'); if (o.shape === 'circle') el.classList.add('circle'); el.style.setProperty('--w', o.w || this.size); el.style.setProperty('--h', o.h || o.w || this.size); el.style.setProperty('--c', color(o.color || 'orange')); el.innerHTML = o.caption != null ? rich(o.caption) : ''; if (o.size == null && !this._sized) this.size = 3.6; }
     else if (o.svg != null || o.html != null) { el.classList.add('sk-custom'); el.style.setProperty('--w', o.w || this.size); el.style.setProperty('--h', o.h || o.w || this.size); el.innerHTML = o.svg != null ? o.svg : o.html; }
     this._sized = true;

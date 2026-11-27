@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NF.C.5-1",
+  "title": "Hundred Tile Floor",
+  "emoji": "🟧",
+  "premise": "A floor of 100 tiles has 10 columns. Each column is one tenth, and each tile is one hundredth.",
+  "idea": "Renaming tenths as hundredths: 3/10 = 30/100, shown by painting three columns of a hundred grid. Treating them as different amounts is the known slip.",
+  "author": "claude-stand-in",
+  "play": "paint+fill"
+}
