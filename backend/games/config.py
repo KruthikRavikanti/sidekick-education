@@ -18,6 +18,7 @@ class GameSettings:
     enabled: bool
     require_approval: bool
     autogenerate: bool
+    playground: bool
     reviewers: frozenset
     model: str
     timeout: float
@@ -34,6 +35,8 @@ class GameSettings:
             # A person must approve a generated game before any child can play it.
             require_approval=_flag('SIDEKICK_GAMES_REQUIRE_APPROVAL', True),
             autogenerate=_flag('SIDEKICK_GAMES_AUTOGENERATE', False),
+            # Temporary: shows reviewers a page for trying any stored game. It adds no access of its own.
+            playground=_flag('SIDEKICK_GAMES_PLAYGROUND', False),
             reviewers=frozenset(item.strip().casefold() for item in os.getenv('SIDEKICK_GAME_REVIEWERS', '').split(',') if item.strip()),
             model=os.getenv('GAMES_MODEL', '').strip(),
             timeout=min(max(timeout, 30.0), 900.0),
