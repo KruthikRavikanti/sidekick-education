@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.3.1-2",
+  "title": "Reasons That Support",
+  "emoji": "🏗️",
+  "premise": "A reason only helps if it backs up your opinion. A fact about something else does not count.",
+  "idea": "Providing reasons that support the opinion. Giving reasons that do not support it is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

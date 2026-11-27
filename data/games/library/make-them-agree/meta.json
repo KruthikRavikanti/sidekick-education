@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.3.1-4",
+  "title": "Make Them Agree",
+  "emoji": "🤝",
+  "premise": "A subject and its verb have to match. One dog runs. Two dogs run.",
+  "idea": "Ensuring subject-verb and pronoun-antecedent agreement. Writing the dogs runs is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

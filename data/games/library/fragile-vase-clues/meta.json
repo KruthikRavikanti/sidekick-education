@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.3.4-1",
+  "title": "Fragile Vase Clues",
+  "emoji": "🏺",
+  "premise": "When you meet a new word, the sentence around it often explains it. Hunt for the clue.",
+  "idea": "Using sentence-level context as a clue to the meaning of a word or phrase. Ignoring context is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

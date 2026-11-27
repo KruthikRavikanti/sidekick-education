@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.3.2-1",
+  "title": "Main Idea Mountain",
+  "emoji": "⛰️",
+  "premise": "The main idea sits on top like a mountain peak. All the details are the slopes that hold it up.",
+  "idea": "Determining the main idea of a text. Picking the first sentence or a detail is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.3.9-1",
+  "title": "Same Author, Two Books",
+  "emoji": "🕵️",
+  "premise": "An author may write many books about the same characters. The stories share some things and change others.",
+  "idea": "Comparing and contrasting the themes, settings and plots of stories by the same author about the same characters. Summarizing each story separately is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.3.2-1",
+  "title": "Title Capitals",
+  "emoji": "🎩",
+  "premise": "In a title, the first word, the last word and all the important words get capitals. Little words like in, the and of do not.",
+  "idea": "Capitalizing appropriate words in titles. Capitalizing every word or none is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

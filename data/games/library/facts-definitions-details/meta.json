@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.3.2-2",
+  "title": "Facts, Definitions, Details",
+  "emoji": "🧱",
+  "premise": "Build your topic with facts, definitions and details. Leave your own opinions out of it.",
+  "idea": "Developing the topic with facts, definitions and details. Writing opinions instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

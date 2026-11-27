@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.3.4-4",
+  "title": "Dictionary Entry",
+  "emoji": "🦉",
+  "premise": "A dictionary entry tells what a word means. Some words have more than one meaning listed.",
+  "idea": "Using glossaries or beginning dictionaries to determine or clarify the precise meaning of key words. Not checking is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

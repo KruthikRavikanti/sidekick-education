@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.3.9-1",
+  "title": "Big Points in Two Articles",
+  "emoji": "🗞️",
+  "premise": "Two articles on one topic share big points. Compare the big points, not the tiny details.",
+  "idea": "Comparing and contrasting the most important points and key details presented in two texts on the same topic. Comparing minor details is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

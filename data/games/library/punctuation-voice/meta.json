@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.3.4-2",
+  "title": "Punctuation Voice",
+  "emoji": "🎙️",
+  "premise": "Punctuation is a set of signals for your voice. Commas mean a short pause. Dashes and marks change the feeling.",
+  "idea": "Reading prose and poetry with accuracy, appropriate rate and expression. Reading in a monotone with no phrasing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

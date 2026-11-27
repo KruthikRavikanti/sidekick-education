@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.3.10-1",
+  "title": "Chapter Summary",
+  "emoji": "🏔️",
+  "premise": "After reading a chapter on your own, sum it up in a sentence or two. A summary is short and covers the whole thing.",
+  "idea": "Reading and comprehending literature at the high end of the grades 2-3 band independently: a passage is summarized. Needing constant support is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

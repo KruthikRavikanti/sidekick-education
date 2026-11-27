@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.3.3-3",
+  "title": "Long Word Builder",
+  "emoji": "🏗️",
+  "premise": "A long word is easy when you take it one syllable at a time. Do not skip the middle.",
+  "idea": "Decoding multisyllable words. Skipping the middle syllables is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

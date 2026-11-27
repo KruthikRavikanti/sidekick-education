@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.3.2-3",
+  "title": "Quotation Marks",
+  "emoji": "🗨️",
+  "premise": "The exact words someone says go inside quotation marks. The end mark goes inside too.",
+  "idea": "Using commas and quotation marks in dialogue. Putting punctuation outside the quotation marks is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

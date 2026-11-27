@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.3.1-2",
+  "title": "Text Says or I Think",
+  "emoji": "🚪",
+  "premise": "Some things are written right in the story. Other things are your own ideas about it. Keep the two apart.",
+  "idea": "Distinguishing what the text states from the reader’s own opinion. Mixing opinion with text evidence is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.3.2-6",
+  "title": "Guide Word Check",
+  "emoji": "📖",
+  "premise": "A dictionary page has two guide words at its head. Every word on that page falls between them in ABC order.",
+  "idea": "Consulting reference materials, including dictionaries, to check and correct spellings. Never checking is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+pick"
+}

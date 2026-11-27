@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.3.5-1",
+  "title": "Chapter, Scene, Stanza",
+  "emoji": "📚",
+  "premise": "Books, plays and poems each have their own name for a part. Use the right word for each.",
+  "idea": "Referring to parts of stories, dramas and poems using terms such as chapter, scene and stanza. Mixing up the terms is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

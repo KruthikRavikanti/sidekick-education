@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.3.4-1",
+  "title": "Piece of Cake",
+  "emoji": "🍰",
+  "premise": "Stories use phrases that do not mean what the words say. A piece of cake can mean something easy.",
+  "idea": "Determining the meaning of words and phrases as they are used in a text. Using a dictionary meaning that does not fit is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

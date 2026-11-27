@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.3.1-1",
+  "title": "Word Jobs",
+  "emoji": "🧑‍🔧",
+  "premise": "Every word in a sentence has a job. Nouns name, verbs do, adjectives describe nouns, and adverbs describe verbs.",
+  "idea": "Explaining the function of nouns, pronouns, verbs, adjectives and adverbs. Labelling words by their position instead of their function is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

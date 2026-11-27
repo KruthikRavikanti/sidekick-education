@@ -463,12 +463,14 @@
     const opt = { cardW: o.cardW || 44, maxW: 44, fs: o.fs, figW: o.figW }, sizes = tiles.map((x) => tileSize(x.t, opt)), tw = Math.max.apply(null, sizes.map((s) => s.w)), th = Math.max.apply(null, sizes.map((s) => s.h));
     const n = rows.length, colW = 94 / n, slotH = th + 3.4;
     const figP = rows.some((r) => isFig(r.p)), top = figP ? 23 : 16;
-    const mode = o.layout || (n >= 2 && rows.every((r) => isIcon(r.p) || isFig(r.p) || em(r.p) <= 3.4) && colW - 2 >= tw + 2.4 ? 'cols' : tw <= 27.5 ? 'side' : 'stack');
     const psize = o.pSize || 3.9, geo = []; let y = y0;
+    // short prompts with longer answers sit side by side too: a narrow prompt and a wide slot
+    const shortP = rows.every((r) => !isFig(r.p) && em(r.p) * psize <= 44);
+    const mode = o.layout || (n >= 2 && rows.every((r) => isIcon(r.p) || isFig(r.p) || em(r.p) <= 3.4) && colW - 2 >= tw + 2.4 ? 'cols' : tw <= 27.5 ? 'side' : tw <= 54 && shortP ? 'wide' : 'stack');
     if (mode === 'cols') { rows.forEach((r, i) => geo.push({ px: 3 + i * colW + colW / 2, py: y0 + top / 2 - 0.5, sx: 3 + i * colW + 1, sy: y0 + top, sw: colW - 2 })); y = y0 + top + slotH; }
     else rows.forEach((r) => {
-      const pw = mode === 'side' ? 60 : 92, ps = /[A-Za-z0-9]/.test(r.p) ? psize : 6.4, ph = isFig(r.p) ? 15 : estLines(r.p, pw - 2, ps) * ps * 1.2 + 3.4;
-      if (mode === 'side') { const rh = Math.max(ph, slotH); geo.push({ px: 3 + pw / 2, py: y + rh / 2, pw: pw, ps: ps, sx: 65, sy: y + (rh - slotH) / 2, sw: 32 }); y += rh + 2.2; }
+      const pw = mode === 'side' ? 60 : mode === 'wide' ? 34 : 92, ps = /[A-Za-z0-9]/.test(r.p) ? psize : 6.4, ph = isFig(r.p) ? 15 : estLines(r.p, pw - 2, ps) * ps * 1.2 + 3.4;
+      if (mode === 'side' || mode === 'wide') { const rh = Math.max(ph, slotH); geo.push({ px: 3 + pw / 2, py: y + rh / 2, pw: pw, ps: ps, sx: mode === 'side' ? 65 : 39, sy: y + (rh - slotH) / 2, sw: mode === 'side' ? 32 : 58 }); y += rh + 2.2; }
       else { const sw = Math.min(94, tw + 5); geo.push({ px: 50, py: y + ph / 2, pw: pw, ps: ps, sx: 50 - sw / 2, sy: y + ph + 1, sw: sw }); y += ph + slotH + 3.4; }
     });
     const bankY = y + 3, bankH = flowH(sizes, 90.8, 1.6) + 4.6, at = (stage, i) => { const sp = stage.get('slot' + (i + 1)).sprites[0]; return sp ? sp.data.t : null; };

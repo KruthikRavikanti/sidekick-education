@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.3.8-1",
+  "title": "How the Sentences Connect",
+  "emoji": "🔗",
+  "premise": "Sentences in a text are linked. Signal words tell you how: in order, by cause, or by comparing.",
+  "idea": "Describing the logical connection between sentences and paragraphs (comparison, cause/effect, first/second/third). Seeing paragraphs as unrelated is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

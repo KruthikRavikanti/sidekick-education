@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.3.3-1",
+  "title": "Set the Scene",
+  "emoji": "🎭",
+  "premise": "A story should not start in the middle. First tell the reader who is there, where they are, and what is going on.",
+  "idea": "Establishing a situation and introducing a narrator or characters in a narrative. Starting in the middle with no setup is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}
