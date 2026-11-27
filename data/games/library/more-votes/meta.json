@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.B.3-3",
+  "title": "More Votes",
+  "emoji": "🗳️",
+  "premise": "The graph counts by fives. Compare two bars to find how many more or how many fewer.",
+  "idea": "How many more and how many less from a scaled bar graph: the difference between two values. Adding the two bars is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

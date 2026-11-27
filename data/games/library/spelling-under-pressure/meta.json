@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.7.2-2",
+  "title": "Spelling Under Pressure",
+  "emoji": "🔤",
+  "premise": "Double letters and silent letters cause most spelling slips. Know which words have them.",
+  "idea": "Spelling correctly. Relying on spellcheck is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

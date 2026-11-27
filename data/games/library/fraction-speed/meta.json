@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.RP.A.1-1",
+  "title": "Fraction Speed",
+  "emoji": "🚶",
+  "premise": "A unit rate can come from two fractions. Divide the amount by the time, even when both are fractions.",
+  "idea": "Computing unit rates associated with ratios of fractions. Not being able to divide a fraction by a fraction in context is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

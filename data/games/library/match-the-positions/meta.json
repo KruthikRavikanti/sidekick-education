@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-VM.C.8-1",
+  "title": "Match the Positions",
+  "emoji": "🧮",
+  "premise": "To add matrices, add the entries that sit in the same position. That only works when the shapes match.",
+  "idea": "Adding and subtracting matrices of appropriate dimensions. Adding matrices of different sizes is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial+sort"
+}

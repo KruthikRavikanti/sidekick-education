@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.MD.C.7-2",
+  "title": "Missing Angle",
+  "emoji": "🔎",
+  "premise": "You know the whole angle and one of its parts. Work out the part that is hidden.",
+  "idea": "Finding unknown angles in a diagram: the missing part is the whole minus the known part. Adding when subtraction is needed is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.OA.C.5-1",
+  "title": "Rule Machine",
+  "emoji": "⚙️",
+  "premise": "Feed the machine a starting number and a rule. It prints the pattern one number at a time.",
+  "idea": "Generating a number pattern from a rule: the rule is applied to the starting number, then to each new term. Ignoring the starting number is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

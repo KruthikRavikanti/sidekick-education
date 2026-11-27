@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.A.3-2",
+  "title": "How Many Times as Large?",
+  "emoji": "🪐",
+  "premise": "To compare numbers in scientific notation, divide the first factors and compare the powers of 10. The powers matter most.",
+  "idea": "Using powers of 10 to estimate how many times as large one quantity is than another. Comparing only the first factors is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

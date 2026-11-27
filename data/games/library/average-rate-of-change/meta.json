@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.B.6-1",
+  "title": "Average Rate of Change",
+  "emoji": "📐",
+  "premise": "The average rate of change between two inputs is the slope of the straight line joining those two points on the graph.",
+  "idea": "Calculating the average rate of change of a function over a specified interval. Dividing the change in x by the change in y is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

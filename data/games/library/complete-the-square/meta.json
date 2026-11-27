@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-SSE.B.3-2",
+  "title": "Complete the Square",
+  "emoji": "⬛",
+  "premise": "Rewriting a quadratic as a square plus a number shows its lowest point at a glance.",
+  "idea": "Completing the square in a quadratic expression to reveal the maximum or minimum value. Forgetting to balance the added constant is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial+fill"
+}

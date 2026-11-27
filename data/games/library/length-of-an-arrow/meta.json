@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-VM.A.1-2",
+  "title": "Length of an Arrow",
+  "emoji": "🏹",
+  "premise": "The vector (3, 4) goes 3 across and 4 up. Its magnitude is the length of the arrow, not either of those numbers.",
+  "idea": "Using appropriate symbols for vectors and their magnitudes. Confusing the magnitude with a component is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.A.4-2",
+  "title": "Match the Powers First",
+  "emoji": "🛰️",
+  "premise": "You can only add numbers in scientific notation when their powers of 10 match. Rewrite one of them first.",
+  "idea": "Adding and subtracting numbers in scientific notation. Adding without matching the powers is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

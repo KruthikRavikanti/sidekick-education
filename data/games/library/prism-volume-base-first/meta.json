@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.G.B.6-2",
+  "title": "Prism Volume: Base First",
+  "emoji": "🧀",
+  "premise": "A prism is its base shape stacked up along its length. Volume is the area of that base times how far it is stacked.",
+  "idea": "Solving problems involving the volume of right prisms. Using a side face as the base is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

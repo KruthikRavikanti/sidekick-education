@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.K.1-6",
+  "title": "Whole Sentence Check",
+  "emoji": "✅",
+  "premise": "A whole sentence tells who and what they do. Just a few words are not enough.",
+  "idea": "Producing complete sentences: word groups are sorted into whole sentences and fragments. Using fragments is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

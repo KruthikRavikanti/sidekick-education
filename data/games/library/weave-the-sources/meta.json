@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.9-10.7-1",
+  "title": "Weave the Sources",
+  "emoji": "🧶",
+  "premise": "Research means more than quoting one website. Synthesis puts several sources together to say something none says alone.",
+  "idea": "Conducting research to answer a question, synthesizing multiple sources. Using one source is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

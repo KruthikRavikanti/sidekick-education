@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.2.4-5",
+  "title": "Glossary Lookup",
+  "emoji": "📒",
+  "premise": "A glossary at the back of a book lists special words and what they mean. Look a word up when you are not sure.",
+  "idea": "Using glossaries and beginning dictionaries to determine or clarify the meaning of words. Never checking a reference is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

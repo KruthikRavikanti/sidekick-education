@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NF.A.2-3",
+  "title": "Same Whole Rule",
+  "emoji": "🫓",
+  "premise": "Comparing fractions only makes sense when they are parts of the same size whole. Check the wholes first.",
+  "idea": "Fraction comparisons are valid only for the same whole: half of a small pizza cannot be compared with a third of a large one by the fractions alone.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

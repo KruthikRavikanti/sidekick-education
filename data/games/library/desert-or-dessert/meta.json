@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.3.4-3",
+  "title": "Desert or Dessert?",
+  "emoji": "🏜️",
+  "premise": "Some words look almost alike but mean very different things. If the sentence stops making sense, look again.",
+  "idea": "Using context to confirm or self-correct word recognition, rereading as necessary. Not noticing errors that change meaning is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

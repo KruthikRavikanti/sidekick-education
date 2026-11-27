@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NF.B.3-3",
+  "title": "Mixed Number Mixer",
+  "emoji": "🥣",
+  "premise": "Add the wholes and add the parts. When the parts make a whole, trade them in.",
+  "idea": "Adding and subtracting mixed numbers with like denominators: fraction parts that reach a whole are regrouped. Forgetting to regroup is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.B.6-2",
+  "title": "Rate Between Two Points",
+  "emoji": "🪜",
+  "premise": "On a curve, the rate of change keeps shifting. Between two marked points you can still estimate an average.",
+  "idea": "Estimating the rate of change from a graph. Using a single point is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

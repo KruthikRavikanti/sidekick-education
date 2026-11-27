@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.C.9-1",
+  "title": "Solve With the Inverse",
+  "emoji": "🗝️",
+  "premise": "If AX = B, multiply both sides by the inverse of A, on the left. What remains is X, the solution.",
+  "idea": "Finding the inverse of a matrix and using it to solve systems of linear equations. Multiplying on the other side, or by A itself, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+dial"
+}

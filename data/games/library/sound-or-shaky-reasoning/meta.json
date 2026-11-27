@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.8.1-2",
+  "title": "Sound or Shaky Reasoning",
+  "emoji": "🧱",
+  "premise": "Evidence only helps if the reasoning from it holds up. Watch for leaps, attacks on people and claims that everyone does it.",
+  "idea": "Supporting claims with logical reasoning and relevant evidence from accurate, credible sources. Using weak evidence or reasoning is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

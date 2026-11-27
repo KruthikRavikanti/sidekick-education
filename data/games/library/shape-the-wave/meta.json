@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-TF.B.5-1",
+  "title": "Shape the Wave",
+  "emoji": "🎡",
+  "premise": "A Ferris wheel, a tide, a swing: each repeats like a sine wave. Amplitude is its height from the middle. The midline is its middle.",
+  "idea": "Choosing trigonometric functions to model periodic phenomena with a given amplitude, frequency and midline. Mixing up the parts, such as period and frequency or amplitude and midline, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial+fill"
+}

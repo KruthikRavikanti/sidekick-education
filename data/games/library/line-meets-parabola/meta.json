@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.C.7-1",
+  "title": "Line Meets Parabola",
+  "emoji": "🎢",
+  "premise": "Set a line equal to a parabola and you get a quadratic. A quadratic can have two answers, so look for two crossing points.",
+  "idea": "Solving a system of a linear and a quadratic equation algebraically. Finding only one intersection is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+plot"
+}

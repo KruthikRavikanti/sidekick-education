@@ -1,0 +1,8 @@
+{
+  "subskillId": "6.G.A.1-1",
+  "title": "Sail Maker",
+  "emoji": "⛵",
+  "premise": "Cut cloth for triangle sails. Order exactly the squares of cloth each sail covers.",
+  "idea": "Two matching right triangle sails fit together into one rectangle, so one sail covers half of base times height.",
+  "author": "claude-stand-in"
+}

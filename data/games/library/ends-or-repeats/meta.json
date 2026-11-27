@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.NS.A.2-4",
+  "title": "Ends or Repeats?",
+  "emoji": "🔂",
+  "premise": "Divide the upper number by the lower one. Some decimals stop. Others repeat the same digits forever.",
+  "idea": "Converting a rational number to a decimal using long division, and knowing it terminates or repeats. Thinking one third is exactly 0.3 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

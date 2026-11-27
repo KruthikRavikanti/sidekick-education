@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.1.1-10",
+  "title": "Kinds of Sentences",
+  "emoji": "🎪",
+  "premise": "Sentences do different jobs. Some tell, some ask, and some give an order.",
+  "idea": "Producing statements, questions, commands and exclamations. Writing only statements is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+row"
+}

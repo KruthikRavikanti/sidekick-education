@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.RP.A.3-6",
+  "title": "Unit Swap",
+  "emoji": "📏",
+  "premise": "A conversion is a ratio. Decide whether you need more of the new unit or fewer, then multiply or divide.",
+  "idea": "Using ratio reasoning to convert measurement units. Multiplying when division is needed is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.EE.A.2-1",
+  "title": "One Multiplier",
+  "emoji": "🏷️",
+  "premise": "A price plus 5% of itself is the same as 1.05 times the price. Rewriting shows the whole change as one multiplication.",
+  "idea": "Understanding that rewriting an expression in a different form can show how quantities are related. Seeing the forms as unrelated is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

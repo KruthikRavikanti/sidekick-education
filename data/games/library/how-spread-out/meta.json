@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.SP.A.3-2",
+  "title": "How Spread Out?",
+  "emoji": "↔️",
+  "premise": "A measure of spread tells how stretched out the data is. The range is the greatest value minus the least.",
+  "idea": "Recognizing that a measure of variation describes how values vary with a single number. Confusing the range with a measure of center is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

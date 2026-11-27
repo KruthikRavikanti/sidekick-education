@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.C.7-2",
+  "title": "x on Both Sides",
+  "emoji": "⚖️",
+  "premise": "When x is on both sides, take the same amount of x off each pan. Whatever you do to one side, do to the other.",
+  "idea": "Solving linear equations with variables on both sides. Moving terms without changing their signs is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

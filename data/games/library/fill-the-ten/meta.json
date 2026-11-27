@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.C.6-2",
+  "title": "Fill the Ten",
+  "emoji": "🚎",
+  "premise": "The tram has 10 seats. Move just enough riders on to fill it, and let the rest wait outside.",
+  "idea": "Making ten to add (8 + 6 = 8 + 2 + 4): a ten frame shows the first addend and the child splits the second into the part that fills the ten and the part left over.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

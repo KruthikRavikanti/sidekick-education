@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.6.7-1",
+  "title": "Narrow the Question",
+  "emoji": "🔍",
+  "premise": "A research question should be small enough to answer and big enough to matter. Adjust it as you learn.",
+  "idea": "Conducting short research projects, refocusing the inquiry when appropriate. Not refocusing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

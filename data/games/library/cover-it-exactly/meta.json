@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.C.5-2",
+  "title": "Cover It Exactly",
+  "emoji": "🪟",
+  "premise": "Cover the outline with unit squares: every spot filled, nothing doubled up. Then you know its area.",
+  "idea": "Covering a figure with unit squares without spaces or overlaps: the child adds squares until the outline is exactly full. One short leaves a hole and one extra has no place.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

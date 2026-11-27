@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.K.3-4",
+  "title": "One Letter Apart",
+  "emoji": "🧐",
+  "premise": "Some words look almost the same. Only one letter is different, so look at every letter.",
+  "idea": "Distinguishing similarly spelled words by the letters that differ: cat and cut. Guessing from the first letter only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

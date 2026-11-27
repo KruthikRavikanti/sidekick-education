@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.K.6-1",
+  "title": "Fact Book Makers",
+  "emoji": "🚚",
+  "premise": "A book about trucks needs two jobs. The author writes the facts. The illustrator makes the pictures.",
+  "idea": "Naming the author and illustrator of a text and defining their roles in presenting information. Confusing the two roles is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

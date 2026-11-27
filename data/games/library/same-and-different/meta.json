@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.G.B.4-2",
+  "title": "Same and Different",
+  "emoji": "🔍",
+  "premise": "Two shapes sit side by side. Sort the clues: which are true for both, and which are different?",
+  "idea": "Comparing two shapes: the child sorts facts into the same for both or different, using sides and corners instead of color or size.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

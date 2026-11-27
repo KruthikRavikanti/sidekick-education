@@ -1,0 +1,8 @@
+{
+  "subskillId": "8.F.A.1-1",
+  "title": "Snack Machine",
+  "emoji": "🥤",
+  "premise": "A good snack machine gives one sure snack for each button. Pick the machines that work.",
+  "idea": "A function is a snack machine where every button gives one sure snack. Two buttons may share a snack, but one button with two snacks is broken.",
+  "author": "claude-stand-in"
+}

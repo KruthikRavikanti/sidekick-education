@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-BF.A.2-2",
+  "title": "Geometric Sequence Rules",
+  "emoji": "✖️",
+  "premise": "A geometric sequence multiplies by the same ratio each step. The ratio is a base with an exponent, never something you add.",
+  "idea": "Writing geometric sequences recursively and with an explicit formula. Adding the ratio is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

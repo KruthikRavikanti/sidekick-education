@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.1.2-2",
+  "title": "Tell Two Details",
+  "emoji": "🦉",
+  "premise": "After you name the topic, tell the key details. They are the facts the page gives about the topic.",
+  "idea": "Retelling key details of an informational text. Retelling details in a random way or from outside the text is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.G.A.2-2",
+  "title": "What the Point Says",
+  "emoji": "🌻",
+  "premise": "A sunflower is measured every week. Each point on its graph tells two things: which week, and how tall.",
+  "idea": "Interpreting coordinate values in the context of a situation: (2, 6) means after 2 weeks the plant was 6 cm tall. Not being able to say what a point means is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+plot"
+}

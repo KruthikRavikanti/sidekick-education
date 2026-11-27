@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.2.4-3",
+  "title": "Find the Root",
+  "emoji": "🌱",
+  "premise": "A big word often has a smaller word you know hiding inside it. That root word is a clue.",
+  "idea": "Using a known root word as a clue to the meaning of an unknown word with the same root (addition, additional). Not seeing the root is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

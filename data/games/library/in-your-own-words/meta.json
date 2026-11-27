@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.2.7-1",
+  "title": "In Your Own Words",
+  "emoji": "🌋",
+  "premise": "A report tells what you learned in your own words. Copying a sentence straight from the book is not your writing.",
+  "idea": "Participating in shared research and writing projects: facts are recorded in the writer’s own words. Copying sentences from the book is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

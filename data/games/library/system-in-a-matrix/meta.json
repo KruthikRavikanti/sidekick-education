@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.C.8-1",
+  "title": "System in a Matrix",
+  "emoji": "🗃️",
+  "premise": "A system of equations packs into one matrix equation: coefficients in a grid, unknowns in a column, constants in a column.",
+  "idea": "Representing a system of linear equations as a single matrix equation. Misplacing the coefficients is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+dial"
+}

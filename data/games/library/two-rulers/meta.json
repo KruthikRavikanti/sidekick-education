@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.A.2-1",
+  "title": "Two Rulers",
+  "emoji": "🪑",
+  "premise": "Measure one thing with long sticks, then again with short sticks. The thing stays the same, but the number changes.",
+  "idea": "Measuring the same object in two units: the object does not change, only the count of units. Expecting the same number in the smaller unit is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.G.A.1-1",
+  "title": "Across, Then Up",
+  "emoji": "🗺️",
+  "premise": "A treasure map uses two numbers for every spot. The first says how far across, the second says how far up.",
+  "idea": "Understanding axes, the origin and ordered pairs: the first coordinate is the horizontal distance. Reversing x and y is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+plot"
+}

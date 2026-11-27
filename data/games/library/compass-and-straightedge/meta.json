@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.D.12-1",
+  "title": "Compass and Straightedge",
+  "emoji": "🧭",
+  "premise": "A construction uses only a compass and an unmarked straightedge. Nothing is measured. Everything is built from arcs and lines.",
+  "idea": "Making formal constructions: copying and bisecting segments and angles. Measuring instead of constructing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+row+fill"
+}

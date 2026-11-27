@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.3.2-2",
+  "title": "Address Commas",
+  "emoji": "📬",
+  "premise": "In an address, a comma goes after the street and after the city.",
+  "idea": "Using commas in addresses. Leaving out the commas is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.4.4-3",
+  "title": "Reread and Repair",
+  "emoji": "🔧",
+  "premise": "Every reader slips on a word now and then. What matters is noticing, going back, and fixing it.",
+  "idea": "Using context to confirm or self-correct word recognition and understanding, rereading as necessary. Reading on after an error is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+fill"
+}

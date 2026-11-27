@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.G.A.3-1",
+  "title": "Connect the Corners",
+  "emoji": "📍",
+  "premise": "A polygon can be given by the coordinates of its corners. Plot them, then join them in order around the shape.",
+  "idea": "Drawing polygons in the coordinate plane given vertex coordinates. Connecting vertices in an order that crosses is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot+pick"
+}

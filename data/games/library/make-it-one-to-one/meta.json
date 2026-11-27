@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-BF.B.4-4",
+  "title": "Make It One-to-One",
+  "emoji": "✂️",
+  "premise": "A function has an inverse only if no output is used twice. If one is, trim the domain until each output appears once.",
+  "idea": "Producing an invertible function from a non-invertible one by restricting the domain. Not restricting is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

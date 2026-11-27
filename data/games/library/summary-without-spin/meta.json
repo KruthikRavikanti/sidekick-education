@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.9-10.2-2",
+  "title": "Summary Without Spin",
+  "emoji": "📰",
+  "premise": "Summarizing an article means reporting its ideas fairly, even if you disagree. Your reaction comes later.",
+  "idea": "Providing an objective summary of an informational text. Adding opinions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

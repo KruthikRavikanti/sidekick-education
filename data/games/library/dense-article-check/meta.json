@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.7.10-1",
+  "title": "Dense Article Check",
+  "emoji": "🗞️",
+  "premise": "A challenging article takes a slow, careful read. Look for the points the author keeps returning to.",
+  "idea": "Reading and comprehending literary nonfiction in the grades 6 to 8 complexity band proficiently. Needing support with dense text is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.3.5-1",
+  "title": "Literal or Not?",
+  "emoji": "🪜",
+  "premise": "Literal words mean exactly what they say. Nonliteral words mean something else. Take steps can mean climb, or it can mean act.",
+  "idea": "Distinguishing the literal and nonliteral meanings of words and phrases in context. Reading idioms literally is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

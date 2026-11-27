@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.B.3-1",
+  "title": "Decimal Stack",
+  "emoji": "🧾",
+  "premise": "Adding a column of decimals works only when the decimal points sit in one straight line.",
+  "idea": "Fluently adding and subtracting multi-digit decimals. Misaligning the decimal points is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

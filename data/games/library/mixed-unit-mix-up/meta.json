@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.MD.A.2-1",
+  "title": "Mixed Unit Mix-Up",
+  "emoji": "🪢",
+  "premise": "These stories mix two different units. Change everything to the same unit before you add or subtract.",
+  "idea": "Measurement word problems that need a unit conversion first. Computing with the numbers as written, ignoring the units, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

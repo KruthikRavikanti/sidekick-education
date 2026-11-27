@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.A.4-1",
+  "title": "Congruent or Just Similar?",
+  "emoji": "🔎",
+  "premise": "Similar figures have the same shape. They may be different sizes. A dilation changes size and keeps shape.",
+  "idea": "Understanding that a figure is similar to another if obtained by rigid motions and dilations. Thinking similar means the same size is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

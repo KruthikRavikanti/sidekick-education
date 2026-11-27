@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.K.3-1",
+  "title": "Who and Where",
+  "emoji": "🏰",
+  "premise": "Characters are who the story is about. The setting is where and when the story happens.",
+  "idea": "Identifying characters and settings in a story. Confusing the setting with a character is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

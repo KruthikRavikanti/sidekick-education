@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.C.6-4",
+  "title": "Four Quadrant Star Map",
+  "emoji": "🌌",
+  "premise": "With negative numbers the plane has four quarters. The first number still goes across, the second still goes up or down.",
+  "idea": "Finding and positioning pairs of integers and other rational numbers on a coordinate plane. Reversing x and y is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

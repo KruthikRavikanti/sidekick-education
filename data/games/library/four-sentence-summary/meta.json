@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.4.2-2",
+  "title": "Four Sentence Summary",
+  "emoji": "✂️",
+  "premise": "A summary keeps the main events and leaves out the small stuff. Cut until only the important parts remain.",
+  "idea": "Summarizing a text. Retelling every event is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

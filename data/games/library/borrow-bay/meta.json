@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.B.5-2",
+  "title": "Borrow Bay",
+  "emoji": "⛵",
+  "premise": "Sometimes there are not enough ones to take away. Break a ten into ones first, then key in the answer.",
+  "idea": "Subtracting two-digit numbers by place value: 52 − 37 needs a ten broken into ones. Taking the smaller digit from the larger in each place (giving 25) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

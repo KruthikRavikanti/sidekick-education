@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-TF.A.4-2",
+  "title": "Round and Round",
+  "emoji": "🎠",
+  "premise": "Go all the way around the unit circle and you are back where you started. So sine and cosine repeat every full turn.",
+  "idea": "Using the unit circle to explain the periodicity of trigonometric functions. Thinking all trig values repeat every π is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type+fill"
+}

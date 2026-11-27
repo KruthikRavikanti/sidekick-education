@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.MD.A.2-3",
+  "title": "Measure on the Line",
+  "emoji": "🧭",
+  "premise": "A number line can show time, liquid or length. Each small step is the same size, so count the steps with care.",
+  "idea": "Representing measurement quantities on a number line with a scale: elapsed time, volume and length are shown as jumps on evenly spaced lines.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

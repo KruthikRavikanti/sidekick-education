@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.11-12.3-1",
+  "title": "How One Thing Led to Another",
+  "emoji": "🕸️",
+  "premise": "In complex texts, events and ideas act on each other. Trace the chain and you understand the argument.",
+  "idea": "Analyzing a complex set of ideas or sequence of events and explaining how they interact and develop. Summarizing instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-IC.B.3-1",
+  "title": "Survey, Observe or Experiment",
+  "emoji": "🔬",
+  "premise": "A survey asks. An observational study watches. An experiment assigns a treatment and compares.",
+  "idea": "Recognizing the purposes of and differences among sample surveys, experiments and observational studies. Calling a survey an experiment is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

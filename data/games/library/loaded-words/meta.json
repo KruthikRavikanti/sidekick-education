@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.7.4-1",
+  "title": "Loaded Words",
+  "emoji": "🎚️",
+  "premise": "Calling a plan bold or reckless describes the same plan with opposite attitudes. One word can set the tone.",
+  "idea": "Analyzing the impact of a specific word choice on meaning and tone. Naming the words without their effect is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

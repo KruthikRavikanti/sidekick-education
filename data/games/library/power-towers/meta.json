@@ -1,0 +1,8 @@
+{
+  "subskillId": "8.EE.A.1-1",
+  "title": "Power Towers",
+  "emoji": "🗼",
+  "premise": "Each power is a tower of the same factor. Stack or cut towers and name the new height.",
+  "idea": "A power is a tower of equal factors. Multiplying stacks towers so heights add, and dividing removes blocks so heights subtract.",
+  "author": "claude-stand-in"
+}

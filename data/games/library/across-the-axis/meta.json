@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.C.8-2",
+  "title": "Across the Axis",
+  "emoji": "↔️",
+  "premise": "When two points share a coordinate, the distance between them is a straight count, even across an axis.",
+  "idea": "Using coordinates and absolute value to find distances between points with the same first or second coordinate. Subtracting without accounting for crossing 0 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.NS.A.3-1",
+  "title": "Deep Dive Math",
+  "emoji": "🤿",
+  "premise": "Real problems mix operations with negative numbers. Keep track of the sign at every step.",
+  "idea": "Solving real-world problems involving the four operations with rational numbers. Dropping negative signs in multi-step work is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

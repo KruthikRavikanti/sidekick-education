@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.A.1-3",
+  "title": "Time Line",
+  "emoji": "🕓",
+  "premise": "Time can be a number line. Start at the starting time and jump ahead by how long it lasts.",
+  "idea": "Solving time problems on a number line: each space is five minutes, and the end time is found by jumping the duration. Counting ticks instead of spaces lands five minutes early.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

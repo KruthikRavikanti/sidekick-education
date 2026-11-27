@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.C.8-3",
+  "title": "Design a Simulation",
+  "emoji": "🌧️",
+  "premise": "A simulation acts out a chance situation with coins, dice or spinners. Run it many times to estimate a probability.",
+  "idea": "Designing and using a simulation to generate frequencies for compound events. Running too few trials is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

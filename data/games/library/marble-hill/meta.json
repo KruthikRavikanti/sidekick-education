@@ -1,0 +1,8 @@
+{
+  "subskillId": "3.NBT.A.1-2",
+  "title": "Marble Hill",
+  "emoji": "🔵",
+  "premise": "Each marble rolls to the nearest town. The flag on the hill marks halfway.",
+  "idea": "A number is a marble on a hill between two tens and the peak is the halfway point. Before the flag it rolls back, at the flag or past it rolls forward.",
+  "author": "claude-stand-in"
+}

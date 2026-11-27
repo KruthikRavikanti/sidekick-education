@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.C.8-2",
+  "title": "Growth or Decay Rate",
+  "emoji": "📉",
+  "premise": "In y = a·b^t, the base b tells the story. Above 1 it grows. Below 1 it decays. The distance from 1 is the percent rate.",
+  "idea": "Interpreting the parameters of exponential functions to identify percent rate of change. Reading 0.85^t as 85% growth is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

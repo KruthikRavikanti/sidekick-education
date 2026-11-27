@@ -1,0 +1,9 @@
+{
+  "subskillId": "GA-K-PAR.6.2-1",
+  "title": "Sunrise to Moonrise",
+  "emoji": "🌞",
+  "premise": "A day has an order, and so do the days. Sort what happens when, then line the days up.",
+  "idea": "Ordering daily events with time words: the child sorts events into morning and night, then orders yesterday, today and tomorrow and the events of a day.",
+  "author": "claude-stand-in",
+  "play": "sort+row"
+}

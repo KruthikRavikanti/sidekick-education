@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.B.6-1",
+  "title": "Same Way Round?",
+  "emoji": "🔄",
+  "premise": "Slides and turns keep a figure facing the same way round. A single flip reverses the order of its corners.",
+  "idea": "Using rigid motions to predict their effect on a figure. Thinking orientation always stays the same is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

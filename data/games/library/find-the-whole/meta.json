@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.RP.A.3-5",
+  "title": "Find the Whole",
+  "emoji": "🧩",
+  "premise": "Sometimes you know the part and the percent, and the whole is hidden. Work backward to find it.",
+  "idea": "Finding the whole, given a part and the percent. Multiplying by the percent when division is needed is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

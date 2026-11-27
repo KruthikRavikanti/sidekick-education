@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.B.4-1",
+  "title": "Key Features of a Graph",
+  "emoji": "🔑",
+  "premise": "A graph has landmarks: where it crosses each axis, and where it turns. The x-intercepts sit on the x-axis.",
+  "idea": "Interpreting key features of graphs: intercepts, intervals of increase and decrease, maximums and minimums. Confusing x- and y-intercepts is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

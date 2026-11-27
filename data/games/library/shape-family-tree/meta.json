@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.G.B.4-2",
+  "title": "Shape Family Tree",
+  "emoji": "🌳",
+  "premise": "The biggest family is at the top of the tree. Each branch below it is a smaller, more special group.",
+  "idea": "Ordering categories in a hierarchy from most general to most specific. Reversing the general and the specific categories is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.MD.C.4-2",
+  "title": "Label the Volume",
+  "emoji": "🏷️",
+  "premise": "A measurement needs the right label. Lengths get plain units, areas get square units and volumes get cubic units.",
+  "idea": "Reporting volume in cubic cm, cubic in and cubic ft. Labelling a volume with square units is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

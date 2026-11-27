@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.B.6-2",
+  "title": "Friendly Pairs",
+  "emoji": "🤝",
+  "premise": "You may add in any order you like. Find the two numbers that go together easily and add them first.",
+  "idea": "Using properties to choose an easy order: the child picks the pair that makes a tidy ten number. Always taking the first two in order is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

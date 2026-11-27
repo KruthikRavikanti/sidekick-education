@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.D.8-2",
+  "title": "Where Did It Start?",
+  "emoji": "🐾",
+  "premise": "The fox walked back some steps and stopped at the flag. Follow its tracks to find where it started.",
+  "idea": "Finding the unknown start in ? − b = c: the flag marks where the fox ended. The start is b steps further on. Subtracting the two numbers is the known slip.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

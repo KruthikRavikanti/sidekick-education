@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-C.B.5-2",
+  "title": "Slice of the Circle",
+  "emoji": "🍕",
+  "premise": "A sector is a slice of the circle. Its area is the same fraction of the whole area as its angle is of 360°.",
+  "idea": "Deriving the formula for the area of a sector. Dividing the angle by 180 instead of 360 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

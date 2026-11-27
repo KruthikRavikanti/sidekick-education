@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.B.4-2",
+  "title": "Jar Labels",
+  "emoji": "🫙",
+  "premise": "Every jar on the shelf needs a label that tells how many are inside. Count, then set the label.",
+  "idea": "Cardinality: the last number said is how many. The child counts a set and sets the jar label to that number, with no need to count again.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

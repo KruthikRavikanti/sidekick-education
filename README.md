@@ -158,7 +158,7 @@ Migration `007_activity_family_assessment.sql` adds assessment status, private r
 
 ## Playable activity toolkit
 
-The Sources-only export supplies design inspiration rather than executable controls. These are original Sidekick controls, rendered by React, with bounded declarative parameters. No model-generated code runs in the browser. The model invents the scenario, objects, passage or cards, goal, prompts, and feedback, then chooses among compatible controls. There is no separate player or activity template for each subskill.
+The Sources-only export supplies design inspiration rather than executable controls. These are original Sidekick controls, rendered by React, with bounded declarative parameters. No model-generated code runs in the app's own page. (Generated games, described below, are the one deliberate exception, and they run only inside a locked frame.) The model invents the scenario, objects, passage or cards, goal, prompts, and feedback, then chooses among compatible controls. There is no separate player or activity template for each subskill.
 
 | Control | Child action and scene change | Server validation |
 | --- | --- | --- |
@@ -175,6 +175,67 @@ To try the three new actions, launch `npm run dev:all`, enter child mode, and up
 - [Reading evidence](public/samples/activity-toolkit-evidence-work.png), with a grade-3 child.
 
 Tap **Read my work**, then **Try an activity**, manipulate the scene, and finish the fresh challenge. Switch to parent mode with the PIN and open **Activities** to see the outcome. These three skills have no prebuilt activity in the six-example library; live composition saves a verified reusable definition on demand. Apply migration 007 for the expanded engine. No new package dependency or provider setting is required.
+
+## Look and feel: Color Blocks
+
+The visual theme lives in `app/color-blocks.css`, a layer imported last in `app/layout.tsx`. It restyles the existing screens into big flat panels in the brand colors (sun, orange, forest, lime, sky) with very large Fredoka headings and no borders or drop shadows. It changes no behavior. Removing that one import returns the app to the earlier look. The only markup added with it is the short "How it goes" list on the kid home page.
+
+The palette is deliberately small: sun, orange, forest and lime on a cream page, with sand as the one quiet neutral. There is no pale green and no light blue. Form cards (log in, sign up, the parent PIN, the upload card) are forest with white fields and a sun button. Where the base styles used pale green tints, the theme maps them to the palette: quiet surfaces and notes are sand, a picked option is sun, and "done, correct, on track" is solid lime. The game frame's own chrome (`backend/games/kit/kit.css`) follows the same swap.
+
+The page around the panels is a small landscape, drawn in CSS behind everything (`body::before` and `body::after`, never in the way of a click). Two soft clouds sit near the top of every screen. On screens made of panels (log in, sign up, the profile picker, the parent PIN, kid home, upload and results) a sun, two hills and the mascots sit along the bottom of the screen. Where words sit straight on the page (the game and activity players, the parent side) only the clouds show, so nothing is ever behind text. The few words that do sit on the bare page on scene screens (the footer line, "Log out" on the picker, the privacy note and the results footnote) have a cream backing.
+
+## Generated games (experimental, off by default)
+
+The activity toolkit above gives every skill one of 14 fixed controls. Generated games take the other road: a model writes a small game for a skill, so the ceiling is the model's imagination and every skill in the catalog is reachable. That reverses the "model never writes code" rule, so the rule is replaced by four layers that do not depend on trusting the model.
+
+**The brief.** A Sidekick game is play, not a quiz: a little world with a mission, solved by moving or changing things, where the world reacts and the skill is the rule that makes it work. Guided rounds let the child explore; the last round is a fresh version with the help taken away. If it could be printed on paper, it failed. The full brief is in `backend/games/prompts.py`.
+
+**1. The kit.** A game is one JavaScript file written against the Sidekick kit (`backend/games/kit/`, reference in `KIT.md`). The kit owns the brand, the stage, dragging and tapping, keyboard use, the round flow, hints, scoring and the report back to the app. The game supplies the world and the rules, and declares its own winning steps and the known mistakes for each round.
+
+**2. The locked frame.** Game code runs only in an `<iframe sandbox="allow-scripts">` whose document is served with `Content-Security-Policy: default-src 'none'; script-src 'nonce-…'; connect-src 'none'; … sandbox allow-scripts`. That gives it an empty origin: no cookies, no storage, no network, no access to the Sidekick page. The document is self-contained (kit, fonts and game inline) and holds nothing about the child. The page accepts messages only from that frame's window, and only with a per-run token the kit keeps where game code cannot read it. `backend/games/checks.py` also rejects source that reaches for the network, storage, navigation, dynamic code, links or text inputs; that is hygiene, and the frame is the real boundary.
+
+**3. The robot player.** `scripts/game-robot.mjs` plays every game in headless Chromium under the same policy and proves that it starts, that no round is already solved, that the declared solution wins every round, that every declared known mistake is recognised, rejected and tagged, that random play cannot win the last round more than a third of the time, that fresh numbers (other seeds) still work, that nothing is cut off, overlapping or too small on a phone and a tablet, and that there was no network request, navigation or script error. A failed run goes back to the model with the report, at most twice. Then a second model call reviews what a robot cannot judge.
+
+**4. A person.** The pipeline's best outcome is `verified`. A game becomes `approved` only when a reviewer plays it at `/parent/games` (parent PIN required) and approves it. Reviewers are the accounts in `SIDEKICK_GAME_REVIEWERS`; in development and test an empty list lets any parent review. Retired games stay retired.
+
+Games are never generated while a child waits. A build is a background job (one per skill, not retried for a day after a failure) or a CLI run. A child whose homework points at a skill with an approved game sees a card above the activity suggestion; otherwise they see the existing activity flow, which is unchanged.
+
+Game results are recorded for the parent's Activities tab. They come from the child's browser and are practice, so they do not change skill states and are not evidence.
+
+```bash
+npm run db:migrate                      # adds the game tables (migration 008)
+npm run games:seed -- --workers 4       # loads every shipped game; each must pass the robot here first; they wait for review
+npm run games:seed -- --subject math --grades K,1,2      # or one slice at a time: --subject, --grades, --only <folder>, --limit N
+npm run games:verify                    # plays every shipped game with the robot; --subject, --grades, --only <folder> narrow it
+npm run games:coverage                  # rewrites data/games/COVERAGE.md: which of the 1,533 skills have a game
+npm run games:robot -- data/games/examples/froggys-bridge --shots /tmp/frog
+npm run games:generate -- --subskill 4.NF.A.1-1        # needs VISION_* (or GAMES_MODEL); blocks until verified or failed
+npm run games:generate -- --missing --grades K,1,2,3,4,5 --subject math --limit 50 --workers 3
+npm run games:list
+```
+
+`--missing` skips any skill that already has a game, shipped or generated, so the same command can be run again and again until the catalog is covered. Each build is one to four model calls plus a robot run, so cost and time scale with `--limit`.
+
+Flags, all in `backend/.env.example`: `SIDEKICK_GAMES_ENABLED` (default `false`), `SIDEKICK_GAMES_REQUIRE_APPROVAL` (default `true`; keep it on for real families), `SIDEKICK_GAMES_AUTOGENERATE` (default `false`; queue a build when homework shows a skill with no game), `SIDEKICK_GAME_REVIEWERS`, `GAMES_MODEL`, `GAMES_TIMEOUT_SECONDS`. The robot needs Node and Playwright's Chromium (`npx playwright install chromium`).
+
+**Loading the library.** `games:seed` skips games that are already stored, so it can be stopped and run again. The robot takes a few seconds per game, so the whole library is roughly an hour with `--workers 4`; loading one grade at a time (`--subject math --grades 3`) takes a few minutes and is the natural way to feed the review queue. `python -m backend.games verify` is the same robot without the database, for checking the shipped files after a kit change.
+
+**The shipped library.** `data/games/` holds 1,533 games, one for every skill in the skill map, kindergarten through high school:
+
+- `examples/` (5): unit fractions, rectangle area, unit price, irregular plurals, facts within 10. These are the few-shot examples the model is shown.
+- `library/` (1,528): 863 math games and 665 reading, writing and language games. `data/games/COVERAGE.md` lists every one and counts them by subject, grade, author and mechanic.
+
+Most are built with **play patterns**: `Sidekick.play` (in `backend/games/kit/play.js`, documented in `KIT.md`) turns a short description into a full game using one of ten tested mechanics (`sort`, `row`, `fill`, `pick`, `build`, `dial`, `line`, `paint`, `plot`, `type`), with views for graphs, shapes, number lines, tables, matrices and more. A pattern supplies the stage, the live reaction, the win rule, the worked solution and the known slips; the game supplies the world, the words, the numbers and the misconception. 77 games are built by hand on the kit, and each `meta.json` records which pattern a game uses.
+
+Read the counts before trusting the breadth. About 1,290 of the games use only the simpler mechanics (matching tiles to blanks, sorting cards, tapping, ordering, a keypad). They react and coach on the known slip, but by the brief's own test ("if it could be printed on paper, it has failed") many of them are closer to interactive practice than to a little world with a mission. About 170 use the richer mechanics (dials driving a graph or a model, number lines, grids, building), and the 77 hand-built games set the bar. Reviewers should expect to retire or rebuild a share of the simpler ones, especially in reading and in high school.
+
+All 1,533 were written by Claude standing in for the model, to the same brief, kit and robot the pipeline uses. Every one passes the robot. None has been approved by a person: they are seeded as `verified`, so none reaches a child until a reviewer approves it. The pipeline has still not been run against a live provider. The kit has no sound, so early reading skills use pictures and letters, and open-ended writing skills are represented by a part that can be checked (ordering, choosing, fixing).
+
+**Grades.** Games cover every grade in the skill map. High school courses and bands are stored with a grade number (Algebra 1 and 9-10 as 9, Geometry as 10, Algebra 2 and 11-12 as 11, Precalculus as 12) and can be offered when homework points at those skills. The activity flow is unchanged and stays K to 8.
+
+**What scales and what does not.** The robot checks a game in a few seconds with no person involved. Review is the bottleneck: 1,533 games for a person to play before children see them. The review page (`/parent/games`) is built for that: tabs for waiting, live and retired with counts, filters for subject and grade, search by title or skill id, and pages of 50, ordered by subject, grade and skill so a reviewer can work through one grade at a time. Start with the grades and skills real homework is hitting rather than the whole map. Many skills marked "needs an adult or AI rubric" in the skill map (open writing, read-aloud fluency, discussion) do not fit an auto-checked game well and are better served by the activity flow.
+
+Known limits: a game shares one JavaScript realm with the kit, so a hostile game could fake what the robot sees; the robot and reviews are quality gates, and the frame is the security boundary. A frozen game can freeze its frame; the page watches a heartbeat and offers a restart. Review screenshots are not stored; reviewers play the game instead.
 
 ## Equivalent fractions: split and compare
 

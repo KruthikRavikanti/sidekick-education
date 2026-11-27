@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.A.1-3",
+  "title": "Shell Lines",
+  "emoji": "🐚",
+  "premise": "Two friends line up their shells side by side. Find how many more one friend has than the other.",
+  "idea": "Compare problems: two rows are lined up so the extra ones stick out. Adding both rows is the known slip for how many more.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

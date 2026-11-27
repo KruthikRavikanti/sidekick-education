@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.OA.A.2-2",
+  "title": "No Need to Solve",
+  "emoji": "🔭",
+  "premise": "You can tell a lot about an expression without working it out. Look at what is done to the part in parentheses.",
+  "idea": "Interpreting numerical expressions without evaluating them: 3 × (1,846 + 250) is three times as large as 1,846 + 250. Needing to compute before comparing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

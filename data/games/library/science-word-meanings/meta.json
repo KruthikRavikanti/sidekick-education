@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.3.4-1",
+  "title": "Science Word Meanings",
+  "emoji": "🦎",
+  "premise": "Science words can look like everyday words but mean something special. The text tells you which meaning.",
+  "idea": "Determining the meaning of general academic and domain-specific words in a text. Using the everyday meaning for a science word is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

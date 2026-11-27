@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.6.2-2",
+  "title": "Summary, No Opinions",
+  "emoji": "📰",
+  "premise": "A summary of an article reports its ideas. What you think of them comes later, somewhere else.",
+  "idea": "Providing a summary of an informational text distinct from personal opinions. Adding opinions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

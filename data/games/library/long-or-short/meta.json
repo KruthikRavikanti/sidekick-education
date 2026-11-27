@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.2.3-1",
+  "title": "Long or Short?",
+  "emoji": "🌲",
+  "premise": "A vowel can be short, like the i in pin, or long, like the i in pine. Spelling gives you the clue.",
+  "idea": "Distinguishing long and short vowels when reading regularly spelled one-syllable words. Reading all vowels as short is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

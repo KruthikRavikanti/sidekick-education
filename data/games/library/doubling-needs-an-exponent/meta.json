@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-CED.A.1-2",
+  "title": "Doubling Needs an Exponent",
+  "emoji": "🦠",
+  "premise": "Adding the same amount each step is linear. Multiplying by the same factor each step is exponential. Choose the right kind of equation.",
+  "idea": "Creating quadratic and exponential equations in one variable from situations. Using a linear form when the growth is exponential is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

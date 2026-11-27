@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.A.5-1",
+  "title": "Triangle Angle Sum",
+  "emoji": "🔺",
+  "premise": "Tear off the three corners of any triangle and they line up into a straight angle. The total is always 180°.",
+  "idea": "Using informal arguments to establish the angle sum of triangles. Thinking larger triangles have larger angle sums is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+sort"
+}

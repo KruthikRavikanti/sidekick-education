@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.K.4-1",
+  "title": "Fact Word Finder",
+  "emoji": "🔦",
+  "premise": "Fact books use special words. When one is new, the book often tells you what it means.",
+  "idea": "Asking and answering questions about unknown words in an informational text. Skipping unknown words is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

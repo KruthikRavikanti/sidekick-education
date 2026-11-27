@@ -1,0 +1,8 @@
+{
+  "subskillId": "RF.5.3-1",
+  "title": "Word Drums",
+  "emoji": "🥁",
+  "premise": "Every long word has a beat. Set the drum to the number of syllables and play it.",
+  "idea": "The drum dial chops a long word into beats. Each beat has one vowel sound, so counting vowel letters gives too many.",
+  "author": "claude-stand-in"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.1.6-1",
+  "title": "Type and Share",
+  "emoji": "🖥️",
+  "premise": "Writers use computers to type their work and share it. There are steps to follow, in order.",
+  "idea": "Using digital tools to produce and publish writing: the steps of typing and sharing are ordered and keys are matched to their jobs. Avoiding the tools is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+row"
+}

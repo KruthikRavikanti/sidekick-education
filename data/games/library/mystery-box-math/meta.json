@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.A.1-4",
+  "title": "Mystery Box Math",
+  "emoji": "📦",
+  "premise": "Each story has a number nobody knows yet. Build a number sentence with a box for the mystery number.",
+  "idea": "Writing an equation with a symbol for the unknown: the child arranges tiles so the box sits where the unknown is in the story, not at the end by habit.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

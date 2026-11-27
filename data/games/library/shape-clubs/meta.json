@@ -1,0 +1,8 @@
+{
+  "subskillId": "3.G.A.1-1",
+  "title": "Shape Clubs",
+  "emoji": "🏠",
+  "premise": "Each club has one rule. Let in every shape that fits it, whatever the shape is called.",
+  "idea": "Clubs admit shapes by rule, not by name. The square fits the rectangle rule and the rhombus rule, so leaving it outside breaks the rule.",
+  "author": "claude-stand-in"
+}

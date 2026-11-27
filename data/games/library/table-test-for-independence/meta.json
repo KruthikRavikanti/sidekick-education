@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-CP.A.4-1",
+  "title": "Table Test for Independence",
+  "emoji": "🎺",
+  "premise": "A two-way table sorts people by two questions at once. Compare rates, not raw counts, to see if the answers are linked.",
+  "idea": "Constructing and interpreting two-way frequency tables and using them to decide if events are independent. Comparing counts instead of relative frequencies is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

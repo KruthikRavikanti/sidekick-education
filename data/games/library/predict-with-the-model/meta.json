@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.SP.A.3-1",
+  "title": "Predict With the Model",
+  "emoji": "🔮",
+  "premise": "A linear model is a rule for predicting. Put the input where it belongs in the equation and work it out.",
+  "idea": "Using the equation of a linear model to solve problems. Substituting into the other variable or term is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

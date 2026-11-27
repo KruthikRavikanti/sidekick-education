@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.G.A.1-1",
+  "title": "Shape Hunt at Home",
+  "emoji": "🏠",
+  "premise": "Shapes are hiding in everyday things around the house. Sort each thing by the shape you see in it.",
+  "idea": "Naming shapes in everyday objects: a slice of pizza is a triangle and an envelope is a rectangle, so the child looks for sides and corners in real things.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

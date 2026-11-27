@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.1.2-4",
+  "title": "Sound Dots",
+  "emoji": "🔵",
+  "premise": "Break a word into every little sound. Push up one dot for each sound you say.",
+  "idea": "Segmenting spoken single-syllable words into their complete sequence of individual sounds. Segmenting by syllable, or counting letters, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

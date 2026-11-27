@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.K.5-1",
+  "title": "Sorting Baskets",
+  "emoji": "🧺",
+  "premise": "Things that go together belong in the same basket. Think about what kind of thing each one is.",
+  "idea": "Sorting common objects into categories to gain a sense of the concepts the categories represent. Sorting by one random feature is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

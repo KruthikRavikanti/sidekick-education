@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.OA.B.3-1",
+  "title": "Two Rule Race",
+  "emoji": "🐇",
+  "premise": "The rabbit and the turtle each follow their own rule. Write the first numbers of each pattern.",
+  "idea": "Generating two numerical patterns from two given rules. Applying one rule to both patterns is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

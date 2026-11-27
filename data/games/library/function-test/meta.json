@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.A.1-1",
+  "title": "Function Test",
+  "emoji": "🎛️",
+  "premise": "A function assigns each input exactly one output. Two inputs can share an output. One input cannot have two.",
+  "idea": "Understanding that a function assigns to each element of the domain exactly one element of the range. Thinking repeated outputs are not allowed is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

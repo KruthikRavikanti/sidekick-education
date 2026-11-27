@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.B.8-1",
+  "title": "Which Shortcuts Work?",
+  "emoji": "✅",
+  "premise": "You do not need all six parts to prove triangles congruent. Three well-chosen parts will do, but not just any three.",
+  "idea": "Explaining how the criteria for triangle congruence (ASA, SAS, SSS) follow from rigid motions. Thinking SSA or AAA proves congruence is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

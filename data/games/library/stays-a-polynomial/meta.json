@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-APR.A.1-3",
+  "title": "Stays a Polynomial",
+  "emoji": "🔒",
+  "premise": "Add, subtract or multiply polynomials and you always get a polynomial. Division is the one that can break out.",
+  "idea": "Understanding that polynomials are closed under addition, subtraction and multiplication. Thinking the result might not be a polynomial is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.3.1-1",
+  "title": "Opinion Blueprint",
+  "emoji": "📐",
+  "premise": "An opinion paragraph has a plan: say your opinion, give your reasons in order, then close.",
+  "idea": "Introducing a topic, stating an opinion and creating an organizational structure that lists reasons. Giving reasons in no order is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

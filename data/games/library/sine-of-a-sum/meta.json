@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-TF.C.9-1",
+  "title": "Sine of a Sum",
+  "emoji": "➕",
+  "premise": "The sine of a sum is not the sum of the sines. It mixes sines and cosines of both angles.",
+  "idea": "Proving and using the addition and subtraction formulas for sine, cosine and tangent. Thinking sin(a + b) = sin a + sin b is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type+row"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.A.3-1",
+  "title": "Number Mail",
+  "emoji": "📬",
+  "premise": "The mail carrier has number cards to deliver. Drop each one in the right mailbox.",
+  "idea": "Telling look-alike numerals apart: cards with 6 and 9, or 12 and 21, go to different mailboxes, so the child has to look at each numeral closely.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

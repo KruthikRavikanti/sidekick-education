@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-C.A.2-1",
+  "title": "Inscribed Is Half",
+  "emoji": "🎯",
+  "premise": "An angle at the center and an angle on the circle can stand on the same arc. The one on the circle is always half as big.",
+  "idea": "Identifying and describing relationships among inscribed angles, radii and chords. Thinking inscribed and central angles are equal is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,8 @@
+{
+  "subskillId": "W.K.1-1",
+  "title": "Think Bubbles",
+  "emoji": "💭",
+  "premise": "Froggy wants to know what you think. Tap the cards that say what someone thinks or likes.",
+  "idea": "Tapping a card gives it a think bubble. Only cards that say what someone thinks or likes are opinions; the rest just tell about the thing.",
+  "author": "claude-stand-in"
+}

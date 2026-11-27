@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-CED.A.2-1",
+  "title": "Two Quantities, One Equation",
+  "emoji": "🚕",
+  "premise": "An equation in two variables ties two quantities together. Decide which one depends on the other before you write it.",
+  "idea": "Creating equations in two variables to represent relationships between quantities. Mixing up which variable depends on which is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

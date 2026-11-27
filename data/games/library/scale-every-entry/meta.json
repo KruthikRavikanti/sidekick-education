@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-VM.C.7-1",
+  "title": "Scale Every Entry",
+  "emoji": "🔆",
+  "premise": "Multiplying a matrix by a number multiplies every single entry, in every row.",
+  "idea": "Multiplying matrices by scalars. Multiplying only one row is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

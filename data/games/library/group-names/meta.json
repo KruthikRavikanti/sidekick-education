@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.2.1-1",
+  "title": "Group Names",
+  "emoji": "🐺",
+  "premise": "Some words name a whole group at once. A team is many players. A flock is many birds.",
+  "idea": "Using collective nouns. Using a bunch of for every group is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

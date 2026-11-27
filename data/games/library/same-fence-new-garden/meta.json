@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.D.8-3",
+  "title": "Same Fence, New Garden",
+  "emoji": "🌼",
+  "premise": "You have one length of fence. Bend it into different rectangles and watch the space inside change.",
+  "idea": "Rectangles with the same perimeter and different areas: the child reshapes a rectangle and watches both numbers. Assuming the same perimeter means the same area is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

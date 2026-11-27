@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.NBT.B.2-4",
+  "title": "Digit Detective",
+  "emoji": "🔎",
+  "premise": "A digit is worth more when it sits in the tens place. Find out what each digit is really worth.",
+  "idea": "The value of each digit in a two-digit number: the 3 in 37 is worth 30. Saying it is worth 3 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

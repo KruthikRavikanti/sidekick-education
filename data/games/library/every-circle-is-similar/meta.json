@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-C.A.1-1",
+  "title": "Every Circle Is Similar",
+  "emoji": "⭕",
+  "premise": "Slide one circle so the centers match, then dilate. It lands exactly on the other. That works for any two circles.",
+  "idea": "Proving that all circles are similar. Thinking circles of different sizes are not similar is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type"
+}

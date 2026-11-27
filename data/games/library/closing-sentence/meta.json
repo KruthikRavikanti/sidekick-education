@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.2.2-2",
+  "title": "Closing Sentence",
+  "emoji": "🔚",
+  "premise": "Informative writing ends with a sentence that wraps up the topic. It should not add a brand new fact.",
+  "idea": "Providing a concluding statement in informative writing. Stopping without closing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

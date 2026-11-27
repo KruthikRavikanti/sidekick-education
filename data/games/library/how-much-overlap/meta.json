@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.B.3-1",
+  "title": "How Much Overlap?",
+  "emoji": "🏀",
+  "premise": "Two groups can have different averages and still overlap a lot. It depends on how spread out each group is.",
+  "idea": "Informally assessing the visual overlap of two distributions. Comparing only the means is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

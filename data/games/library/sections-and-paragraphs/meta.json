@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.4.2-1",
+  "title": "Sections and Paragraphs",
+  "emoji": "🗂️",
+  "premise": "Long informative writing is split into paragraphs and sections. Each one holds information on one part of the topic.",
+  "idea": "Introducing a topic clearly and grouping related information in paragraphs and sections. Writing one long paragraph is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

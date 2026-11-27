@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.NF.A.3-2",
+  "title": "Match the Top Bar",
+  "emoji": "🧱",
+  "premise": "The top bar shows a fraction. The bottom bar is cut into more pieces. Shade it until both bars cover the same amount.",
+  "idea": "Generating equivalent fractions with a model: the child shades a second bar until it matches the first. Adding the same number to top and bottom is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

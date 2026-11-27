@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NBT.B.6-2",
+  "title": "Easy Chunks",
+  "emoji": "🧀",
+  "premise": "Break a hard division into easy chunks. Take away friendly multiples of the divisor, then add up how many you took.",
+  "idea": "Explaining two-digit division with equations and partial quotients: 672 ÷ 16 as 40 sixteens and 2 sixteens. Not connecting the steps to the total is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

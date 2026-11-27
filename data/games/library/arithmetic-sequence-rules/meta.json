@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-BF.A.2-1",
+  "title": "Arithmetic Sequence Rules",
+  "emoji": "➕",
+  "premise": "An arithmetic sequence adds the same amount each step. To reach term n from term 1 you add that amount n − 1 times.",
+  "idea": "Writing arithmetic sequences recursively and with an explicit formula. Using n where n − 1 is needed is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

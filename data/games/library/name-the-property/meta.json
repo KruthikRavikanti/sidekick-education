@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.A.4-2",
+  "title": "Name the Property",
+  "emoji": "📜",
+  "premise": "You do not have to test numbers to know two expressions are equal. A property guarantees it.",
+  "idea": "Explaining why two expressions are equivalent using properties of operations. Relying on how the expressions look is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

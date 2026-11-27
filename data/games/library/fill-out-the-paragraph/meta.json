@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.4.2-2",
+  "title": "Fill Out the Paragraph",
+  "emoji": "🦈",
+  "premise": "A thin paragraph just names a topic. A full one has a fact, a definition, an example, maybe even a quotation.",
+  "idea": "Developing the topic with facts, definitions, concrete details, quotations or other information and examples. Thin development is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

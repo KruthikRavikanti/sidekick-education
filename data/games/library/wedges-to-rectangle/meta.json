@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.G.B.4-3",
+  "title": "Wedges to Rectangle",
+  "emoji": "🧀",
+  "premise": "Cut a circle into thin wedges and line them up, tips up and tips down. They make a shape that is almost a rectangle.",
+  "idea": "Giving an informal derivation of the relationship between circumference and area of a circle. Memorizing the formula without meaning is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

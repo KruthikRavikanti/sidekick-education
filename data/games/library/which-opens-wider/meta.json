@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.MD.C.5-1",
+  "title": "Which Opens Wider?",
+  "emoji": "🐊",
+  "premise": "An angle is two rays that share an endpoint. Its size is how wide it opens, not how long its sides are.",
+  "idea": "An angle is formed by two rays with a common endpoint and is measured by its opening. Thinking longer rays make a bigger angle is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

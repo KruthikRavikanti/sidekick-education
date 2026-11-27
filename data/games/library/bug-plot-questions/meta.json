@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.MD.B.4-2",
+  "title": "Bug Plot Questions",
+  "emoji": "🐞",
+  "premise": "The line plot shows how long each bug is. Read it with care: the tallest stack is not the longest bug.",
+  "idea": "Solving addition and subtraction problems from a fraction line plot. Reading stack height as the measurement is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

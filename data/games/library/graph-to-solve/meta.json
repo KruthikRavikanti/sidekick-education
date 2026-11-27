@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.C.8-2",
+  "title": "Graph to Solve",
+  "emoji": "📉",
+  "premise": "To solve a system by graphing, draw both lines carefully and read where they cross.",
+  "idea": "Solving systems of two linear equations by graphing. Reading the intersection inaccurately is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial+plot"
+}

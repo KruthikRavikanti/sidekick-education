@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-CP.A.3-1",
+  "title": "Given That",
+  "emoji": "🔦",
+  "premise": "Once you know B happened, B becomes your whole world. The chance of A inside that world is a conditional probability.",
+  "idea": "Understanding the conditional probability of A given B as P(A and B) ÷ P(B). Reporting P(A and B) as the conditional probability is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

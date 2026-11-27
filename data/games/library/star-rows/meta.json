@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.B.5-1",
+  "title": "Star Rows",
+  "emoji": "🌟",
+  "premise": "The stargazer drew the stars in rows. Count every star and key in how many.",
+  "idea": "Counting up to 20 objects arranged in rows: the child keys in the count, and counting one star twice gives a number that is one too big.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

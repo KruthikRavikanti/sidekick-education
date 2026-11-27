@@ -1,0 +1,9 @@
+{
+  "subskillId": "GA-3-NR.1.1-2",
+  "title": "Dino Bite Signs",
+  "emoji": "🦖",
+  "premise": "The dinosaur always bites toward the bigger number. Compare from the thousands down.",
+  "idea": "Comparing four-digit numbers with symbols: comparison starts at the greatest place. Comparing from the right is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

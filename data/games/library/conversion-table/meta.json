@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.MD.A.1-3",
+  "title": "Conversion Table",
+  "emoji": "📋",
+  "premise": "A conversion table lists the same lengths in two units. Every pair in it follows the same rule.",
+  "idea": "Completing two-column conversion tables: each pair keeps the same ratio. Listing pairs that do not keep the ratio (12, 13, 14) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

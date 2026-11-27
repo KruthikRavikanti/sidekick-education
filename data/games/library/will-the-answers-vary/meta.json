@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.SP.A.1-2",
+  "title": "Will the Answers Vary?",
+  "emoji": "📋",
+  "premise": "A statistical question expects many different answers. You need data to answer it, because the answers vary.",
+  "idea": "Understanding that statistical questions anticipate variability in the data. Expecting all answers to be the same is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

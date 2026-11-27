@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.C.7-4",
+  "title": "L-Shaped Rooms",
+  "emoji": "🛋️",
+  "premise": "These rooms are shaped like the letter L. Cut each one into two rectangles and add their areas.",
+  "idea": "Finding the area of a rectilinear figure by splitting it into non-overlapping rectangles. Counting the overlapping corner twice is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

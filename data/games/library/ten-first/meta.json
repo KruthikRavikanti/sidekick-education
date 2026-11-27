@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.A.2-2",
+  "title": "Ten First",
+  "emoji": "🎯",
+  "premise": "Adding three numbers is quicker when two of them make a ten. Spot the ten, then see what is left.",
+  "idea": "Making ten first when adding three numbers: the child finds which addend is left after two others make ten. Going left to right picks the third number instead.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

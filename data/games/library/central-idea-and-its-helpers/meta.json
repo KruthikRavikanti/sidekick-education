@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.6.2-1",
+  "title": "Central Idea and Its Helpers",
+  "emoji": "🎯",
+  "premise": "The central idea is the big point of an article. The details are the facts that hold it up.",
+  "idea": "Determining a central idea and how it is conveyed through particular details. Picking a detail as the central idea is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

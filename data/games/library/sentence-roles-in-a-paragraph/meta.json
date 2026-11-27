@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.8.5-1",
+  "title": "Sentence Roles in a Paragraph",
+  "emoji": "🧩",
+  "premise": "Inside a strong paragraph, each sentence has a role: stating the point, giving evidence, explaining it, wrapping up.",
+  "idea": "Analyzing in detail the structure of a specific paragraph, including the role of particular sentences. Summarizing the paragraph is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

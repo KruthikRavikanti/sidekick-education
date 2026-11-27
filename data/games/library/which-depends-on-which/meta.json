@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.C.9-1",
+  "title": "Which Depends on Which?",
+  "emoji": "⏱️",
+  "premise": "When two quantities are linked, one depends on the other. Pay depends on hours worked, not the other way around.",
+  "idea": "Identifying the dependent and independent variables in a relationship. Reversing them is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.3.3-2",
+  "title": "Suffix Station",
+  "emoji": "🚉",
+  "premise": "Endings like -able, -ment, -tion and -ible come from Latin. Read the base word, then add the ending.",
+  "idea": "Decoding words with common Latin suffixes. Dropping the suffix and reading only the base is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

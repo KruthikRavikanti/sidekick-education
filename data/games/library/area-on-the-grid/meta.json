@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-GPE.B.7-2",
+  "title": "Area on the Grid",
+  "emoji": "🟩",
+  "premise": "For a triangle on a grid, the height is the straight-up distance from the base to the far corner, not a slanted side.",
+  "idea": "Using coordinates to compute areas of triangles and rectangles. Using a slanted side as the height is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

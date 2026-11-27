@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.7.2-4",
+  "title": "Tie Up the Explanation",
+  "emoji": "🎗️",
+  "premise": "After explaining something, leave the reader with the big picture: what it all adds up to.",
+  "idea": "Providing a concluding statement that follows from and supports the information presented. Leaving out a conclusion is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

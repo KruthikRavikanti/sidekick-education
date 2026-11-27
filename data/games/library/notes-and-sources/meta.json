@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.4.8-1",
+  "title": "Notes and Sources",
+  "emoji": "📝",
+  "premise": "Researchers take notes, sort them into categories, and write down where each fact came from.",
+  "idea": "Taking notes, categorizing information and providing a list of sources. Not recording sources is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+pick"
+}

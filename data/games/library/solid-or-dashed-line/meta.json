@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.D.12-2",
+  "title": "Solid or Dashed Line?",
+  "emoji": "〰️",
+  "premise": "The boundary line is solid when points on it count as solutions, and dashed when they do not.",
+  "idea": "Graphing a linear inequality with the correct boundary. Using a solid line for strict inequalities is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

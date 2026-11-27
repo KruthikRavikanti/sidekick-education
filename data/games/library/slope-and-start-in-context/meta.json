@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.SP.A.3-2",
+  "title": "Slope and Start in Context",
+  "emoji": "💡",
+  "premise": "In a model, the slope tells how much the output changes for each extra unit of input. The intercept is the output at zero.",
+  "idea": "Interpreting the slope and intercept of a linear model in context. Giving units for the other quantity is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

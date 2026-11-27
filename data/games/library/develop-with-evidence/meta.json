@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.5.2-2",
+  "title": "Develop With Evidence",
+  "emoji": "🦈",
+  "premise": "Strong paragraphs are built from different kinds of support: facts, quotations and examples.",
+  "idea": "Developing the topic with facts, definitions, concrete details, quotations or other information and examples. Thin development is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

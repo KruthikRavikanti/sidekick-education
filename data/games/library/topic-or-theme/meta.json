@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.4.2-1",
+  "title": "Topic or Theme?",
+  "emoji": "🧵",
+  "premise": "A topic is one word, like friendship. A theme is a full message about it, like true friends stay loyal in hard times.",
+  "idea": "Determining a theme of a story from details in the text. Stating a topic instead of a theme is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+pick"
+}

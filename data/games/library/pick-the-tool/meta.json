@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.A.1-1",
+  "title": "Pick the Tool",
+  "emoji": "🧰",
+  "premise": "Short things and long things need different measuring tools. Hand the builder the right tool for each job.",
+  "idea": "Choosing an appropriate measuring tool: a ruler for small things, a yardstick for medium ones and a measuring tape for long ones. Using a ruler for a hallway is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

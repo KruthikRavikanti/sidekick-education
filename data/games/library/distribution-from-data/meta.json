@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-MD.A.4-1",
+  "title": "Distribution From Data",
+  "emoji": "🐾",
+  "premise": "When theory is not available, use data. Each probability is a relative frequency: the count divided by the total.",
+  "idea": "Developing a probability distribution from empirically assigned probabilities. Using counts instead of relative frequencies is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

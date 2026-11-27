@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.B.6-2",
+  "title": "Deer Leaps",
+  "emoji": "🦌",
+  "premise": "The deer leaps forward to add and back to take away. Each leap moves it one whole space.",
+  "idea": "Showing sums and differences as jumps on a number line. Counting the starting tick as the first jump lands one short.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

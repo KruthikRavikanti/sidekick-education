@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.F.A.3-1",
+  "title": "Line or Curve?",
+  "emoji": "〰️",
+  "premise": "An equation of the form y = mx + b always graphs as a straight line. An x with an exponent bends the graph.",
+  "idea": "Interpreting y = mx + b as defining a linear function whose graph is a straight line. Thinking y = x² is linear is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

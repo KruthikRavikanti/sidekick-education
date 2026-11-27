@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-IC.A.2-1",
+  "title": "Is the Model Believable?",
+  "emoji": "🪙",
+  "premise": "To test a claim, simulate it many times and see how often your result shows up. Rare results cast doubt. Common ones do not.",
+  "idea": "Deciding if a model is consistent with results from a data-generating process using simulation. Rejecting a model after one mildly surprising result is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type"
+}

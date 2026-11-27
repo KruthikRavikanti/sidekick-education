@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.3.2-1",
+  "title": "Group the Facts",
+  "emoji": "🗂️",
+  "premise": "Good informative writing keeps facts that go together in the same paragraph.",
+  "idea": "Introducing a topic and grouping related information together. Mixing topics in one paragraph is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

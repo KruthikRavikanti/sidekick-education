@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-CN.C.7-2",
+  "title": "What the Discriminant Says",
+  "emoji": "🔮",
+  "premise": "The number under the root in the quadratic formula, b^2 − 4ac, predicts the kind of solutions before you solve.",
+  "idea": "Using the discriminant to predict the type of solutions. Misreading the sign of the discriminant is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type"
+}

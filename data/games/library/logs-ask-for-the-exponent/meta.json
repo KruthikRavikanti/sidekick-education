@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-BF.B.5-1",
+  "title": "Logs Ask for the Exponent",
+  "emoji": "🪵",
+  "premise": "A logarithm is a question: what exponent turns the base into this number? Log base 2 of 8 asks 2 to the what is 8.",
+  "idea": "Understanding the inverse relationship between exponents and logarithms. Treating a log as division, or splitting it over addition, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

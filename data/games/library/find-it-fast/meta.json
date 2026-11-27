@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.1.5-1",
+  "title": "Find It Fast",
+  "emoji": "📑",
+  "premise": "You do not have to read a whole fact book to find one thing. The table of contents tells you which page to turn to.",
+  "idea": "Knowing and using text features to locate key facts or information. Reading every page to find one fact is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+fill"
+}

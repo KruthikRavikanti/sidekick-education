@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.C.10-2",
+  "title": "Midsegment Half",
+  "emoji": "➗",
+  "premise": "A midsegment joins the midpoints of two sides of a triangle. It runs parallel to the third side and is exactly half as long.",
+  "idea": "Proving theorems about triangles: midsegments and medians. Using measurement as proof is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

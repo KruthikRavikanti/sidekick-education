@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.C.6-4",
+  "title": "Stop at Ten",
+  "emoji": "🛑",
+  "premise": "Taking away is easier with a rest stop at 10. Slide back to 10 first, then slide the rest of the way.",
+  "idea": "Using known facts to subtract (13 − 4 = 13 − 3 − 1): the child goes back to ten and then keeps going back. Adding the leftover instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

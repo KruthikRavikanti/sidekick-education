@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.G.B.3-1",
+  "title": "Family Rules",
+  "emoji": "👪",
+  "premise": "Shapes belong to families. Whatever is true for the whole family is true for every member of it.",
+  "idea": "Attributes of a category of figures belong to all its subcategories: squares are rectangles, so squares have four right angles. Thinking a square is not a rectangle is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

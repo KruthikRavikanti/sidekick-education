@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.8.8-1",
+  "title": "Advanced Search Lab",
+  "emoji": "🔬",
+  "premise": "Search tools have tricks: exact phrases, excluded words, trusted kinds of sites. Then you still have to judge and cite what you find.",
+  "idea": "Using search terms effectively; assessing credibility; quoting or paraphrasing while avoiding plagiarism and following a citation format. Plagiarizing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

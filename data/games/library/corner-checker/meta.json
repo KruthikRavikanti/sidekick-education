@@ -1,0 +1,8 @@
+{
+  "subskillId": "GA-3-GSR.6.1-2",
+  "title": "Corner Checker",
+  "emoji": "📐",
+  "premise": "Check every corner of the shape. Mark only the ones that are square corners.",
+  "idea": "Tapping a corner tests it against a square corner. Right angles stay right when the shape is tilted, and a nearly square corner does not count.",
+  "author": "claude-stand-in"
+}

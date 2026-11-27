@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.7.2-1",
+  "title": "Preview What Is Coming",
+  "emoji": "🗺️",
+  "premise": "A good introduction names the topic and gives the reader a map of what the piece will cover.",
+  "idea": "Introducing a topic clearly, previewing what is to follow. Leaving out the preview is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+row"
+}

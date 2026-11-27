@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.6.5-1",
+  "title": "Paragraph Jobs",
+  "emoji": "🗂️",
+  "premise": "Each paragraph in an article has a job: to introduce, give an example, show a cause, or wrap things up.",
+  "idea": "Analyzing how a sentence, paragraph or section contributes to the development of the ideas. Describing it without its function is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

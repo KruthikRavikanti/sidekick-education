@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.MD.A.2-2",
+  "title": "Inchworm Measure",
+  "emoji": "🐛",
+  "premise": "The inchworms have lined up under each thing. Count the worms to say how long it is.",
+  "idea": "Counting units to give a length: the units are already laid end to end and the child counts them. Counting the marks at the ends as well gives one too many.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

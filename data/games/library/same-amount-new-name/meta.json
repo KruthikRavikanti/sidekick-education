@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.NF.A.3-1",
+  "title": "Same Amount, New Name",
+  "emoji": "🪞",
+  "premise": "Cut the same amount into smaller pieces and it gets a new name, but it is still the same amount.",
+  "idea": "Equivalent fractions are the same size: 2/4 covers exactly as much as 1/2. Judging by the bigger numbers is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

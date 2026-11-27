@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.A.2-2",
+  "title": "Root Finder",
+  "emoji": "🧱",
+  "premise": "A square root asks which number times itself makes this. It is not the same as halving.",
+  "idea": "Evaluating square roots of perfect squares and cube roots of perfect cubes. Confusing squaring with doubling is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

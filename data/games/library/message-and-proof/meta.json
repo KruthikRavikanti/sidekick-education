@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.3.2-2",
+  "title": "Message and Proof",
+  "emoji": "🐢",
+  "premise": "The central message is the big idea of a story. The key details in the story are what prove it.",
+  "idea": "Determining the central message and explaining how it is conveyed through key details. Stating the message without supporting details is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,8 @@
+{
+  "subskillId": "7.SP.C.5-1",
+  "title": "Marble Bag",
+  "emoji": "🔴",
+  "premise": "Reach into the bag without looking. Say the chance of pulling out a red marble.",
+  "idea": "A pointer slides from never to always as the child sets red out of all marbles. Comparing red to blue instead can push it past 1, beyond certain.",
+  "author": "claude-stand-in"
+}

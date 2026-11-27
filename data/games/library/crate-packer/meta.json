@@ -1,0 +1,8 @@
+{
+  "subskillId": "5.MD.C.5-1",
+  "title": "Crate Packer",
+  "emoji": "📦",
+  "premise": "Pack each crate full of cubes, one layer at a time. Order exactly enough.",
+  "idea": "Cubes are packed layer by layer as they are ordered, so volume is seen as cubes per layer times layers. Adding the sides leaves the crate nearly empty.",
+  "author": "claude-stand-in"
+}

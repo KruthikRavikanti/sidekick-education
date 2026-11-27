@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.K.7-1",
+  "title": "Fact and Picture",
+  "emoji": "🕸️",
+  "premise": "In a fact book, the pictures show what the words are teaching. Match each fact to its picture.",
+  "idea": "Describing the relationship between illustrations and the text in an informational book. Describing the picture alone is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

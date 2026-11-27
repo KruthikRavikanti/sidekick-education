@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-MD.B.5-1",
+  "title": "Is the Game Worth It?",
+  "emoji": "🎟️",
+  "premise": "A game’s expected payoff is what you win on average, minus what you pay to play.",
+  "idea": "Finding the expected payoff for a game of chance. Ignoring the cost to play is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

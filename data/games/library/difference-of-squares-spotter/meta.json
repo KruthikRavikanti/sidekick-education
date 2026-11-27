@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-SSE.A.2-1",
+  "title": "Difference of Squares Spotter",
+  "emoji": "🔲",
+  "premise": "Any square minus another square splits into a sum times a difference. Spot the pattern even when it is in disguise.",
+  "idea": "Using the structure of an expression to rewrite it, such as seeing x⁴ − y⁴ as a difference of squares. Not seeing structure is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

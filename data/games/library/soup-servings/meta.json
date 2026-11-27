@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.A.1-3",
+  "title": "Soup Servings",
+  "emoji": "🍲",
+  "premise": "How many servings fit in the pot? That is a division question, even when the serving is a fraction.",
+  "idea": "Solving word problems involving division of fractions by fractions. Multiplying instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

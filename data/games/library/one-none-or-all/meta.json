@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.C.7-1",
+  "title": "One, None or All",
+  "emoji": "🧮",
+  "premise": "Most equations have one solution. Some have none, and some are true for every number.",
+  "idea": "Knowing linear equations can have one solution, infinitely many, or none. Thinking 3 = 3 means x = 3 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

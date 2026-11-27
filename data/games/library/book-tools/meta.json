@@ -1,0 +1,8 @@
+{
+  "subskillId": "RI.2.5-1",
+  "title": "Book Tools",
+  "emoji": "📖",
+  "premise": "A fact book has tools that find things fast. Send each question to the tool that answers it.",
+  "idea": "Each question about a book goes to the contents, glossary, index or a caption. Reading every page is always there as the slow snail option.",
+  "author": "claude-stand-in"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-IC.B.6-1",
+  "title": "Question the Headline",
+  "emoji": "📰",
+  "premise": "A number in an ad or a headline is only as good as the study it came from. Ask how it was done before you believe it.",
+  "idea": "Evaluating reports based on data. Accepting claims without checking the design is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+sort"
+}

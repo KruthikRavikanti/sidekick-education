@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.D.8-1",
+  "title": "Fence It In",
+  "emoji": "🐄",
+  "premise": "The cows need a fence all the way around their field. Add up every side to find how much fence to buy.",
+  "idea": "Finding perimeter by adding side lengths. Multiplying the sides to get the area, or adding only two sides, are the known slips.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

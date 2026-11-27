@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-CN.B.6-1",
+  "title": "Distance Between Complex Numbers",
+  "emoji": "📡",
+  "premise": "To find how far apart two complex numbers are, subtract them. The modulus of the difference is the distance.",
+  "idea": "Calculating the distance between numbers in the complex plane as the modulus of the difference. Adding the numbers first is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

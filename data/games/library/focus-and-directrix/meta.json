@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-GPE.A.2-1",
+  "title": "Focus and Directrix",
+  "emoji": "🛰️",
+  "premise": "Every point of a parabola is as far from a point, the focus, as from a line, the directrix. The vertex sits exactly halfway.",
+  "idea": "Deriving the equation of a parabola given a focus and directrix. Mixing up the focus and the vertex is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot+fill"
+}

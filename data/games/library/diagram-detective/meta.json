@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.1.7-1",
+  "title": "Diagram Detective",
+  "emoji": "🐞",
+  "premise": "A fact book teaches with words and with diagrams. Use both to get the whole idea.",
+  "idea": "Using illustrations and details in a text to describe its key ideas. Describing the picture without the idea is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

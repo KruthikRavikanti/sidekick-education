@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.MD.A.3-2",
+  "title": "Work Back to the Side",
+  "emoji": "🚪",
+  "premise": "You know the area or the distance around, and one side. Work backward to find the side that is missing.",
+  "idea": "Finding an unknown side of a rectangle from its area or perimeter. Using the other formula (subtracting for area, or forgetting to halve for perimeter) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

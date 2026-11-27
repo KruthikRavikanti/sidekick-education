@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-CN.C.8-1",
+  "title": "Factor a Sum of Squares",
+  "emoji": "🧩",
+  "premise": "x^2 + 4 will not factor with real numbers. With i, it splits just like a difference of squares.",
+  "idea": "Extending polynomial identities to the complex numbers. Thinking a sum of squares cannot be factored at all is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-CP.A.2-1",
+  "title": "Independent or Not?",
+  "emoji": "🎰",
+  "premise": "Two events are independent when one happening tells you nothing about the other. There is a quick multiplication test.",
+  "idea": "Understanding that two events are independent if the probability of both is the product of their probabilities. Thinking mutually exclusive means independent is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type"
+}

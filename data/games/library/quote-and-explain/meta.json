@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.5.1-1",
+  "title": "Quote and Explain",
+  "emoji": "🏜️",
+  "premise": "A quote alone is not enough. After you quote the text, explain what it shows.",
+  "idea": "Quoting accurately from a text when explaining and inferring. Quoting without explaining is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

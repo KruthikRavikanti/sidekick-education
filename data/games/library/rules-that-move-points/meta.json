@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.A.2-1",
+  "title": "Rules That Move Points",
+  "emoji": "🎯",
+  "premise": "A transformation is a function. It takes every point of the plane as input and gives a new point as output.",
+  "idea": "Representing transformations as functions that take points in the plane as inputs and give other points as outputs. Thinking only the shape moves is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot+fill"
+}

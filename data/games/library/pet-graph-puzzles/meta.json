@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.D.10-2",
+  "title": "Pet Graph Puzzles",
+  "emoji": "🐹",
+  "premise": "The class graphed its pets. Read the bars carefully to answer each puzzle.",
+  "idea": "Solving put-together and compare problems from a bar graph: values are read from the scale and combined. Adding when asked how many more is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

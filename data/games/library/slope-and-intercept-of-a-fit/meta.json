@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-ID.C.7-1",
+  "title": "Slope and Intercept of a Fit",
+  "emoji": "👶",
+  "premise": "The slope of a fitted line is a rate. Its intercept is the prediction at zero, which only means something if zero makes sense.",
+  "idea": "Interpreting the slope and intercept of a linear model in the context of the data. Giving the intercept meaning when x = 0 is impossible is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

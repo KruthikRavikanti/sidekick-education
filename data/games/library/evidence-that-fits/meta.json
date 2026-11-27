@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.6.1-2",
+  "title": "Evidence That Fits",
+  "emoji": "🧲",
+  "premise": "Evidence has to prove the claim you made, not some other claim. Keep what fits. Cut what drifts.",
+  "idea": "Supporting claims with clear reasons and relevant evidence. Using evidence that does not support the claim is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

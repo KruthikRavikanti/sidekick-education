@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NF.B.7-1",
+  "title": "Slice the Slice",
+  "emoji": "🍰",
+  "premise": "Share one third of a cake among 4 friends. Each piece is a slice of a slice, so it is smaller.",
+  "idea": "Dividing a unit fraction by a whole number: 1/3 ÷ 4 = 1/12. Expecting the answer to be bigger is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

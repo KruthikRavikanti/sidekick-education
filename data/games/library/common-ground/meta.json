@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NF.A.1-1",
+  "title": "Common Ground",
+  "emoji": "🤝",
+  "premise": "Thirds and fourths cannot be added until they are cut into the same size pieces. Find a size that works for both.",
+  "idea": "Finding a common denominator: 2/3 and 1/4 become 8/12 and 3/12. Using a new denominator without changing the numerator is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

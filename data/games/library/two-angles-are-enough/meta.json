@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.A.5-3",
+  "title": "Two Angles Are Enough",
+  "emoji": "👯",
+  "premise": "If two angles of one triangle match two angles of another, the third angles match as well. The triangles are similar.",
+  "idea": "Using the angle-angle criterion for similarity of triangles. Deciding from one matching angle only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

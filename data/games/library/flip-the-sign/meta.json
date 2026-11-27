@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.EE.B.4-3",
+  "title": "Flip the Sign",
+  "emoji": "🔀",
+  "premise": "Solving an inequality works like solving an equation, with one twist. Multiply or divide by a negative and the sign flips.",
+  "idea": "Solving inequalities of the form px + q > r. Forgetting to flip the sign when multiplying or dividing by a negative is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

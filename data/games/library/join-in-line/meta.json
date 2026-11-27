@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.K.10-1",
+  "title": "Join In Line",
+  "emoji": "🐸",
+  "premise": "Some books say one line again and again. When you spot it, you can join in and read along.",
+  "idea": "Engaging in group reading with purpose: the child finds the repeated line of a pattern text and supplies it. Listening without following the text is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+fill"
+}

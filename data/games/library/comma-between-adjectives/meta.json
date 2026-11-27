@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.7.2-1",
+  "title": "Comma Between Adjectives",
+  "emoji": "✒️",
+  "premise": "When adjectives describe a noun equally, a comma separates them. Test it: could you say and between them?",
+  "idea": "Using a comma to separate coordinate adjectives. Leaving it out is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

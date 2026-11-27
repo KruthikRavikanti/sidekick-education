@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.F.B.4-3",
+  "title": "What the Numbers Mean",
+  "emoji": "💬",
+  "premise": "Every number in a linear model means something in the story. Say it with its units.",
+  "idea": "Interpreting the rate of change and initial value of a linear function in context. Giving numbers without meaning is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.B.5-3",
+  "title": "Block Delivery",
+  "emoji": "🏗️",
+  "premise": "The builders ask for an exact number of blocks. Load just that many, then stop.",
+  "idea": "Counting out a requested number from a larger group: the child loads blocks and must stop at the target, with plenty of extra blocks left to tempt going past it.",
+  "author": "claude-stand-in",
+  "play": "build"
+}

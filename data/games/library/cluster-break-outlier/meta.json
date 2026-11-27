@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.SP.A.2-2",
+  "title": "Cluster, Break, Outlier",
+  "emoji": "🔭",
+  "premise": "Data often bunches into a cluster. An outlier sits far away from the rest, across an empty stretch.",
+  "idea": "Recognizing clusters, empty stretches and outliers in a data set. Ignoring outliers is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+fill"
+}

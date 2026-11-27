@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.C.6-1",
+  "title": "Count the Squares",
+  "emoji": "🟩",
+  "premise": "The rectangle is drawn on grid paper. Count every square inside it to find its area.",
+  "idea": "Counting unit squares to find area: every square inside counts. Counting only the squares along the edges is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

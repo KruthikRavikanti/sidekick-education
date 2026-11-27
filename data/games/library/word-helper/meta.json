@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.1.4-1",
+  "title": "Word Helper",
+  "emoji": "🛟",
+  "premise": "Fact books explain their hard words. The meaning is often right after the word.",
+  "idea": "Asking and answering questions to determine or clarify the meaning of words and phrases in a text. Ignoring unknown words is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

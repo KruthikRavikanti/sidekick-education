@@ -1,0 +1,8 @@
+{
+  "subskillId": "2.NBT.A.1-4",
+  "title": "Score Blocks",
+  "emoji": "🕹️",
+  "premise": "The arcade board needs each score in digits. Type it and watch the blocks build your number.",
+  "idea": "The typed number is built from hundreds, tens and ones blocks, so leaving out the zero visibly builds the wrong amount.",
+  "author": "claude-stand-in"
+}

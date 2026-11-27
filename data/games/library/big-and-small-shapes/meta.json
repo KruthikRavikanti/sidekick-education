@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.G.A.2-1",
+  "title": "Big and Small Shapes",
+  "emoji": "🔺",
+  "premise": "Some shapes are huge and some are tiny. Sort them by their name, no matter how big they are.",
+  "idea": "A shape keeps its name at any size: big and tiny versions of the same shape go in one bin, so the child sorts by sides and corners, not size.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

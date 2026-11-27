@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.6.2-1",
+  "title": "Pick the Structure",
+  "emoji": "🗂️",
+  "premise": "Informative writing needs a plan. The topic tells you which structure fits: definition, comparison or cause and effect.",
+  "idea": "Introducing a topic and organizing ideas using strategies such as definition, comparison and cause/effect. Disorganized writing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

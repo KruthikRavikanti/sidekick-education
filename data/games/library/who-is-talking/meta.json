@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.1.6-1",
+  "title": "Who Is Talking?",
+  "emoji": "🗣️",
+  "premise": "In a story, different characters take turns telling what happens. The words said and asked show who is talking.",
+  "idea": "Identifying who is telling the story at various points in a text. Thinking the author is always the one talking is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,8 @@
+{
+  "subskillId": "GA-2-PAR.4.1-1",
+  "title": "Lily Pad Hops",
+  "emoji": "🪷",
+  "premise": "Froggy always hops the same distance. Tap the lily pads where the hops land.",
+  "idea": "A frog hops by the same amount each time on a number chart. The hops are read back with their sizes, exposing a step that changes partway.",
+  "author": "claude-stand-in"
+}

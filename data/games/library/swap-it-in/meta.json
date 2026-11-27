@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.C.8-3",
+  "title": "Swap It In",
+  "emoji": "🔄",
+  "premise": "If one equation says what y equals, put that in place of y in the OTHER equation. Then there is only x to solve for.",
+  "idea": "Solving systems algebraically by substitution and elimination. Substituting into the same equation it came from is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

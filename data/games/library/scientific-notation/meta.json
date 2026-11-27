@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.A.3-1",
+  "title": "Scientific Notation",
+  "emoji": "🔬",
+  "premise": "Scientific notation writes huge and tiny numbers as a number from 1 up to 10, times a power of 10.",
+  "idea": "Writing very large and very small numbers in scientific notation. Using a first factor of 10 or more is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

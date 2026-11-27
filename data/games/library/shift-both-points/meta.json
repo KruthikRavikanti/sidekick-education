@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.B.3-3",
+  "title": "Shift Both Points",
+  "emoji": "➗",
+  "premise": "To divide by a decimal, slide the point in the divisor until it is a whole number. Slide the other point the same way.",
+  "idea": "Dividing multi-digit decimals, including by a decimal divisor. Not shifting the decimal in both numbers is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

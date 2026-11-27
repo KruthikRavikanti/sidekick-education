@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.B.5-1",
+  "title": "Shadow Math",
+  "emoji": "🌳",
+  "premise": "At the same moment, every upright object and its shadow make similar triangles. Height over shadow is the same for all of them.",
+  "idea": "Using similarity criteria for triangles to solve problems. Setting up the proportion with non-corresponding sides is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

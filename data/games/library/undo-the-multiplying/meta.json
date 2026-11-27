@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.B.7-2",
+  "title": "Undo the Multiplying",
+  "emoji": "🧮",
+  "premise": "4x means 4 times x. To find x, undo the multiplying by dividing both sides.",
+  "idea": "Solving equations of the form px = q. Subtracting p instead of dividing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.2.2-4",
+  "title": "Spelling Patterns",
+  "emoji": "🧩",
+  "premise": "Spelling follows patterns. After a short vowel the j sound is dge. The oi sound is oy at the end of a word.",
+  "idea": "Generalizing learned spelling patterns when writing words (cage to badge, boy to boil). Spelling each word without using patterns is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.G.A.3-2",
+  "title": "Name That Share",
+  "emoji": "🥮",
+  "premise": "One share of each cake is shaded. Give the shaded share its proper name.",
+  "idea": "Describing shares with the words half, third and fourth: one share is shaded and named. Calling a third three is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.B.4-1",
+  "title": "Side Splitter",
+  "emoji": "✂️",
+  "premise": "A line drawn parallel to one side of a triangle cuts the other two sides in the same ratio.",
+  "idea": "Proving and using the theorem that a line parallel to one side of a triangle divides the other two proportionally. Setting the proportion up in the reverse order is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

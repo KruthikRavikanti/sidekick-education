@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.C.8-1",
+  "title": "Count the Outcomes",
+  "emoji": "🪙",
+  "premise": "For two things happening together, list every combined outcome. The probability is the fraction of the list you want.",
+  "idea": "Understanding that the probability of a compound event is the fraction of outcomes in the sample space. Adding the separate probabilities is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

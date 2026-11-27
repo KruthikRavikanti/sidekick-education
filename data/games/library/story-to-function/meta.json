@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.F.B.4-2",
+  "title": "Story to Function",
+  "emoji": "🔧",
+  "premise": "A fee plus a rate makes a linear function. The amount per hour multiplies x. The one-time amount stands alone.",
+  "idea": "Constructing a function to model a linear relationship from a description. Swapping the slope and the intercept is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

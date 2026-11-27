@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.G.A.1-1",
+  "title": "Triangle Club",
+  "emoji": "⛰️",
+  "premise": "Only true members get into the club. Size and the way a shape is turned do not matter: the sides do.",
+  "idea": "Defining attributes: a triangle is closed with three straight sides, whatever its size or turn. Tiny or tipped shapes test whether the child uses the rule.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

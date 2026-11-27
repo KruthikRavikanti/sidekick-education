@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NBT.B.6-1",
+  "title": "Divide by Two Digits",
+  "emoji": "🚚",
+  "premise": "Dividing by a two-digit number takes good guesses. Estimate each digit of the answer, then check by multiplying.",
+  "idea": "Dividing up to four-digit dividends by two-digit divisors. Misjudging or misplacing a quotient digit is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.G.A.1-2",
+  "title": "Where Is the Bee?",
+  "emoji": "🐝",
+  "premise": "The bee wants to rest near the flower. Listen to where, then tap that spot.",
+  "idea": "Using position words: a flower sits in the middle of a small grid and the child taps the spot that is above, below or beside it.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

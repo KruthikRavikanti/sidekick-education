@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NBT.B.4-1",
+  "title": "Cargo Ship Sums",
+  "emoji": "🚢",
+  "premise": "Big numbers are loaded place by place. When a place overflows, the extra is carried to the next one.",
+  "idea": "Adding multi-digit numbers with the standard algorithm. Dropping the carried digits is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

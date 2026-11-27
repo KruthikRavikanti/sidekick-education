@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NF.C.6-2",
+  "title": "Decimal Dock",
+  "emoji": "⛵",
+  "premise": "Every decimal has a spot on the number line. Sail the boat to the right dock.",
+  "idea": "Placing decimals on a number line: 0.5 is halfway between 0 and 1. Placing 0.5 between 5 and 6 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.4.7-1",
+  "title": "Many Sides of a Topic",
+  "emoji": "🗺️",
+  "premise": "A research project looks at a topic from several sides. One source rarely covers them all.",
+  "idea": "Conducting short research projects that build knowledge through investigation of different aspects of a topic. Using a single source is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

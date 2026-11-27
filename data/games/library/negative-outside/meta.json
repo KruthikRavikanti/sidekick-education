@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.EE.A.1-2",
+  "title": "Negative Outside",
+  "emoji": "➖",
+  "premise": "A negative in front of a bracket changes the sign of every term inside when you multiply through.",
+  "idea": "Expanding linear expressions with negative coefficients. Dropping the sign when distributing a negative is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

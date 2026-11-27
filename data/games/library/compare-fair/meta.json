@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.MD.A.2-3",
+  "title": "Compare Fair",
+  "emoji": "🎪",
+  "premise": "At the fair, everything gets compared. Drop in the word that tells how the first thing compares to the second.",
+  "idea": "Using comparison words: the child completes a sentence comparing two things and reads it back. Each right word sits beside its opposite.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

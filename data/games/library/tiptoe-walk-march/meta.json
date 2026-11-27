@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.K.5-4",
+  "title": "Tiptoe, Walk, March",
+  "emoji": "🥁",
+  "premise": "Some words mean almost the same thing, but not quite. Tiptoe, walk and march are three ways to move.",
+  "idea": "Distinguishing shades of meaning among verbs describing the same general action. Treating the verbs as the same is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+fill"
+}

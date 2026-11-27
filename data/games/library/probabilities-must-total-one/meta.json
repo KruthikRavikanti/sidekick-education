@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-MD.A.3-1",
+  "title": "Probabilities Must Total One",
+  "emoji": "🧩",
+  "premise": "Build a distribution from theory: find the probability of every value. Together they must add up to exactly 1.",
+  "idea": "Developing a probability distribution from theoretical probabilities. Ending with probabilities that do not sum to 1 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+dial+type"
+}

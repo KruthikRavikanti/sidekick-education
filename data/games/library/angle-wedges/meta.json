@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.MD.C.7-1",
+  "title": "Angle Wedges",
+  "emoji": "🍕",
+  "premise": "Angles that sit side by side add up, just like slices of pizza make a bigger slice.",
+  "idea": "Angle measure is additive: the measure of the whole is the sum of the parts. Not seeing the whole as a sum of parts is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+build"
+}

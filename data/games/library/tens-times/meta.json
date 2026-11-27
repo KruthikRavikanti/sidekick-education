@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.NBT.A.3-1",
+  "title": "Tens Times",
+  "emoji": "✖️",
+  "premise": "Multiplying by 80 is really multiplying by 8 tens. Count in tens and the big fact gets small.",
+  "idea": "Multiplying a one-digit number by a multiple of ten: 9 × 80 is 9 × 8 tens, which is 72 tens or 720. Stopping at 72 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

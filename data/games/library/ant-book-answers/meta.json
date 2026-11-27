@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.1.1-1",
+  "title": "Ant Book Answers",
+  "emoji": "🐜",
+  "premise": "A book about ants has the answers inside it. Find each answer in what the book says.",
+  "idea": "Answering questions about key details in an informational text. Answering from prior knowledge is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

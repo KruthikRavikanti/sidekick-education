@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.B.5-3",
+  "title": "Check It Back",
+  "emoji": "🔁",
+  "premise": "Adding undoes taking away. Use that to check each answer: does it really add back to the start?",
+  "idea": "Using the relationship between addition and subtraction to check: each card shows a subtraction and its addition check, and the child sorts those that check out.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

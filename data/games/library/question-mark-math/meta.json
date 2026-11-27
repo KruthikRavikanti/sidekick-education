@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.OA.A.1-4",
+  "title": "Question Mark Math",
+  "emoji": "❓",
+  "premise": "Turn each story into a number sentence. The question mark stands where the unknown number is in the story.",
+  "idea": "Writing an equation with a symbol for the unknown: the tiles are arranged so the ? sits where the unknown happens in the story.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

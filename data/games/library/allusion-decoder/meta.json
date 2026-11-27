@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.7.5-1",
+  "title": "Allusion Decoder",
+  "emoji": "🏺",
+  "premise": "An allusion is a quick reference to a famous story or event. Knowing the story unlocks the meaning.",
+  "idea": "Interpreting figures of speech such as literary, biblical and mythological allusions. Missing the allusion is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

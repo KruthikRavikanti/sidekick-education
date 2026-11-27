@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.OA.A.3-2",
+  "title": "Treasure Pairs",
+  "emoji": "💎",
+  "premise": "The treasure chest only opens for pairs of numbers that make the secret total. Find them all.",
+  "idea": "Finding several ways to split the same number: the child picks every pair that makes the total, so the parts must really add to the whole.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

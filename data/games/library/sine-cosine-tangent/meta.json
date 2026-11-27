@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.C.6-2",
+  "title": "Sine, Cosine, Tangent",
+  "emoji": "📏",
+  "premise": "From an acute angle, a right triangle has an opposite side, an adjacent side and the hypotenuse. Three ratios name their relationships.",
+  "idea": "Defining trigonometric ratios for acute angles. Swapping opposite and adjacent is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

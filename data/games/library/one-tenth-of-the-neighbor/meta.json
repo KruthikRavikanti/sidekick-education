@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NBT.A.1-2",
+  "title": "One Tenth of the Neighbor",
+  "emoji": "🏘️",
+  "premise": "Move one place to the right and a digit shrinks to one tenth of what it was.",
+  "idea": "A digit in one place represents 1/10 of what it represents in the place to its left. Thinking tenths are ten times bigger than ones is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

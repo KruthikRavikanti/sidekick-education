@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.A.2-1",
+  "title": "Check All Three Ratios",
+  "emoji": "🔺",
+  "premise": "Two triangles are similar only if every pair of matching sides has the same ratio. Two matching pairs are not enough.",
+  "idea": "Using the definition of similarity to decide if two figures are similar. Checking only one pair of sides is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type"
+}

@@ -1,0 +1,8 @@
+{
+  "subskillId": "K.G.A.2-2",
+  "title": "Shape Sorter",
+  "emoji": "🛸",
+  "premise": "Shapes are tumbling off the space belt. Sort each one into its bin, even when it is turned.",
+  "idea": "A shape keeps its name however it is turned. Dropping a shape in a bin straightens it, so a square on its corner is seen to be a square.",
+  "author": "claude-stand-in"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.K.5-1",
+  "title": "Add the Detail",
+  "emoji": "🖍️",
+  "premise": "A friend asks a question about your writing. Make it stronger by adding the answer.",
+  "idea": "Responding to questions and suggestions by adding details to strengthen writing. Leaving the writing unchanged is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.C.6-1",
+  "title": "Eliminate and Solve",
+  "emoji": "🧹",
+  "premise": "Line up two equations so that adding them removes one variable. Then solve what is left.",
+  "idea": "Solving systems of linear equations exactly. Dropping a sign when combining equations is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

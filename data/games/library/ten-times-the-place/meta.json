@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NBT.A.1-2",
+  "title": "Ten Times the Place",
+  "emoji": "🏢",
+  "premise": "Each floor of the place value building is worth ten times the floor to its right. Use division to see it.",
+  "idea": "Using division to compare place values: 700 ÷ 70 = 10 because the hundreds place is ten times the tens place. Subtracting instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

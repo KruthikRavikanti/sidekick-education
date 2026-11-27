@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.8.1-4",
+  "title": "Final Word on the Argument",
+  "emoji": "🎤",
+  "premise": "The last paragraph is your final chance to convince. It should gather the argument, not wander off or fizzle.",
+  "idea": "Providing a concluding statement or section that follows from and supports the argument. Leaving it out is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

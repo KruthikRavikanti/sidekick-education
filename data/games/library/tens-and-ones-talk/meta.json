@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.B.9-1",
+  "title": "Tens and Ones Talk",
+  "emoji": "💬",
+  "premise": "Explain how the adding works by putting the steps in order: split, add each place, then put it back together.",
+  "idea": "Explaining an addition strategy with place value: split both numbers, add tens and ones, then combine. Combining before both places are added is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

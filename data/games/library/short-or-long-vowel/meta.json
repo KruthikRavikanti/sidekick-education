@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.K.3-2",
+  "title": "Short or Long Vowel",
+  "emoji": "🎵",
+  "premise": "Vowels have two sounds. The long sound says the letter name, like the a in cake. The short sound is quick, like the a in cat.",
+  "idea": "Knowing long and short sounds for the five vowels: picture words are sorted by vowel sound. Using only the letter name for vowels is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

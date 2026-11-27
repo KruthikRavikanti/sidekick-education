@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.F.B.5-1",
+  "title": "Read the Story Graph",
+  "emoji": "🚶",
+  "premise": "A distance-time graph is not a picture of a hill. Going up means getting farther away. Flat means standing still.",
+  "idea": "Describing qualitatively the functional relationship between two quantities by analyzing a graph. Reading a distance-time graph as a picture of a hill is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

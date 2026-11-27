@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.2.6-1",
+  "title": "Why Did the Author Write It?",
+  "emoji": "✍️",
+  "premise": "Every author writes for a reason: to answer a question, to explain how something works, or to describe something.",
+  "idea": "Identifying the main purpose of a text, including what the author wants to answer, explain or describe. Saying the purpose is just to be read is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

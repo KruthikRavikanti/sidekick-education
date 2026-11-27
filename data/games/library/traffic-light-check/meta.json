@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.OA.A.3-3",
+  "title": "Traffic Light Check",
+  "emoji": "🚦",
+  "premise": "Before you trust an answer, estimate. Green light for answers that are close, red light for ones that cannot be right.",
+  "idea": "Using estimation to assess reasonableness: rounded mental computation exposes answers that are far off.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

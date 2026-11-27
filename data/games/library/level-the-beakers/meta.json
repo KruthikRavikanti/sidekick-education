@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.MD.B.2-2",
+  "title": "Level the Beakers",
+  "emoji": "🧫",
+  "premise": "Pour all the beakers together, then share the liquid out again so every beaker holds the same amount.",
+  "idea": "Using operations on line plot data: redistributing the total equally among the containers. Not being able to redistribute equally is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

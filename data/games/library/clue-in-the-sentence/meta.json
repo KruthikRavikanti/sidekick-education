@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.1.4-1",
+  "title": "Clue in the Sentence",
+  "emoji": "🐕",
+  "premise": "When a word is new, the rest of the sentence helps. Look for the clue hiding nearby.",
+  "idea": "Using sentence-level context as a clue to the meaning of a word. Ignoring the sentence is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

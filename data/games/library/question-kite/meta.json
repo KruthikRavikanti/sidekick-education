@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.K.1-2",
+  "title": "Question Kite",
+  "emoji": "🪁",
+  "premise": "Good readers wonder about the story. A good question is about what is happening in the book.",
+  "idea": "Asking questions about key details in a story: questions are sorted by whether they are about the story. Asking unrelated questions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

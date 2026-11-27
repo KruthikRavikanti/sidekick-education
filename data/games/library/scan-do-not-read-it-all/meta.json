@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.3.5-1",
+  "title": "Scan, Do Not Read It All",
+  "emoji": "🛰️",
+  "premise": "To find one fact quickly, use the tools on the page: headings, sidebars, key words and links.",
+  "idea": "Using text features and search tools to locate information efficiently. Reading everything instead of scanning is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

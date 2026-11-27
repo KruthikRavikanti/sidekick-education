@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.2.2-1",
+  "title": "Lion and Mouse",
+  "emoji": "🦁",
+  "premise": "Fables are short tales that teach a lesson. Retell one by putting its key events in order.",
+  "idea": "Recounting fables and folktales and determining their central lesson. Retelling without the key events is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+pick"
+}

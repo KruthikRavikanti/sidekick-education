@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.OA.C.3-2",
+  "title": "Even Split",
+  "emoji": "🧦",
+  "premise": "Even numbers split into two equal piles with nothing left over. Share the socks so both piles match.",
+  "idea": "An even number as a sum of two equal addends: the child shares an even pile into two equal groups. Unequal piles are the known slip.",
+  "author": "claude-stand-in",
+  "play": "build"
+}

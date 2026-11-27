@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.C.6-2",
+  "title": "Cross Point Estimate",
+  "emoji": "📍",
+  "premise": "Graph both equations and the solution is where they cross. Read the point carefully from the grid.",
+  "idea": "Solving systems of linear equations approximately by graphing. Misreading the intersection is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot+type"
+}

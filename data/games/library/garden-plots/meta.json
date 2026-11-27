@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.C.7-2",
+  "title": "Garden Plots",
+  "emoji": "🌻",
+  "premise": "Each garden is a rectangle. Multiply its length by its width to find how much ground it covers.",
+  "idea": "Multiplying side lengths to find area in context. Adding the sides to get the distance around is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

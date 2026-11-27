@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.7.5-3",
+  "title": "Shades of Meaning Ladder",
+  "emoji": "🪜",
+  "premise": "Words that mean almost the same thing differ in strength and feeling. Line them up from mildest to strongest.",
+  "idea": "Distinguishing among the connotations of words with similar denotations. Treating such words as interchangeable is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+sort"
+}

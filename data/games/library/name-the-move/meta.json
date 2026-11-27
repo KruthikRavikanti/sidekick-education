@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.A.2-2",
+  "title": "Name the Move",
+  "emoji": "🧭",
+  "premise": "Saying a shape moved is not enough. Name the motion exactly: how far, which way, or over which line.",
+  "idea": "Describing a sequence of rigid motions that exhibits congruence. Naming the line or direction imprecisely is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

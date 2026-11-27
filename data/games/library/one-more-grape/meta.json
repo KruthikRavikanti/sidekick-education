@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.B.4-4",
+  "title": "One More Grape",
+  "emoji": "🍇",
+  "premise": "The fruit bowl needs just the right number of grapes. Each one you add makes one more.",
+  "idea": "Each next number is one more: the child fills a bowl one grape at a time and sees the total go up by exactly one.",
+  "author": "claude-stand-in",
+  "play": "build"
+}

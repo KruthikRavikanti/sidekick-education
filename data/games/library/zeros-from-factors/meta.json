@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-SSE.B.3-1",
+  "title": "Zeros From Factors",
+  "emoji": "0️⃣",
+  "premise": "Once a quadratic is factored, its zeros are easy: each factor is zero for one value of x. Watch the sign.",
+  "idea": "Factoring a quadratic expression to reveal the zeros. Setting factors equal to values with the sign reversed is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NBT.B.7-4",
+  "title": "Why the Point Goes There",
+  "emoji": "💡",
+  "premise": "Say the decimals as tenths and hundredths, and it is clear where the decimal point has to go.",
+  "idea": "Explaining decimal multiplication with models and place-value language: 3 tenths × 2 tenths = 6 hundredths. Not being able to justify where the point goes is the known slip.",
+  "author": "claude-stand-in",
+  "play": "paint+fill"
+}

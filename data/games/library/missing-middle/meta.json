@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.K.2-3",
+  "title": "Missing Middle",
+  "emoji": "🧩",
+  "premise": "Every little word has a vowel sound in the middle. Listen for it and drop in the letter.",
+  "idea": "Writing a letter for most consonant and short-vowel sounds: the missing vowel of a CVC word is supplied. Writing only the consonants is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

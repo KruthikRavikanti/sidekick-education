@@ -1,0 +1,225 @@
+/* Color Blocks theme.
+   A layer over the base styles: big flat panels in the brand colors, very large type,
+   no borders and no drop shadows. It only restyles; remove the import in layout.tsx to
+   go back to the previous look.
+
+   One palette: sun, orange, forest and lime, on cream, with sand as the one quiet neutral.
+   No pale green and no light blue. */
+:root {
+  --sun: #ffd45c;
+  --orange-tint: #fde3d3;
+  --sand: #f3ecdb;
+  --sand-deep: #e9dfc8;
+  --line: #e2d9c4;
+  --forest-soft: #0b5c35;
+  --on-forest: #f3ecdb;
+  --block-radius: 36px;
+}
+
+/* ---------- shared pieces ---------- */
+h1, h2, h3 { font-family: Fredoka, Nunito, sans-serif; }
+.account-eyebrow, .eyebrow, .little-label { color: var(--forest); font-weight: 800; letter-spacing: 0.14em; }
+.button.primary {
+  min-height: 58px; padding: 0 30px; border-radius: 999px; box-shadow: none;
+  font-family: Fredoka, Nunito, sans-serif; font-weight: 600; font-size: 20px;
+}
+.button.primary:hover:not(:disabled) { background: var(--forest-soft); transform: translateY(-2px); }
+.account-card { border: 0; box-shadow: none; border-radius: var(--block-radius); background: #fff; padding: 40px; }
+.account-header, .site-header { border-bottom: 0; }
+.account-main { max-width: 1180px; }
+
+/* ---------- log in and sign up ---------- */
+.auth-layout { gap: 20px; align-items: stretch; padding: 12px 0; }
+.auth-story { background: var(--sun); border-radius: var(--block-radius); padding: 52px 48px; display: flex; flex-direction: column; justify-content: center; }
+.auth-story h1 { font-size: clamp(44px, 5.4vw, 72px); line-height: 1; letter-spacing: -1px; }
+.auth-story p { color: var(--forest); font-weight: 700; }
+/* The form card is forest: light text, white fields and a sun button, so the button still stands out. */
+.auth-card, .pin-card { background: var(--forest); color: var(--cream); }
+:is(.auth-card, .pin-card) :is(h1, h2, label, legend, a, .text-button) { color: var(--cream); }
+:is(.auth-card, .pin-card) > p:not(.account-eyebrow), :is(.auth-card, .pin-card) :is(.field-help, .auth-switch) { color: var(--on-forest); }
+:is(.auth-card, .pin-card) .account-eyebrow { color: var(--lime); }
+:is(.auth-card, .pin-card) .account-section-icon { border: 0; }
+:is(.auth-card, .pin-card) .button.primary, :is(.auth-card, .pin-card) .button.primary * { background: var(--sun); color: var(--forest); }
+:is(.auth-card, .pin-card) .button.primary:hover:not(:disabled) { background: #ffe08a; }
+:is(.auth-card, .pin-card) .text-button:hover { background: var(--forest-soft); }
+.account-shell :is(.auth-card, .pin-card) input:focus { border-color: var(--sun); }
+.auth-card input, .pin-card input { border: 0; border-radius: 18px; min-height: 54px; background: #fff; }
+
+/* ---------- who is learning ---------- */
+.picker-intro { background: var(--sun); border-radius: var(--block-radius); padding: 44px 32px; margin: 4px 0 20px; max-width: none; }
+.picker-intro h1 { font-size: clamp(44px, 6.5vw, 84px); line-height: 1; letter-spacing: -1px; margin: 10px 0; }
+.picker-intro p { color: var(--forest); font-weight: 700; font-size: 19px; }
+.profile-grid { max-width: none; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+.profile-tile { border: 0; box-shadow: none; border-radius: var(--block-radius); min-height: 264px; font-family: Fredoka, Nunito, sans-serif; font-size: 30px; transition: transform 0.15s; }
+.profile-tile:nth-child(4n + 1) { background: var(--orange); }
+.profile-tile:nth-child(4n + 2) { background: var(--lime); }
+.profile-tile:nth-child(4n + 3) { background: var(--sun); }
+.profile-tile:nth-child(4n + 4) { background: #e7cfe4; }
+.profile-tile.parent-tile { background: var(--forest); color: var(--cream); }
+.profile-tile.parent-tile * { color: var(--cream); }
+.profile-tile:hover { transform: translateY(-6px); box-shadow: none; }
+.profile-tile .kid-avatar, .profile-tile .parent-avatar { background: var(--cream); border: 0; box-shadow: none; }
+.profile-tile.parent-tile .parent-avatar, .profile-tile.parent-tile .parent-avatar * { color: var(--forest); }
+.profile-tile span, .profile-tile small { color: var(--forest); }
+
+/* ---------- kid home ---------- */
+.shell-kid .account-main:has(> .kid-welcome) { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); grid-template-rows: auto auto 1fr; gap: 20px; align-content: start; }
+.kid-welcome { grid-column: 1 / -1; position: relative; overflow: hidden; margin: 0; padding: 44px 48px; background: var(--sun); border-radius: var(--block-radius); text-align: left; min-height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+.kid-welcome::after { content: ""; position: absolute; right: 44px; bottom: -26px; width: 330px; height: 238px; background: url("/sidekick-mascot.svg") center / contain no-repeat; pointer-events: none; }
+.kid-welcome .kid-avatar { margin: 0 0 12px; background: var(--cream); border: 0; box-shadow: none; }
+.kid-welcome h1 { font-size: clamp(56px, 8vw, 104px); line-height: 0.95; letter-spacing: -1.5px; margin: 8px 0 12px; }
+.kid-welcome p:not(.account-eyebrow) { font-size: 24px; font-weight: 700; color: var(--forest); margin: 0; }
+.kid-actions { grid-column: 1; grid-row: 2 / span 2; max-width: none; margin: 0; }
+.kid-action-card { height: 100%; min-height: 320px; display: flex; flex-direction: column; gap: 12px; padding: 40px 44px; background: var(--orange); border: 0; box-shadow: none; border-radius: var(--block-radius); color: var(--forest); }
+.kid-action-card:hover { transform: translateY(-4px); box-shadow: none; }
+.kid-action-card h2 { font-size: clamp(40px, 4.6vw, 56px); line-height: 1; margin: 6px 0 0; }
+.kid-action-card p { font-size: 20px; font-weight: 700; color: var(--forest); max-width: 420px; }
+.kid-action-card .kid-action-icon { background: var(--cream); border: 0; }
+.kid-action-card .kid-action-arrow { position: static; margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 50%; background: var(--forest); color: var(--cream); font-size: 28px; }
+.kid-chat-placeholder { grid-column: 2; max-width: none; margin: 0; padding: 32px 36px; background: var(--forest); border: 0; border-radius: var(--block-radius); color: var(--cream); }
+.kid-chat-placeholder h2 { color: var(--cream); font-size: 28px; line-height: 1.1; }
+.kid-chat-placeholder p, .kid-chat-placeholder svg { color: var(--on-forest); }
+section.kid-chat-placeholder input[disabled] { width: 100%; min-height: 50px; padding: 0 20px; border: 0; border-radius: 999px; background: var(--forest-soft); color: var(--on-forest); }
+section.kid-chat-placeholder input[disabled]::placeholder { color: var(--on-forest); opacity: 1; }
+.kid-steps { grid-column: 2; padding: 28px 36px; background: var(--lime); border-radius: var(--block-radius); }
+.kid-steps h2 { font-size: 24px; margin: 0 0 14px; }
+.kid-steps ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; counter-reset: step; }
+.kid-steps li { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 800; counter-increment: step; }
+.kid-steps li::before { content: counter(step); flex: 0 0 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--forest); color: var(--cream); font-family: Fredoka, Nunito, sans-serif; font-size: 17px; }
+
+/* ---------- upload ---------- */
+.main-upload { max-width: 1180px; gap: 20px; align-items: stretch; padding-top: 36px; }
+.upload-intro { background: var(--sun); border-radius: var(--block-radius); padding: 48px; display: flex; flex-direction: column; justify-content: center; }
+.upload-intro h1 { font-size: clamp(48px, 6vw, 80px); line-height: 1; }
+.upload-intro p { color: var(--forest); font-weight: 700; font-size: 19px; }
+.intro-mascot { width: 220px; height: 160px; margin: 24px 0 0; transform: none; }
+.upload-card { border: 0; box-shadow: none; border-radius: var(--block-radius); background: var(--forest); color: var(--cream); }
+/* Forest like the log in card: light text on the card, a sun button, and the white drop area keeps its dark text. */
+.upload-card :is(h2, h3, strong, .card-topline, .text-button) { color: var(--cream); }
+.upload-card :is(p, small, .page-label, .file-types, .file-caption, .reading-caption, .preview-toolbar > span) { color: var(--on-forest); }
+.upload-card :is(.upload-dropzone, .pdf-preview) :is(h2, h3, strong) { color: var(--forest); }
+.upload-card :is(.upload-dropzone, .pdf-preview) :is(p, small) { color: var(--muted); }
+.upload-card .button.primary, .upload-card .button.primary * { background: var(--sun); color: var(--forest); }
+.upload-card .button.primary:hover:not(:disabled) { background: #ffe08a; }
+.upload-card .text-button:hover { background: var(--forest-soft); }
+.upload-card .card-topline { border-bottom: 0; }
+
+/* ---------- results ---------- */
+.main-results { max-width: 860px; }
+.results-intro { background: var(--sun); border-radius: var(--block-radius); padding: 40px 32px; margin-bottom: 20px; }
+.results-intro h1 { font-size: clamp(44px, 6vw, 76px); line-height: 1; letter-spacing: -1px; }
+.results-intro p { color: var(--forest); font-weight: 700; }
+.activity-suggestion, .game-suggestion { max-width: none; margin: 20px 0; padding: 32px 36px; background: var(--orange); border: 0; box-shadow: none; border-radius: var(--block-radius); color: var(--forest); }
+.activity-suggestion h2, .game-suggestion h2 { font-size: 32px; line-height: 1.05; }
+.activity-suggestion :is(p, span, small, li), .game-suggestion :is(p, small, li) { color: var(--forest) !important; font-weight: 700; }
+.activity-suggestion .activity-suggestion-icon { background: var(--cream); border: 0; }
+.worksheet-summary { border: 0; box-shadow: none; border-radius: var(--block-radius); background: var(--lime); padding: 32px 36px; margin-bottom: 20px; }
+.worksheet-summary :is(p, span, small, dt, dd, li) { color: var(--forest); }
+.context-card { border: 0; box-shadow: none; border-radius: 28px; background: var(--sand); }
+.problem-card { border: 0; border-radius: 28px; background: #fff; }
+
+/* ---------- parent dashboard ---------- */
+.dashboard-intro { background: var(--forest); border-radius: var(--block-radius); padding: 40px 44px; margin-bottom: 20px; align-items: center; }
+.dashboard-intro h1 { color: var(--cream); font-size: clamp(34px, 4vw, 52px); line-height: 1.02; letter-spacing: -0.5px; }
+.dashboard-intro :is(p, span, small, label, div), .dashboard-intro .account-eyebrow { color: var(--on-forest) !important; }
+.dashboard-intro select { border: 0; border-radius: 999px; min-height: 50px; background: var(--cream); color: var(--forest); font-weight: 800; }
+.dashboard-tabs { border-bottom: 0; gap: 8px; padding-bottom: 4px; }
+.dashboard-tabs button { background: var(--sand); color: var(--forest); min-height: 46px; padding: 10px 22px; font-size: 15px; font-family: Fredoka, Nunito, sans-serif; font-weight: 600; }
+.dashboard-tabs button:hover:not(.selected) { background: var(--sand-deep); }
+.dashboard-tabs button.selected { background: var(--forest); color: var(--cream); }
+.dashboard-section h2 { font-size: 32px; line-height: 1.05; }
+.skill-card { border: 0; border-radius: 24px; padding: 24px; background: var(--sand); }
+.skill-card.skill-card-needs_support { background: var(--orange-tint); }
+
+/* ---------- one palette ----------
+   The base styles used a dozen pale greens for tints, tags and selected states. Each maps to the main palette here:
+   quiet surfaces and notes are sand, "picked" and small accents are sun,
+   and "done, correct, on track" is solid lime. */
+.demo-notice, .sample-insights-label, .empty-family, .dashboard-empty, .parent-activity-review, .split-compare-result,
+.worksheet-preview, .pdf-preview, .transcript-message, .status-blank, .sample-button, .account-shell input:disabled { background: var(--sand); }
+.demo-notice, .sample-insights-label, .sample-button, .parent-activity-review, .account-success { border: 0; }
+.dashboard-empty, .child-editor, .problem-number, .learning-filter input, .account-shell input, .account-shell select { border-color: var(--line); }
+.student-work { border-top-color: var(--line); }
+.card-topline { border-bottom-color: var(--line); }
+.text-button:hover { background: var(--sand); }
+.sample-button:hover { background: var(--sand-deep); }
+.account-shell input:focus, .account-shell select:focus { outline-color: var(--sun); }
+
+.subject-tag, .grade-tag { background: #fff; }
+.status-answered, .skill-status.skill-on_track, .game-status-approved, .account-success, .activity-feedback-correct { background: var(--lime); color: var(--forest); }
+.avatar-lime { background: var(--lime); }
+
+.metric-card > span, .activity-phase-label > span:first-child { background: var(--sun); }
+.activity-teaching, .bundle-number-display, .activity-book-heading, .text-editor-published, .activity-family .sort-target-button { background: var(--sand); }
+.math-board-object { fill: var(--lime); }
+.protractor-body { fill: var(--sand); }
+.math-grid-line { stroke: var(--line); }
+
+.activity-word-choice:has(input:checked), .split-compare-option[data-selected="true"], .evidence-sentence[data-selected="true"],
+.activity-family .sort-piece[aria-pressed="true"], .avatar-options button[aria-checked="true"] { background: var(--sun); }
+
+.activity-fraction-whole, .quantity-container { background: #fff; }
+.paper { box-shadow: 5px 5px 0 var(--sun); }
+.reading-picture { box-shadow: 6px 7px 0 var(--sun); }
+.scan-beam { background: linear-gradient(transparent, #ffd45c99); }
+
+/* ---------- the outside: a little world ----------
+   The page around the panels is a small landscape, drawn behind everything and never in the way of a click.
+   Two soft clouds sit near the top of every screen. On screens made of panels (log in, sign up, the profile
+   picker, the parent PIN, kid home, upload and results) a sun, two hills and the mascots sit along the bottom
+   of the screen. Where words sit straight on the page (the game and activity players, the parent side) only
+   the clouds show, so nothing is ever behind text. */
+.account-shell, .app-shell, .kid-reader-toolbar { position: relative; z-index: 1; }
+body::before, body::after { content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; background-repeat: no-repeat; }
+body::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 210 84'%3E%3Cpath d='M38 80a30 30 0 0 1 6-59 44 44 0 0 1 84-6 34 34 0 0 1 50 30 18 18 0 0 1-6 35z' fill='%23f3ecdb'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 210 84'%3E%3Cpath d='M38 80a30 30 0 0 1 6-59 44 44 0 0 1 84-6 34 34 0 0 1 50 30 18 18 0 0 1-6 35z' fill='%23f3ecdb'/%3E%3C/svg%3E");
+  background-position: left 34px top 128px, right 150px top 18px;
+  background-size: 210px 84px, 170px 68px;
+}
+body::after {
+  display: none;
+  background-image:
+    radial-gradient(ellipse 43% 235px at 79% calc(100% + 127px), var(--lime) 99.5%, transparent 100%),
+    url("/sidekick-mascot.svg"),
+    radial-gradient(ellipse 36% 235px at 16% calc(100% + 105px), var(--forest) 99.5%, transparent 100%),
+    radial-gradient(circle at calc(2.2% + 75px) calc(100% - 127px), var(--sun) 74px, transparent 75px);
+  background-position: 0 0, right 18px bottom 50px, 0 0, 0 0;
+  background-size: 100% 100%, 150px auto, 100% 100%, 100% 100%;
+}
+body:has(.auth-layout, .picker-intro, .pin-card, .narrow-card, .kid-welcome, .main-upload, .main-results)::after { display: block; }
+/* On those screens the page ends with room for the scene, and the footer line stands on the hill as a small cream label. */
+body:has(.auth-layout, .picker-intro, .pin-card, .narrow-card, .kid-welcome, .main-upload, .main-results) :is(.account-footer, .site-footer) {
+  width: fit-content; margin: 150px auto 16px; padding: 7px 16px; border-radius: 999px;
+  background: var(--cream); color: var(--forest); font-weight: 800; font-size: 12px;
+}
+/* The few words that sit on the bare page get a cream backing, so they stay readable if a hill is behind them. */
+.picker-logout .text-button, .privacy-note, .results-footnote { background: var(--cream); }
+.picker-logout .text-button { padding-inline: 16px; }
+.privacy-note { width: fit-content; margin-inline: auto; padding: 6px 14px; border-radius: 999px; }
+.results-footnote { width: fit-content; max-width: 100%; margin-inline: auto; padding: 8px 16px; border-radius: 16px; }
+
+/* ---------- small screens ---------- */
+@media (max-width: 760px) {
+  :root { --block-radius: 28px; }
+  body::before { display: none; }
+  body::after {
+    background-image:
+      radial-gradient(ellipse 62% 150px at 82% calc(100% + 84px), var(--lime) 99%, transparent 100%),
+      url("/sidekick-mascot.svg"),
+      radial-gradient(ellipse 56% 150px at 12% calc(100% + 72px), var(--forest) 99%, transparent 100%),
+      radial-gradient(circle at 40px calc(100% - 78px), var(--sun) 39px, transparent 40px);
+    background-position: 0 0, right 10px bottom 30px, 0 0, 0 0;
+    background-size: 100% 100%, 92px auto, 100% 100%, 100% 100%;
+  }
+  body:has(.auth-layout, .picker-intro, .pin-card, .narrow-card, .kid-welcome, .main-upload, .main-results) :is(.account-footer, .site-footer) { margin-top: 96px; }
+  .shell-kid .account-main:has(> .kid-welcome) { grid-template-columns: minmax(0, 1fr); }
+  .kid-actions, .kid-chat-placeholder, .kid-steps { grid-column: 1; grid-row: auto; }
+  .kid-welcome { padding: 32px 28px; min-height: 0; }
+  .kid-welcome::after { display: none; }
+  .kid-action-card { min-height: 0; padding: 30px 28px; }
+  .auth-story, .upload-intro, .picker-intro, .results-intro, .dashboard-intro { padding: 30px 26px; }
+  .account-card { padding: 28px 24px; }
+  .intro-mascot { display: none; }
+  .profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .profile-tile { min-height: 196px; font-size: 24px; }
+}

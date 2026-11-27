@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.D.11-2",
+  "title": "Boats and Sight Lines",
+  "emoji": "🚤",
+  "premise": "Surveyors and sailors measure two distances and the angle between them. The Law of Cosines gives the distance they cannot reach.",
+  "idea": "Applying the Law of Sines and the Law of Cosines in surveying and force problems. Using an angle that is not the included one is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.5.3-1",
+  "title": "Side by Side Characters",
+  "emoji": "⚖️",
+  "premise": "Comparing means looking at two characters together: where are they alike, and where do they differ?",
+  "idea": "Comparing and contrasting two characters drawing on specific details. Describing each separately is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.SP.A.4-1",
+  "title": "Two-Way Table Totals",
+  "emoji": "🧮",
+  "premise": "A two-way table sorts people by two questions at once. Row totals go at the end of rows. Column totals go under columns.",
+  "idea": "Constructing a two-way table summarizing data on two categorical variables. Putting totals in the opposite place is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.1.2-3",
+  "title": "First, Middle, Last",
+  "emoji": "🚢",
+  "premise": "Every short word has a first sound, a vowel sound in the middle, and a last sound.",
+  "idea": "Isolating initial, medial vowel and final sounds in single-syllable words. Skipping the vowel sound is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

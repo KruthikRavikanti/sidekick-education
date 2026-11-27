@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.C.9-3",
+  "title": "Volume of a Ball",
+  "emoji": "🏀",
+  "premise": "A sphere fills space in three directions, so its radius is cubed, not squared.",
+  "idea": "Using the formula for the volume of a sphere. Squaring the radius instead of cubing it is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

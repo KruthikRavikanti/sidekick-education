@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.1.9-1",
+  "title": "Two Ant Books",
+  "emoji": "📗",
+  "premise": "Two books about ants say some of the same things. Each one also says something new.",
+  "idea": "Identifying basic similarities in and differences between two texts on the same topic. Discussing only one text is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

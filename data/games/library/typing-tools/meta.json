@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.2.6-1",
+  "title": "Typing Tools",
+  "emoji": "⌨️",
+  "premise": "A computer has tools that help writers fix and share their work. Know which tool does which job.",
+  "idea": "Using digital tools to produce and publish writing: tools are matched to their jobs and editing steps are ordered. Avoiding the tools is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+row"
+}

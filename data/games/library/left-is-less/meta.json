@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.C.7-1",
+  "title": "Left Is Less",
+  "emoji": "⬅️",
+  "premise": "On a number line, whatever is farther left is less. That is true for negative numbers too.",
+  "idea": "Interpreting statements of inequality as statements about relative position on a number line. Thinking −7 > −3 because 7 > 3 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

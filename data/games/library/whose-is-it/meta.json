@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.1.1-2",
+  "title": "Whose Is It?",
+  "emoji": "🦴",
+  "premise": "To show that something belongs to someone, add an apostrophe and s. The bone of the dog is the dog’s bone.",
+  "idea": "Using common, proper and possessive nouns. Leaving off the apostrophe-s for possessives is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

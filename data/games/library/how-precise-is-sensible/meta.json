@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-Q.A.3-1",
+  "title": "How Precise Is Sensible?",
+  "emoji": "🎯",
+  "premise": "An answer cannot be more precise than the tool that measured it. Extra decimal places are just noise.",
+  "idea": "Choosing a level of accuracy appropriate to limitations on measurement. Reporting far more decimal places than the data supports is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

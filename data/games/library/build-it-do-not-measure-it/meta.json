@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.D.12-2",
+  "title": "Build It, Do Not Measure It",
+  "emoji": "📐",
+  "premise": "Perpendicular and parallel lines can be constructed exactly. The key is never changing the compass between matching arcs.",
+  "idea": "Constructing perpendicular lines and a line parallel to a given line through a point. Changing the compass width mid-construction is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+row+fill"
+}

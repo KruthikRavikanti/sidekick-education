@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.5.4-3",
+  "title": "Catch and Correct",
+  "emoji": "🎣",
+  "premise": "If a sentence comes out strange, do not shrug and move on. Go back, look again, and make it make sense.",
+  "idea": "Using context to confirm or self-correct word recognition and understanding, rereading as necessary. Not rereading is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

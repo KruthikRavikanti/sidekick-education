@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.4.1-3",
+  "title": "Link Opinion to Reasons",
+  "emoji": "🔗",
+  "premise": "Linking phrases guide a reader from your opinion to each reason: for instance, in addition, in order to.",
+  "idea": "Linking opinion and reasons using words and phrases. Using no transitions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

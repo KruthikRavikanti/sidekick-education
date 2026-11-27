@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.C.7-4",
+  "title": "Division Dash",
+  "emoji": "🏁",
+  "premise": "Each race car carries a division fact. Park every car in the lane that shows its answer.",
+  "idea": "Division facts by thinking multiplication: facts are sorted by quotient, which rewards recalling the related times fact.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

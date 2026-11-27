@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.2.3-6",
+  "title": "Rule Breaker Words",
+  "emoji": "🦹",
+  "premise": "Some words break the spelling rules. You have to know them by heart.",
+  "idea": "Recognizing and reading grade-appropriate irregularly spelled words. Sounding out irregular words is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

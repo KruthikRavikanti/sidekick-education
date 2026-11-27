@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.2.5-1",
+  "title": "Beginning and Ending Jobs",
+  "emoji": "🎬",
+  "premise": "A story has a shape. The beginning sets things up. The ending wraps things up.",
+  "idea": "Describing the overall structure of a story: how the beginning introduces the story and the ending concludes the action. Not being able to say what the beginning does is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.6.1-1",
+  "title": "Show Me the Evidence",
+  "emoji": "😴",
+  "premise": "In an article, the author makes claims. Good readers point to the exact sentences that back them up.",
+  "idea": "Citing textual evidence to support analysis of what an informational text says. Paraphrasing without citing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

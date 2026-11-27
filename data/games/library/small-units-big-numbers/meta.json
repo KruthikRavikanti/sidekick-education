@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.A.2-2",
+  "title": "Small Units, Big Numbers",
+  "emoji": "🔬",
+  "premise": "Measure the same rope with two different units. One unit will always give the bigger number. Which one?",
+  "idea": "Why a smaller unit gives a bigger number: each card names the unit used instead of another, and the child sorts by which gives the bigger count. Thinking a bigger unit gives a bigger number is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

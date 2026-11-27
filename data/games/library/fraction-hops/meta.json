@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.NF.A.2-2",
+  "title": "Fraction Hops",
+  "emoji": "🦎",
+  "premise": "The lizard hops along the line one equal part at a time. Count the hops from zero to land on the fraction.",
+  "idea": "Marking a/b on a number line by counting a lengths of 1/b from 0. Starting the count on the first mark instead of at zero lands one part short.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

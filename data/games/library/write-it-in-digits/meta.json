@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.A.3-1",
+  "title": "Write It in Digits",
+  "emoji": "✍️",
+  "premise": "The owl reads a number out loud. Write it with exactly three digits.",
+  "idea": "Writing numerals to 1000: three hundred fifty-two is 352, not 300 followed by 52. Extra zeros let the known slip be built.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

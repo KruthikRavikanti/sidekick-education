@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.A.3-2",
+  "title": "Say It in Words",
+  "emoji": "🗣️",
+  "premise": "Turn each number into words. Every place gets its say, especially the hundreds.",
+  "idea": "Writing numbers in word form: 615 is six hundred fifteen. Leaving out the place-value word hundred is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

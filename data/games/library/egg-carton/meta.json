@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.OA.A.4-2",
+  "title": "Egg Carton",
+  "emoji": "🥚",
+  "premise": "The carton holds 10 eggs. Some are already in. Add eggs until every spot is full.",
+  "idea": "Making ten: a ten-spot carton shows the eggs already there, and the child adds eggs until the carton is full, seeing the partner number that makes 10.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

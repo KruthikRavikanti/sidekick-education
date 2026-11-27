@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.6.2-3",
+  "title": "The Exact Word",
+  "emoji": "🎯",
+  "premise": "Experts use exact terms. Swap a vague phrase for the precise word and your writing sounds like you know the subject.",
+  "idea": "Using precise language and domain-specific vocabulary to explain a topic. Vague wording is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-APR.B.2-2",
+  "title": "Factor Test",
+  "emoji": "🔑",
+  "premise": "If plugging in a gives zero, then x − a divides the polynomial with nothing left over. It is a factor.",
+  "idea": "Using the remainder theorem to test for factors. Thinking a remainder of 0 means it is not a factor is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type"
+}

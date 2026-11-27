@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.B.8-2",
+  "title": "Llama Leaps a Hundred",
+  "emoji": "🦙",
+  "premise": "A number is already built. Leap it up or down by exactly one hundred.",
+  "idea": "Mentally adding or subtracting 100: only the hundreds place changes. Changing the tens digit is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

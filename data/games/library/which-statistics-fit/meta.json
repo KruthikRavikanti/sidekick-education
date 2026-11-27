@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-ID.A.2-1",
+  "title": "Which Statistics Fit?",
+  "emoji": "🧰",
+  "premise": "For lopsided data with an outlier, the median and IQR describe it best. For balanced data, the mean and standard deviation work well.",
+  "idea": "Using statistics appropriate to the shape of the data distribution. Using the mean for skewed data is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

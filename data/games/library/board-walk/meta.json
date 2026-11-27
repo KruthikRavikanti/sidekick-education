@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.B.5-2",
+  "title": "Board Walk",
+  "emoji": "🪚",
+  "premise": "The carpenter uses a long ruler line to add and cut boards. Start at the first length and slide to the answer.",
+  "idea": "Solving length problems with a number-line drawing: the first length is the start and the second is the size of the jump. Dropping the new ten on the way is the known slip.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

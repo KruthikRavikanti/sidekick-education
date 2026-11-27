@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.B.4-2",
+  "title": "Least Common Multiple",
+  "emoji": "🚌",
+  "premise": "Two buses leave together, then on their own schedules. The least common multiple is when they next leave together.",
+  "idea": "Finding the least common multiple of two whole numbers up to 12. Multiplying the numbers every time is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.MD.B.3-2",
+  "title": "Tick Tock Reader",
+  "emoji": "🕢",
+  "premise": "The clock shows a time at half past the hour. Read the hands and set the same time in numbers.",
+  "idea": "Reading half past the hour: the hour hand sits between two numbers, and the hour is the one it has passed. Reading the next hour (8:30 for 7:30) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

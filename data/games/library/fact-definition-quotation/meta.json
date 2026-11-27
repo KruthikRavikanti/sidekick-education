@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.6.2-2",
+  "title": "Fact, Definition, Quotation",
+  "emoji": "🧱",
+  "premise": "Strong informative writing is built from different materials: facts, definitions and the words of experts.",
+  "idea": "Developing a topic with relevant facts, definitions, concrete details and quotations. Thin development is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

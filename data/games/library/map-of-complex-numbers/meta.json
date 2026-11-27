@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-CN.B.4-1",
+  "title": "Map of Complex Numbers",
+  "emoji": "🗺️",
+  "premise": "Every complex number is a point. The real part says how far across. The imaginary part says how far up.",
+  "idea": "Representing complex numbers on the complex plane. Plotting the imaginary part on the horizontal axis is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

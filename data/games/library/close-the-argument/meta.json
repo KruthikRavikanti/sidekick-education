@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.5.1-4",
+  "title": "Close the Argument",
+  "emoji": "🔒",
+  "premise": "The conclusion of an opinion piece brings the reader back to your opinion and leaves them convinced.",
+  "idea": "Providing a concluding statement or section related to the opinion presented. Having no conclusion is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

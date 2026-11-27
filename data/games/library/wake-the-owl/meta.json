@@ -1,0 +1,8 @@
+{
+  "subskillId": "1.MD.B.3-1",
+  "title": "Wake the Owl",
+  "emoji": "🦉",
+  "premise": "Owl sleeps all day and needs an alarm. Read the clock and set the right hour.",
+  "idea": "The short hand names the hour. At every o-clock the long hand rests on 12, so reading the long hand always sets the alarm to 12.",
+  "author": "claude-stand-in"
+}

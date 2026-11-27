@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.6.1-3",
+  "title": "Keep the Same Person",
+  "emoji": "🔁",
+  "premise": "If a sentence starts with you, it should stay with you. Jumping to they halfway through confuses the reader.",
+  "idea": "Recognizing and correcting inappropriate shifts in pronoun number and person. Shifting from you to they is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-GPE.B.5-1",
+  "title": "Parallel Means Same Slope",
+  "emoji": "🛤️",
+  "premise": "Parallel lines climb at exactly the same rate, so they never meet. Same slope, different starting point.",
+  "idea": "Proving and using the slope criterion for parallel lines. Using the negative of the slope is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial+sort"
+}

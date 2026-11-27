@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.9-10.6-1",
+  "title": "Draft, Share, Update",
+  "emoji": "💻",
+  "premise": "Shared documents let writing keep improving. Feedback comes in, the draft gets updated, and readers always see the latest version.",
+  "idea": "Using technology to produce, publish and update individual or shared writing products. Leaving the tools unused is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+sort"
+}

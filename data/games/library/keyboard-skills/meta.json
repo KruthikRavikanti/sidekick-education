@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.3.6-1",
+  "title": "Keyboard Skills",
+  "emoji": "⌨️",
+  "premise": "Typing your writing lets you fix and share it easily. Learn what the main keys and tools do.",
+  "idea": "Using technology to produce and publish writing, including keyboarding skills. Avoiding typing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+row"
+}

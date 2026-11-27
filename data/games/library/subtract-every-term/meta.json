@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-APR.A.1-1",
+  "title": "Subtract Every Term",
+  "emoji": "➖",
+  "premise": "Subtracting a polynomial means subtracting every one of its terms. The minus sign reaches all the way through the bracket.",
+  "idea": "Adding and subtracting polynomials. Forgetting to distribute the minus sign is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

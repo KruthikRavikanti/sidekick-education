@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.3.3-2",
+  "title": "Choice and Chain",
+  "emoji": "⛓️",
+  "premise": "What a character chooses to do sets off what happens next, like the first link in a chain.",
+  "idea": "Explaining how characters’ actions contribute to the sequence of events. Listing actions without linking them to events is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

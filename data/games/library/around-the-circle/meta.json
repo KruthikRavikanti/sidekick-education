@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.G.B.4-1",
+  "title": "Around the Circle",
+  "emoji": "⭕",
+  "premise": "The diameter goes all the way across a circle. The radius is half of it. The distance around is about 3.14 diameters.",
+  "idea": "Knowing the relationship between radius, diameter and circumference. Using the diameter where the radius is needed (or the reverse) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

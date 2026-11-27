@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.G.B.6-2",
+  "title": "Fill the Outline",
+  "emoji": "🔷",
+  "premise": "An empty outline is waiting for blocks. Add blocks until it is full, with none left over.",
+  "idea": "Filling an outline with smaller shapes: the child adds blocks one at a time and watches the outline fill. One too few leaves an open spot and one too many has no place.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

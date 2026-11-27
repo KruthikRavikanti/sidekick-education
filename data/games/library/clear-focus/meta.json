@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.5.2-1",
+  "title": "Clear Focus",
+  "emoji": "🔭",
+  "premise": "Informative writing needs a clear focus. Everything in it should serve that focus and be grouped logically.",
+  "idea": "Introducing a topic clearly with a general observation and focus, grouping related information logically. Unfocused writing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

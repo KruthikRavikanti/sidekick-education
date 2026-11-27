@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.8.2-1",
+  "title": "Idea Web",
+  "emoji": "🕷️",
+  "premise": "A central idea is held up by supporting ideas, and those are held up by details. See how the levels connect.",
+  "idea": "Determining a central idea and analyzing its development, including its relationship to supporting ideas. Just listing ideas is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

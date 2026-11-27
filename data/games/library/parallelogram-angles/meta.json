@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.C.11-1",
+  "title": "Parallelogram Angles",
+  "emoji": "▱",
+  "premise": "In any parallelogram, opposite angles are equal and neighboring angles add to 180°. It does not have to be a rectangle.",
+  "idea": "Proving theorems about parallelograms: opposite sides and angles are congruent. Assuming the figure is a rectangle is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

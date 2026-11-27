@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.B.5-3",
+  "title": "Split and Multiply",
+  "emoji": "🪓",
+  "premise": "A hard fact can be chopped into two easy ones. Split one factor, multiply both parts, then add.",
+  "idea": "The distributive property: 8 × 7 = 8 × 5 + 8 × 2. Multiplying only one of the parts is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

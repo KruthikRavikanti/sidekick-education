@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-TF.B.6-1",
+  "title": "One Answer From Arcsin",
+  "emoji": "🎚️",
+  "premise": "Many angles share the same sine. For arcsin to be a function it must pick just one, so its outputs are limited to a set range.",
+  "idea": "Understanding that restricting a trigonometric function to a domain on which it is one-to-one allows its inverse to be constructed. Giving many outputs for arcsin is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

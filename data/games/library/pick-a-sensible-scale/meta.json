@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-Q.A.1-2",
+  "title": "Pick a Sensible Scale",
+  "emoji": "📏",
+  "premise": "A graph’s scale should fit its data. Too fine and it runs off the page. Too coarse and the data is squashed flat.",
+  "idea": "Choosing and interpreting the scale and origin in graphs and data displays. Using scales that hide the data is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

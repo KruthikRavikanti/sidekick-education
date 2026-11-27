@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.RP.A.1-2",
+  "title": "Rate With Units",
+  "emoji": "🚿",
+  "premise": "A rate is not finished until it has units. Say what is being counted per one of what.",
+  "idea": "Interpreting the unit rate in context with correct units. Giving the rate with the units reversed is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

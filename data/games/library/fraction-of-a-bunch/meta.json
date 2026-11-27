@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NF.B.4-1",
+  "title": "Fraction of a Bunch",
+  "emoji": "🍓",
+  "premise": "To find a fraction of a bunch, split the bunch into equal groups and take some of the groups.",
+  "idea": "Finding a fraction of a whole number: 2/3 of 12 is 8. Multiplying by the numerator only (24) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

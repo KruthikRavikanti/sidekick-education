@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.4.7-1",
+  "title": "Book and Movie",
+  "emoji": "🎬",
+  "premise": "A movie or play of a story keeps some things from the book and changes others. Notice which is which.",
+  "idea": "Making connections between the text of a story and a visual or oral presentation of it. Treating the two as unrelated is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

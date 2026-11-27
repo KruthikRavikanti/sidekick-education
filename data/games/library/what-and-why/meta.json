@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.4.3-1",
+  "title": "What and Why",
+  "emoji": "🌪️",
+  "premise": "A good explanation tells what happened and also why. The why is found in the text.",
+  "idea": "Explaining events, procedures or ideas in a text, including what happened and why. Explaining what without why is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

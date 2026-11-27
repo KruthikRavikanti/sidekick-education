@@ -1,0 +1,9 @@
+{
+  "subskillId": "GA-2-GSR.7.2-1",
+  "title": "Fold Line",
+  "emoji": "🦋",
+  "premise": "Fold a shape on the dashed line. If the two sides land right on each other, you found a matching fold.",
+  "idea": "Finding a line that splits an object into matching halves: the dashed line must make two mirror halves. Accepting any line through the middle is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

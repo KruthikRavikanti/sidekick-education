@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.B.7-2",
+  "title": "Zero Bridge",
+  "emoji": "🌁",
+  "premise": "There is a zero in the way and nothing to trade from. Reach across to the hundreds, then key in the answer.",
+  "idea": "Subtracting three-digit numbers with decomposing, including across a zero: 403 − 156. Taking the smaller digit from the larger in each place is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

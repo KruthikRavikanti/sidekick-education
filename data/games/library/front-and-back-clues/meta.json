@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.3.4-2",
+  "title": "Front and Back Clues",
+  "emoji": "🧷",
+  "premise": "Parts added to the front or back of a word change its meaning. Dis- means not. -less means without. -ful means full of.",
+  "idea": "Determining the meaning of a word formed when a known affix is added to a known word. Ignoring the affix is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

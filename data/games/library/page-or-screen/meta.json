@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.6.7-1",
+  "title": "Page or Screen",
+  "emoji": "🎞️",
+  "premise": "Reading a scene and watching it are different experiences. Each one gives you something the other cannot.",
+  "idea": "Comparing the experience of reading a text with viewing or listening to a version of it. Preferring one without analysis is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

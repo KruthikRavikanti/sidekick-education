@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.4.4-1",
+  "title": "Three Kinds of Clues",
+  "emoji": "🦇",
+  "premise": "Writers leave clues to hard words: a definition, an example, or a restatement in simpler words.",
+  "idea": "Using context (definitions, examples, restatements) as a clue to the meaning of a word. Ignoring the context clues is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

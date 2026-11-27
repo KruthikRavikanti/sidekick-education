@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.C.6-2",
+  "title": "Quadrant Sorter",
+  "emoji": "🧭",
+  "premise": "The signs of a point tell which quarter of the plane it is in. Count the quadrants from the upper right, going left around.",
+  "idea": "Understanding signs of numbers in ordered pairs as indicating locations in quadrants. Mixing up the quadrant numbers is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

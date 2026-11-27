@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.5.4-1",
+  "title": "Lab Report or Birthday Card",
+  "emoji": "🎂",
+  "premise": "A lab report and a birthday card should not sound alike. Task, purpose and audience shape how you write.",
+  "idea": "Producing clear and coherent writing appropriate to task, purpose and audience. Using the same style for every task is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

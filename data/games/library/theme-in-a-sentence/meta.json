@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.6.2-1",
+  "title": "Theme in a Sentence",
+  "emoji": "💎",
+  "premise": "A topic is one word, like courage. A theme is what the story says about it, in a whole sentence.",
+  "idea": "Determining a theme and how it is conveyed through particular details. Stating a one-word topic is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.G.A.2-2",
+  "title": "One, Many or None",
+  "emoji": "🔺",
+  "premise": "Three sides pin down exactly one triangle. Three angles pin down the shape but not the size. Some conditions cannot be met at all.",
+  "idea": "Noticing when conditions determine a unique triangle, more than one triangle, or no triangle. Thinking any three measures make exactly one triangle is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

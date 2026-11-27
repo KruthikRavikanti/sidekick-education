@@ -1,0 +1,8 @@
+{
+  "subskillId": "K.NBT.A.1-1",
+  "title": "Egg Cartons",
+  "emoji": "🥚",
+  "premise": "Hen sells eggs in cartons of ten. Pack each order with full cartons and loose eggs.",
+  "idea": "A carton only holds ten, so a teen number has to be packed as one full carton and some loose eggs. Reading 14 as 1 and 4 leaves the order visibly short.",
+  "author": "claude-stand-in"
+}

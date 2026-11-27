@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.G.A.2-1",
+  "title": "Equal Area Parts",
+  "emoji": "🟧",
+  "premise": "A shape can be cut into parts that cover the same amount. Sort the cuts that are fair from the ones that are not.",
+  "idea": "Partitioning shapes into parts with equal areas: triangles from the diagonals of a square are equal parts, while unequal cuts are not.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

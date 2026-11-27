@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.OA.C.5-3",
+  "title": "In and Out Machine",
+  "emoji": "📠",
+  "premise": "A number goes in, the rule does its work, and a number comes out. Fill in whichever one is missing.",
+  "idea": "Using input-output tables: the rule maps inputs to outputs. Treating a given output as an input is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

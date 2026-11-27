@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.A.2-1",
+  "title": "Gram or Kilogram?",
+  "emoji": "🏋️",
+  "premise": "Light things are weighed in grams and heavy things in kilograms. Liquids are measured in liters.",
+  "idea": "Estimating masses and liquid volumes: objects are sorted by the sensible unit. Having no feel for how heavy a kilogram is shows up as heavy things in the gram bin.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

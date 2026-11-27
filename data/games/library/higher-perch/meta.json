@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.C.7-1",
+  "title": "Higher Perch",
+  "emoji": "🐦",
+  "premise": "Two perches have numbers on them. Fly the bird to the perch with the greater number.",
+  "idea": "Comparing numerals by counting order: both numbers are marked on a number line, and the one that comes later in the count is greater.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

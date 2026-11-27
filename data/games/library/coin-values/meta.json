@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.C.8-1",
+  "title": "Coin Values",
+  "emoji": "💰",
+  "premise": "Every coin and bill has its own value, and size does not tell you what it is worth. Match each one.",
+  "idea": "Knowing the value of pennies, nickels, dimes, quarters and dollar bills. Giving the bigger nickel the bigger value than the dime is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+build"
+}

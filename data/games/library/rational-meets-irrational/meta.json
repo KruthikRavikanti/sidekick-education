@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-RN.B.3-2",
+  "title": "Rational Meets Irrational",
+  "emoji": "🧪",
+  "premise": "Add a rational number to an irrational one and the result is always irrational. The messy decimal cannot be cancelled.",
+  "idea": "Explaining why the sum of a rational and an irrational number is irrational. Thinking √2 + √2 = √4 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

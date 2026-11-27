@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.SP.B.4-3",
+  "title": "Build the Box Plot",
+  "emoji": "🗃️",
+  "premise": "A box plot shows five numbers. The box holds the middle half of the data: from the first quartile to the third.",
+  "idea": "Displaying numerical data in a box plot from the five-number summary. Drawing the box from the minimum to the maximum is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

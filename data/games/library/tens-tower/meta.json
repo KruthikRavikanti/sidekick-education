@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.NBT.B.2-3",
+  "title": "Tens Tower",
+  "emoji": "🗼",
+  "premise": "Build each number with ten rods standing side by side. These numbers need no loose ones at all.",
+  "idea": "Decade numbers as groups of tens: 50 is 5 tens and 0 ones. Setting the ones dial to 5 instead of the tens dial is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

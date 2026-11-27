@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-CN.C.7-1",
+  "title": "Solutions That Are Not Real",
+  "emoji": "👻",
+  "premise": "x^2 = −4 has no real answer. In the complex numbers it has two: 2i and −2i.",
+  "idea": "Solving quadratic equations with real coefficients that have complex solutions. Saying no solution is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

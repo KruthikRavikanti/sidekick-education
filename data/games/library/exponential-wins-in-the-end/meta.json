@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-LE.A.3-1",
+  "title": "Exponential Wins in the End",
+  "emoji": "🚀",
+  "premise": "A steep line can lead for a while. Given enough steps, a quantity that keeps multiplying always overtakes one that keeps adding.",
+  "idea": "Observing that a quantity increasing exponentially eventually exceeds a quantity increasing linearly or as a polynomial. Judging from a small window only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

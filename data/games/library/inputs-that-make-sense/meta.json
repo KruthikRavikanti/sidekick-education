@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.B.5-1",
+  "title": "Inputs That Make Sense",
+  "emoji": "⏱️",
+  "premise": "A formula may accept any number, but the situation does not. Time cannot be negative. You cannot sell half a ticket.",
+  "idea": "Relating the domain of a function to its graph and to the quantitative relationship it describes. Allowing negative time or fractional people is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

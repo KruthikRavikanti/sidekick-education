@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-TF.A.3-2",
+  "title": "Mirror Angles",
+  "emoji": "🪞",
+  "premise": "Every angle has a reference angle in the first quadrant. The trig value is the same size. The quadrant gives the sign.",
+  "idea": "Using the unit circle and symmetry to find values at related angles. Ignoring the reference angle or the sign is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

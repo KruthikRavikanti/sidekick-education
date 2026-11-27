@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.B.7-1",
+  "title": "Matching Parts",
+  "emoji": "🔗",
+  "premise": "The order of letters in a congruence statement tells which parts match. First with first, second with second, third with third.",
+  "idea": "Showing that triangles are congruent if and only if corresponding sides and angles are congruent. Matching non-corresponding parts is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

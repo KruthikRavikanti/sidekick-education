@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-CP.A.1-1",
+  "title": "And, Or, Not",
+  "emoji": "🎲",
+  "premise": "Roll a die. \"Or\" collects every outcome in either event. \"And\" keeps only the ones in both.",
+  "idea": "Describing events as subsets of a sample space using unions, intersections and complements. Confusing or with and is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

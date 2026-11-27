@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.4.3-1",
+  "title": "Describe in Depth",
+  "emoji": "🎨",
+  "premise": "A deep description uses what a character thinks, says and does. A shallow one just says nice or mean.",
+  "idea": "Describing a character in depth, drawing on specific details such as thoughts, words or actions. Giving general descriptions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

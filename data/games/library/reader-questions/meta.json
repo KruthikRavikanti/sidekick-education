@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.1.5-1",
+  "title": "Reader Questions",
+  "emoji": "❔",
+  "premise": "A reader asks questions about your story. Answer each one by adding a detail to your sentence.",
+  "idea": "Responding to questions and suggestions from peers and adding details to strengthen writing. Ignoring the feedback is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

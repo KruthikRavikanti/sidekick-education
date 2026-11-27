@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-ID.A.4-2",
+  "title": "68, 95, 99.7",
+  "emoji": "📊",
+  "premise": "In any normal distribution, about 68% of values fall within one standard deviation of the mean, and 95% within two.",
+  "idea": "Estimating population percentages with the empirical rule and z-scores. Mixing up the 68, 95 and 99.7 ranges is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

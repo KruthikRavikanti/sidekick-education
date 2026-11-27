@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.7.7-1",
+  "title": "Sharper Questions",
+  "emoji": "🔎",
+  "premise": "Good research breeds better questions. After a first look, ask follow-ups that are narrow enough to investigate.",
+  "idea": "Conducting short research projects and generating additional focused questions. Unfocused questions are the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.A.2-1",
+  "title": "Mind the Denominator",
+  "emoji": "🚧",
+  "premise": "Clear the fraction to solve a rational equation. Then check that your answer does not make any denominator zero.",
+  "idea": "Solving simple rational equations and noticing extraneous solutions. Forgetting the values that make a denominator zero is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+fill"
+}

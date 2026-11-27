@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.7.4-3",
+  "title": "Noun or Verb Entry?",
+  "emoji": "📖",
+  "premise": "Many words are both a noun and a verb, with different meanings and even different stress. The sentence tells you which.",
+  "idea": "Consulting reference materials to determine a word’s precise meaning and part of speech. Choosing a definition that does not fit is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

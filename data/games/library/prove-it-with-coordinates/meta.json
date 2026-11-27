@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-GPE.B.4-1",
+  "title": "Prove It With Coordinates",
+  "emoji": "📍",
+  "premise": "Coordinates turn geometry into arithmetic. Slopes prove sides parallel. Distances prove sides equal.",
+  "idea": "Using coordinates to prove simple geometric theorems algebraically. Using a special case as proof is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot+sort"
+}

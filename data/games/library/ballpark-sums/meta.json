@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NBT.A.3-2",
+  "title": "Ballpark Sums",
+  "emoji": "⚾",
+  "premise": "You do not always need the exact answer. Round each number, then add or subtract in your head.",
+  "idea": "Using rounding to estimate sums and differences. Computing exactly instead of estimating, or rounding to another place, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

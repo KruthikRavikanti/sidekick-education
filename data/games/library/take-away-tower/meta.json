@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.OA.B.2-2",
+  "title": "Take-Away Tower",
+  "emoji": "🏰",
+  "premise": "Each brick has a take-away fact. Stack every brick on the tower floor that shows its answer.",
+  "idea": "Mental strategies for subtracting within 20: facts are sorted by their answers, which rewards strategies such as going through ten.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

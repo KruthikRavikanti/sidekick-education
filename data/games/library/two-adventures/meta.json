@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.K.9-1",
+  "title": "Two Adventures",
+  "emoji": "🦊",
+  "premise": "Two characters each go on an adventure. Some things are the same in both, and some are different.",
+  "idea": "Comparing and contrasting the adventures of characters in familiar stories. Retelling each story without comparing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

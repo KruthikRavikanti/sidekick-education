@@ -1,0 +1,9 @@
+{
+  "subskillId": "GA-1-MDR.6.3-1",
+  "title": "Gumball Quarter",
+  "emoji": "🍬",
+  "premise": "The gumball machine only takes the right coins. Learn what the quarter is worth, then pay.",
+  "idea": "Identifying the quarter and its value: a quarter is 25 cents, not 4. The child matches coins to values and then pays an amount with a set number of coins.",
+  "author": "claude-stand-in",
+  "play": "fill+build"
+}

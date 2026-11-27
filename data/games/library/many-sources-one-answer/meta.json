@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.11-12.7-1",
+  "title": "Many Sources, One Answer",
+  "emoji": "🧩",
+  "premise": "A hard question needs more than one kind of source. Numbers, voices and images each show part of the picture.",
+  "idea": "Integrating and evaluating multiple sources of information presented in different media or formats. Using one source is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.NBT.C.4-3",
+  "title": "Ten Factory",
+  "emoji": "🏭",
+  "premise": "When the ones pile up past ten, the factory packs ten of them into a new ten. Key in the total.",
+  "idea": "Composing a new ten when ones add to ten or more: 27 + 6 is 33. Writing all 13 ones in the ones place (213) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

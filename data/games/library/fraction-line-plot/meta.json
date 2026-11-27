@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.B.4-2",
+  "title": "Fraction Line Plot",
+  "emoji": "📌",
+  "premise": "Lengths with halves and quarters go on a line plot too. First put the lengths in order, then stack the marks.",
+  "idea": "Showing fractional measurements on a line plot: the scale is ordered correctly and each measurement gets one mark. Misordering the fractions, or one mark per value, are the known slips.",
+  "author": "claude-stand-in",
+  "play": "row+dial"
+}

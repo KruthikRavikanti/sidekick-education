@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.A.3-1",
+  "title": "AA Makes Them Similar",
+  "emoji": "📐",
+  "premise": "Two pairs of equal angles force the third pair to match, and that is enough for similarity.",
+  "idea": "Using the properties of similarity transformations to establish the AA criterion. Thinking one matching angle is enough is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type"
+}

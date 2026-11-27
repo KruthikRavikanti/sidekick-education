@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.OA.C.3-3",
+  "title": "Ones Digit Decides",
+  "emoji": "🎲",
+  "premise": "Odd or even? Only one digit gets to decide, and it is not the first one.",
+  "idea": "Using the ones digit to tell odd from even: numbers whose tens digit is odd but ones digit is even (like 16) catch a child who looks at the tens digit.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

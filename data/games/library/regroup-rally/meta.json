@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.NBT.A.2-1",
+  "title": "Regroup Rally",
+  "emoji": "🏎️",
+  "premise": "Adding big numbers means carrying tens and hundreds over to the next lane. Make sure every one of them crosses over.",
+  "idea": "Adding three-digit numbers with regrouping. Forgetting to add the regrouped ten or hundred is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

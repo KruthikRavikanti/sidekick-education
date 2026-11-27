@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.3.1-6",
+  "title": "Sentence Joiner",
+  "emoji": "🧩",
+  "premise": "Two short sentences can be joined into one. Words like because, when and although do the joining.",
+  "idea": "Producing simple, compound and complex sentences. Writing run-ons with no joining word is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

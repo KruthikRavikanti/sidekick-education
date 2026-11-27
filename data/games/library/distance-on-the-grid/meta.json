@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.B.8-2",
+  "title": "Distance on the Grid",
+  "emoji": "🧭",
+  "premise": "The distance between two points is the longest side of the right triangle between them. Square the legs, add, and take the root.",
+  "idea": "Applying the Pythagorean theorem to find the distance between two points. Forgetting to take the square root is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

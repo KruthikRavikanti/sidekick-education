@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.NF.A.2-1",
+  "title": "First Jump",
+  "emoji": "🐞",
+  "premise": "The line from 0 to 1 is cut into equal parts. The ladybug takes one jump from zero to land on a unit fraction.",
+  "idea": "Locating 1/b on a number line: the interval from 0 to 1 is split into b equal parts and 1/b is the end of the first part. Counting the tick at zero lands one part too far.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

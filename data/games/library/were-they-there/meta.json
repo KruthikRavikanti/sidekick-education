@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.4.6-1",
+  "title": "Were They There?",
+  "emoji": "📔",
+  "premise": "A firsthand account is by someone who was there. A secondhand account is by someone who learned about it later.",
+  "idea": "Comparing a firsthand and secondhand account of the same event. Not being able to tell which is which is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

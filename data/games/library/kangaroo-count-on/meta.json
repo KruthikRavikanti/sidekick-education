@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.C.5-1",
+  "title": "Kangaroo Count On",
+  "emoji": "🦘",
+  "premise": "The kangaroo starts on the bigger number and hops on. No need to start way back at zero.",
+  "idea": "Counting on from the larger addend: the kangaroo starts on the bigger number. Counting the starting number as the first hop lands one short.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

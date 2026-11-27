@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-CN.B.5-1",
+  "title": "Slide and Stretch",
+  "emoji": "🛷",
+  "premise": "On the complex plane, adding slides a point. Multiplying by a real number stretches it away from 0.",
+  "idea": "Representing addition and multiplication of complex numbers geometrically. Mixing up the slide and the stretch is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

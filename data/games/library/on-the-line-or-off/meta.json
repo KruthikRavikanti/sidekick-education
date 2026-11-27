@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.D.10-1",
+  "title": "On the Line or Off?",
+  "emoji": "🧵",
+  "premise": "A graph is the set of ALL points that make its equation true. Not just the intercepts: every point on it is a solution.",
+  "idea": "Understanding that the graph of an equation in two variables is the set of all its solutions. Thinking only the intercepts are solutions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+plot"
+}

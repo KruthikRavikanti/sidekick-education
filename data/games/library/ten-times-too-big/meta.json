@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NBT.B.5-2",
+  "title": "Ten Times Too Big",
+  "emoji": "🎈",
+  "premise": "One slipped digit makes a product ten times too big or too small. A quick estimate catches it.",
+  "idea": "Estimating to check products. Accepting a product that is off by a power of ten is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

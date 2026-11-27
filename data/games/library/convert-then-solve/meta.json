@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.MD.A.1-3",
+  "title": "Convert, Then Solve",
+  "emoji": "🪚",
+  "premise": "In these jobs the measurements come in two different units. Get everything into one unit, then finish the problem.",
+  "idea": "Using unit conversions in multistep problems. Converting only one quantity, or answering in the other unit, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

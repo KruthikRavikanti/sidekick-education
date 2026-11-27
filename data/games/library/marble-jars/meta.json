@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.MD.B.3-2",
+  "title": "Marble Jars",
+  "emoji": "🫙",
+  "premise": "The marbles are all mixed up. Count how many there are of each color and tag each color.",
+  "idea": "Counting how many are in each category: the marbles are mixed, and the child counts one color at a time. Counting all the marbles together is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

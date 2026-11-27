@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.2.9-1",
+  "title": "Two Bee Texts",
+  "emoji": "🍯",
+  "premise": "Two texts on the same topic share some big points. Each also has a point of its own.",
+  "idea": "Comparing and contrasting the most important points presented by two texts on the same topic. Listing facts from one text only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

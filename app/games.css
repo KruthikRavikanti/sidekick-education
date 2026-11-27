@@ -1,0 +1,537 @@
+/* Generated games: the results card, the play page, parent history and team review. */
+.game-suggestion {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  max-width: 702px;
+  margin: 26px auto;
+  padding: 24px;
+  border-radius: 26px;
+  border: 3px solid var(--forest);
+  box-shadow: 0 6px 0 var(--forest);
+  background: linear-gradient(135deg, #fff3c9 0%, #ffe3d1 55%, #f3e3f1 100%);
+}
+.game-suggestion-art {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 24px;
+  background: #fff;
+  border: 3px solid var(--forest);
+  font-size: 42px;
+  line-height: 1;
+  transform: rotate(-6deg);
+}
+.game-suggestion-copy {
+  flex: 1;
+  min-width: 0;
+}
+.game-suggestion h2 {
+  font-size: 28px;
+  margin: 6px 0;
+}
+.game-suggestion-copy > p:not(.account-eyebrow):not(.account-error) {
+  font-size: 15px;
+  font-weight: 600;
+}
+.game-suggestion-copy > p.game-suggestion-skill {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted);
+  margin-top: 8px;
+  overflow-wrap: anywhere;
+}
+.game-suggestion .button {
+  margin-top: 16px;
+  max-width: 220px;
+}
+/* When a game is ready, the older card's "nothing for this skill yet" message would only confuse. */
+.game-suggestion:not(.game-suggestion-soon) + .activity-suggestion-empty {
+  display: none;
+}
+.game-suggestion-soon {
+  background: #f6f1ff;
+  border-color: #cdbdf0;
+  box-shadow: 0 6px 0 #cdbdf0;
+}
+.game-suggestion-soon .game-suggestion-art {
+  border-color: #cdbdf0;
+}
+.game-suggestion-soon h2 {
+  font-size: 22px;
+}
+
+.game-player {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 8px 16px 48px;
+}
+.game-title {
+  text-align: center;
+  margin: 0 0 16px;
+}
+.game-title h1 {
+  font-size: clamp(28px, 6vw, 40px);
+  margin: 6px 0 2px;
+}
+.game-title > p:last-child {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+.game-frame {
+  display: block;
+  width: 100%;
+  scroll-margin-top: 10px;
+  border: 0;
+  background: transparent;
+  transition: height 0.2s ease;
+}
+.game-stopped {
+  text-align: center;
+  padding: 34px 20px;
+  border: 3px dashed var(--border);
+  border-radius: 26px;
+  background: #fff;
+}
+.game-stopped > span {
+  font-size: 54px;
+  line-height: 1;
+}
+.game-stopped h2 {
+  margin: 10px 0 6px;
+}
+.game-stopped p {
+  color: var(--muted);
+}
+.game-stopped-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+}
+.game-stopped-actions .button {
+  width: auto;
+}
+
+.game-history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+.game-history-list li {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 18px;
+}
+.game-history-emoji {
+  font-size: 30px;
+  line-height: 1;
+}
+.game-history-list li > div {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.game-history-list li span:not(.game-history-emoji) {
+  font-size: 13px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.game-history-list time {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.game-history .section-heading > .button {
+  width: auto;
+}
+
+.game-review {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 8px 20px 60px;
+}
+.game-review h1 {
+  font-size: 34px;
+  margin: 0 0 4px;
+}
+.game-review-banner {
+  background: #fff1e3;
+  border: 2px solid #f4c9a4;
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+.game-review-note {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 4px 0 12px;
+}
+.game-review-layout {
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.game-review-filters {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.game-review-list .game-review-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+.game-review-list .game-review-tabs button {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  margin: 0;
+  padding: 8px 4px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.game-review-list .game-review-tabs button > span:first-child,
+.game-review-list .game-review-tabs button > span:last-child {
+  display: block;
+  font-size: 15px;
+  line-height: 1.1;
+}
+.game-review .game-review-search {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 0 12px;
+  color: var(--muted);
+}
+.game-review .game-review-search:focus-within {
+  border-color: var(--forest);
+}
+/* The account shell styles every input as a tall bordered field. Inside the search box it is plain. */
+.game-review .game-review-search input {
+  width: 100%;
+  height: 40px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  color: var(--forest);
+}
+.game-review-selects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.game-review .game-review-selects label {
+  margin: 0;
+}
+.game-review .game-review-selects select {
+  width: 100%;
+  height: 40px;
+  padding: 0 8px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--forest);
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+}
+.game-review-count {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 0 0 8px;
+}
+.game-review-list .game-review-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 4px 0 12px;
+}
+.game-review-list .game-review-pager button {
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.game-review-list .game-review-pager button > span:first-child {
+  font-size: inherit;
+}
+.game-review-list button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.game-review .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.game-review-list h3 {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 18px 0 8px;
+}
+.game-review-list > div:first-child h3 {
+  margin-top: 0;
+}
+.game-review-list h3 span {
+  background: var(--lime);
+  color: var(--forest);
+  border-radius: 99px;
+  padding: 1px 8px;
+  margin-left: 4px;
+}
+.game-review-list button {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+}
+.game-review-list button.selected {
+  border-color: var(--forest);
+  box-shadow: 0 3px 0 var(--forest);
+}
+.game-review-list button > span:first-child {
+  font-size: 26px;
+  line-height: 1;
+}
+.game-review-list button > span:last-child {
+  display: grid;
+  min-width: 0;
+}
+.game-review-list small,
+.game-review-job small {
+  color: var(--muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.game-review-job {
+  display: grid;
+  gap: 2px;
+  background: #fff;
+  border: 2px dashed var(--border);
+  border-radius: 14px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+.game-review-detail {
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 24px;
+  padding: 24px;
+  min-width: 0;
+}
+.game-review-detail h3 {
+  font-size: 18px;
+  margin: 26px 0 6px;
+}
+.game-review-head {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.game-review-head h2 {
+  font-size: 28px;
+  margin: 4px 0 2px;
+}
+.game-review-head p {
+  color: var(--muted);
+}
+.game-review-emoji {
+  font-size: 54px;
+  line-height: 1;
+}
+.game-status {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 99px;
+  padding: 3px 10px;
+}
+.game-status-verified {
+  background: #fff1e3;
+  color: #8a3d0c;
+}
+.game-status-approved {
+  background: #eef4dc;
+  color: var(--forest);
+}
+.game-status-retired {
+  background: #eee;
+  color: #555;
+}
+.game-review-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 20px;
+  margin: 18px 0 0;
+}
+.game-review-facts dt {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.game-review-facts dd {
+  margin: 2px 0 0;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.game-review-play {
+  max-width: 560px;
+}
+.game-review-play-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.game-review-play-head h3 {
+  margin: 26px 0 0;
+}
+.game-review-play-head .text-button {
+  margin-top: 22px;
+}
+.game-review-rounds {
+  padding-left: 20px;
+  margin: 8px 0 0;
+  display: grid;
+  gap: 10px;
+  font-size: 14px;
+}
+.game-review-rounds p {
+  margin: 2px 0;
+}
+.game-review-rounds ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+}
+.game-round-phase {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.game-review-checks {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0;
+  font-size: 13px;
+  display: grid;
+  gap: 3px;
+}
+.game-review-checks svg {
+  vertical-align: -2px;
+}
+.game-review-source pre {
+  max-height: 420px;
+  overflow: auto;
+  background: #1c1b22;
+  color: #f4f1e8;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.game-review-detail summary {
+  cursor: pointer;
+  font-weight: 800;
+  margin-top: 14px;
+}
+.game-review-decision label {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.game-review-decision input {
+  width: 100%;
+  max-width: 460px;
+  font: inherit;
+  padding: 10px 12px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+}
+.game-review-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.game-review-buttons .button {
+  width: auto;
+}
+@media (max-width: 860px) {
+  .game-review-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .game-review-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .game-suggestion {
+    padding: 18px;
+    gap: 12px;
+  }
+  .game-suggestion-art {
+    width: 56px;
+    height: 56px;
+    font-size: 30px;
+    border-radius: 18px;
+  }
+  .game-suggestion h2 {
+    font-size: 24px;
+  }
+  .game-player {
+    padding: 4px 8px 36px;
+  }
+}

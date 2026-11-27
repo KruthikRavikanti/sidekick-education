@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.NBT.C.6-1",
+  "title": "Tens Take Away",
+  "emoji": "🎳",
+  "premise": "The pins stand in packs of ten. Knock down some packs and key in how many pins are still standing.",
+  "idea": "Subtracting tens from tens: 70 − 30 is 4 tens, which is 40. Answering 4 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

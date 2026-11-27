@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.4.10-1",
+  "title": "Dense Article Main Idea",
+  "emoji": "🧠",
+  "premise": "Some articles pack a lot into each sentence. Slow down, then say the main idea in your own words.",
+  "idea": "Reading and comprehending informational texts in the grades 4-5 complexity band. Avoiding dense nonfiction is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.3.1-1",
+  "title": "Prove It From the Article",
+  "emoji": "🌍",
+  "premise": "When you answer a question about an article, find the exact sentence that gives the answer.",
+  "idea": "Asking and answering questions referring explicitly to the text. Answering from memory instead of the text is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

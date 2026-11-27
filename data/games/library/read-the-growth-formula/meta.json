@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-SSE.A.1-2",
+  "title": "Read the Growth Formula",
+  "emoji": "📈",
+  "premise": "In P(1 + r)^n the bracket is one single thing: the multiplier applied every period. The exponent counts the periods.",
+  "idea": "Interpreting complicated expressions by viewing one or more parts as a single entity. Distributing the exponent across the bracket is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

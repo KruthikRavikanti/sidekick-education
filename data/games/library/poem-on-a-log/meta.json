@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.1.10-1",
+  "title": "Poem on a Log",
+  "emoji": "🪵",
+  "premise": "Read a little poem. Listen for the words that rhyme and think about what the poem is about.",
+  "idea": "Reading prose and poetry of appropriate complexity: a short poem is read, then its topic and rhymes are identified. Needing every word read aloud is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

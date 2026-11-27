@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.A.4-1",
+  "title": "Ribbon Race",
+  "emoji": "🎀",
+  "premise": "Two ribbons lie side by side. Key in how much longer one is than the other.",
+  "idea": "Finding how much longer one object is than another: the difference is the missing part of the bar. Adding the two lengths is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-APR.C.5-1",
+  "title": "Pascal Powers",
+  "emoji": "🔺",
+  "premise": "Expanding (x + y)^n gives more than the two end terms. The middle terms get their coefficients from Pascal’s triangle.",
+  "idea": "Knowing and applying the Binomial Theorem for the expansion of (x + y)^n. Writing x^n + y^n is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

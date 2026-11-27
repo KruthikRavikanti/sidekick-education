@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.K.3-1",
+  "title": "First, Next, Last",
+  "emoji": "🌅",
+  "premise": "When you write about your day, tell things in the order they happened.",
+  "idea": "Narrating events in the order in which they occurred. Listing unconnected or out-of-order events is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

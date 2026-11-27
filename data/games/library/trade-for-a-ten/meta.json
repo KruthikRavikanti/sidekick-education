@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.NBT.B.2-1",
+  "title": "Trade for a Ten",
+  "emoji": "🔄",
+  "premise": "Ten little cubes can be traded for one ten rod. Show each number with the fewest blocks you can.",
+  "idea": "Ten ones as one ten: the child shows a number with the fewest blocks, which means trading every ten ones for a rod. Leaving them all as ones is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-VM.A.1-1",
+  "title": "Size and Direction",
+  "emoji": "🧭",
+  "premise": "A scalar is just a size. A vector has a size and a direction. Thirty miles per hour is a speed. Thirty miles per hour north is a velocity.",
+  "idea": "Recognizing vector quantities as having both magnitude and direction. Treating vectors as plain numbers is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

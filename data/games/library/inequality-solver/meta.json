@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.B.3-2",
+  "title": "Inequality Solver",
+  "emoji": "🎚️",
+  "premise": "Solve an inequality like an equation, but flip the sign whenever you multiply or divide by a negative.",
+  "idea": "Solving linear inequalities in one variable. Forgetting to flip the sign for negative multipliers is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

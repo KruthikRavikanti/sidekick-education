@@ -1,0 +1,8 @@
+{
+  "subskillId": "8.SP.A.1-2",
+  "title": "Scatter Garden",
+  "emoji": "🌱",
+  "premise": "Each dot is a plant: water along the bottom, height up the side. Sort the plots by their trend.",
+  "idea": "Scatter plots are sorted by whether the dots lean up, lean down or neither. A loosely spread cloud that still leans is not the same as no trend.",
+  "author": "claude-stand-in"
+}

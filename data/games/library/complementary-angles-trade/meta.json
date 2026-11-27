@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.C.7-1",
+  "title": "Complementary Angles Trade",
+  "emoji": "🔁",
+  "premise": "The two acute angles of a right triangle add to 90°. The side opposite one is adjacent to the other, so sine and cosine swap.",
+  "idea": "Explaining and using the relationship between the sine and cosine of complementary angles. Thinking sin x = cos x for every x is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

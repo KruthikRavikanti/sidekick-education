@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-CED.A.3-2",
+  "title": "Does the Solution Make Sense?",
+  "emoji": "🤔",
+  "premise": "A pair of numbers can satisfy the inequality and still be nonsense. You cannot buy −1 pizzas or half a ticket.",
+  "idea": "Interpreting solutions as viable or nonviable options in a modeling context. Accepting negative people or fractional tickets is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

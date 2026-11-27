@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.8.3-1",
+  "title": "What That Line Does",
+  "emoji": "💬",
+  "premise": "A single line of dialogue or one small incident can do real work: push the plot, reveal who someone is, or force a choice.",
+  "idea": "Analyzing how particular lines of dialogue or incidents propel the action, reveal character or provoke a decision. Summarizing the dialogue is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

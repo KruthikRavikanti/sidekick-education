@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NBT.A.2-1",
+  "title": "Million Speller",
+  "emoji": "🛰️",
+  "premise": "Mission control reads out a big number. Key it in digit by digit, with a zero for every empty place.",
+  "idea": "Reading and writing numbers to a million: zeros hold empty places. Leaving out the zeros is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

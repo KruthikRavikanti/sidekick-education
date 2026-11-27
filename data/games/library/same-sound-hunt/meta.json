@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.K.2-4",
+  "title": "Same Sound Hunt",
+  "emoji": "👂",
+  "premise": "Say each picture word out loud and listen. Which ones start, or end, with the same sound?",
+  "idea": "Isolating initial, medial and final sounds in simple words: pictures are matched by a shared sound. Matching by letter name instead of sound is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

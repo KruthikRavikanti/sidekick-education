@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.G.B.6-1",
+  "title": "Shape Mash",
+  "emoji": "🧩",
+  "premise": "Push two shapes together and a new shape appears. Match each pair to the shape it makes.",
+  "idea": "Composing shapes: two triangles make a square and two squares make a rectangle. The child matches each pair to the shape it forms.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

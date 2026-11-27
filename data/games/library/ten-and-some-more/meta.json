@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.NBT.A.1-2",
+  "title": "Ten and Some More",
+  "emoji": "🔟",
+  "premise": "Every teen number is a ten and some more. Drop in the missing piece of each number sentence.",
+  "idea": "Writing a teen number as 10 plus ones: the 1 in a teen number stands for a ten, so 16 is 10 + 6. Using the tile 1 instead of 10 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

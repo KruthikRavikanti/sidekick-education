@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-ID.A.3-2",
+  "title": "What an Outlier Does",
+  "emoji": "🎈",
+  "premise": "One extreme value can yank the mean a long way while the median barely moves. Do not throw it out without a reason.",
+  "idea": "Accounting for possible effects of extreme data points. Removing outliers without reason is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

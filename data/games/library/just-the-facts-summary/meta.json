@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.6.2-2",
+  "title": "Just the Facts Summary",
+  "emoji": "✂️",
+  "premise": "A summary retells what happened. It leaves your own opinions out.",
+  "idea": "Providing a summary of the text distinct from personal opinions or judgments. Including opinions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

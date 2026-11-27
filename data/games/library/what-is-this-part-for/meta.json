@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.6.5-1",
+  "title": "What Is This Part For?",
+  "emoji": "🧱",
+  "premise": "Every sentence, scene and stanza has a job in the whole. Ask what the story would lose without it.",
+  "idea": "Analyzing how a particular sentence, chapter, scene or stanza fits the overall structure. Describing the part without its role is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

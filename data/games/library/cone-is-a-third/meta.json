@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.C.9-2",
+  "title": "Cone Is a Third",
+  "emoji": "🍦",
+  "premise": "A cone holds exactly one third of the cylinder it fits inside. Three cones of water fill the can.",
+  "idea": "Using the formula for the volume of a cone. Forgetting the one third is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

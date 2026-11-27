@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.B.7-3",
+  "title": "Trade Up Steps",
+  "emoji": "🪜",
+  "premise": "Show where the new ten and the new hundred come from. Put the steps of the adding in order.",
+  "idea": "Showing three-digit addition with a model: the steps are ordered from ones to tens to hundreds, with the trades explained. Starting from the hundreds loses the trades.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

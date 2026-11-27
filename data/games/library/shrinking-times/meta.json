@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NF.B.5-2",
+  "title": "Shrinking Times",
+  "emoji": "🐜",
+  "premise": "Multiply by a fraction smaller than 1 and the number shrinks. Half of 8 is less than 8.",
+  "idea": "Multiplying a number by a fraction less than 1 gives a smaller product; by a fraction greater than 1, a larger one. Expecting every product to be bigger is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+fill"
+}

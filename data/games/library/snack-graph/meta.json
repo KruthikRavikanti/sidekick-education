@@ -1,0 +1,9 @@
+{
+  "subskillId": "GA-K-MDR.7.3-1",
+  "title": "Snack Graph",
+  "emoji": "📊",
+  "premise": "The class made a graph of their favorites. Read one bar at a time to answer each question.",
+  "idea": "Answering questions from a simple graph: the child reads the bar for the group asked about. Reading the tallest bar for every question is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

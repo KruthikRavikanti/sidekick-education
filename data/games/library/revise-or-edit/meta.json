@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.6.5-1",
+  "title": "Revise or Edit?",
+  "emoji": "🛠️",
+  "premise": "Revising changes the ideas: what you say and in what order. Editing fixes the surface: spelling, commas, capitals.",
+  "idea": "Developing and strengthening writing by planning, revising, editing and rewriting. Only editing, never revising, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NF.C.7-2",
+  "title": "Same Cup, Same Amount?",
+  "emoji": "🥤",
+  "premise": "0.3 of a small cup and 0.3 of a big cup are not the same amount. Check the wholes before you compare.",
+  "idea": "Decimal comparisons are valid only for the same whole: 0.3 of a small cup is not 0.3 of a large cup.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

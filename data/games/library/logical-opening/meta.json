@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.5.1-1",
+  "title": "Logical Opening",
+  "emoji": "⏰",
+  "premise": "An opinion essay opens by leading the reader in, stating a clear opinion, and laying out a logical plan.",
+  "idea": "Introducing a topic clearly, stating an opinion and creating an organizational structure in which ideas are logically grouped. Disorganized reasons is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

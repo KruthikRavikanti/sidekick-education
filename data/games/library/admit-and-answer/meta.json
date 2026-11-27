@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.8.6-1",
+  "title": "Admit and Answer",
+  "emoji": "↩️",
+  "premise": "Careful authors admit evidence against their view, then explain why their position still holds.",
+  "idea": "Analyzing how the author acknowledges and responds to conflicting evidence or viewpoints. Missing the counterarguments is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

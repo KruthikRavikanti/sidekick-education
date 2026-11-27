@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.2.4-2",
+  "title": "Prefix Power",
+  "emoji": "🔋",
+  "premise": "A prefix is a small part at the front of a word. It changes the meaning in the same way every time.",
+  "idea": "Determining the meaning of a new word formed when a known prefix is added to a known word. Ignoring the prefix is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

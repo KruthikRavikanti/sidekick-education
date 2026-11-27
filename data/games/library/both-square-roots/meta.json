@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.A.2-1",
+  "title": "Both Square Roots",
+  "emoji": "🟦",
+  "premise": "Two different numbers square to the same thing. Both 7 and −7 give 49, so x² = 49 has two solutions.",
+  "idea": "Solving equations of the form x² = p and x³ = p. Forgetting the negative square root is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NBT.B.6-1",
+  "title": "Share the Hundreds",
+  "emoji": "🍱",
+  "premise": "Share out the hundreds, then the tens, then the ones. When a place has too few to share, a zero keeps its spot.",
+  "idea": "Dividing multi-digit numbers by one digit using place value. Leaving out a zero in the quotient (24 for 204) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

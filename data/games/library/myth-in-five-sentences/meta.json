@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.3.2-1",
+  "title": "Myth in Five Sentences",
+  "emoji": "☀️",
+  "premise": "A myth is an old story that explains something. Recount one with just its key events, in order.",
+  "idea": "Recounting fables, folktales and myths. Retelling every detail is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+pick"
+}

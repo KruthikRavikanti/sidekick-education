@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.B.6-1",
+  "title": "Letter for a Number",
+  "emoji": "🎟️",
+  "premise": "A variable stands for a number you do not know yet. It is not a label for an object.",
+  "idea": "Using variables to represent numbers when solving real-world problems. Thinking a letter stands for an object (a = apples) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

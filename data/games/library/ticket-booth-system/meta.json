@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.C.8-4",
+  "title": "Ticket Booth System",
+  "emoji": "🎟️",
+  "premise": "A story with two unknowns needs two equations: one counts things, the other counts money.",
+  "idea": "Solving real-world problems leading to two linear equations in two variables. Writing equations that do not match the story is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

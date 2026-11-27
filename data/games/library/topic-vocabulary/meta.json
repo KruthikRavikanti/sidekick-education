@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.5.2-4",
+  "title": "Topic Vocabulary",
+  "emoji": "🌿",
+  "premise": "Experts use exact words. Swap the roundabout phrase for the term a scientist or historian would use.",
+  "idea": "Using precise language and domain-specific vocabulary to inform about or explain a topic. Vague wording is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

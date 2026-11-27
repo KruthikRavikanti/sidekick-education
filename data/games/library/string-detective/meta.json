@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.MD.A.1-2",
+  "title": "String Detective",
+  "emoji": "🪢",
+  "premise": "Two things are too far apart to hold side by side. A piece of string helps you compare them anyway.",
+  "idea": "Comparing two lengths indirectly with a third object: the string matches one thing and is shorter or longer than the other, and the child draws the conclusion.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-C.A.3-2",
+  "title": "Opposite Angles on a Circle",
+  "emoji": "🔷",
+  "premise": "When all four corners of a quadrilateral sit on a circle, its opposite angles always add to 180°.",
+  "idea": "Proving properties of angles for a quadrilateral inscribed in a circle. Thinking opposite angles are equal is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

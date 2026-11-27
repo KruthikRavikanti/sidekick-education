@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.B.5-1",
+  "title": "Unit Rate Is the Slope",
+  "emoji": "⛰️",
+  "premise": "On the graph of a proportional relationship, the steepness of the line is the unit rate. Slope is rise over run.",
+  "idea": "Graphing proportional relationships and interpreting the unit rate as the slope. Using a y-value instead of rise over run is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial+type"
+}

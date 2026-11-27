@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.A.2-1",
+  "title": "Same Size, Same Shape",
+  "emoji": "🧩",
+  "premise": "Two figures are congruent if slides, flips and turns can carry one exactly onto the other.",
+  "idea": "Understanding that a figure is congruent to another if obtained by a sequence of rigid motions. Describing motions vaguely is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+pick"
+}

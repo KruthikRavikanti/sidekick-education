@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.A.5-1",
+  "title": "Draw the Image",
+  "emoji": "✏️",
+  "premise": "To draw a transformed figure, move each corner by the rule, then join the new corners.",
+  "idea": "Drawing the transformed figure given a rotation, reflection or translation. Reflecting over the other axis is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

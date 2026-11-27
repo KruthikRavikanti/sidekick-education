@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.K.2-5",
+  "title": "Swap One Sound",
+  "emoji": "🔁",
+  "premise": "Change just one sound and you get a brand new word. Swap the first letter to match the new picture.",
+  "idea": "Adding or substituting individual sounds in one-syllable words to make new words: cat becomes bat. Changing the whole word is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

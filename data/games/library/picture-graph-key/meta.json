@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.MD.B.3-2",
+  "title": "Picture Graph Key",
+  "emoji": "🎟️",
+  "premise": "In a picture graph, one picture can stand for many. The key tells you how many. A half picture is worth half as much.",
+  "idea": "Reading a scaled picture graph with half symbols: the key gives the value of each symbol. Counting the symbols and ignoring the key, or dropping the half, are the known slips.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.A.3-2",
+  "title": "Quarter Turns",
+  "emoji": "🔄",
+  "premise": "A quarter turn counterclockwise about the origin sends (x, y) to (−y, x). The point swings to the next quadrant on the left.",
+  "idea": "Describing the effect of rotations using coordinates. Rotating in the opposite direction is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

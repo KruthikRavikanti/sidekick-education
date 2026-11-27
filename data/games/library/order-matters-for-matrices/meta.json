@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-VM.C.9-1",
+  "title": "Order Matters for Matrices",
+  "emoji": "🔀",
+  "premise": "With numbers, 3 × 5 and 5 × 3 agree. With matrices, AB and BA can be completely different.",
+  "idea": "Understanding that matrix multiplication for square matrices is not commutative. Assuming the order does not matter is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+sort"
+}

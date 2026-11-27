@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-VM.B.5-1",
+  "title": "Stretch the Arrow",
+  "emoji": "🪄",
+  "premise": "A positive number stretches or shrinks a vector along the same line. A negative number also turns it around.",
+  "idea": "Representing scalar multiplication graphically by scaling vectors and possibly reversing their direction. Reversing direction for positive scalars is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

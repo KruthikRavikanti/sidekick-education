@@ -1,0 +1,8 @@
+{
+  "subskillId": "5.OA.A.1-2",
+  "title": "Bubble First",
+  "emoji": "🫧",
+  "premise": "The number machine squishes two numbers at a time. Anything inside the bubble goes first.",
+  "idea": "Tapping a sign makes the machine combine its two numbers. Parentheses are a bubble that must be finished first, and tapping left to right builds a different number.",
+  "author": "claude-stand-in"
+}

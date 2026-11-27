@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.MD.C.3-2",
+  "title": "Hidden Cubes",
+  "emoji": "🧊",
+  "premise": "Some cubes are hiding in the middle and at the back of the box. Count them by layers so none are missed.",
+  "idea": "Volume as the number of unit cubes that fill a solid, counted in layers. Counting only the visible cubes is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

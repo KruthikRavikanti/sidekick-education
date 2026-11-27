@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.D.13-1",
+  "title": "Shapes Inside a Circle",
+  "emoji": "⭕",
+  "premise": "Step the radius around a circle and it fits exactly six times. That one fact builds a hexagon, a triangle and more.",
+  "idea": "Constructing an equilateral triangle, a square and a regular hexagon inscribed in a circle. Drawing freehand is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+fill"
+}

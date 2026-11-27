@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.C.8-2",
+  "title": "Find the Angle With Inverse Trig",
+  "emoji": "🧭",
+  "premise": "When you know two sides and want the angle, work backward: the inverse function turns a ratio into an angle.",
+  "idea": "Using inverse trigonometric functions to find angles in right triangles. Reporting the ratio instead of the angle is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

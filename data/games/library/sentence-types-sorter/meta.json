@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.7.1-2",
+  "title": "Sentence Types Sorter",
+  "emoji": "🚂",
+  "premise": "Simple, compound and complex sentences link ideas in different ways. Choosing the right one shows how the ideas relate.",
+  "idea": "Choosing among simple, compound, complex and compound-complex sentences to signal relationships among ideas. Using only one type is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

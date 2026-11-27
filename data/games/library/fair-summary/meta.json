@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.8.2-2",
+  "title": "Fair Summary",
+  "emoji": "📋",
+  "premise": "To summarize an argument fairly, report what the author says, even if you disagree.",
+  "idea": "Providing an objective summary of an informational text. Including opinions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

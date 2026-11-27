@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-MD.A.2-1",
+  "title": "The Long-Run Average",
+  "emoji": "🎰",
+  "premise": "Expected value is the average you would get over a huge number of tries. Likely values count more than rare ones.",
+  "idea": "Calculating the expected value of a random variable as the mean of its distribution. Averaging the values without weighting is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

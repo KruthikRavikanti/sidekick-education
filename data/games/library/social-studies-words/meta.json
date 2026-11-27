@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.5.4-1",
+  "title": "Social Studies Words",
+  "emoji": "🏛️",
+  "premise": "Subject words in history and science have exact meanings. The text usually gives the meaning right beside the word.",
+  "idea": "Determining the meaning of general academic and domain-specific words. Using everyday meanings is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

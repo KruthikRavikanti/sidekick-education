@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-MD.B.6-1",
+  "title": "Is It Really Fair?",
+  "emoji": "⚖️",
+  "premise": "A fair way to choose gives every person the same chance. Feeling fair is not enough: check the probabilities.",
+  "idea": "Using probabilities to make fair decisions. Thinking a choice is fair if it feels fair is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type"
+}

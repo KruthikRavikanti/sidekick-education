@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.G.A.3-1",
+  "title": "Flat or Solid?",
+  "emoji": "📦",
+  "premise": "Some shapes are flat like paper. Others are solid and you can hold them. Sort them out.",
+  "idea": "Telling flat shapes from solids: a cube is not a square and a ball is not a circle. The child sorts flat shapes from things you can hold.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

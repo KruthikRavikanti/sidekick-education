@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NF.A.2-1",
+  "title": "Same Size Pieces First",
+  "emoji": "⛳",
+  "premise": "You cannot compare fractions until their pieces are the same size. Rename one, then decide.",
+  "idea": "Comparing fractions with a common denominator: 3/4 is 6/8, which beats 5/8. Comparing only the numerators is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

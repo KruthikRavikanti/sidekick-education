@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.A.1-3",
+  "title": "Dino Stomp",
+  "emoji": "🦕",
+  "premise": "The dinosaur takes giant steps of ten. Lay down its footprints so every step is ten more.",
+  "idea": "Counting by tens: every tile in the row is ten more than the last, and a tile like 21 is there to catch counting on by ones.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

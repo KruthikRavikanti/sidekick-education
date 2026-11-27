@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-SSE.A.2-2",
+  "title": "Factor by Pattern",
+  "emoji": "🧩",
+  "premise": "Factoring undoes multiplying. Look for a common factor first, then for a pattern such as a perfect square.",
+  "idea": "Factoring expressions using common factors, grouping and special patterns. Treating (a + b)² as a² + b² is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

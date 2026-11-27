@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.B.8-1",
+  "title": "At Least, At Most",
+  "emoji": "🎢",
+  "premise": "Rules and limits are written as inequalities. At least means that number or more. At most means that number or less.",
+  "idea": "Writing an inequality of the form x > c or x < c to represent a constraint. Using the reversed direction is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

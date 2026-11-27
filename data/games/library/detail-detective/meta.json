@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.4.1-1",
+  "title": "Detail Detective",
+  "emoji": "🔍",
+  "premise": "When you explain what a story says, back it up with a detail or example from the text.",
+  "idea": "Referring to details and examples in a text when explaining what it says explicitly. Answering without evidence is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

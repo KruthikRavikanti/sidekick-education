@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.NS.A.1-4",
+  "title": "How Far Apart?",
+  "emoji": "📍",
+  "premise": "The distance between two numbers is how many steps apart they are. Subtract them, then take the absolute value.",
+  "idea": "Showing that the distance between two rational numbers is the absolute value of their difference. Getting negative distances is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

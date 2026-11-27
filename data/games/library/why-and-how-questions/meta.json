@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.1.1-2",
+  "title": "Why and How Questions",
+  "emoji": "🦊",
+  "premise": "Some questions only get a yes or a no. Why and how questions make you think more about the story.",
+  "idea": "Asking questions about key details in a text. Asking only yes-or-no questions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

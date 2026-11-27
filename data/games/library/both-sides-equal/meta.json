@@ -1,0 +1,9 @@
+{
+  "subskillId": "GA-3-PAR.3.4-1",
+  "title": "Both Sides Equal",
+  "emoji": "🟰",
+  "premise": "An equation is true when the two sides are worth the same, even if they look nothing alike.",
+  "idea": "Deciding whether two expressions are equal (4 × 3 = 6 + 6): the equal sign compares values. Expecting a single answer after the sign is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

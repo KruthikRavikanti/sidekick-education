@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-BF.B.3-1",
+  "title": "Slide the Graph",
+  "emoji": "↔️",
+  "premise": "Adding a number outside the function lifts the graph. Adding it inside, next to x, slides the graph sideways the opposite way.",
+  "idea": "Identifying the effect on the graph of replacing f(x) by f(x) + k and f(x + k). Shifting f(x + 3) to the right is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+dial"
+}

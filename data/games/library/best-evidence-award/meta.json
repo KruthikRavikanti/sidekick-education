@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.8.1-1",
+  "title": "Best Evidence Award",
+  "emoji": "🥇",
+  "premise": "Not all evidence is equal. Measured results beat a single story, and a direct fact beats a loose connection.",
+  "idea": "Citing the textual evidence that most strongly supports an analysis of what the text says. Choosing weak evidence is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

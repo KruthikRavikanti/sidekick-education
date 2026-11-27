@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.5.2-2",
+  "title": "Comma After the Intro",
+  "emoji": "🍕",
+  "premise": "When a sentence opens with a phrase that sets the scene, a comma separates it from the main part.",
+  "idea": "Using a comma to separate an introductory element from the rest of the sentence. Leaving it out is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

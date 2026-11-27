@@ -1,0 +1,8 @@
+{
+  "subskillId": "GA-1-MDR.6.3-2",
+  "title": "Toy Machine",
+  "emoji": "🪙",
+  "premise": "The toy machine counts cents, not coins. Drop in exactly the right amount.",
+  "idea": "The machine adds up cents as coins drop. The dime is the smallest coin but worth more than the bigger nickel, so paying by size falls short.",
+  "author": "claude-stand-in"
+}

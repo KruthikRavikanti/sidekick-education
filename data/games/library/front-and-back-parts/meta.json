@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.2.3-4",
+  "title": "Front and Back Parts",
+  "emoji": "🧱",
+  "premise": "Many long words are a base word with a part added to the front or the back. Read every part.",
+  "idea": "Decoding words with common prefixes and suffixes. Reading only the base word is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

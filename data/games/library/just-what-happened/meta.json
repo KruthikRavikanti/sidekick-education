@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.9-10.2-2",
+  "title": "Just What Happened",
+  "emoji": "🧊",
+  "premise": "An objective summary gives the main events and the central idea. It leaves out your verdicts and the tiny details.",
+  "idea": "Providing an objective summary of a literary text. Including opinions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

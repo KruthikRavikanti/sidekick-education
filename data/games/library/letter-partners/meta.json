@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.K.1-4",
+  "title": "Letter Partners",
+  "emoji": "🔤",
+  "premise": "Every big letter has a small partner. Some small letters look alike, so check which way they face.",
+  "idea": "Naming upper- and lowercase letters by matching each uppercase letter to its lowercase form. Confusing b with d and p with q is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

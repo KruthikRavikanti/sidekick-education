@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.9-10.7-1",
+  "title": "Page, Screen, Speaker",
+  "emoji": "🎞️",
+  "premise": "A life told in a print biography and the same life in a documentary are not the same story. Each medium spotlights different details.",
+  "idea": "Analyzing various accounts of a subject told in different mediums, determining which details are emphasized in each. Listing without analysis is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

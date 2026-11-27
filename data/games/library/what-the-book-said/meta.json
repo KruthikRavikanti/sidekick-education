@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.K.2-2",
+  "title": "What the Book Said",
+  "emoji": "🐝",
+  "premise": "After a fact book, tell what you learned. Only tell things the book really said.",
+  "idea": "Retelling key details of an informational text. Retelling details that are not in the text is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

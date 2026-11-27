@@ -1,0 +1,8 @@
+{
+  "subskillId": "4.NBT.A.1-1",
+  "title": "Digit Elevator",
+  "emoji": "🛗",
+  "premise": "Each floor is a place in a number. Ride digits up or down to change what they are worth.",
+  "idea": "Places are floors of a building. One floor up makes a digit worth ten times as much and each floor shows the value, so 700 is seen as a floor above 70.",
+  "author": "claude-stand-in"
+}

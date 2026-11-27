@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.6.8-1",
+  "title": "Trace the Argument",
+  "emoji": "🧵",
+  "premise": "An argument is built from claims: the statements the author wants you to accept. Find them first.",
+  "idea": "Tracing an argument and its specific claims. Not being able to find the claims is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

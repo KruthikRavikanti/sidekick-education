@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.EE.B.4-4",
+  "title": "Graph the Solution Set",
+  "emoji": "🎚️",
+  "premise": "The solutions of an inequality fill part of the number line. The graph shows where they start and which way they go.",
+  "idea": "Graphing the solution set of an inequality and interpreting it in context. Using the reversed direction or the other circle is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

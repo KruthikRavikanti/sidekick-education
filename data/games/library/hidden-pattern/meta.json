@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.OA.C.5-2",
+  "title": "Hidden Pattern",
+  "emoji": "🎩",
+  "premise": "A rule makes a pattern, and the pattern has secrets the rule never mentioned. Find what else is true.",
+  "idea": "Identifying features of a pattern that were not explicit in the rule, such as all terms being odd.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.A.4-2",
+  "title": "Name the Unit",
+  "emoji": "🏷️",
+  "premise": "A length is not finished until it has its unit. Give each difference its number and its unit.",
+  "idea": "Expressing a length difference in a standard unit: the answer needs both the number and the unit. A bare number is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

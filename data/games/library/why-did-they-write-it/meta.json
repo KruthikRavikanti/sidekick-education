@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.6.6-1",
+  "title": "Why Did They Write It?",
+  "emoji": "✍️",
+  "premise": "The topic is what an article is about. The purpose is why the author wrote it: to inform, to persuade or to entertain.",
+  "idea": "Determining an author’s point of view or purpose and how it is conveyed. Confusing the topic with the purpose is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

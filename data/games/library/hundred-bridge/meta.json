@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.NBT.A.1-1",
+  "title": "Hundred Bridge",
+  "emoji": "🌉",
+  "premise": "The bridge crosses right over one hundred. Lay the number planks in counting order so cars can cross.",
+  "idea": "Counting to 120 across one hundred: the child orders planks such as 98, 99, 100, 101. A plank with a jump (110 after 100) is there to catch the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

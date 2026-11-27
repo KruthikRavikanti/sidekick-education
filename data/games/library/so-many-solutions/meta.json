@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.B.8-2",
+  "title": "So Many Solutions",
+  "emoji": "♾️",
+  "premise": "An equation like x + 2 = 7 has one solution. An inequality like x > 5 has more solutions than you could ever list.",
+  "idea": "Recognizing that inequalities of the form x > c or x < c have infinitely many solutions. Giving only one answer is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

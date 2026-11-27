@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.7.1-3",
+  "title": "Dangling Modifier Rescue",
+  "emoji": "🪝",
+  "premise": "An opening phrase must describe the very next noun. If it does not, the sentence says something silly.",
+  "idea": "Placing phrases and clauses within a sentence, correcting misplaced and dangling modifiers. Writing dangling modifiers is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

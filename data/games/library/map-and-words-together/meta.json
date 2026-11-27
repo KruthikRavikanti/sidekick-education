@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.3.7-1",
+  "title": "Map and Words Together",
+  "emoji": "🦋",
+  "premise": "An article gives some facts in words and others in a map, photo or diagram. You need both.",
+  "idea": "Using information gained from illustrations (maps, photographs) and the words in a text to demonstrate understanding. Ignoring the visuals is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-APR.A.1-2",
+  "title": "Multiply Every Pair",
+  "emoji": "🔳",
+  "premise": "To multiply two brackets, every term in the first meets every term in the second. Four products, then combine.",
+  "idea": "Multiplying polynomials. Multiplying only the first terms and the last terms is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

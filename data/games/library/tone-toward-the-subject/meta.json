@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.8.4-1",
+  "title": "Tone Toward the Subject",
+  "emoji": "🌡️",
+  "premise": "An author’s feelings about a subject leak through word choice. The same inventor can be a pioneer or a tinkerer.",
+  "idea": "Analyzing the impact of specific word choices on meaning and tone, including analogies or allusions to other texts. Naming words only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

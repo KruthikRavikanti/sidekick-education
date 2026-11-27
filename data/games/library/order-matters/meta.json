@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-CP.B.9-1",
+  "title": "Order Matters",
+  "emoji": "🏅",
+  "premise": "Gold, silver, bronze: the same three runners in a different order is a different result. Count choices spot by spot.",
+  "idea": "Using permutations to count outcomes when order matters. Using combinations when order matters is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

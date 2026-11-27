@@ -1,0 +1,8 @@
+{
+  "subskillId": "2.MD.A.1-2",
+  "title": "Inchworm",
+  "emoji": "🐛",
+  "premise": "How long is each worm? Measure from 0, or count the spaces if the worm will not move.",
+  "idea": "A ruler counts spaces from 0. The child slides the worm to 0 to read it, then has to measure a worm that starts somewhere else.",
+  "author": "claude-stand-in"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-ID.A.2-2",
+  "title": "Center and Spread Together",
+  "emoji": "⚖️",
+  "premise": "Two groups can share an average and still be very different. Compare how spread out they are too.",
+  "idea": "Comparing center and spread of two or more data sets. Comparing only the centers is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

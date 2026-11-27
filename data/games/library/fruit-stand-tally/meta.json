@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.MD.B.3-3",
+  "title": "Fruit Stand Tally",
+  "emoji": "🍊",
+  "premise": "The fruit stand counted what it sold today. Line the fruits up from the most sold to the fewest.",
+  "idea": "Ordering categories by count: the child reads a bar for each fruit and lines the fruits up from most to fewest. Going from fewest to most is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

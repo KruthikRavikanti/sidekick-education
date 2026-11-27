@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.A.4-1",
+  "title": "Test More Than Once",
+  "emoji": "🧪",
+  "premise": "Two expressions are equivalent if they give the same value for EVERY number. One lucky match does not prove it.",
+  "idea": "Identifying when two expressions are equivalent by testing values. Testing only one value is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

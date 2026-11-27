@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-C.B.5-3",
+  "title": "Radians From Arcs",
+  "emoji": "🧵",
+  "premise": "Wrap one radius along the edge of its circle. The angle it marks out is one radian, in a circle of any size.",
+  "idea": "Defining the radian measure of an angle as the constant of proportionality between arc length and radius. Thinking radians depend on circle size is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type"
+}

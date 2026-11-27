@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.11-12.2-2",
+  "title": "Plot Without Verdicts",
+  "emoji": "🧾",
+  "premise": "Even with a novel you love or hate, the summary stays neutral. Analysis and judgment come afterward.",
+  "idea": "Providing an objective summary of a literary text. Including opinions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-VM.B.4-3",
+  "title": "Subtract an Arrow",
+  "emoji": "↩️",
+  "premise": "Subtracting a vector means adding its opposite: turn the second arrow around, then add.",
+  "idea": "Understanding vector subtraction as adding the additive inverse. Reversing the other vector is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

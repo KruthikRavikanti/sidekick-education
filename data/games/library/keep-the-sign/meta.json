@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.NS.A.2-3",
+  "title": "Keep the Sign",
+  "emoji": "🪢",
+  "premise": "When a negative number multiplies a bracket, it multiplies every term inside, sign and all.",
+  "idea": "Applying properties of operations to multiply and divide rational numbers. Losing signs when distributing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

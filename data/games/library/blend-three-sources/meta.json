@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.5.9-1",
+  "title": "Blend Three Sources",
+  "emoji": "🌀",
+  "premise": "A knowledgeable writer blends several sources into one explanation rather than reporting them one at a time.",
+  "idea": "Integrating information from several texts on the same topic. Reporting the texts one at a time is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.B.6-1",
+  "title": "Think Multiplication",
+  "emoji": "🧠",
+  "premise": "Every division fact has a multiplication fact hiding inside. Use the times fact to solve it.",
+  "idea": "Division as an unknown-factor problem: 32 ÷ 8 is solved by 8 × ? = 32. Subtracting instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

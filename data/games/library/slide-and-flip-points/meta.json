@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.A.3-1",
+  "title": "Slide and Flip Points",
+  "emoji": "📍",
+  "premise": "A translation adds to the coordinates. Left and right change x. Up and down change y. A reflection flips one sign.",
+  "idea": "Describing the effect of translations and reflections using coordinates. Changing the other coordinate is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

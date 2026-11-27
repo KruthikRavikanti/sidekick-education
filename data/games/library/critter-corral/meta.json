@@ -1,0 +1,8 @@
+{
+  "subskillId": "2.G.A.1-1",
+  "title": "Critter Corral",
+  "emoji": "🐑",
+  "premise": "Every critter orders a pen by its shape name. Set the fence posts to build it.",
+  "idea": "The number of fence posts is the number of sides, so the shape name follows from counting, however lumpy the pen looks.",
+  "author": "claude-stand-in"
+}

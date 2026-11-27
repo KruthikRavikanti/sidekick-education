@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-C.A.2-3",
+  "title": "Right Angle in a Semicircle",
+  "emoji": "🌗",
+  "premise": "Pick any point on a circle and join it to the two ends of a diameter. The angle at that point is always a right angle.",
+  "idea": "Knowing that inscribed angles on a diameter are right angles. Not being able to apply it is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

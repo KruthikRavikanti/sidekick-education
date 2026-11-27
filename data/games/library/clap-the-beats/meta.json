@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.K.2-2",
+  "title": "Clap the Beats",
+  "emoji": "👏",
+  "premise": "Words have beats. Say the word slowly and clap once for each beat you hear.",
+  "idea": "Counting syllables in spoken words: the child says the word for a picture and sets one clap per syllable. Clapping once per word is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

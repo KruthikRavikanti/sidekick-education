@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.3.5-2",
+  "title": "Parts That Build",
+  "emoji": "🧗",
+  "premise": "Each chapter stands on the one before it. What happened earlier explains what happens later.",
+  "idea": "Describing how each successive part of a story builds on earlier sections. Treating each part as separate is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

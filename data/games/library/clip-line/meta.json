@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.MD.A.2-1",
+  "title": "Clip Line",
+  "emoji": "🖇️",
+  "premise": "Measure by laying paper clips end to end, from one end of the thing to the other. No spaces, no extras.",
+  "idea": "Laying units end to end with no spaces or overlaps: the child adds clips until they reach exactly from one end to the other. One too few leaves part uncovered.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

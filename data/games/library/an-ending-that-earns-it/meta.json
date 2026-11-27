@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.9-10.1-5",
+  "title": "An Ending That Earns It",
+  "emoji": "🛬",
+  "premise": "A conclusion should follow from the evidence and leave the reader with the point. Copying the first paragraph is not landing.",
+  "idea": "Providing a concluding statement that follows from and supports the argument. Repeating the introduction is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+row"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.D.11-1",
+  "title": "Where f Equals g",
+  "emoji": "🤝",
+  "premise": "Where two graphs cross, both functions give the same output. The x-value of that point solves f(x) = g(x).",
+  "idea": "Explaining why the x-coordinates of intersection points are solutions of f(x) = g(x). Giving the y-value as the solution is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+fill"
+}

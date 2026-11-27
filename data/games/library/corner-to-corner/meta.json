@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.B.7-2",
+  "title": "Corner to Corner",
+  "emoji": "📦",
+  "premise": "The longest stick that fits in a box runs corner to opposite corner. Find it with two right triangles: one on the floor, one standing up.",
+  "idea": "Applying the Pythagorean theorem in three dimensions. Not finding the right triangle inside the solid is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

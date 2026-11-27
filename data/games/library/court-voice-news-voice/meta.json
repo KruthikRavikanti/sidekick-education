@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.9-10.4-1",
+  "title": "Court Voice, News Voice",
+  "emoji": "⚖️",
+  "premise": "A court opinion and a news story can report the same ruling in very different language. The words fit the job.",
+  "idea": "Analyzing the cumulative impact of word choices on meaning and tone, such as the language of a court opinion compared with a newspaper. Naming differences without effect is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.5.2-4",
+  "title": "Title Formatting",
+  "emoji": "📕",
+  "premise": "Long works like books and movies are underlined or put in italics. Short works like poems and songs go in quotation marks.",
+  "idea": "Using underlining, quotation marks or italics to indicate titles of works. Formatting titles incorrectly is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

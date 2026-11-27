@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.7.1-1",
+  "title": "Claim Meets Counterclaim",
+  "emoji": "🤝",
+  "premise": "A strong argument does not pretend the other side is silent. It names an opposing view, then answers it.",
+  "idea": "Introducing claims, acknowledging alternate or opposing claims, and organizing reasons logically. Ignoring counterclaims is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+row"
+}

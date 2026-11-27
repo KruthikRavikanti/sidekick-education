@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-TF.A.4-1",
+  "title": "Odd and Even Waves",
+  "emoji": "🌊",
+  "premise": "Flip an angle to its negative and the point reflects across the x-axis. Its height changes sign. Its across distance does not.",
+  "idea": "Using the unit circle to explain the symmetry (odd and even) of trigonometric functions. Thinking sin(−x) = sin(x) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

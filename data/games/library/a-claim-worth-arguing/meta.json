@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.11-12.1-1",
+  "title": "A Claim Worth Arguing",
+  "emoji": "🎯",
+  "premise": "An advanced argument opens with a claim that is exact and informed, and shows at once why anyone should care.",
+  "idea": "Introducing precise, knowledgeable claims and establishing the significance of the claims. Writing vague claims is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

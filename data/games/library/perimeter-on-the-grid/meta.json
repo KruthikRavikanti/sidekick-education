@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-GPE.B.7-1",
+  "title": "Perimeter on the Grid",
+  "emoji": "🧮",
+  "premise": "Flat sides are easy to count. A slanted side needs the distance formula, which is the Pythagorean theorem in disguise.",
+  "idea": "Using coordinates and the distance formula to compute perimeters of polygons. Adding coordinates, or leaving out the slanted side, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

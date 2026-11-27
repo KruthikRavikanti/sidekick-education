@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.7.9-1",
+  "title": "Back It With the Text",
+  "emoji": "📎",
+  "premise": "An analysis paragraph makes a claim about a text and proves it with lines from that text.",
+  "idea": "Drawing evidence from literary or informational texts to support analysis. Giving no evidence is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,8 @@
+{
+  "subskillId": "3.OA.A.1-1",
+  "title": "Seed Planter",
+  "emoji": "🌱",
+  "premise": "The planter makes equal rows. Read each order as rows of seeds and plant it.",
+  "idea": "The first factor sets how many rows and the second how many in each. Seeds typed are poured into the plot, so adding the two numbers leaves bare holes.",
+  "author": "claude-stand-in"
+}

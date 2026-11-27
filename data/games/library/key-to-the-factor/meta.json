@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.A.4-1",
+  "title": "Key to the Factor",
+  "emoji": "🗝️",
+  "premise": "A number is missing from each multiplication fact. Find the factor that unlocks it.",
+  "idea": "Finding an unknown factor (8 × ? = 48). Multiplying the two numbers shown is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

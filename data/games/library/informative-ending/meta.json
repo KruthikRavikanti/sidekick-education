@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.3.2-4",
+  "title": "Informative Ending",
+  "emoji": "🏁",
+  "premise": "An informative piece should not just stop. End with a sentence that sums up what the reader learned.",
+  "idea": "Providing a concluding statement or section for informative writing. Stopping abruptly is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

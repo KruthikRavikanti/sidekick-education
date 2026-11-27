@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.11-12.5-1",
+  "title": "Does the Structure Work?",
+  "emoji": "🏛️",
+  "premise": "It is not enough to describe how an argument is built. Judge it: does the structure make the points clear and convincing?",
+  "idea": "Analyzing and evaluating the effectiveness of the structure an author uses in an exposition or argument. Describing the structure only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

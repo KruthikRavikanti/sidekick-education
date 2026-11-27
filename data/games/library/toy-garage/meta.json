@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.A.1-2",
+  "title": "Toy Garage",
+  "emoji": "🚗",
+  "premise": "Some cars are parked and more drive in. Add cars until the garage holds the number in the story.",
+  "idea": "Change-unknown problems (5 + ? = 12): the garage shows the cars already there and the child adds until the total matches. Adding the two given numbers overshoots.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

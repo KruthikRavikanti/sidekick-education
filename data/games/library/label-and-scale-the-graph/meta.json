@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-CED.A.2-2",
+  "title": "Label and Scale the Graph",
+  "emoji": "🏷️",
+  "premise": "A graph without labels and even scales cannot be read. Name both axes, give units, and count in equal steps.",
+  "idea": "Graphing equations on coordinate axes with labels and scales. Using unlabeled or uneven axes is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial+sort"
+}

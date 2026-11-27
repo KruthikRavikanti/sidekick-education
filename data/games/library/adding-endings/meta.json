@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.3.2-5",
+  "title": "Adding Endings",
+  "emoji": "🏃",
+  "premise": "Adding -ing or -ed can change the base word. Some double the last letter, some drop an e, some change y to i.",
+  "idea": "Using conventional spelling for adding suffixes to base words (sitting, smiled, cries). Forgetting to double the consonant is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

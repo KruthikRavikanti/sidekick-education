@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NBT.A.2-2",
+  "title": "Slide the Point",
+  "emoji": "🛝",
+  "premise": "Multiply by 10 and the number gets bigger. Divide by 10 and it gets smaller. The decimal point shows which way.",
+  "idea": "Explaining how the decimal point moves when multiplying or dividing by a power of 10. Moving the point the opposite way is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

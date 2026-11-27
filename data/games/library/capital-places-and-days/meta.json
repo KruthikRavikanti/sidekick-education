@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.2.2-1",
+  "title": "Capital Places and Days",
+  "emoji": "🗽",
+  "premise": "Special names get capital letters: holidays, places on the map, and the names of products.",
+  "idea": "Capitalizing holidays, product names and geographic names. Lowercasing proper nouns is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

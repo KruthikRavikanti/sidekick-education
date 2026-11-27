@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.B.6-2",
+  "title": "Is It a Right Triangle?",
+  "emoji": "📐",
+  "premise": "The theorem works backward too. If the two shorter sides squared add up to the longest side squared, the triangle has a right angle.",
+  "idea": "Explaining and using the converse of the Pythagorean theorem. Assuming the relation holds for any triangle is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

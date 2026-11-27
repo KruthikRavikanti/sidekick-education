@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-IF.A.1-2",
+  "title": "Domain and Range",
+  "emoji": "↔️",
+  "premise": "The domain is the set of inputs. The range is the set of outputs. List each value once.",
+  "idea": "Identifying the domain and range of a function. Swapping domain and range is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

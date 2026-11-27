@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.B.5-1",
+  "title": "Turn the Array",
+  "emoji": "🔃",
+  "premise": "Turn an array on its side and the rows become columns, but nothing is added or lost.",
+  "idea": "The commutative property of multiplication: 6 × 4 = 4 × 6. Writing the product in the blank is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

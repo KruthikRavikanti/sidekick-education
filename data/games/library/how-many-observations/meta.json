@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.SP.B.5-1",
+  "title": "How Many Observations?",
+  "emoji": "🔢",
+  "premise": "Each data value is one observation. The number of observations is how many values there are, not what they add up to.",
+  "idea": "Reporting the number of observations in a data set. Confusing the number of observations with the total of the values is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.C.7-3",
+  "title": "Tough Facts Arena",
+  "emoji": "🥊",
+  "premise": "The sevens, eights and nines are the champions of tricky. Send each fact to its product.",
+  "idea": "Multiplication facts for 7, 8 and 9: the facts most often guessed are sorted to nearby products, so a guess lands in a neighbor bin.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

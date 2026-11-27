@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.3.8-1",
+  "title": "Short Notes, Sorted",
+  "emoji": "🗒️",
+  "premise": "Notes are short. Write just the key words, then sort your notes into groups.",
+  "idea": "Gathering information from sources, taking brief notes and sorting evidence into provided categories. Copying whole sentences as notes is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.MD.C.7-2",
+  "title": "Morning or Night?",
+  "emoji": "🌗",
+  "premise": "The same time comes twice a day. Sort each thing that happens into a.m. or p.m.",
+  "idea": "Using a.m. and p.m.: daily events with times are sorted into the half of the day they happen in. Noon-hour events are the tricky case.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.4.1-5",
+  "title": "Fragment, Run-On, Complete",
+  "emoji": "🧱",
+  "premise": "A complete sentence has a subject and a verb and one clear idea. A fragment is missing something. A run-on crams in too much.",
+  "idea": "Producing complete sentences, recognizing and correcting fragments and run-ons. Writing run-ons is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.OA.C.4-2",
+  "title": "Row by Row",
+  "emoji": "🚜",
+  "premise": "The farmer plants in equal rows. Write the adding sentence that adds up one row after another.",
+  "idea": "Writing an array total as a sum of equal addends: 3 rows of 4 is 4 + 4 + 4. Adding the number of rows to the number in a row is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

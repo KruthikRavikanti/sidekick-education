@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.SP.A.1-1",
+  "title": "Scatter Plot Maker",
+  "emoji": "🔵",
+  "premise": "A scatter plot shows two measurements for each person as one dot. The dots stay separate. Together they show a pattern.",
+  "idea": "Constructing scatter plots for bivariate data. Connecting the points like a line graph is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot+sort"
+}

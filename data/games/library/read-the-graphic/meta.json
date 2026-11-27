@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.4.7-1",
+  "title": "Read the Graphic",
+  "emoji": "📊",
+  "premise": "Charts, graphs and timelines carry facts the paragraphs leave out. Read them as carefully as the words.",
+  "idea": "Interpreting information presented visually or quantitatively and explaining how it contributes to the text. Ignoring graphics is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

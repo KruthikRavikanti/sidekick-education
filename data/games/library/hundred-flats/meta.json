@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.A.1-2",
+  "title": "Hundred Flats",
+  "emoji": "🟨",
+  "premise": "Build numbers like 300 and 600 with big hundred flats. No rods and no cubes needed.",
+  "idea": "Hundreds numbers as groups of hundreds with no tens or ones: 300 is 3 hundreds. Using the tens dial (3 tens) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.B.4-1",
+  "title": "Think Addition",
+  "emoji": "💭",
+  "premise": "A taking-away fact is an adding fact in disguise. Use the adding fact to solve its partner.",
+  "idea": "Subtraction as an unknown-addend problem: 10 − 8 is solved by 8 + ? = 10. The child fills both facts and sees they share the same number.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

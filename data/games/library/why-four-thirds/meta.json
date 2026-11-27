@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-GMD.A.2-1",
+  "title": "Why Four Thirds",
+  "emoji": "🌐",
+  "premise": "Slice a half sphere and a cylinder with a cone scooped out. At every height the slices have equal area, so the volumes match.",
+  "idea": "Giving an informal argument using Cavalieri’s principle for the volume of a sphere. Not relating it to cylinders and cones is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

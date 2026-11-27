@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.D.8-1",
+  "title": "Missing Number Rocket",
+  "emoji": "🚀",
+  "premise": "The rocket will not launch until the missing number is keyed in. What goes in the box?",
+  "idea": "Finding the unknown in a + ? = c. Keying in the total, or adding the two shown numbers, are the known slips.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

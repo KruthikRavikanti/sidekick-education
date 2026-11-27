@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.NBT.A.3-1",
+  "title": "Round It Once",
+  "emoji": "🛞",
+  "premise": "To round, look at just one digit: the one right after the place you are rounding to. Then round one time only.",
+  "idea": "Rounding multi-digit numbers to any place: only the digit to the right of the target place matters. Rounding one digit at a time (double rounding) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

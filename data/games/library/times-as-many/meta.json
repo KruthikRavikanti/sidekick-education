@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.OA.A.1-1",
+  "title": "Times as Many",
+  "emoji": "🐘",
+  "premise": "A multiplication fact is also a comparison. One amount is so many times as big as another.",
+  "idea": "Reading a multiplication equation as a comparison: 35 is 5 times as many as 7. Reading times as many as more than (giving 28) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

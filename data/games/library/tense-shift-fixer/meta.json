@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.5.1-4",
+  "title": "Tense Shift Fixer",
+  "emoji": "🔧",
+  "premise": "A story should stay in one tense. A verb that jumps to another tense for no reason is a shift.",
+  "idea": "Recognizing and correcting inappropriate shifts in verb tense. Shifting tense in the middle of a story is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

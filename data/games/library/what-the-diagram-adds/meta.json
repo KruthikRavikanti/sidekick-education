@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.2.7-1",
+  "title": "What the Diagram Adds",
+  "emoji": "⚙️",
+  "premise": "A diagram shows what words alone cannot. It lets you see the parts and where they are.",
+  "idea": "Explaining how specific images, such as a diagram, contribute to and clarify a text. Describing the image without connecting it to the text is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

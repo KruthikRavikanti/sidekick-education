@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.K.2-2",
+  "title": "Start, Middle, End",
+  "emoji": "🚂",
+  "premise": "A story is like a train with three cars: the beginning, the middle and the end.",
+  "idea": "Telling the beginning, middle and end of a story: events are sorted into the three parts. Mixing up the order of events is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

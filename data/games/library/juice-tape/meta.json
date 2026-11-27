@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.RP.A.1-3",
+  "title": "Juice Tape",
+  "emoji": "🧃",
+  "premise": "A tape diagram shows a ratio with equal-size boxes. Build the recipe one box at a time.",
+  "idea": "Representing ratios with tape diagrams: equal-size parts are set for each quantity. Reversing the ratio or scaling only one quantity is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.K.4-1",
+  "title": "New Word Detective",
+  "emoji": "🕵️",
+  "premise": "When you meet a word you do not know, stop and be a detective. The words around it give clues.",
+  "idea": "Asking and answering questions about unknown words in a text: the meaning of a new word is found from context. Skipping unknown words without noticing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.5.1-2",
+  "title": "Reason Plus Fact",
+  "emoji": "🧱",
+  "premise": "A reason is stronger when a fact backs it up. Match each reason to the fact that supports it.",
+  "idea": "Providing logically ordered reasons that are supported by facts and details. Giving unsupported reasons is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

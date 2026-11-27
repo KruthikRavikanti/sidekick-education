@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.6.4-1",
+  "title": "Clues Around the Word",
+  "emoji": "🧭",
+  "premise": "When a word is new, the sentence around it often explains it. Look at the words nearby.",
+  "idea": "Using context as a clue to the meaning of a word or phrase. Ignoring the context is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

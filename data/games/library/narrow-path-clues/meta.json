@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.2.4-1",
+  "title": "Narrow Path Clues",
+  "emoji": "🥾",
+  "premise": "The words around a new word explain it. Read the whole sentence and look for the clue.",
+  "idea": "Using sentence-level context as a clue to the meaning of a word or phrase. Ignoring context is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

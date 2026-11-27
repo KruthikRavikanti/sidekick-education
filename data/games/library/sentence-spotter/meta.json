@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.1.1-1",
+  "title": "Sentence Spotter",
+  "emoji": "🔍",
+  "premise": "A sentence starts with a capital letter and stops at an end mark. A line on the page is not always one sentence.",
+  "idea": "Recognizing the features of a sentence: first word capitalized, ending punctuation. Thinking a line of text is a sentence is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

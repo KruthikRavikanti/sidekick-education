@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.B.6-2",
+  "title": "Any Number Will Do",
+  "emoji": "🎲",
+  "premise": "In an expression like n + 5, the letter n can be any number from the set you are working in.",
+  "idea": "Understanding that a variable can represent any number in a specified set. Thinking different letters must have different values is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

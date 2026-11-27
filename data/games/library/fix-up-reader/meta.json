@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.2.4-3",
+  "title": "Fix-Up Reader",
+  "emoji": "🐎",
+  "premise": "Good readers listen to themselves. When a sentence does not make sense, they go back and fix the word.",
+  "idea": "Using context to confirm or self-correct word recognition and understanding, rereading as necessary. Not noticing errors is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

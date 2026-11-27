@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.G.B.3-2",
+  "title": "Prove It With a Property",
+  "emoji": "⚖️",
+  "premise": "Shapes are sorted by their properties, not by how they look. Give the real reason each time.",
+  "idea": "Explaining category membership with properties: a square is a rectangle because it has four right angles. Reasoning from how shapes look is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-BF.B.4-1",
+  "title": "Undo the Function",
+  "emoji": "↩️",
+  "premise": "An inverse function undoes the original. To find it, swap x and y, then solve for y.",
+  "idea": "Solving an equation of the form f(x) = c for a simple function that has an inverse, and writing the inverse. Thinking the inverse is 1 ÷ f(x) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+fill"
+}

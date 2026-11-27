@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.9-10.8-1",
+  "title": "Credit Where It Is Due",
+  "emoji": "🏷️",
+  "premise": "Using someone’s words or ideas is fine when you show whose they are. Without credit, it is plagiarism.",
+  "idea": "Integrating information into a text selectively, avoiding plagiarism and following a standard citation format. Plagiarizing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

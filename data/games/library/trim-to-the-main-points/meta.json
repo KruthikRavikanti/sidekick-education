@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.5.2-2",
+  "title": "Trim to the Main Points",
+  "emoji": "✂️",
+  "premise": "A summary keeps the main ideas and drops the minor details, the numbers and the side notes.",
+  "idea": "Summarizing an informational text. Including minor details is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

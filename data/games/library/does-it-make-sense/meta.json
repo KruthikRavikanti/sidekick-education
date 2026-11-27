@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.D.8-3",
+  "title": "Does It Make Sense?",
+  "emoji": "🤨",
+  "premise": "A quick estimate tells you whether an answer is even close. Sort the claims that make sense from the ones that are way off.",
+  "idea": "Checking answers with mental estimation: rounded numbers show whether a claimed result is reasonable.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

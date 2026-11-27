@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.7.7-1",
+  "title": "Heard or Read?",
+  "emoji": "🎧",
+  "premise": "A speech on the page and the same speech aloud hit differently. Delivery adds things print cannot.",
+  "idea": "Comparing a text to an audio or video version, analyzing each medium’s portrayal of the subject. Listing the differences only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.2.2-1",
+  "title": "Stay on the Topic",
+  "emoji": "🐧",
+  "premise": "Informative writing introduces a topic, then gives facts about that topic. Facts about other things do not belong.",
+  "idea": "Introducing a topic and using facts and definitions to develop points. Writing a list of unrelated facts is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

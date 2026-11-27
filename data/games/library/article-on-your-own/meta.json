@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.3.10-1",
+  "title": "Article on Your Own",
+  "emoji": "🐙",
+  "premise": "Read a short article by yourself. Then say its main idea in one sentence.",
+  "idea": "Reading and comprehending informational texts at the high end of the grades 2-3 band independently. Avoiding nonfiction is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

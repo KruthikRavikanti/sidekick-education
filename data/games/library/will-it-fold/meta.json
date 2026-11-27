@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.G.A.4-1",
+  "title": "Will It Fold?",
+  "emoji": "🎲",
+  "premise": "A net is a flat pattern that folds into a solid. A cube needs six squares, but not every six-square pattern folds up.",
+  "idea": "Representing three-dimensional figures using nets. Accepting nets that cannot fold into the solid is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

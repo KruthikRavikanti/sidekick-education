@@ -1,0 +1,9 @@
+{
+  "subskillId": "7.SP.C.6-2",
+  "title": "Expect About How Many?",
+  "emoji": "🔮",
+  "premise": "A probability lets you predict about how often something will happen in many tries. It never says what the very next try will be.",
+  "idea": "Predicting the approximate relative frequency given the probability. Thinking an outcome is due after a streak is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+sort"
+}

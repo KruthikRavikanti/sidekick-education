@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.G.A.1-1",
+  "title": "Point, Line, Segment, Ray",
+  "emoji": "➡️",
+  "premise": "A line goes on forever both ways. A ray starts at a point and goes on forever one way. A segment stops at both ends.",
+  "idea": "Identifying points, lines, line segments and rays. Confusing a ray with a segment is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

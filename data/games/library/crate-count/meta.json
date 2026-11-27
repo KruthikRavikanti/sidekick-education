@@ -1,0 +1,8 @@
+{
+  "subskillId": "7.EE.A.1-1",
+  "title": "Crate Count",
+  "emoji": "📦",
+  "premise": "Each x is a sealed crate of apples. Tidy the dock by counting crates and loose apples separately.",
+  "idea": "An x is a sealed crate and a number is loose apples. The answer is drawn as crates and apples, so 3x + 2 visibly cannot become 5x.",
+  "author": "claude-stand-in"
+}

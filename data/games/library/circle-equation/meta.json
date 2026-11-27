@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-GPE.A.1-1",
+  "title": "Circle Equation",
+  "emoji": "⭕",
+  "premise": "Every point on a circle is the same distance from the center. The Pythagorean theorem turns that into an equation.",
+  "idea": "Deriving the equation of a circle from the Pythagorean theorem. Forgetting to square the radius is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+fill"
+}

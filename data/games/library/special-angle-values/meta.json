@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-TF.A.3-1",
+  "title": "Special Angle Values",
+  "emoji": "📐",
+  "premise": "Two special triangles give exact trig values. In the 30-60-90 triangle, the short leg is half the hypotenuse.",
+  "idea": "Using special triangles to find sine, cosine and tangent at π/6, π/4 and π/3. Swapping the sine and cosine values is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

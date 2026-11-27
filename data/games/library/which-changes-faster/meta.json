@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.F.A.2-1",
+  "title": "Which Changes Faster?",
+  "emoji": "🏁",
+  "premise": "A rate of change tells how much y grows for each step of x. It can be read from an equation, a table or a sentence.",
+  "idea": "Comparing properties of two functions represented in different ways. Comparing y-values instead of rates is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

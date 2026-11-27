@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-IC.B.4-1",
+  "title": "Estimate From a Sample",
+  "emoji": "📋",
+  "premise": "A sample proportion is your best single guess for the whole population. Find it, and remember it is an estimate.",
+  "idea": "Using data from a sample survey to estimate a population mean or proportion. Ignoring sampling variability is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+sort"
+}

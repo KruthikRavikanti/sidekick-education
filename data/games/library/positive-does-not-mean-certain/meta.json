@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-MD.B.7-1",
+  "title": "Positive Does Not Mean Certain",
+  "emoji": "🧪",
+  "premise": "When a condition is rare, most positive results can come from people who do not have it. Count both kinds of positives.",
+  "idea": "Analyzing decisions and strategies using probability concepts, as in screening tests. Ignoring false positives is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

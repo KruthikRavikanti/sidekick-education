@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.9-10.2-4",
+  "title": "So What?",
+  "emoji": "💡",
+  "premise": "The end of an explanation should answer one last question: why does this matter?",
+  "idea": "Providing a concluding statement that articulates the implications or significance of the topic. Restating only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

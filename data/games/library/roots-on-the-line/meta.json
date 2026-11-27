@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.NS.A.2-2",
+  "title": "Roots on the Line",
+  "emoji": "🌱",
+  "premise": "An irrational number still has an exact place on the number line. Estimate it to see where it sits.",
+  "idea": "Locating irrational numbers approximately on a number line and ordering them. Ordering them incorrectly is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+line"
+}

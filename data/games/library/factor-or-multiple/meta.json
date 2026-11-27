@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.OA.B.4-2",
+  "title": "Factor or Multiple?",
+  "emoji": "🧬",
+  "premise": "Factors go into a number. Multiples are what you get when you count by it. Sort them out.",
+  "idea": "A whole number is a multiple of each of its factors: factors of 12 are sorted from multiples of 12. Swapping the two words is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

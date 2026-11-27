@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.MD.B.2-1",
+  "title": "Beaker Line Plot",
+  "emoji": "⚗️",
+  "premise": "The science class measured liquid in beakers. Put each measurement on the line plot, one X each.",
+  "idea": "Making a line plot of measurements in fractions of a unit. Ordering the fractions incorrectly, or missing equivalent fractions, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+dial"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.A.3-3",
+  "title": "End to End",
+  "emoji": "🎗️",
+  "premise": "Lengths and amounts come in equal pieces. Decide whether to multiply or divide, then key in the answer.",
+  "idea": "Measurement word problems with multiplication and division. Choosing the operation from a keyword instead of the situation is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

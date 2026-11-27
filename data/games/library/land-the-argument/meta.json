@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.6.1-4",
+  "title": "Land the Argument",
+  "emoji": "🏁",
+  "premise": "A conclusion wraps up the argument. It restates the claim in fresh words and leaves the reader convinced.",
+  "idea": "Providing a concluding statement that follows from the argument presented. Leaving the conclusion out, or ending off topic, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.A.3-3",
+  "title": "Stretch the Number",
+  "emoji": "🪗",
+  "premise": "Pull a number apart to show what each digit is worth. Drop in the piece that is missing.",
+  "idea": "Expanded form: 352 is 300 + 50 + 2, not 3 + 5 + 2. Tiles with the bare digits let the known slip be made.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

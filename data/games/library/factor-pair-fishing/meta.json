@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.OA.B.4-1",
+  "title": "Factor Pair Fishing",
+  "emoji": "🎣",
+  "premise": "Every number hides pairs of factors that multiply to make it. Catch all of them, and leave the fakes in the water.",
+  "idea": "Finding all factor pairs of a number: the child picks every pair whose product is the number. Missing a pair is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

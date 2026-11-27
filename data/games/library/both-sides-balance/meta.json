@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.D.7-3",
+  "title": "Both Sides Balance",
+  "emoji": "🎚️",
+  "premise": "There is adding on both sides of this balance. Set the box so the two sides weigh the same.",
+  "idea": "Reading equations with operations on both sides (4 + 5 = ▢ + 3): the box is not the total. A balance tips until the box makes the sides equal.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

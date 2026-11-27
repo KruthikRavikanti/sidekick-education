@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.CC.C.6-2",
+  "title": "Tiny but Many",
+  "emoji": "🐜",
+  "premise": "Big animals and tiny ones are having a picnic. Find the groups with the most by counting, not by size.",
+  "idea": "Comparing groups by counting: groups of big objects have few and groups of small objects have many, so only counting gives the right answer.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

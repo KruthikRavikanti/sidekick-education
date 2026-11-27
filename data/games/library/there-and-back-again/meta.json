@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-BF.B.4-2",
+  "title": "There and Back Again",
+  "emoji": "🔄",
+  "premise": "Run a number through a function and then through its inverse, and you land right where you started. In both directions.",
+  "idea": "Verifying by composition that one function is the inverse of another. Composing in one direction only, or stopping halfway, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+sort"
+}

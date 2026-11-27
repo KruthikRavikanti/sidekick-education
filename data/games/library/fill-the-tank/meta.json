@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.MD.C.5-2",
+  "title": "Fill the Tank",
+  "emoji": "🐟",
+  "premise": "Volume is length × width × height. If you already know the area of the base, just multiply it by the height.",
+  "idea": "Applying V = l × w × h and V = B × h. Treating the base area as if it were a length, or adding the dimensions, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

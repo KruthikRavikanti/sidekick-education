@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.7.1-2",
+  "title": "Reasons You Can Trust",
+  "emoji": "🏛️",
+  "premise": "Support a claim with sound reasoning and sources a reader can trust. A rumor or a wild leap weakens the whole argument.",
+  "idea": "Supporting claims with logical reasoning and relevant evidence from credible sources. Using weak sources is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

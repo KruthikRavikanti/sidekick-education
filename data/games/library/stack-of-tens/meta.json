@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.NBT.A.3-2",
+  "title": "Stack of Tens",
+  "emoji": "📚",
+  "premise": "A product like 5 × 30 is a pile of ten rods. Build it with blocks to see why it is so big.",
+  "idea": "Using place value to explain a product: 5 × 30 is 15 tens, built as 1 hundred and 5 tens. Building only 15 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

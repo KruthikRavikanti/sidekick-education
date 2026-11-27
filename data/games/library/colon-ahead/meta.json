@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.9-10.2-2",
+  "title": "Colon Ahead",
+  "emoji": "🚦",
+  "premise": "A colon says: here it comes. It follows a complete sentence and introduces a list, an explanation or a quotation.",
+  "idea": "Using a colon to introduce a list or quotation. Misusing colons is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

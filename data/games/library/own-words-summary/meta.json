@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.4.2-2",
+  "title": "Own Words Summary",
+  "emoji": "🗞️",
+  "premise": "A summary is short, covers the main points and is written in your own words. Copying a sentence is not summarizing.",
+  "idea": "Summarizing an informational text. Copying sentences instead of summarizing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

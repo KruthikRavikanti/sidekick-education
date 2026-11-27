@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.1.5-1",
+  "title": "Word Baskets",
+  "emoji": "🧺",
+  "premise": "Words that name the same kind of thing go in one basket. Think about what each word means.",
+  "idea": "Sorting words into categories to gain a sense of the concepts the categories represent. Grouping by spelling instead of meaning is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

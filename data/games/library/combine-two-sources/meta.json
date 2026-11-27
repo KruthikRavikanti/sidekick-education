@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.4.9-1",
+  "title": "Combine Two Sources",
+  "emoji": "🧩",
+  "premise": "To know a topic well, put together what two texts say. The best statements use information from both.",
+  "idea": "Integrating information from two texts on the same topic. Reporting the two texts separately is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

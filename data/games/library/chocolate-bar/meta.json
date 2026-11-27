@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.G.A.2-1",
+  "title": "Chocolate Bar",
+  "emoji": "🍫",
+  "premise": "Score the chocolate bar into rows and columns of same-size squares, just the way the order says.",
+  "idea": "Partitioning a rectangle into rows and columns of same-size squares: the child sets rows and columns and the bar redraws. Swapping rows and columns is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

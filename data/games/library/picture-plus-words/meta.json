@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.1.7-1",
+  "title": "Picture Plus Words",
+  "emoji": "😢",
+  "premise": "Use the picture AND the words together. The two of them tell you how a character feels.",
+  "idea": "Using illustrations and details in a story to describe its characters, setting or events. Using the pictures only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

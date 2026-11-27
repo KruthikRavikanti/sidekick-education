@@ -1,0 +1,9 @@
+{
+  "subskillId": "5.NF.B.6-1",
+  "title": "Half the Recipe",
+  "emoji": "🥞",
+  "premise": "To take a fraction of a mixed number, first turn the mixed number into one fraction. Then multiply.",
+  "idea": "Solving problems that multiply fractions and mixed numbers: half of 2 1/2 is 5/4. Converting the mixed number incorrectly is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

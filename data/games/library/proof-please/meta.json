@@ -1,0 +1,8 @@
+{
+  "subskillId": "W.4.1-2",
+  "title": "Proof Please",
+  "emoji": "🔍",
+  "premise": "The inspector stamps only reasons that come with proof. Put a fact under each reason.",
+  "idea": "Each reason needs a fact or example under it. Cards that only repeat the reason in other words are refused as proof.",
+  "author": "claude-stand-in"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "4.MD.A.2-2",
+  "title": "Half Hours and Quarters",
+  "emoji": "⏳",
+  "premise": "Measurements often come with halves and decimals. Take care with what half of each unit really is.",
+  "idea": "Measurement word problems with simple fractions or decimals. Treating every unit as if it had 100 parts (1.5 hours = 150 minutes) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

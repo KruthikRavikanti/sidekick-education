@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-LE.A.4-1",
+  "title": "Bring the Exponent Down",
+  "emoji": "⬇️",
+  "premise": "When the unknown is stuck in the exponent, take the log of both sides. The exponent comes down where you can solve for it.",
+  "idea": "Expressing the solution of ab^(ct) = d as a logarithm. Taking the log of one side only, or dividing the numbers, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+row"
+}

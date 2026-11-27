@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.OA.B.2-1",
+  "title": "Fact Fireworks",
+  "emoji": "🎆",
+  "premise": "Each rocket carries an adding fact. Send every rocket to the cloud that shows its sum.",
+  "idea": "Recalling sums of two one-digit numbers: facts are sorted by their totals, which rewards knowing them over counting.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

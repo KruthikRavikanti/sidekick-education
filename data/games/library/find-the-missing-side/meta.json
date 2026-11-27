@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.B.7-1",
+  "title": "Find the Missing Side",
+  "emoji": "🪜",
+  "premise": "With two sides of a right triangle you can find the third. Add the squares to find the longest side. Subtract to find a leg.",
+  "idea": "Applying the Pythagorean theorem to find unknown side lengths. Adding the sides, or adding when a leg is missing, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

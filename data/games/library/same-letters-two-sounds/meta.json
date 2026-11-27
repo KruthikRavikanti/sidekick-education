@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.2.3-5",
+  "title": "Same Letters, Two Sounds",
+  "emoji": "🍞",
+  "premise": "The letters ea do not always sound the same. In bread they say eh. In bead they say ee.",
+  "idea": "Identifying words with inconsistent but common spelling-sound correspondences. Applying one rule to every word is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

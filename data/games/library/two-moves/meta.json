@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.D.8-1",
+  "title": "Two Moves",
+  "emoji": "♟️",
+  "premise": "These problems take two moves, and each move may need a different operation. Finish both.",
+  "idea": "Two-step word problems with different operations. Stopping after the first step is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.3.6-1",
+  "title": "Author View, My View",
+  "emoji": "🦓",
+  "premise": "Authors have opinions about their topics. You can understand what the author thinks and still think something else.",
+  "idea": "Distinguishing the reader’s own point of view from that of the author of a text. Assuming the author agrees with the reader is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

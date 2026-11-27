@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.2.7-1",
+  "title": "Words Plus Picture",
+  "emoji": "🏕️",
+  "premise": "The words tell part of the story and the picture tells another part. Put them together.",
+  "idea": "Using information gained from illustrations and words to understand characters, setting or plot. Using only one of the two sources is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

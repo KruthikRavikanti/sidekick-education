@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.OA.A.3-1",
+  "title": "Set the Tables",
+  "emoji": "🍽️",
+  "premise": "The party has equal groups everywhere: chairs at tables, apples in bags. Find each total.",
+  "idea": "Equal-groups word problems: the number of groups times the size of each group. Adding the two numbers in the story is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

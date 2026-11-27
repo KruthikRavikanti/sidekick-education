@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.2.3-3",
+  "title": "Open Syllable Snap",
+  "emoji": "🐯",
+  "premise": "In words like tiger, the first part ends with a vowel that says its name. Snap the two parts together.",
+  "idea": "Decoding regularly spelled two-syllable words with long vowels. Breaking the word in the place that makes the vowel short is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

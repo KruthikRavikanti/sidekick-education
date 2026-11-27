@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-APR.D.6-1",
+  "title": "Cancel Factors, Not Terms",
+  "emoji": "✂️",
+  "premise": "You may cancel something that multiplies the whole numerator and denominator. You may not cancel pieces of a sum.",
+  "idea": "Rewriting simple rational expressions in different forms. Cancelling terms instead of factors is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "3.NF.A.1-1",
+  "title": "One Equal Part",
+  "emoji": "🧀",
+  "premise": "A fraction only counts when all the parts are the same size. Find the pictures that really show the fraction.",
+  "idea": "A unit fraction is one of b equal parts: pictures with the right number of parts but unequal sizes are the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.9-10.4-1",
+  "title": "Fit the Writing to the Job",
+  "emoji": "🧥",
+  "premise": "A college essay and a lab report are both good writing, in completely different clothes. The task and reader decide the style.",
+  "idea": "Producing clear and coherent writing appropriate to task, purpose and audience. Ignoring the audience is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

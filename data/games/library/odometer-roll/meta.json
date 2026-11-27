@@ -1,0 +1,9 @@
+{
+  "subskillId": "2.NBT.A.2-1",
+  "title": "Odometer Roll",
+  "emoji": "🚙",
+  "premise": "The car counter is about to roll over to a new hundred. Put the numbers in order as it rolls.",
+  "idea": "Counting by ones across a hundred: 198, 199, 200, 201. A tile that falls back into the old hundred catches the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

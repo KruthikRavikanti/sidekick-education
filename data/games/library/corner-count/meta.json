@@ -1,0 +1,9 @@
+{
+  "subskillId": "K.G.B.4-1",
+  "title": "Corner Count",
+  "emoji": "📐",
+  "premise": "Count the sides of each shape, touching each side just once. Then drop it in the right box.",
+  "idea": "Counting sides and corners: the child sorts shapes by number of sides. Counting one corner twice puts a triangle in the four box.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

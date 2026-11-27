@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.3.1-1",
+  "title": "Show Me Where It Says",
+  "emoji": "👉",
+  "premise": "A good answer comes with proof. Point to the sentence in the story that shows your answer is right.",
+  "idea": "Asking and answering questions referring explicitly to the text as the basis for the answers. Answering without pointing to where the text says so is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

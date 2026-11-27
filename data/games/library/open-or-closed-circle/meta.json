@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.B.8-3",
+  "title": "Open or Closed Circle",
+  "emoji": "⭕",
+  "premise": "An inequality is graphed with a circle and an arrow. The circle is open when the number itself is not included.",
+  "idea": "Representing solutions of inequalities on number line diagrams. Using a closed circle for strict inequalities is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

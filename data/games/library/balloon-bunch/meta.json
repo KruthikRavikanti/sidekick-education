@@ -1,0 +1,9 @@
+{
+  "subskillId": "1.OA.A.2-1",
+  "title": "Balloon Bunch",
+  "emoji": "🎈",
+  "premise": "Three colors of balloons are tied into one bunch. Add all three groups to find the whole bunch.",
+  "idea": "Adding three numbers with a sum up to 20. Adding only two of the three is the known slip, so the trap is the sum of the first two.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

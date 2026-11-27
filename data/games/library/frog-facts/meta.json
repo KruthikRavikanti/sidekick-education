@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.K.1-1",
+  "title": "Frog Facts",
+  "emoji": "🐸",
+  "premise": "A fact book tells true things. The answers to questions about it are right there in the words.",
+  "idea": "Asking and answering questions about key details in an informational text. Answering from prior knowledge instead of the text is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.SP.B.4-1",
+  "title": "Dot Plot Builder",
+  "emoji": "✖️",
+  "premise": "A dot plot stacks one mark for each data value above an evenly spaced number line. A value with no data keeps its empty space.",
+  "idea": "Displaying numerical data in a dot plot. Using uneven spacing (skipping numbers with no data) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

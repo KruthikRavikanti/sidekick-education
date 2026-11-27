@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.D.12-1",
+  "title": "Shade the Right Side",
+  "emoji": "🌗",
+  "premise": "An inequality in two variables is graphed as half of the plane. Test a point to see which side to shade.",
+  "idea": "Graphing the solutions to a linear inequality in two variables as a half-plane. Shading the opposite side is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

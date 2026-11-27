@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-TF.A.1-2",
+  "title": "Degrees and Radians",
+  "emoji": "🔁",
+  "premise": "A half turn is 180 degrees, and it is also π radians. That one fact converts everything.",
+  "idea": "Converting between radians and degrees. Multiplying by the reversed factor is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}
