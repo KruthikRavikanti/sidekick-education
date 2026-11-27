@@ -204,8 +204,9 @@ Game results are recorded for the parent's Activities tab. They come from the ch
 
 ```bash
 npm run db:migrate                      # adds the game tables (migration 008)
-npm run games:seed                      # loads every shipped game; each must pass the robot; they wait for review
-npm run games:verify                    # plays every shipped game with the robot (a few minutes); --only <folder> for one
+npm run games:seed -- --workers 4       # loads every shipped game; each must pass the robot here first; they wait for review
+npm run games:seed -- --subject math --grades K,1,2      # or one slice at a time: --subject, --grades, --only <folder>, --limit N
+npm run games:verify                    # plays every shipped game with the robot; --subject, --grades, --only <folder> narrow it
 npm run games:coverage                  # rewrites data/games/COVERAGE.md: which of the 1,533 skills have a game
 npm run games:robot -- data/games/examples/froggys-bridge --shots /tmp/frog
 npm run games:generate -- --subskill 4.NF.A.1-1        # needs VISION_* (or GAMES_MODEL); blocks until verified or failed
@@ -217,16 +218,22 @@ npm run games:list
 
 Flags, all in `backend/.env.example`: `SIDEKICK_GAMES_ENABLED` (default `false`), `SIDEKICK_GAMES_REQUIRE_APPROVAL` (default `true`; keep it on for real families), `SIDEKICK_GAMES_AUTOGENERATE` (default `false`; queue a build when homework shows a skill with no game), `SIDEKICK_GAME_REVIEWERS`, `GAMES_MODEL`, `GAMES_TIMEOUT_SECONDS`. The robot needs Node and Playwright's Chromium (`npx playwright install chromium`).
 
-**The shipped library.** `data/games/` holds 77 games, one skill each, every one passing the robot:
+**Loading the library.** `games:seed` skips games that are already stored, so it can be stopped and run again. The robot takes a few seconds per game, so the whole library is roughly an hour with `--workers 4`; loading one grade at a time (`--subject math --grades 3`) takes a few minutes and is the natural way to feed the review queue. `python -m backend.games verify` is the same robot without the database, for checking the shipped files after a kit change.
+
+**The shipped library.** `data/games/` holds 1,533 games, one for every skill in the skill map, kindergarten through high school:
 
 - `examples/` (5): unit fractions, rectangle area, unit price, irregular plurals, facts within 10. These are the few-shot examples the model is shown.
-- `library/` (72): 43 math games and 29 reading, writing and language games.
+- `library/` (1,528): 863 math games and 665 reading, writing and language games. `data/games/COVERAGE.md` lists every one and counts them by subject, grade, author and mechanic.
 
-Together they put at least one game in every cell of the K to 5 map: every math domain in every grade (including the Georgia-only groups) and every ELA strand in every grade (Language, Foundational Skills, Informational Text, Literature, Writing). Grades 6 to 8 have one game for every Common Core math domain and no ELA games yet. `data/games/COVERAGE.md` lists every game and counts covered skills by subject and grade.
+Most are built with **play patterns**: `Sidekick.play` (in `backend/games/kit/play.js`, documented in `KIT.md`) turns a short description into a full game using one of ten tested mechanics (`sort`, `row`, `fill`, `pick`, `build`, `dial`, `line`, `paint`, `plot`, `type`), with views for graphs, shapes, number lines, tables, matrices and more. A pattern supplies the stage, the live reaction, the win rule, the worked solution and the known slips; the game supplies the world, the words, the numbers and the misconception. 77 games are built by hand on the kit, and each `meta.json` records which pattern a game uses.
 
-One game per cell is breadth, not depth: 62 of the 795 K to 5 skills have a game. All 77 were written by Claude standing in for the model, to the same brief, kit and robot the pipeline uses. They are seeded as `verified`, so none reaches a child until a person approves it. The pipeline has not yet been run against a live provider; `games:generate --missing` is how the other skills get their games.
+Read the counts before trusting the breadth. About 1,290 of the games use only the simpler mechanics (matching tiles to blanks, sorting cards, tapping, ordering, a keypad). They react and coach on the known slip, but by the brief's own test ("if it could be printed on paper, it has failed") many of them are closer to interactive practice than to a little world with a mission. About 170 use the richer mechanics (dials driving a graph or a model, number lines, grids, building), and the 77 hand-built games set the bar. Reviewers should expect to retire or rebuild a share of the simpler ones, especially in reading and in high school.
 
-**What scales and what does not.** The robot checks a game in about a minute with no person involved, so generating at catalog size is a matter of model cost. Review is the bottleneck: 1,533 skills means 1,533 games for a person to play before children see them. Start with the skills real homework is hitting (`SIDEKICK_GAMES_AUTOGENERATE`) rather than the whole map. Many skills marked "needs an adult or AI rubric" in the skill map (open writing, read-aloud fluency, discussion) do not fit an auto-checked game at all and are better served by the activity flow.
+All 1,533 were written by Claude standing in for the model, to the same brief, kit and robot the pipeline uses. Every one passes the robot. None has been approved by a person: they are seeded as `verified`, so none reaches a child until a reviewer approves it. The pipeline has still not been run against a live provider. The kit has no sound, so early reading skills use pictures and letters, and open-ended writing skills are represented by a part that can be checked (ordering, choosing, fixing).
+
+**Grades.** Games cover every grade in the skill map. High school courses and bands are stored with a grade number (Algebra 1 and 9-10 as 9, Geometry as 10, Algebra 2 and 11-12 as 11, Precalculus as 12) and can be offered when homework points at those skills. The activity flow is unchanged and stays K to 8.
+
+**What scales and what does not.** The robot checks a game in a few seconds with no person involved. Review is the bottleneck: 1,533 games for a person to play before children see them. The review page (`/parent/games`) is built for that: tabs for waiting, live and retired with counts, filters for subject and grade, search by title or skill id, and pages of 50, ordered by subject, grade and skill so a reviewer can work through one grade at a time. Start with the grades and skills real homework is hitting rather than the whole map. Many skills marked "needs an adult or AI rubric" in the skill map (open writing, read-aloud fluency, discussion) do not fit an auto-checked game well and are better served by the activity flow.
 
 Known limits: a game shares one JavaScript realm with the kit, so a hostile game could fake what the robot sees; the robot and reviews are quality gates, and the frame is the security boundary. A frozen game can freeze its frame; the page watches a heartbeat and offers a restart. Review screenshots are not stored; reviewers play the game instead.
 

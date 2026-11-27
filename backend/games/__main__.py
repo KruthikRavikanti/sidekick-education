@@ -141,6 +141,14 @@ def _coverage(args):
              '| Subject | Grade | Skills | With a game |', '|---|---|---|---|']
     for (subject, grade), (total, have) in sorted(cells.items(), key=lambda kv: (kv[0][0], rank(kv[0][1]))):
         lines.append(f'| {subject} | {grade} | {total} | {have} |')
+    everything = [game for group in games.values() for game in group]
+    authors = collections.Counter(game.get('author', 'hand-written') for game in everything)
+    built = collections.Counter(kind for game in everything for kind in (['built by hand on the kit'] if not game.get('play') else sorted({'play pattern: ' + k for k in game['play'].split('+')})))
+    lines += ['', '## Who wrote them, and how', '',
+              'Every shipped game still waits for a person in the review page before a child can play it.',
+              '`claude-stand-in` means Claude wrote the game while standing in for the model the app will call; no live model run produced it.', '',
+              '| Author | Games |', '|---|---|'] + [f'| {name} | {count} |' for name, count in authors.most_common()]
+    lines += ['', 'A game that mixes patterns across its rounds is counted under each one.', '', '| How it is built | Games |', '|---|---|'] + [f'| {name} | {count} |' for name, count in built.most_common()]
     lines += ['', '## Games', '', '| Skill | Grade | Game | What the child does |', '|---|---|---|---|']
     by_id = {item['subskill_id']: item for item in catalog}
     for subskill_id in sorted(games, key=lambda sid: (by_id.get(sid, {}).get('subject', ''), rank(str(by_id.get(sid, {}).get('grade', ''))), sid)):

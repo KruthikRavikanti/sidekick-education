@@ -2,7 +2,7 @@
 import os
 from dataclasses import dataclass
 
-PROMPT_VERSION = 'sidekick-games-v1'
+PROMPT_VERSION = 'sidekick-games-v2'  # v2: the kit reference now teaches Sidekick.play patterns
 MAX_REPAIRS = 2
 
 
