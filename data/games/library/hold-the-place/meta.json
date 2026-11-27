@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-APR.D.6-2",
+  "title": "Hold the Place",
+  "emoji": "🗄️",
+  "premise": "Long division needs a column for every power of x. If a power is missing, hold its place with a zero term.",
+  "idea": "Dividing polynomials using long division. Dropping the placeholder terms for missing degrees is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

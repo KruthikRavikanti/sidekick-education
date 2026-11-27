@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.D.11-2",
+  "title": "Hunt in the Table",
+  "emoji": "🔎",
+  "premise": "Some equations cannot be solved by algebra alone. A table of values shows where the two sides meet.",
+  "idea": "Finding approximate solutions of f(x) = g(x) using tables. Stopping at the first close value is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

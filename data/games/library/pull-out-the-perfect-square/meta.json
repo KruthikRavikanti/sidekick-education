@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-RN.A.2-2",
+  "title": "Pull Out the Perfect Square",
+  "emoji": "🧰",
+  "premise": "A square root splits over multiplication, never over addition. Find a perfect square factor and pull it out.",
+  "idea": "Simplifying radical expressions. Thinking √(a + b) = √a + √b is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

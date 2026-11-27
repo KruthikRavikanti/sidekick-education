@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-APR.B.2-1",
+  "title": "Remainder Shortcut",
+  "emoji": "🎁",
+  "premise": "To find the remainder when p(x) is divided by x − a, skip the division. Just work out p(a).",
+  "idea": "Knowing and applying the remainder theorem. Using p(−a) for a divisor of x − a is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

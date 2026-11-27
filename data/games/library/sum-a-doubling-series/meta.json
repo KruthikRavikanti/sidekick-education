@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-SSE.B.4-1",
+  "title": "Sum a Doubling Series",
+  "emoji": "📈",
+  "premise": "In 1 + 2 + 4 + 8 + … each total is one less than the next term. A geometric series has its own shortcut.",
+  "idea": "Deriving and using the formula for the sum of a finite geometric series. Using the arithmetic series formula is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

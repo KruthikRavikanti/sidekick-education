@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-LE.A.4-2",
+  "title": "Log or ln?",
+  "emoji": "🧮",
+  "premise": "The log key uses base 10. The ln key uses base e, about 2.718. Same idea, different base.",
+  "idea": "Evaluating logarithms with base 2, 10 or e using technology. Mixing up the bases is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

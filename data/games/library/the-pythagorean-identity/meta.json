@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-TF.C.8-1",
+  "title": "The Pythagorean Identity",
+  "emoji": "⭕",
+  "premise": "Every point on the unit circle is 1 away from the center. Apply the Pythagorean theorem to its coordinates.",
+  "idea": "Proving the Pythagorean identity. Reading sin² x as sin(x²), or dropping the squares, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

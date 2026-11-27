@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-IC.B.5-1",
+  "title": "Real Difference or Shuffle Luck?",
+  "emoji": "🃏",
+  "premise": "Shuffle the group labels many times. If a difference as big as yours shows up often, chance alone could explain it.",
+  "idea": "Using simulations to decide if differences between two treatments are significant. Treating any difference as meaningful is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-ID.A.4-1",
+  "title": "Does a Bell Curve Fit?",
+  "emoji": "🔔",
+  "premise": "The normal model is a symmetric bell around the mean. It only describes data that pile up in the middle and thin out evenly.",
+  "idea": "Using the mean and standard deviation to fit a normal distribution, and recognizing when that is not appropriate. Using the normal model for skewed data is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

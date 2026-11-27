@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-APR.B.3-2",
+  "title": "Cross or Bounce",
+  "emoji": "🏀",
+  "premise": "At a single zero the graph cuts through the axis. At a double zero it touches and turns back, like a ball bouncing.",
+  "idea": "Using zeros to construct a rough graph of a polynomial. Ignoring multiplicity and end behavior is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

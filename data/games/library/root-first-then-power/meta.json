@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-RN.A.1-2",
+  "title": "Root First, Then Power",
+  "emoji": "🪜",
+  "premise": "In 8^(2/3) the bottom number is a root and the upper number is a power. Take the root first to keep the numbers small.",
+  "idea": "Extending the properties of exponents to rational exponents. Multiplying the base by the exponent is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

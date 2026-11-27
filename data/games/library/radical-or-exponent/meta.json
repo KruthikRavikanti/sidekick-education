@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-RN.A.2-1",
+  "title": "Radical or Exponent",
+  "emoji": "🔁",
+  "premise": "A radical and a fraction exponent are two outfits for the same number. The root goes in the bottom of the fraction.",
+  "idea": "Rewriting expressions involving radicals and rational exponents. Putting the index in the numerator is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-CN.A.1-1",
+  "title": "The Number i",
+  "emoji": "🌀",
+  "premise": "No real number squares to a negative. So mathematicians named a new one: i, the number whose square is −1.",
+  "idea": "Knowing there is a complex number i with i² = −1. Thinking i² = 1 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+fill"
+}

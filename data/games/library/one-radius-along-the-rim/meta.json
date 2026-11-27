@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-TF.A.1-1",
+  "title": "One Radius Along the Rim",
+  "emoji": "🎡",
+  "premise": "A radian measures an angle by its arc: how many radius-lengths fit along the rim.",
+  "idea": "Understanding the radian measure of an angle as the length of the arc on the unit circle. Thinking radians and degrees are the same units is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+sort"
+}

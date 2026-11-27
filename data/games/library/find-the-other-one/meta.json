@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-TF.C.8-2",
+  "title": "Find the Other One",
+  "emoji": "🧲",
+  "premise": "The identity gives the size of the missing trig value. The quadrant decides whether it is positive or negative.",
+  "idea": "Using the Pythagorean identity to find one trigonometric value from another, given the quadrant. Ignoring the sign set by the quadrant is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

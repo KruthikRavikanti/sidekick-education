@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-SSE.B.4-2",
+  "title": "Count Every Payment",
+  "emoji": "🏦",
+  "premise": "Savings that grow by the same factor each time form a geometric series. The total depends on exactly how many terms there are.",
+  "idea": "Using the geometric series formula to solve problems. Using one term too few or too many is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

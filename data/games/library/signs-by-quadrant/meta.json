@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-TF.A.2-2",
+  "title": "Signs by Quadrant",
+  "emoji": "🧲",
+  "premise": "Sine is the height and cosine is the across distance. So their signs follow the signs of y and x in each quadrant.",
+  "idea": "Determining the signs of trigonometric values by quadrant. Getting signs reversed in quadrants II to IV is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-IC.B.4-2",
+  "title": "Plus or Minus",
+  "emoji": "↔️",
+  "premise": "A poll result comes with a margin of error. Together they give a range that probably holds the true value.",
+  "idea": "Developing a margin of error for a sample estimate. Thinking the margin of error also covers bias is the known slip.",
+  "author": "claude-stand-in",
+  "play": "line+sort"
+}

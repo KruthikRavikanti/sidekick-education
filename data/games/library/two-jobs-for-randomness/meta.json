@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-IC.B.3-2",
+  "title": "Two Jobs for Randomness",
+  "emoji": "🎲",
+  "premise": "Randomly choosing who is in a study and randomly assigning treatments are different tools with different powers.",
+  "idea": "Explaining how randomization relates to surveys, experiments and observational studies. Thinking random sampling allows cause-and-effect conclusions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

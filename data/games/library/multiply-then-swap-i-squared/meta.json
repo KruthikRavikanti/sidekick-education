@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-CN.A.2-2",
+  "title": "Multiply, Then Swap i Squared",
+  "emoji": "✖️",
+  "premise": "Multiply complex numbers like binomials. Then finish the job: every i^2 turns into −1.",
+  "idea": "Multiplying complex numbers using i² = −1. Leaving i² in the answer is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

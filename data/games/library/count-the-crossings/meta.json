@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.C.7-2",
+  "title": "Count the Crossings",
+  "emoji": "✖️",
+  "premise": "Graph the line and the parabola together. Every point they share is a solution of the system.",
+  "idea": "Solving a system of a linear and a quadratic equation graphically. Missing a second intersection is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

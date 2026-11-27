@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-RN.A.1-1",
+  "title": "Fraction Exponents Are Roots",
+  "emoji": "🌱",
+  "premise": "Cube 8^(1/3) and the exponents multiply to 1, giving 8. So 8^(1/3) must be the number whose cube is 8.",
+  "idea": "Explaining how rational exponents follow from the properties of integer exponents. Reading 5^(1/3) as 5 divided by 3 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

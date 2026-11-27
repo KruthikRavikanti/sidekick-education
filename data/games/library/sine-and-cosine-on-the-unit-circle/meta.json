@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-TF.A.2-1",
+  "title": "Sine and Cosine on the Unit Circle",
+  "emoji": "🧭",
+  "premise": "Walk around a circle of radius 1. At any angle, your x-coordinate is the cosine and your y-coordinate is the sine.",
+  "idea": "Explaining how the unit circle extends trigonometric functions to all real numbers. Using only right-triangle definitions, or swapping x and y, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-CN.A.2-1",
+  "title": "Real With Real",
+  "emoji": "➕",
+  "premise": "Adding complex numbers works like combining like terms. Real parts go together. Imaginary parts go together.",
+  "idea": "Adding and subtracting complex numbers. Combining real and imaginary parts into one number is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

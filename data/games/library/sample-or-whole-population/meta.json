@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-IC.A.1-1",
+  "title": "Sample or Whole Population?",
+  "emoji": "🗳️",
+  "premise": "A statistic describes a sample you measured. A parameter describes the whole population, which you usually cannot measure.",
+  "idea": "Understanding statistics as a process for making inferences about population parameters from a random sample. Treating a sample statistic as the exact population value is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

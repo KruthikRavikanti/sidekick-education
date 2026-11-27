@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-APR.C.4-1",
+  "title": "True for Every Number",
+  "emoji": "♾️",
+  "premise": "An identity is true for every value. Checking one example cannot prove that. Algebra can.",
+  "idea": "Proving polynomial identities. Testing one value and calling it proven is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+sort"
+}

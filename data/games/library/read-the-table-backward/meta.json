@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-BF.B.4-3",
+  "title": "Read the Table Backward",
+  "emoji": "🔙",
+  "premise": "The inverse reads a table backward: find the number in the output row, then report the input above it.",
+  "idea": "Reading values of an inverse function from a graph or a table. Reading the function forward instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

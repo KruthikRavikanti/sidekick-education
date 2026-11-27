@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-CN.A.1-2",
+  "title": "Real Part, Imaginary Part",
+  "emoji": "🧩",
+  "premise": "Every complex number has two parts that stay separate: a real part and an imaginary part, written a + bi.",
+  "idea": "Writing complex numbers in the form a + bi with a and b real. Treating i as a variable, or merging the parts, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

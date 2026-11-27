@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-REI.A.2-2",
+  "title": "Check for Impostors",
+  "emoji": "🕵️",
+  "premise": "Squaring both sides can create answers that do not fit the original equation. Those are extraneous. Always check.",
+  "idea": "Solving radical equations and identifying extraneous solutions. Not checking is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type"
+}
