@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.2.5-1",
+  "title": "Spicy and Juicy",
+  "emoji": "🌶️",
+  "premise": "Describing words fit some things and not others. Link each word to real foods you know.",
+  "idea": "Identifying real-life connections between words and their use (foods that are spicy or juicy). Not being able to give examples is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

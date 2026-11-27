@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.2.8-1",
+  "title": "Reasons That Fit",
+  "emoji": "🧲",
+  "premise": "An author makes a point and gives reasons for it. A good reason matches the point.",
+  "idea": "Describing how reasons support specific points the author makes in a text. Listing reasons that do not match the point is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

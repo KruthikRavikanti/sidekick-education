@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.2.4-1",
+  "title": "Sound of a Poem",
+  "emoji": "🥁",
+  "premise": "Poets choose words for how they sound. Rhyme, a steady beat, and repeated sounds make a poem feel like music.",
+  "idea": "Describing how words and phrases (regular beats, alliteration, rhymes, repeated lines) supply rhythm and meaning in a poem. Noticing rhyme but not its effect is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

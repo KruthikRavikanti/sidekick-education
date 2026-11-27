@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.2.8-1",
+  "title": "Source and Answer",
+  "emoji": "🔎",
+  "premise": "A research question needs the right source. Then the answer you write has to match the question.",
+  "idea": "Recalling information from experiences or gathering information from provided sources to answer a question. Answering off topic is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+pick"
+}

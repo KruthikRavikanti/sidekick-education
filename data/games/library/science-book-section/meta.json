@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.2.10-1",
+  "title": "Science Book Section",
+  "emoji": "🌋",
+  "premise": "A section of a science book packs in a lot. Read it with care, then check what it really said.",
+  "idea": "Reading and comprehending informational texts in the grades 2-3 complexity band. Avoiding longer nonfiction is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

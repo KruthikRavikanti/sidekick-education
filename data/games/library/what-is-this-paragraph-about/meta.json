@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.2.2-2",
+  "title": "What Is This Paragraph About?",
+  "emoji": "🧩",
+  "premise": "Each paragraph in an article has its own job. Each one is mostly about one thing.",
+  "idea": "Identifying the focus of specific paragraphs within a text. Treating all paragraphs as the same topic is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.2.10-1",
+  "title": "Chapter Book Page",
+  "emoji": "📖",
+  "premise": "Chapter books have longer pages with more to think about. Read a page and show you understood it.",
+  "idea": "Reading and comprehending literature in the grades 2-3 text complexity band. Choosing only very easy books is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.2.6-1",
+  "title": "Two Points of View",
+  "emoji": "🐺",
+  "premise": "Two characters can see the same thing in different ways. Each one has a point of view.",
+  "idea": "Acknowledging differences in the points of view of characters. Reading all dialogue the same way, as if characters thought alike, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.2.2-1",
+  "title": "Main Topic Finder",
+  "emoji": "🧭",
+  "premise": "An article has many sentences but one main topic. The topic is what all the parts are about.",
+  "idea": "Identifying the main topic of a multi-paragraph text. Naming a detail as the topic is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

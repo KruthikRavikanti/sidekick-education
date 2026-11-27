@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.2.2-2",
+  "title": "Letter Commas",
+  "emoji": "💌",
+  "premise": "A friendly letter has a comma after the greeting and a comma after the closing.",
+  "idea": "Using commas in greetings and closings of letters. Leaving out the commas is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

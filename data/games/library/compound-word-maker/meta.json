@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.2.4-4",
+  "title": "Compound Word Maker",
+  "emoji": "🏠",
+  "premise": "Two small words can join to make one new word. A house for a bird is a birdhouse.",
+  "idea": "Using knowledge of the meaning of individual words to predict the meaning of compound words. Treating compound words as unknown is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

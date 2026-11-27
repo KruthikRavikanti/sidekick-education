@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.2.1-1",
+  "title": "Six Question Words",
+  "emoji": "🗝️",
+  "premise": "Who, what, where, when, why and how each ask for a different kind of answer. A why question needs a reason.",
+  "idea": "Answering who, what, where, when, why and how questions to show understanding of key details. Answering why with what happened is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

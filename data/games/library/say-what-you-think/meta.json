@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.2.1-1",
+  "title": "Say What You Think",
+  "emoji": "📣",
+  "premise": "Opinion writing starts by naming the topic and saying clearly what you think about it.",
+  "idea": "Introducing the topic and stating an opinion in opinion writing. Not stating an opinion clearly is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

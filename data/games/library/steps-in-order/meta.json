@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.2.3-1",
+  "title": "Steps in Order",
+  "emoji": "🌰",
+  "premise": "Some texts tell how to do something. The steps only work when they are in the right order.",
+  "idea": "Describing the connection between steps in technical procedures in a text. Listing steps without order or cause is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

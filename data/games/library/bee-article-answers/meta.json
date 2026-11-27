@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.2.1-1",
+  "title": "Bee Article Answers",
+  "emoji": "🐝",
+  "premise": "An article gives real information. The answers to questions about it are in the text.",
+  "idea": "Answering questions about key details in an informational text. Answering from prior knowledge is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

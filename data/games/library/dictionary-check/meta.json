@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.2.2-5",
+  "title": "Dictionary Check",
+  "emoji": "📔",
+  "premise": "When you are not sure how to spell a word, look it up. A dictionary lists words in ABC order.",
+  "idea": "Consulting reference materials, including beginning dictionaries, to check and correct spellings. Never checking is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}
