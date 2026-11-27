@@ -11,7 +11,8 @@ from .frame import KIT_VERSION
 from . import prompts
 from .robot import failures, run_robot
 
-FAILED_RETRY_SECONDS = 24 * 3600
+FAILED_RETRY_SECONDS = 24 * 3600   # after the checks turned a game down
+UNAVAILABLE_RETRY_SECONDS = 10 * 60   # after the model or the robot could not be reached at all
 JOB_LEASE_SECONDS = 20 * 60
 
 
@@ -128,7 +129,7 @@ def seed_examples(db, now, *, robot=run_robot, approve=False, workers=1, only=No
             return {'slug': item['slug'], 'result': 'robot_failed', 'problems': failures(report)}
         with db.transaction() as conn:
             version_id, _ = save_version(conn, now, subskill, title=item['title'], emoji=item.get('emoji', '🎮'), premise=item['premise'], idea=item.get('idea', ''),
-                                         code=item['code'], css=item['css'], report=report, review=None, origin='seed_example',
+                                         code=item['code'], css=item['css'], report=report, review=None, origin=PREMADE_ORIGIN,
                                          model=item.get('author', 'hand-written'), status='approved' if approve else 'verified')
         return {'slug': item['slug'], 'result': 'added', 'id': version_id}
 
@@ -144,16 +145,44 @@ def seed_examples(db, now, *, robot=run_robot, approve=False, workers=1, only=No
     return out
 
 
-def playable(conn, subskill_id, require_approval):
-    """The newest game a child may be offered for this skill, or None."""
+PREMADE_ORIGIN = 'seed_example'
+
+
+def origin_filter(premade, column='origin'):
+    """SQL that leaves out the games shipped with the app when they are switched off. Empty when they are on."""
+    return '' if premade else f" AND {column}!='{PREMADE_ORIGIN}'"
+
+
+def submitted_at(conn, kid_id, upload_id):
+    """When this upload was last sent in, or None when it is not this child's. Sending the same page again counts."""
+    row = conn.execute("""SELECT u.created_at AS made, (SELECT MAX(r.created_at) FROM homework_upload_requests r WHERE r.upload_id=u.id) AS sent
+        FROM homework_uploads u WHERE u.id=? AND u.kid_id=?""", (upload_id, kid_id)).fetchone()
+    return max(row['made'], row['sent'] or 0) if row else None
+
+
+def already_made(conn, subskill_id, limit=6):
+    """The games that exist for a skill, newest first, so a new build can be asked for something different."""
+    rows = conn.execute("SELECT title,premise,idea FROM game_versions WHERE subskill_id=? AND status!='retired' ORDER BY created_at DESC, id LIMIT ?", (subskill_id, limit)).fetchall()
+    return [{'title': row['title'], 'premise': row['premise'], 'idea': row['idea']} for row in rows]
+
+
+def playable(conn, subskill_id, require_approval, premade=True, since=None):
+    """The game a child may be offered for this skill, or None.
+
+    Normally that is the newest one. With `since` (the time an upload was sent in) only a game written from then
+    on counts, and the first of those is the one written for that upload.
+    """
     statuses = ('approved',) if require_approval else ('approved', 'verified')
     marks = ','.join('?' for _ in statuses)
-    return conn.execute(f"SELECT * FROM game_versions WHERE subskill_id=? AND status IN ({marks}) ORDER BY status='approved' DESC, created_at DESC, id LIMIT 1",
-                        (subskill_id, *statuses)).fetchone()
+    fresh, order = ('', 'DESC') if since is None else (' AND created_at>=?', 'ASC')
+    return conn.execute(f"SELECT * FROM game_versions WHERE subskill_id=? AND status IN ({marks}){origin_filter(premade)}{fresh} ORDER BY status='approved' DESC, created_at {order}, id LIMIT 1",
+                        (subskill_id, *statuses, *(() if since is None else (since,)))).fetchone()
 
 
-def waiting_for_review(conn, subskill_id):
-    return conn.execute("SELECT id FROM game_versions WHERE subskill_id=? AND status='verified' LIMIT 1", (subskill_id,)).fetchone()
+def waiting_for_review(conn, subskill_id, premade=True, since=None):
+    fresh = '' if since is None else ' AND created_at>=?'
+    return conn.execute(f"SELECT id FROM game_versions WHERE subskill_id=? AND status='verified'{origin_filter(premade)}{fresh} LIMIT 1",
+                        (subskill_id, *(() if since is None else (since,)))).fetchone()
 
 
 def open_job(conn, subskill_id, now):
@@ -165,14 +194,23 @@ def open_job(conn, subskill_id, now):
     return row
 
 
-def recently_failed(conn, subskill_id, now):
-    row = conn.execute("SELECT updated_at FROM game_jobs WHERE subskill_id=? AND status='failed' ORDER BY updated_at DESC LIMIT 1", (subskill_id,)).fetchone()
-    return bool(row and now - row['updated_at'] < FAILED_RETRY_SECONDS)
+def recently_failed(conn, subskill_id, now, since=None):
+    """Whether the last build for this skill failed too recently to try again.
+
+    A game the checks turned down waits a day: asking again would most likely fail the same way.
+    A build that never got that far, because the model or the robot was unavailable, may try again in minutes.
+    With `since` (the time an upload was sent in) a failure from before then does not count: new work gets a new try.
+    """
+    row = conn.execute("SELECT updated_at,failure_json FROM game_jobs WHERE subskill_id=? AND status='failed' ORDER BY updated_at DESC LIMIT 1", (subskill_id,)).fetchone()
+    if not row or (since is not None and row['updated_at'] < since):
+        return False
+    turned_down = (decode(row['failure_json'], {}) or {}).get('code') == 'not_verified'
+    return now - row['updated_at'] < (FAILED_RETRY_SECONDS if turned_down else UNAVAILABLE_RETRY_SECONDS)
 
 
-def enqueue(conn, subskill_id, now):
+def enqueue(conn, subskill_id, now, since=None):
     """Queue one build for a skill. Returns the job id, or None when one is open or one just failed."""
-    if open_job(conn, subskill_id, now) or recently_failed(conn, subskill_id, now):
+    if open_job(conn, subskill_id, now) or recently_failed(conn, subskill_id, now, since):
         return None
     job_id = uid()
     conn.execute('INSERT INTO game_jobs VALUES (?,?,?,?,?,?,?,?)', (job_id, subskill_id, 'queued', None, None, None, now, now))

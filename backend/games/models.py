@@ -20,16 +20,23 @@ class GameDraft(Strict):
 
 
 class GameReview(Strict):
-    conceptIsTheRule: bool = Field(description='Winning is only possible by using the skill; the world itself shows why.')
+    """What the model reviewer says. Only `blockers` stop a game; the rest is for the person who reviews it."""
+    conceptIsTheRule: bool = Field(description='The skill is what wins the game, and the world shows why.')
     playNotQuiz: bool = Field(description='The child moves or changes things in a world. It could not be printed on paper.')
-    contentCorrect: bool = Field(description='Every number, word and statement is correct for the skill and grade.')
-    kidAppropriate: bool = Field(description='Kind, simple language. Nothing scary, commercial or off-topic.')
+    contentCorrect: bool = Field(description='Every number, word and statement is correct. False only when a blocker says what is false.')
+    kidAppropriate: bool = Field(description='Kind, simple language. False only when a blocker names the words.')
     soloIsFresh: bool = Field(description='The last round uses new numbers or words and gives no help.')
     mistakeIsRealistic: bool = Field(description='The declared mistakes are ones a real child makes on this skill.')
-    issues: list[str] = Field(max_length=6, description='Short, specific problems to fix. Empty when everything passes.')
+    blockers: list[str] = Field(default_factory=list, max_length=6, description='Defects that must be fixed before a person is asked to look. Empty when there are none.')
+    issues: list[str] = Field(default_factory=list, max_length=6, description='Notes for the person who reviews the game. They never stop it.')
 
     def passed(self):
-        return all([self.conceptIsTheRule, self.playNotQuiz, self.contentCorrect, self.kidAppropriate, self.soloIsFresh, self.mistakeIsRealistic])
+        # A person makes the call on how good the game is. The model stops only what is false or unkind.
+        return not self.blockers and self.contentCorrect and self.kidAppropriate
+
+    def problems(self):
+        """What the writer must fix when the review did not pass."""
+        return list(self.blockers) or list(self.issues) or ['the reviewer did not pass this game']
 
 
 Tag = Annotated[str, Field(max_length=60)]

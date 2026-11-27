@@ -251,6 +251,19 @@ function Detail({ id, onChanged }: { id: string; onChanged: () => void }) {
               </li>
             ))}
           </ul>
+          {game.modelReview.issues?.length ? (
+            <>
+              <p className="game-review-note">
+                Its notes for you. None of these stopped the game; they are things to
+                look for while you play.
+              </p>
+              <ul className="game-review-notes">
+                {game.modelReview.issues.map((note) => (
+                  <li key={note}>{note}</li>
+                ))}
+              </ul>
+            </>
+          ) : null}
         </section>
       ) : null}
 
@@ -529,8 +542,14 @@ function ReviewContent() {
               ) : null}
               {list.counts.verified + list.counts.approved + list.counts.retired === 0 ? (
                 <p className="game-review-note">
-                  No games are loaded yet. Run <code>npm run games:seed</code> to load the
-                  games that ship with the app.
+                  {list.premade ? (
+                    <>
+                      No games are loaded yet. Run <code>npm run games:seed</code> to load
+                      the games that ship with the app.
+                    </>
+                  ) : (
+                    "Pre-made games are switched off. A game the model writes shows up here when it is ready for you to try."
+                  )}
                 </p>
               ) : null}
               {list.jobs.length ? (
@@ -545,10 +564,21 @@ function ReviewContent() {
                       </strong>
                       <small>{job.skill.name}</small>
                       {job.failure ? (
-                        <small>
-                          {job.failure.code}
-                          {job.failure.problems[0] ? `: ${job.failure.problems[0]}` : ""}
-                        </small>
+                        job.failure.problems.length ? (
+                          <>
+                            <small>
+                              Stopped by {job.failure.stoppedBy ?? "a check"} after{" "}
+                              {job.failure.tries} {job.failure.tries === 1 ? "try" : "tries"}:
+                            </small>
+                            <ul className="game-review-notes">
+                              {job.failure.problems.map((problem) => (
+                                <li key={problem}>{problem.replace(/^review: /, "")}</li>
+                              ))}
+                            </ul>
+                          </>
+                        ) : (
+                          <small>{job.failure.code}</small>
+                        )
                       ) : null}
                     </div>
                   ))}

@@ -5,8 +5,9 @@ and nothing is generated in the background unless that is switched on."""
 import os
 from dataclasses import dataclass
 
-PROMPT_VERSION = 'sidekick-games-v2'  # v2: the kit reference now teaches Sidekick.play patterns
-MAX_REPAIRS = 2
+PROMPT_VERSION = 'sidekick-games-v3'  # v3: the reviewer stops defects only and leaves notes for the person who reviews
+MAX_REPAIRS = 3    # rewrites after the static checks or the robot found a problem
+MAX_REWRITES = 2   # rewrites after the model reviewer found a defect
 
 
 def _flag(name, default):
@@ -18,6 +19,8 @@ class GameSettings:
     enabled: bool
     require_approval: bool
     autogenerate: bool
+    premade: bool
+    new_every_upload: bool
     playground: bool
     reviewers: frozenset
     model: str
@@ -35,6 +38,12 @@ class GameSettings:
             # A person must approve a generated game before any child can play it.
             require_approval=_flag('SIDEKICK_GAMES_REQUIRE_APPROVAL', True),
             autogenerate=_flag('SIDEKICK_GAMES_AUTOGENERATE', False),
+            # The games that ship with the app. Off means they are ignored everywhere, as if never loaded,
+            # so every game a child gets was written by the model. They stay stored, so on brings them straight back.
+            premade=_flag('SIDEKICK_GAMES_PREMADE', True),
+            # For testing the writer: every upload gets its own newly written game, even when a game for its skill
+            # already exists. It only means something while AUTOGENERATE is on and a model is configured.
+            new_every_upload=_flag('SIDEKICK_GAMES_NEW_EVERY_UPLOAD', False),
             # Temporary: shows reviewers a page for trying any stored game. It adds no access of its own.
             playground=_flag('SIDEKICK_GAMES_PLAYGROUND', False),
             reviewers=frozenset(item.strip().casefold() for item in os.getenv('SIDEKICK_GAME_REVIEWERS', '').split(',') if item.strip()),

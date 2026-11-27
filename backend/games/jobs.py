@@ -14,13 +14,15 @@ async def build_one(db, clock, job, adapter=None, robot=None):
     """Run one claimed job to the end and record what happened."""
     with db.transaction() as conn:
         subskill = get_subskill(conn, job['subskill_id'])
+        # Titles and ideas of games that exist for this skill: game data only, nothing about a child.
+        made = library.already_made(conn, job['subskill_id'])
     failure, version_id = None, None
     try:
         if not subskill or not subskill['active']:
             raise ValueError('skill_retired')
         adapter = adapter or ModelGameAdapter()
         kwargs = {'robot': robot} if robot else {}
-        result = await build_game(subskill, adapter, **kwargs)
+        result = await build_game(subskill, adapter, context=made or None, **kwargs)
         if result.ok:
             with db.transaction() as conn:
                 version_id, _ = library.save_version(conn, clock.now(), subskill, title=result.draft.title, emoji=result.draft.emoji,
@@ -28,7 +30,7 @@ async def build_one(db, clock, job, adapter=None, robot=None):
                     report=result.report, review=result.review.model_dump(), origin='model_generated', model=getattr(adapter, 'model', '') or 'unknown')
         else:
             draft = result.draft
-            failure = {'code': 'not_verified', 'modelCalls': result.model_calls, 'robotRuns': result.robot_runs, 'history': result.history[-4:],
+            failure = {'code': 'not_verified', 'modelCalls': result.model_calls, 'robotRuns': result.robot_runs, 'history': result.history[-8:],
                        'lastDraft': {'title': draft.title, 'premise': draft.premise, 'code': draft.code[:60_000]} if draft else None}
     except ExtractionError as error:
         # The provider code is safe to keep; provider bodies and prompts are never stored.
