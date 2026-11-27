@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.11-12.5-1",
+  "title": "Fix the Biggest Thing First",
+  "emoji": "🧰",
+  "premise": "Strong writers revise in order of importance: purpose and argument first, structure next, sentences last.",
+  "idea": "Developing and strengthening writing by planning, revising, editing, rewriting or trying a new approach. Only editing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

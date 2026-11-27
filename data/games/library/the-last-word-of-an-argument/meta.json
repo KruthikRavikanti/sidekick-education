@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.11-12.1-4",
+  "title": "The Last Word of an Argument",
+  "emoji": "🏁",
+  "premise": "The conclusion is the final chance to make the argument stick. It should grow out of the evidence, not circle back to the opening line.",
+  "idea": "Providing a concluding statement or section that follows from and supports the argument. Repeating the introduction is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

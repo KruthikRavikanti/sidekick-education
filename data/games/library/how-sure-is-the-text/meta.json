@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.11-12.1-1",
+  "title": "How Sure Is the Text?",
+  "emoji": "📏",
+  "premise": "Careful nonfiction signals its own limits with words like may, suggests and preliminary. Do not claim more than the text does.",
+  "idea": "Citing strong and thorough textual evidence, including where the text leaves matters uncertain. Overstating certainty is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.11-12.8-1",
+  "title": "Weigh the Reasoning",
+  "emoji": "⚖️",
+  "premise": "Founding texts and court opinions argue from principles. Reading them well means testing whether the reasoning holds.",
+  "idea": "Delineating and evaluating the reasoning in seminal US texts, including the application of constitutional principles and legal reasoning. Summarizing instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

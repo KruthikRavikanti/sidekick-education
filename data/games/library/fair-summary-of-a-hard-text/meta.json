@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.11-12.2-2",
+  "title": "Fair Summary of a Hard Text",
+  "emoji": "📋",
+  "premise": "Summarizing a complex argument means keeping every main idea in proportion and leaving your own position at the door.",
+  "idea": "Providing an objective summary of an informational text. Adding opinions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

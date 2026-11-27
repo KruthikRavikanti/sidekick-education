@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.11-12.2-1",
+  "title": "Hyphen or No Hyphen",
+  "emoji": "➖",
+  "premise": "Two words that act as one describer before a noun are joined by a hyphen. After the noun, they usually stand apart.",
+  "idea": "Observing hyphenation conventions. Misusing hyphens is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

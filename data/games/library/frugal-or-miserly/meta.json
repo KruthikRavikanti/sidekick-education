@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.11-12.5-2",
+  "title": "Frugal or Miserly",
+  "emoji": "🪙",
+  "premise": "Synonyms are never quite equal. Frugal earns a nod. Miserly earns a frown. The dictionary meaning is the same.",
+  "idea": "Analyzing nuances in the meaning of words with similar denotations. Treating such words as interchangeable is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

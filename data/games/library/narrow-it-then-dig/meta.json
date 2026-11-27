@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.11-12.7-1",
+  "title": "Narrow It, Then Dig",
+  "emoji": "⛏️",
+  "premise": "Sustained research starts with a question you can actually answer. Too broad and you drown. Too narrow and there is nothing to find.",
+  "idea": "Conducting sustained research projects to answer a question or solve a problem, narrowing or broadening the inquiry when appropriate. Using one source is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

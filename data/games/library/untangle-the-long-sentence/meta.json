@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.11-12.10-1",
+  "title": "Untangle the Long Sentence",
+  "emoji": "🧶",
+  "premise": "Older and more complex prose packs a paragraph into one sentence. Find its spine, then hang the rest on it.",
+  "idea": "Reading and comprehending literature at the high end of the grades 11 to college-ready band. Needing support with complex syntax is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

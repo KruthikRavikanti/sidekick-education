@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.11-12.2-3",
+  "title": "Explain It With an Analogy",
+  "emoji": "🌉",
+  "premise": "When an idea is hard, compare it to something the reader already knows. A good analogy does the heavy lifting.",
+  "idea": "Using precise language, domain-specific vocabulary and techniques such as metaphor, simile and analogy. Using vague wording is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

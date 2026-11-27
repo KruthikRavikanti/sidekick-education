@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.11-12.4-1",
+  "title": "Meaning From the Sentence",
+  "emoji": "🔦",
+  "premise": "Advanced texts are full of words you may not know. The sentence usually explains them, if you look at what surrounds them.",
+  "idea": "Using context as a clue to the meaning of a word or phrase. Ignoring context is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

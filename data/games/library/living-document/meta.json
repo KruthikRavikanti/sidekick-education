@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.11-12.6-1",
+  "title": "Living Document",
+  "emoji": "🔄",
+  "premise": "Published does not mean finished. Online writing can keep improving as feedback and new information arrive.",
+  "idea": "Using technology to produce, publish and update individual or shared writing products in response to ongoing feedback, including new arguments or information. Leaving the tools unused is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+sort"
+}

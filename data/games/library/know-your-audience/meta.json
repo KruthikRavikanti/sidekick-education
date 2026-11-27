@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.11-12.1-2",
+  "title": "Know Your Audience",
+  "emoji": "👥",
+  "premise": "A thorough argument anticipates its readers: what they already know, what worries them, what they value.",
+  "idea": "Developing claims and counterclaims fairly and thoroughly in a way that anticipates the audience’s knowledge level, concerns, values and possible biases. Writing one-sidedly is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}
