@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.F.B.4-1",
+  "title": "Rate From Two Points",
+  "emoji": "🧗",
+  "premise": "Two points are enough to find a rate of change. Divide the change in y by the change in x.",
+  "idea": "Determining the rate of change and initial value from two (x, y) values or a table. Dividing the change in x by the change in y is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

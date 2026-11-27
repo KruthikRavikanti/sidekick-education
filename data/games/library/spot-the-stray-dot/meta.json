@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.SP.A.1-3",
+  "title": "Spot the Stray Dot",
+  "emoji": "🛸",
+  "premise": "Most dots in a scatter plot follow a pattern. An outlier sits far away from the pattern.",
+  "idea": "Describing patterns such as clustering and outliers in scatter plots. Ignoring outliers is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.A.1-2",
+  "title": "Angles Stay Put",
+  "emoji": "🪞",
+  "premise": "Slides, flips and turns move a figure without bending it. Every angle keeps its exact measure.",
+  "idea": "Verifying that rigid motions take angles to angles of the same measure. Thinking reflections change angles is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+sort"
+}

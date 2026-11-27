@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.F.A.3-2",
+  "title": "Bends in the Path",
+  "emoji": "🎢",
+  "premise": "Not every function is a line. If equal steps across give unequal steps up, the graph bends.",
+  "idea": "Giving examples of functions that are not linear. Thinking any equation or set of points is linear is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot+sort"
+}

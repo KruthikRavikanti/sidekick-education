@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.C.7-3",
+  "title": "Distribute, Combine, Solve",
+  "emoji": "🧩",
+  "premise": "Longer equations need tidying first. Multiply through the brackets, gather like terms, and then solve.",
+  "idea": "Solving equations that need the distributive property and combining like terms. Distributing to one term only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

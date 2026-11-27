@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.C.7-4",
+  "title": "Clear the Fractions",
+  "emoji": "🧹",
+  "premise": "Fractions in an equation can be cleared by multiplying EVERY term by the denominator. Miss a term and the scale tips.",
+  "idea": "Solving linear equations with rational number coefficients. Clearing denominators on only some terms is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

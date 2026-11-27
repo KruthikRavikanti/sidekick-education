@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.A.1-3",
+  "title": "Still Parallel",
+  "emoji": "🛤️",
+  "premise": "Slide, flip or turn a pair of parallel lines and they stay parallel. Test it yourself.",
+  "idea": "Verifying experimentally that rigid motions take parallel lines to parallel lines. Not being able to verify it is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial+type+sort"
+}

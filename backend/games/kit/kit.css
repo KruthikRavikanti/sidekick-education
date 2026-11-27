@@ -32,6 +32,7 @@ button { font: inherit; color: inherit; }
 .sk-frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1; font-size: .82em; margin: 0 .12em; font-weight: 600; }
 .sk-frac > span:first-child { border-bottom: .09em solid currentColor; padding: 0 .18em .05em; }
 .sk-frac > span:last-child { padding: .05em .18em 0; }
+sup { font-size: .62em; line-height: 0; vertical-align: super; font-weight: 600; margin-left: .04em; }
 
 /* ---- the stage: a fixed coordinate box, 100 units wide */
 .sk-stage-wrap { border-radius: 26px; border: 3px solid var(--sk-forest); box-shadow: 0 6px 0 var(--sk-forest); overflow: hidden; background: var(--sk-cream); }

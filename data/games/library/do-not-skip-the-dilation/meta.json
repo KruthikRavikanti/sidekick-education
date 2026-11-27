@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.A.4-2",
+  "title": "Do Not Skip the Dilation",
+  "emoji": "📏",
+  "premise": "When two similar figures are different sizes, a dilation has to be part of the story. Then a rigid motion puts it in place.",
+  "idea": "Describing a sequence of transformations that exhibits similarity. Leaving out the dilation is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

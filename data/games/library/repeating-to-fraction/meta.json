@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.NS.A.1-2",
+  "title": "Repeating to Fraction",
+  "emoji": "🔁",
+  "premise": "Every repeating decimal is a fraction in disguise. One digit repeating forever is that digit over 9.",
+  "idea": "Converting a repeating decimal into a fraction. Thinking repeating decimals are irrational (or equal to tenths) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

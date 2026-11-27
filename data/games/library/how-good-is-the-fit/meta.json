@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.SP.A.2-2",
+  "title": "How Good Is the Fit?",
+  "emoji": "🎯",
+  "premise": "A line fits well when the dots hug it. Forcing the line through the origin, or leaving dots far away, makes a poor fit.",
+  "idea": "Informally assessing the fit of a line by judging the closeness of the data points. Forcing the line through the origin is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial+sort"
+}

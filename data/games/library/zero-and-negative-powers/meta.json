@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.A.1-2",
+  "title": "Zero and Negative Powers",
+  "emoji": "🔻",
+  "premise": "Each step down in the exponent divides by the base. Keep stepping past 1 and you get fractions, never negative numbers.",
+  "idea": "Using zero and negative integer exponents. Thinking 3 to the power −2 is negative is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

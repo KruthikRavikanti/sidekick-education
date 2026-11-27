@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.B.6-1",
+  "title": "Squares on the Sides",
+  "emoji": "🟧",
+  "premise": "Build a square on each side of a right triangle. The two smaller squares together cover exactly as much as the big one.",
+  "idea": "Explaining a proof of the Pythagorean theorem. Memorizing the formula without meaning is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

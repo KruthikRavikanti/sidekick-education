@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.B.6-3",
+  "title": "Slope and Intercept",
+  "emoji": "📈",
+  "premise": "In y = mx + b, the m is the slope and the b is where the line crosses the y-axis.",
+  "idea": "Deriving the equation y = mx + b for a line intercepting the vertical axis at b. Thinking b is the slope is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial+fill"
+}

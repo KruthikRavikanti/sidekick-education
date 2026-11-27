@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.F.A.1-2",
+  "title": "One Output Each",
+  "emoji": "🎰",
+  "premise": "A function gives each input exactly one output. Two inputs may share an output, but one input can never have two.",
+  "idea": "Telling functions from non-functions in tables and graphs. Rejecting functions because outputs repeat (a horizontal line test) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

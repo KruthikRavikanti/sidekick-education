@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.F.A.2-2",
+  "title": "Who Starts Higher?",
+  "emoji": "🚦",
+  "premise": "The initial value is where a function starts: its output when x is 0. Do not mix it up with the rate.",
+  "idea": "Comparing the initial values of two functions in different representations. Confusing the initial value with the rate is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

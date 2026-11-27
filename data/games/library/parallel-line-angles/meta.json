@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.A.5-2",
+  "title": "Parallel Line Angles",
+  "emoji": "🛤️",
+  "premise": "When a line crosses two parallel lines, it makes the same set of angles at both crossings. Only two sizes appear, and they add to 180°.",
+  "idea": "Using facts about the angles created when parallel lines are cut by a transversal. Matching the angle pairs incorrectly is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

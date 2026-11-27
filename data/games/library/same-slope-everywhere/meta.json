@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.B.6-1",
+  "title": "Same Slope Everywhere",
+  "emoji": "📐",
+  "premise": "Pick any two points on a line and draw the slope triangle. Big or small, the triangles are similar, so rise over run never changes.",
+  "idea": "Using similar triangles to explain why the slope is the same between any two points on a line. Thinking the slope changes along the line is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+sort"
+}

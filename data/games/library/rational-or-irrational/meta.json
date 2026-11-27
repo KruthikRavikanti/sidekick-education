@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.NS.A.1-1",
+  "title": "Rational or Irrational?",
+  "emoji": "♾️",
+  "premise": "A rational number can be written as a fraction. Its decimal ends or repeats. An irrational number goes on forever with no repeating pattern.",
+  "idea": "Knowing that irrational numbers have non-repeating, non-terminating decimals. Thinking π equals 3.14 exactly is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

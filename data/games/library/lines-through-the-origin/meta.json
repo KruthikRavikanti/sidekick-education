@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.B.6-2",
+  "title": "Lines Through the Origin",
+  "emoji": "🎯",
+  "premise": "A line through the origin is a proportional relationship. Its equation is y = mx, where m is the slope.",
+  "idea": "Deriving the equation y = mx for a line through the origin. Not connecting it to proportional relationships is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial+fill"
+}

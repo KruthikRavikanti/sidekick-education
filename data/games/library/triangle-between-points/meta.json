@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.B.8-1",
+  "title": "Triangle Between Points",
+  "emoji": "📍",
+  "premise": "Any two points on the grid are the ends of a slanted line. Draw a right triangle under it and its legs follow the grid.",
+  "idea": "Drawing a right triangle between two points in a coordinate system to find distance. Counting points instead of units is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot+type"
+}

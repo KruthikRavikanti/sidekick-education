@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.SP.A.2-1",
+  "title": "Fit the Line",
+  "emoji": "📏",
+  "premise": "A line of fit runs through the middle of the cloud of dots, with about as many above as below. It does not have to touch any dot.",
+  "idea": "Informally fitting a straight line to a scatter plot. Connecting the first and last points is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial+sort"
+}

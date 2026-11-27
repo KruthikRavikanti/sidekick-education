@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.A.3-3",
+  "title": "Stretch From the Origin",
+  "emoji": "🔍",
+  "premise": "A dilation from the origin multiplies both coordinates by the scale factor. The point moves out along a straight ray.",
+  "idea": "Describing the effect of dilations using coordinates. Adding the scale factor is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

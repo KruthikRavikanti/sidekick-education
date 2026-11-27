@@ -29,10 +29,11 @@
   }
   function h(tag, cls, text) { var el = document.createElement(tag); if (cls) el.className = cls; if (text != null) el.textContent = text; return el; }
   function esc(text) { return String(text).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-  // Kid-facing text is escaped. {3/4} becomes a stacked fraction.
+  // Kid-facing text is escaped. {3/4} becomes a stacked fraction; x^2 and 10^{-3} become raised exponents.
   function rich(text) {
     return esc(text == null ? '' : text)
       .replace(/\{\s*([^{}\/]{1,12}?)\s*\/\s*([^{}\/]{1,12}?)\s*\}/g, '<span class="sk-frac"><span>$1</span><span>$2</span></span>')
+      .replace(/\^\{([^{}]{1,12})\}/g, '<sup>$1</sup>').replace(/\^(−?-?[0-9A-Za-z]{1,3})/g, '<sup>$1</sup>')
       .replace(/\n/g, '<br>');
   }
   function plain(text) { return String(text == null ? '' : text).replace(/\{\s*([^{}\/]+?)\s*\/\s*([^{}\/]+?)\s*\}/g, '$1/$2'); }
@@ -161,7 +162,7 @@
     var el = this.el;
     ['sk-emoji', 'sk-text', 'sk-shape', 'sk-custom', 'circle', 'plain'].forEach(function (c) { el.classList.remove(c); });
     if (o.emoji != null) { el.classList.add('sk-emoji'); el.textContent = o.emoji; this.emoji = o.emoji; }
-    else if (o.text != null) { el.classList.add('sk-text'); if (o.plain) el.classList.add('plain'); var rt = rich(o.text); el.innerHTML = rt.indexOf('sk-frac') >= 0 ? '<span>' + rt + '</span>' : rt; this.text = String(o.text); if (o.color) el.style.setProperty('--tc', color(o.color)); if (o.size == null && !this._sized) this.size = 4.4; }
+    else if (o.text != null) { el.classList.add('sk-text'); if (o.plain) el.classList.add('plain'); var rt = rich(o.text); el.innerHTML = rt.indexOf('sk-frac') >= 0 || rt.indexOf('<sup>') >= 0 ? '<span>' + rt + '</span>' : rt; this.text = String(o.text); if (o.color) el.style.setProperty('--tc', color(o.color)); if (o.size == null && !this._sized) this.size = 4.4; }
     else if (o.shape) { el.classList.add('sk-shape'); if (o.shape === 'circle') el.classList.add('circle'); el.style.setProperty('--w', o.w || this.size); el.style.setProperty('--h', o.h || o.w || this.size); el.style.setProperty('--c', color(o.color || 'orange')); el.innerHTML = o.caption != null ? rich(o.caption) : ''; if (o.size == null && !this._sized) this.size = 3.6; }
     else if (o.svg != null || o.html != null) { el.classList.add('sk-custom'); el.style.setProperty('--w', o.w || this.size); el.style.setProperty('--h', o.h || o.w || this.size); el.innerHTML = o.svg != null ? o.svg : o.html; }
     this._sized = true;

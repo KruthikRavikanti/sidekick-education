@@ -15,7 +15,7 @@
   const PICTO = /\p{Extended_Pictographic}/u;
   const isIcon = (t) => { const g = glyphs(t); return g.length === 1 && PICTO.test(g[0]); };
   const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const rich = (t) => esc(t).replace(/\{\s*([^{}\/]+?)\s*\/\s*([^{}\/]+?)\s*\}/g, '<span class="sk-frac"><span>$1</span><span>$2</span></span>');
+  const rich = (t) => esc(t).replace(/\{\s*([^{}\/]+?)\s*\/\s*([^{}\/]+?)\s*\}/g, '<span class="sk-frac"><span>$1</span><span>$2</span></span>').replace(/\^\{([^{}]{1,12})\}/g, '<sup>$1</sup>').replace(/\^(−?-?[0-9A-Za-z]{1,3})/g, '<sup>$1</sup>');
   const toks = (v) => v == null ? [] : isArr(v) ? v.map(String) : (String(v).indexOf('|') >= 0 ? String(v).split('|') : String(v).split(/\s+/)).map((s) => s.trim()).filter(Boolean);
   const same = (a, b) => a.length === b.length && a.every((x, i) => x === b[i]);
   const range = (n) => Array.from({ length: n }, (_, i) => i);
@@ -23,7 +23,7 @@
   const near = (a, b) => Math.abs(a - b) < 1e-9;
   const fail = (kind, text) => { throw new Error('play ' + kind + ': ' + text); };
   // estimated width of a string in em
-  function em(t) { let w = 0; for (const g of glyphs(String(t).replace(/[{}]/g, ''))) w += PICTO.test(g) ? 1.25 : /[MWmw@%]/.test(g) ? 0.86 : /[A-Z0-9]/.test(g) ? 0.64 : /[iljtf.,'!:;| ]/.test(g) ? 0.32 : 0.56; return w; }
+  function em(t) { let w = 0; for (const g of glyphs(String(t).replace(/[{}^]/g, ''))) w += PICTO.test(g) ? 1.25 : /[MWmw@%]/.test(g) ? 0.86 : /[A-Z0-9]/.test(g) ? 0.64 : /[iljtf.,'!:;| ]/.test(g) ? 0.32 : 0.56; return w; }
   const estLines = (text, w, size) => Math.max(1, Math.ceil(em(text) * size * 1.1 / Math.max(10, w - 6)));
   // a stable shuffle for guided rounds (the same every play) and a fresh one for the last round
   function mix(list, key) {
@@ -239,7 +239,8 @@
     const lx = cx - Math.cos(a) * arm, ly = cy + Math.sin(a) * arm, rx = cx + Math.cos(a) * arm, ry = cy - Math.sin(a) * arm, pan = (px, py, text, val) => Ln(px, py, px - 70, py + 110, 3) + Ln(px, py, px + 70, py + 110, 3) + '<path d="M ' + (px - 96) + ' ' + (py + 110) + ' Q ' + px + ' ' + (py + 170) + ' ' + (px + 96) + ' ' + (py + 110) + ' Z" fill="' + C.sun + '" stroke="' + C.forest + '" stroke-width="5"/>' + T(px, py + 80, 34, text) + (live ? T(px, py + 196, 30, '= ' + nice(val)) : '');
     return svg(W, H, Ln(cx, cy, cx, H - 40, 12) + Ln(cx - 90, H - 36, cx + 90, H - 36, 14) + Ln(lx, ly, rx, ry, 10) + '<circle cx="' + cx + '" cy="' + cy + '" r="14" fill="' + C.orange + '" stroke="' + C.forest + '" stroke-width="5"/>' + pan(lx, ly, c.left || linear(e[0], e[1], c.x), L) + pan(rx, ry, c.right || linear(e[2], e[3], c.x), Rt));
   } };
-  // a coordinate plane. fn: line (m, b), quad (a, h, k), abs (a, h, k), exp (a, b), points (x1, y1, x2, y2 ...)
+  // a coordinate plane. fn: line (m, b), quad (a, h, k), abs (a, h, k), exp (a, b), points (x1, y1, x2, y2 ...), none.
+  // `shapes: [{pts: [[x, y], ...], name: 'A'}]` filled polygons, `path: [[x, y], ...]` a joined path (story graphs), `axis: ['time', 'distance']` axis names.
   const FN = { line: (p, x) => p[0] * x + p[1], quad: (p, x) => p[0] * (x - p[1]) * (x - p[1]) + p[2], abs: (p, x) => p[0] * Math.abs(x - p[1]) + p[2], exp: (p, x) => p[0] * Math.pow(p[1], x), sqrt: (p, x) => x - p[1] < 0 ? NaN : p[0] * Math.sqrt(x - p[1]) + p[2], cubic: (p, x) => p[0] * Math.pow(x - p[1], 3) + p[2], sin: (p, x) => p[0] * Math.sin(p[1] * x * Math.PI / 2) + (p[2] || 0), cos: (p, x) => p[0] * Math.cos(p[1] * x * Math.PI / 2) + (p[2] || 0) };
   function plane(c, W, H) {
     const win = c.win || [-6, 6, -6, 6], side = Math.min(W, H) - 56, ox = (W - side) / 2, oy = (H - side) / 2 - 4, sx = side / (win[1] - win[0]), sy = side / (win[3] - win[2]);
@@ -257,10 +258,13 @@
   }
   VIEWS.graph = { h: 62, w: 66, draw(v, c, W, H, live) {
     const pl = plane(c, W, H), p = (c.pre || []).concat(v), fn = c.fn || 'line'; let out = pl.out;
+    (c.shapes || []).forEach((sh, i) => { const pts = sh.pts || sh, col = C[sh.color] || (i ? C.orange : C.sky), cx = pts.reduce((a, q) => a + q[0], 0) / pts.length, cy = pts.reduce((a, q) => a + q[1], 0) / pts.length; out += '<polygon points="' + pts.map((q) => nice(pl.X(q[0])) + ',' + nice(pl.Y(q[1]))).join(' ') + '" fill="' + col + '" fill-opacity=".55" stroke="' + C.forest + '" stroke-width="4" stroke-linejoin="round"/>' + (sh.name ? T(pl.X(cx), pl.Y(cy), 30, sh.name) : ''); });
+    if (c.path) out += '<polyline points="' + c.path.map((q) => nice(pl.X(q[0])) + ',' + nice(pl.Y(q[1]))).join(' ') + '" fill="none" stroke="' + C.orange + '" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>' + c.path.map((q) => '<circle cx="' + nice(pl.X(q[0])) + '" cy="' + nice(pl.Y(q[1])) + '" r="9" fill="' + C.forest + '"/>').join('');
+    if (c.axis) out += T(pl.ox + pl.side / 2, pl.oy + pl.side + 44, 24, c.axis[0]) + T(pl.ox + 6 + em(String(c.axis[1])) * 7, pl.oy - 14, 24, c.axis[1]);
     (c.also || []).forEach((g) => { out += curve(pl, g[0], g.slice(1), C.sky); });
     if (c.ghost) out += curve(pl, fn, c.ghost, C.sky, true);
     if (fn === 'points') { for (let i = 0; i + 1 < p.length; i += 2) out += '<circle cx="' + nice(pl.X(p[i])) + '" cy="' + nice(pl.Y(p[i + 1])) + '" r="13" fill="' + C.orange + '" stroke="' + C.forest + '" stroke-width="5"/>'; if (c.join && p.length >= 4) out = out.replace('<circle', Ln(pl.X(p[0]), pl.Y(p[1]), pl.X(p[2]), pl.Y(p[3]), 6, C.orange) + '<circle'); }
-    else out += curve(pl, fn, p);
+    else if (fn !== 'none') out += curve(pl, fn, p);
     (c.pts || []).forEach((q) => { const hit = fn !== 'points' && FN[fn] && Math.abs(FN[fn](p, q[0]) - q[1]) < 0.02; out += T(pl.X(q[0]), pl.Y(q[1]), 40, live && hit ? '🌟' : '⭐'); if (q[2]) out += T(pl.X(q[0]) + 34, pl.Y(q[1]) - 30, 26, q[2]); });
     (c.dots || []).forEach((q) => { out += '<circle cx="' + nice(pl.X(q[0])) + '" cy="' + nice(pl.Y(q[1])) + '" r="10" fill="' + C.forest + '"/>' + (q[2] ? T(pl.X(q[0]) + 30, pl.Y(q[1]) - 28, 26, q[2]) : ''); });
     return svg(W, H, out);
@@ -301,6 +305,15 @@
     if (c.r != null) out += Ln(cx, cy, cx + r, cy, 6) + T(cx + r / 2, cy - 24, 30, c.r);
     if (c.d != null) out += Ln(cx - r, cy, cx + r, cy, 6) + T(cx, cy - 24, 30, c.d);
     return svg(W, H, out + '<circle cx="' + cx + '" cy="' + cy + '" r="8" fill="' + C.forest + '"/>');
+  } };
+  // two parallel lines cut by a transversal. `mark: {1: '110°', 5: '?'}` labels the angles: 1 2 above the upper line (left, right of the transversal), 3 4 below it; 5 6 7 8 the same at the lower line.
+  VIEWS.transversal = { h: 44, draw(v, c, W, H) {
+    const y1 = H * 0.3, y2 = H * 0.72, t = (c.deg || 68) * Math.PI / 180, cx = W / 2, x1 = cx + (H / 2 - y1) / Math.tan(t), x2 = cx + (H / 2 - y2) / Math.tan(t), L = Math.min(330, W / 2 - 70); let out = '';
+    out += Ln(cx - L, y1, cx + L, y1, 7) + Ln(cx - L, y2, cx + L, y2, 7) + Ln(cx + (H / 2 - 18) / Math.tan(t), 18, cx - (H / 2 - 18) / Math.tan(t), H - 18, 7, C.orange);
+    out += T(cx + L - 6, y1 - 20, 22, '▸▸') + T(cx + L - 6, y2 - 20, 22, '▸▸');
+    const at = (n, text) => { if (text == null || text === '') return; const top = n <= 4, k = (n - 1) % 4, px = top ? x1 : x2, py = top ? y1 : y2, up = k < 2, right = k % 2 === 1, obt = (up && !right) || (!up && right), dx = (right ? 1 : -1) * (obt ? 64 : 52) + (up ? 1 : -1) * 16, dy = up ? -26 : 30; out += T(px + dx, py + dy, 30, text); };
+    Object.keys(c.mark || {}).forEach((n) => at(+n, c.mark[n]));
+    return svg(W, H, out);
   } };
   // a still number line with named points: line [min, max, step], pts [[value, 'A'] ...]
   VIEWS.numline = { h: 22, draw(v, c, W, H) {
@@ -702,7 +715,7 @@
         (o.segs || []).forEach((s) => { back += Ln(px(s[0]), py(s[1]), px(s[2]), py(s[3]), 6, C.sky); });
         given.forEach((g) => { back += g[2] && isIcon(String(g[2])) ? T(px(g[0]), py(g[1]), nice(u * 0.8), g[2]) : '<circle cx="' + px(g[0]) + '" cy="' + py(g[1]) + '" r="16" fill="' + C.sky + '" stroke="' + C.forest + '" stroke-width="5"/>' + (g[2] ? T(px(g[0]) + 34, py(g[1]) - 32, 28, g[2]) : ''); });
         const el = stage.add('<div></div>', { x: left, y: top, w: nx * pitch, h: ny * pitch, z: 1 }); el.style.pointerEvents = 'none'; el.style.overflow = 'visible';
-        const draw = () => { const cur = picked(stage); let over = ''; if (o.join && cur.length >= 2) { const s = o.join === 'path' ? cur : cur.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]); for (let i = 0; i + 1 < s.length; i++) over += Ln(px(s[i][0]), py(s[i][1]), px(s[i + 1][0]), py(s[i + 1][1]), 7, C.orange); if (o.join === 'shape' && s.length > 2) over += Ln(px(s[s.length - 1][0]), py(s[s.length - 1][1]), px(s[0][0]), py(s[0][1]), 7, C.orange); } el.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;height:100%;display:block;overflow:visible">' + back + over + '</svg>'; };
+        const draw = () => { const cur = picked(stage); let over = ''; if (o.join && cur.length >= 2) { const mx = cur.reduce((a, q) => a + q[0], 0) / cur.length, my = cur.reduce((a, q) => a + q[1], 0) / cur.length, s = o.join === 'shape' ? cur.slice().sort((a, b) => Math.atan2(a[1] - my, a[0] - mx) - Math.atan2(b[1] - my, b[0] - mx)) : cur.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]); for (let i = 0; i + 1 < s.length; i++) over += Ln(px(s[i][0]), py(s[i][1]), px(s[i + 1][0]), py(s[i + 1][1]), 7, C.orange); if (o.join === 'shape' && s.length > 2) over += Ln(px(s[s.length - 1][0]), py(s[s.length - 1][1]), px(s[0][0]), py(s[0][1]), 7, C.orange); } el.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;height:100%;display:block;overflow:visible">' + back + over + '</svg>'; };
         const note = (solo && !o.readout) || o.quiet ? null : stage.label({ id: 'note', text: 'Tap a point', x: 50, y: top + gh + 5, size: 3.8, card: true });
         for (let y = ax[2]; y <= ax[3]; y++) for (let x = ax[0]; x <= ax[1]; x++) { if (isGiven(x, y)) continue;
           stage.sprite({ id: id([x, y]), html: '<div class="skp-dot"></div>', w: pitch, h: pitch, x: X(x), y: Y(y), label: 'Point ' + x + ', ' + y, z: 6,

@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.SP.A.4-2",
+  "title": "Compare the Percents",
+  "emoji": "📊",
+  "premise": "To see whether two things are linked, compare percents, not counts. A bigger group can have more people and still a smaller share.",
+  "idea": "Using relative frequencies to describe possible association between two variables. Comparing counts instead of relative frequencies is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

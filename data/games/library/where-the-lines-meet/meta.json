@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.EE.C.8-1",
+  "title": "Where the Lines Meet",
+  "emoji": "✖️",
+  "premise": "A system is two equations at once. Its solution is the one point that sits on both lines.",
+  "idea": "Understanding that the solution of a system corresponds to the point of intersection of the graphs. Giving only an x-value is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot+fill"
+}

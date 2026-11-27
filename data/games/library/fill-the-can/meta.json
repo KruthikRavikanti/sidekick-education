@@ -1,0 +1,9 @@
+{
+  "subskillId": "8.G.C.9-1",
+  "title": "Fill the Can",
+  "emoji": "🥫",
+  "premise": "A cylinder is a circle stacked up. Its volume is the area of the circle times the height. Use the radius, not the diameter.",
+  "idea": "Using the formula for the volume of a cylinder. Using the diameter in place of the radius is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}
