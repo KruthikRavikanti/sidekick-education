@@ -48,8 +48,19 @@ export function ParentGameHistory({ kidId }: { kidId: string }) {
     return () => request.abort();
   }, [kidId]);
 
-  // Families see nothing about games until the feature is on or there is history.
-  if (!runs || (!enabled && runs.length === 0 && !review?.reviewer)) return null;
+  if (!runs) return null;
+  // Games can be switched off for a whole Sidekick. Say so plainly instead of leaving the tab empty.
+  if (!enabled && runs.length === 0 && !review?.reviewer)
+    return (
+      <section className="dashboard-section game-history">
+        <div className="section-heading">
+          <div>
+            <h2>Games played.</h2>
+            <p>Games are switched off on this Sidekick right now.</p>
+          </div>
+        </div>
+      </section>
+    );
   return (
     <section className="dashboard-section game-history">
       <div className="section-heading">
@@ -67,7 +78,7 @@ export function ParentGameHistory({ kidId }: { kidId: string }) {
         ) : null}
       </div>
       {runs.length === 0 ? (
-        <p className="activity-history-note">No games played yet.</p>
+        <p className="game-history-note">No games played yet.</p>
       ) : (
         <ul className="game-history-list">
           {runs.map((item) => (

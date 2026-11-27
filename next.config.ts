@@ -4,8 +4,8 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   devIndicators: false,
   experimental: {
-    // Rewrites default to 30s. Reading can take up to 180s, and activity
-    // composition may make four bounded provider calls before returning.
+    // Rewrites default to 30s. Reading one page can take up to 180s, and a
+    // multi-page upload makes several bounded provider calls before returning.
     proxyTimeout: 900_000,
   },
   async rewrites() {

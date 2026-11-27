@@ -209,15 +209,12 @@ def test_seed_examples_wait_for_review_and_skip_games_the_robot_rejects(family, 
 
 
 def test_every_grade_in_the_skill_map_has_a_game_grade_number():
-    from backend.activities import general
     catalog = json.loads((prompts.ROOT / 'data' / 'sidekick_skill_map_v2.json').read_text(encoding='utf-8'))
     numbers = {str(item['grade']): library.grade_number(item) for item in catalog}
     assert all(number is not None and 0 <= number <= 12 for number in numbers.values()), numbers
     assert numbers['K'] == 0 and numbers['8'] == 8 and numbers['Algebra 1'] == 9 and numbers['Geometry'] == 10
     assert numbers['Algebra 2'] == 11 and numbers['Precalculus / advanced (+)'] == 12 and numbers['9-10'] == 9 and numbers['11-12'] == 11
     assert library.grade_number({'grade': 'College'}) is None and library.grade_number({}) is None
-    # Activities stay K to 8. Only games use the wider mapping.
-    assert general.grade_for({'grade': 'Algebra 1'}) is None
 
 
 def test_seeding_can_be_narrowed_run_in_parallel_and_resumed(family, security_context):
@@ -298,11 +295,23 @@ def test_review_list_filters_searches_pages_and_counts(family, security_context,
 
 # ------------------------------------------------------------------ play, privacy and the review gate
 
-def test_games_are_off_by_default(family, security_context, monkeypatch):
-    monkeypatch.delenv('SIDEKICK_GAMES_ENABLED', raising=False)
+def test_games_are_on_unless_switched_off_and_approval_stays_required(family, security_context, monkeypatch):
+    for name in ('SIDEKICK_GAMES_ENABLED', 'SIDEKICK_GAMES_REQUIRE_APPROVAL', 'SIDEKICK_GAMES_AUTOGENERATE'):
+        monkeypatch.delenv(name, raising=False)
+    settings = service.GameSettings.from_env()
+    assert settings.enabled and settings.require_approval and not settings.autogenerate
     child, client = family
     upload_id = upload(security_context, child)
-    store(security_context, status='approved')
+    version_id = store(security_context)
+    # On by default, and a game nobody approved is still not offered.
+    view = client.get('/api/games/kid/suggestion', params={'uploadId': upload_id}).json()
+    assert view['enabled'] is True and view['state'] == 'in_review' and view['game'] is None
+    assert mutate(client, 'POST', '/api/games/kid/start', json={'uploadId': upload_id, 'idempotencyKey': key()}).status_code == 409
+    with security_context.db.transaction() as conn:
+        conn.execute("UPDATE game_versions SET status='approved' WHERE id=?", (version_id,))
+    assert client.get('/api/games/kid/suggestion', params={'uploadId': upload_id}).json()['state'] == 'ready'
+    # The switch turns the whole thing off.
+    monkeypatch.setenv('SIDEKICK_GAMES_ENABLED', 'false')
     view = client.get('/api/games/kid/suggestion', params={'uploadId': upload_id}).json()
     assert view['enabled'] is False and view['state'] == 'off' and view['game'] is None
     assert mutate(client, 'POST', '/api/games/kid/start', json={'uploadId': upload_id, 'idempotencyKey': key()}).status_code == 404

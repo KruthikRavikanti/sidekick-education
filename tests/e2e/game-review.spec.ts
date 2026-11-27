@@ -38,7 +38,7 @@ test("the review page filters, searches and pages a large game library, and appr
   await mutate(context.request, "/api/session/picker");
   await enterParent(page);
   // Reviewers reach the page from the dashboard, the way a person does. The link shows how many games are waiting.
-  await page.getByRole("button", { name: "Activities", exact: true }).click();
+  await page.getByRole("button", { name: "Games", exact: true }).click();
   await page.getByRole("link", { name: `Review games (${seeded.waiting})` }).click();
   await expect(page).toHaveURL(/\/parent\/games$/);
   await expect(page.getByRole("heading", { name: "Game review" })).toBeVisible();

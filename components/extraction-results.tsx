@@ -185,11 +185,12 @@ function downloadJSON(result: Extraction) {
 export function ExtractionResults({
   result,
   onReset,
-  activity,
+  next,
 }: {
   result: Extraction;
   onReset: () => void;
-  activity?: ReactNode;
+  // What the child can do next with this work: the game card.
+  next?: ReactNode;
 }) {
   const worksheet = result.worksheet;
   const subject = { math: "Math", ela: "ELA", unknown: "Subject unknown" }[
@@ -210,7 +211,7 @@ export function ExtractionResults({
         </h1>
         <p>Questions and your work, just as they appear on the page.</p>
       </div>
-      {activity}
+      {next}
       {result.source === "fixture" && (
         <p className="demo-notice">
           Sample results · This is a pre-written extraction of the sample page.

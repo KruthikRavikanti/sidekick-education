@@ -29,7 +29,6 @@ from .accounts.api import router as accounts_router, SessionSecurityMiddleware
 from .accounts.security import AccountError, require_kid_context, assert_kid_context, get_security, require_session
 from .gap.api import router as learning_router
 from .gap.uploads import router as homework_router
-from .activities.api import router as activities_router
 from .games.api import router as games_router
 from .gap.homework import persist_ingest, resume_upload
 from .gap.storage import max_upload_bytes
@@ -42,6 +41,8 @@ MIME_FORMATS = {"image/jpeg": "JPEG", "image/png": "PNG", "image/webp": "WEBP",
                 "image/heic": "HEIF", "image/heif": "HEIF",
                 "image/heic-sequence": "HEIF", "image/heif-sequence": "HEIF"}
 IMAGE_UPLOAD_PATHS = {"/api/extract", "/api/images/preview"}
+# Sample pages that demo mode can read: two full worksheets and two one-question pages that lead to a game.
+FIXTURES = {"math", "ela", "game-math", "game-ela"}
 
 
 def error_response(code: str, message: str, status: int):
@@ -56,11 +57,10 @@ class BoundedBodyMiddleware:
         self.app = app
 
     async def __call__(self, scope, receive, send):
-        recording_path = scope.get('path', '').startswith('/api/activities/') and scope.get('path', '').endswith('/recording')
-        upload_path = scope.get("path", "") in IMAGE_UPLOAD_PATHS or scope.get("path", "").endswith("/uploads") or recording_path
+        upload_path = scope.get("path", "") in IMAGE_UPLOAD_PATHS or scope.get("path", "").endswith("/uploads")
         if scope["type"] != "http" or not upload_path:
             return await self.app(scope, receive, send)
-        body_limit = (8 * 1024 * 1024 if recording_path else max_upload_bytes()) + 64 * 1024
+        body_limit = max_upload_bytes() + 64 * 1024
         headers = dict(scope.get("headers", []))
         too_large = False
         try:
@@ -80,7 +80,7 @@ class BoundedBodyMiddleware:
                 if not message.get("more_body", False):
                     break
         if too_large:
-            limit_mb = 8 if recording_path else max_upload_bytes() // (1024 * 1024)
+            limit_mb = max_upload_bytes() // (1024 * 1024)
             return await error_response("file_too_large", f"This file is too large. Choose a file under {limit_mb} MB.", 413)(scope, receive, send)
         delivered = False
 
@@ -98,7 +98,6 @@ app = FastAPI(title="Sidekick", version="0.2.0", docs_url=None, redoc_url=None, 
 app.include_router(accounts_router)
 app.include_router(learning_router)
 app.include_router(homework_router)
-app.include_router(activities_router)
 app.include_router(games_router)
 app.add_middleware(BoundedBodyMiddleware)
 app.add_middleware(SessionSecurityMiddleware)
@@ -172,14 +171,7 @@ def extract_fixture(data: bytes) -> Extraction:
     try:
         manifest = json.loads((ROOT / "fixtures" / "manifest.json").read_text())
         name = manifest.get(hashlib.sha256(data).hexdigest())
-        if name not in {"math", "ela", "activity-math", "activity-ela",
-                         "activity-math-correct", "activity-ela-correct",
-                         "activity-math-general", "activity-ela-general", "activity-equivalent",
-                         "activity-toolkit-bundles", "activity-toolkit-sequence", "activity-toolkit-evidence",
-                         "activity-catalog-multiplication", "activity-catalog-division", "activity-catalog-measurement",
-                         "activity-catalog-coordinates", "activity-catalog-phonics", "activity-catalog-fluency",
-                         "activity-catalog-writing", "activity-catalog-editing", "activity-catalog-handwriting", "activity-catalog-sorting",
-                         "activity-composed-area"}:
+        if name not in FIXTURES:
             raise ExtractionError("fixture_only", "Demo mode reads the bundled sample pages. Try a sample, or connect the reader to use your own photo.", 422)
         return Extraction.model_validate_json((ROOT / "fixtures" / f"{name}.json").read_text())
     except (OSError, ValueError, ValidationError):

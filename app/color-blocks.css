@@ -109,10 +109,9 @@ section.kid-chat-placeholder input[disabled]::placeholder { color: var(--on-fore
 .results-intro { background: var(--sun); border-radius: var(--block-radius); padding: 40px 32px; margin-bottom: 20px; }
 .results-intro h1 { font-size: clamp(44px, 6vw, 76px); line-height: 1; letter-spacing: -1px; }
 .results-intro p { color: var(--forest); font-weight: 700; }
-.activity-suggestion, .game-suggestion { max-width: none; margin: 20px 0; padding: 32px 36px; background: var(--orange); border: 0; box-shadow: none; border-radius: var(--block-radius); color: var(--forest); }
-.activity-suggestion h2, .game-suggestion h2 { font-size: 32px; line-height: 1.05; }
-.activity-suggestion :is(p, span, small, li), .game-suggestion :is(p, small, li) { color: var(--forest) !important; font-weight: 700; }
-.activity-suggestion .activity-suggestion-icon { background: var(--cream); border: 0; }
+.game-suggestion { max-width: none; margin: 20px 0; padding: 32px 36px; background: var(--orange); border: 0; box-shadow: none; border-radius: var(--block-radius); color: var(--forest); }
+.game-suggestion h2 { font-size: 32px; line-height: 1.05; }
+.game-suggestion :is(p, small, li) { color: var(--forest) !important; font-weight: 700; }
 .worksheet-summary { border: 0; box-shadow: none; border-radius: var(--block-radius); background: var(--lime); padding: 32px 36px; margin-bottom: 20px; }
 .worksheet-summary :is(p, span, small, dt, dd, li) { color: var(--forest); }
 .context-card { border: 0; box-shadow: none; border-radius: 28px; background: var(--sand); }
@@ -135,9 +134,9 @@ section.kid-chat-placeholder input[disabled]::placeholder { color: var(--on-fore
    The base styles used a dozen pale greens for tints, tags and selected states. Each maps to the main palette here:
    quiet surfaces and notes are sand, "picked" and small accents are sun,
    and "done, correct, on track" is solid lime. */
-.demo-notice, .sample-insights-label, .empty-family, .dashboard-empty, .parent-activity-review, .split-compare-result,
+.demo-notice, .sample-insights-label, .empty-family, .dashboard-empty,
 .worksheet-preview, .pdf-preview, .transcript-message, .status-blank, .sample-button, .account-shell input:disabled { background: var(--sand); }
-.demo-notice, .sample-insights-label, .sample-button, .parent-activity-review, .account-success { border: 0; }
+.demo-notice, .sample-insights-label, .sample-button, .account-success { border: 0; }
 .dashboard-empty, .child-editor, .problem-number, .learning-filter input, .account-shell input, .account-shell select { border-color: var(--line); }
 .student-work { border-top-color: var(--line); }
 .card-topline { border-bottom-color: var(--line); }
@@ -146,19 +145,13 @@ section.kid-chat-placeholder input[disabled]::placeholder { color: var(--on-fore
 .account-shell input:focus, .account-shell select:focus { outline-color: var(--sun); }
 
 .subject-tag, .grade-tag { background: #fff; }
-.status-answered, .skill-status.skill-on_track, .game-status-approved, .account-success, .activity-feedback-correct { background: var(--lime); color: var(--forest); }
+.status-answered, .skill-status.skill-on_track, .game-status-approved, .account-success { background: var(--lime); color: var(--forest); }
 .avatar-lime { background: var(--lime); }
 
-.metric-card > span, .activity-phase-label > span:first-child { background: var(--sun); }
-.activity-teaching, .bundle-number-display, .activity-book-heading, .text-editor-published, .activity-family .sort-target-button { background: var(--sand); }
-.math-board-object { fill: var(--lime); }
-.protractor-body { fill: var(--sand); }
-.math-grid-line { stroke: var(--line); }
+.metric-card > span { background: var(--sun); }
 
-.activity-word-choice:has(input:checked), .split-compare-option[data-selected="true"], .evidence-sentence[data-selected="true"],
-.activity-family .sort-piece[aria-pressed="true"], .avatar-options button[aria-checked="true"] { background: var(--sun); }
+.avatar-options button[aria-checked="true"] { background: var(--sun); }
 
-.activity-fraction-whole, .quantity-container { background: #fff; }
 .paper { box-shadow: 5px 5px 0 var(--sun); }
 .reading-picture { box-shadow: 6px 7px 0 var(--sun); }
 .scan-beam { background: linear-gradient(transparent, #ffd45c99); }
@@ -167,7 +160,7 @@ section.kid-chat-placeholder input[disabled]::placeholder { color: var(--on-fore
    The page around the panels is a small landscape, drawn behind everything and never in the way of a click.
    Two soft clouds sit near the top of every screen. On screens made of panels (log in, sign up, the profile
    picker, the parent PIN, kid home, upload and results) a sun, two hills and the mascots sit along the bottom
-   of the screen. Where words sit straight on the page (the game and activity players, the parent side) only
+   of the screen. Where words sit straight on the page (the game player, the parent side) only
    the clouds show, so nothing is ever behind text. */
 .account-shell, .app-shell, .kid-reader-toolbar { position: relative; z-index: 1; }
 body::before, body::after { content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; background-repeat: no-repeat; }
