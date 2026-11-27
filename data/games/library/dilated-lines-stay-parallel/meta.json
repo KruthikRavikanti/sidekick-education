@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.A.1-1",
+  "title": "Dilated Lines Stay Parallel",
+  "emoji": "🔍",
+  "premise": "A dilation pushes points away from its center. A line through the center stays put. Any other line moves to a parallel line.",
+  "idea": "Verifying that a dilation takes a line not passing through the center to a parallel line and leaves a line through the center unchanged. Thinking lines through the center move is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+dial"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-C.A.3-1",
+  "title": "Two Centers of a Triangle",
+  "emoji": "🔺",
+  "premise": "A triangle has a circle through its corners and a circle touching its sides. Their centers are found in different ways.",
+  "idea": "Constructing the inscribed and circumscribed circles of a triangle. Confusing the incenter and the circumcenter is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

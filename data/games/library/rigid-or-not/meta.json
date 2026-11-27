@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.A.2-2",
+  "title": "Rigid or Not?",
+  "emoji": "📏",
+  "premise": "Rigid motions move a figure without changing any length or angle. Dilations and stretches change lengths.",
+  "idea": "Comparing transformations that preserve distance and angle to those that do not. Thinking dilations preserve distance is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

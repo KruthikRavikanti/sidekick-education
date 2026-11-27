@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-GMD.A.1-2",
+  "title": "Slanted Stacks",
+  "emoji": "🪙",
+  "premise": "Push a straight stack of coins into a leaning one. Every coin is still there, so the volume is unchanged.",
+  "idea": "Giving an informal argument using Cavalieri’s principle for volume formulas. Thinking slanting changes the volume is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type"
+}

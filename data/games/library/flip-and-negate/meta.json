@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-GPE.B.5-2",
+  "title": "Flip and Negate",
+  "emoji": "➕",
+  "premise": "Perpendicular lines meet at a square corner. Their slopes are opposite reciprocals: flip the fraction and change the sign.",
+  "idea": "Proving and using the slope criterion for perpendicular lines. Using the reciprocal without changing the sign is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

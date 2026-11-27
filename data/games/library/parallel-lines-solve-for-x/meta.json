@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.C.9-2",
+  "title": "Parallel Lines, Solve for x",
+  "emoji": "🛤️",
+  "premise": "With parallel lines, some angle pairs are equal and some add to 180°. Pick the right relationship before writing the equation.",
+  "idea": "Proving and using theorems about angles formed by parallel lines and a transversal. Using the converse or the other relationship by mistake is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

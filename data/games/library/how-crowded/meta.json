@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-MG.A.2-1",
+  "title": "How Crowded?",
+  "emoji": "🏙️",
+  "premise": "Density tells how much is packed into each unit of space: people per square mile, grams per cubic centimeter.",
+  "idea": "Applying concepts of density based on area and volume in modeling situations. Dividing in the reverse order, or multiplying, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.B.6-2",
+  "title": "Congruent by Motion",
+  "emoji": "🧩",
+  "premise": "Two figures are congruent if some rigid motion carries one exactly onto the other. A mirror image still counts.",
+  "idea": "Using the definition of congruence in terms of rigid motions to decide if two figures are congruent. Judging by appearance is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

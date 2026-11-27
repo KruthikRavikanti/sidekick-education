@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.A.3-1",
+  "title": "Maps Onto Itself",
+  "emoji": "🔲",
+  "premise": "Some turns and flips leave a shape looking exactly as it started. A square has more of these than most people count.",
+  "idea": "Describing the rotations and reflections that carry a polygon onto itself. Missing diagonal lines of symmetry is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.A.1-1",
+  "title": "Precise Definitions",
+  "emoji": "📖",
+  "premise": "Geometry builds on exact definitions. “A round shape” is a description. “All points a fixed distance from a center” is a definition.",
+  "idea": "Knowing precise definitions of angle, circle, perpendicular line, parallel line and line segment. Using informal descriptions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

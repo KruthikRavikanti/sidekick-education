@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.C.11-2",
+  "title": "Diagonals Meet Halfway",
+  "emoji": "✂️",
+  "premise": "The two diagonals of a parallelogram cut each other exactly in half at the point where they cross.",
+  "idea": "Proving that the diagonals of a parallelogram bisect each other. Using a diagram as proof is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

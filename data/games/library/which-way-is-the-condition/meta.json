@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-CP.A.5-1",
+  "title": "Which Way Is the Condition?",
+  "emoji": "🔄",
+  "premise": "The chance of A given B and the chance of B given A are different questions. The group you start from changes everything.",
+  "idea": "Recognizing and explaining conditional probability and independence in everyday situations. Reversing the condition is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

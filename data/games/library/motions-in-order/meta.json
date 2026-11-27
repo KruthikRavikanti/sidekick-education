@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.A.5-2",
+  "title": "Motions in Order",
+  "emoji": "🪜",
+  "premise": "Two motions done in a different order can land a figure in a different place. Name the steps and their order.",
+  "idea": "Specifying a sequence of transformations that will carry a given figure onto another. Giving the steps in the other order is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

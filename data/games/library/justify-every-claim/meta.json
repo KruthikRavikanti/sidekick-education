@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.B.5-2",
+  "title": "Justify Every Claim",
+  "emoji": "⚖️",
+  "premise": "In a proof, a picture that looks right proves nothing. Each claim needs a named reason: a shared side, a criterion, matching parts.",
+  "idea": "Using congruence and similarity criteria for triangles to prove relationships in geometric figures. Skipping the justification is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.C.9-1",
+  "title": "Prove Vertical Angles",
+  "emoji": "✖️",
+  "premise": "A proof gives a reason for each step. “They look equal” is not a reason, and neither is the thing you are trying to prove.",
+  "idea": "Proving that vertical angles are congruent. Assuming what is being proved is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+row+type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-C.A.2-2",
+  "title": "Tangent Meets Radius",
+  "emoji": "🛞",
+  "premise": "A tangent line just touches a circle at one point. At that point it is always perpendicular to the radius.",
+  "idea": "Knowing that the radius of a circle is perpendicular to the tangent where the radius intersects the circle. Assuming any touching line is tangent, or missing the right angle, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

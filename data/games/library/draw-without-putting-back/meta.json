@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-CP.B.8-1",
+  "title": "Draw Without Putting Back",
+  "emoji": "🔴",
+  "premise": "Pull a marble and keep it. The bag has changed, so the chance for the second draw changes too.",
+  "idea": "Applying the general multiplication rule. Multiplying unconditional probabilities for dependent events is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

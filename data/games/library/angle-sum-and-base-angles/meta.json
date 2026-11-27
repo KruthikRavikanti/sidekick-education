@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.C.10-1",
+  "title": "Angle Sum and Base Angles",
+  "emoji": "🔺",
+  "premise": "Every triangle’s angles add to 180°. In an isosceles triangle, the two base angles are equal.",
+  "idea": "Proving theorems about triangles: the angle sum and the base angles of isosceles triangles. Giving examples instead of a proof is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

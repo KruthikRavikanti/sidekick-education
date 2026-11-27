@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.A.1-2",
+  "title": "Scale the Segment",
+  "emoji": "📏",
+  "premise": "A dilation multiplies every length by the scale factor. It never adds.",
+  "idea": "Verifying that the dilation of a segment is longer or shorter in the ratio given by the scale factor. Adding the scale factor to lengths is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

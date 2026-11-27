@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-MG.A.3-1",
+  "title": "Best Garden for the Fence",
+  "emoji": "🌻",
+  "premise": "A design problem has a goal and a limit. Here the limit is the fence you own, and the goal is the most growing space.",
+  "idea": "Applying geometric methods to solve design problems with constraints. Ignoring a constraint is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-GPE.A.1-2",
+  "title": "Find the Hidden Center",
+  "emoji": "🎯",
+  "premise": "A circle equation can arrive scrambled. Complete the square for x and for y and the center and radius appear.",
+  "idea": "Completing the square to find the center and radius of a circle. Using the opposite signs for the center is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

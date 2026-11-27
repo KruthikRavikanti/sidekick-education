@@ -306,9 +306,17 @@
     return svg(W, H, out);
   } };
   // a circle with a radius, a diameter or a slice marked
+  // circle: `r`/`d` label a radius or diameter, `slice` a sector. Circle geometry: `central: 100` (+ `inscribed: true`), `tangent: true|'mark'`,
+  // `semi: 60` (angle in a semicircle, vertex at 60°), `quad: [20, 100, 200, 300]` (inscribed quadrilateral); `mark: [...]` labels the angles.
   VIEWS.circle = { h: 40, draw(v, c, W, H) {
     const cx = W / 2, cy = H / 2, r = Math.min(W, H) / 2 - 40; let out = '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="' + (C[c.color] || C.sun) + '" stroke="' + C.forest + '" stroke-width="6"/>';
     if (c.slice != null) { const a = c.slice * Math.PI / 180; out += '<path d="M ' + cx + ' ' + cy + ' L ' + (cx + r) + ' ' + cy + ' A ' + r + ' ' + r + ' 0 ' + (c.slice > 180 ? 1 : 0) + ' 0 ' + nice(cx + Math.cos(a) * r) + ' ' + nice(cy - Math.sin(a) * r) + ' Z" fill="' + C.orange + '" stroke="' + C.forest + '" stroke-width="5"/>'; if (c.sliceLabel) out += T(cx + Math.cos(a / 2) * r * 0.5, cy - Math.sin(a / 2) * r * 0.5, 28, c.sliceLabel); }
+    const P = (deg) => [cx + Math.cos(deg * Math.PI / 180) * r, cy - Math.sin(deg * Math.PI / 180) * r], seg = (a, b, w, col) => Ln(a[0], a[1], b[0], b[1], w || 6, col), M = c.mark || [];
+    const lab = (v, a, b, text, far) => { if (text == null || text === '') return ''; const mx = (a[0] + b[0]) / 2 - v[0], my = (a[1] + b[1]) / 2 - v[1], m = Math.hypot(mx, my) || 1, d = (far || 46) + em(String(text)) * 5; return T(v[0] + mx / m * d, v[1] + my / m * d, 28, text); };
+    if (c.central != null) { const A = P(270 - c.central / 2), B = P(270 + c.central / 2), O = [cx, cy]; out += seg(O, A, 6, C.orange) + seg(O, B, 6, C.orange) + lab(O, A, B, M[0]); if (c.inscribed) { const V = P(90); out += seg(V, A) + seg(V, B) + lab(V, A, B, M[1], 70); } out += [A, B].map((q) => '<circle cx="' + nice(q[0]) + '" cy="' + nice(q[1]) + '" r="8" fill="' + C.forest + '"/>').join(''); }
+    if (c.tangent) { const Tp = P(0), O = [cx, cy]; out += seg(O, Tp, 6, C.orange) + Ln(Tp[0], cy - r * 0.95, Tp[0], cy + r * 0.95, 6) + (c.tangent === 'mark' ? R(Tp[0] - 26, cy - 26, 26, 26, 'none', 'stroke="' + C.forest + '" stroke-width="4"') : '') + (M[0] != null ? T(Tp[0] - 44 - em(String(M[0])) * 6, cy - 26, 28, M[0]) : ''); }
+    if (c.semi != null) { const A = P(180), B = P(0), V = P(c.semi); out += seg(A, B, 6, C.orange) + seg(V, A) + seg(V, B) + lab(V, A, B, M[0], 52) + (M[1] != null ? lab(A, V, B, M[1], 70) : '') + (M[2] != null ? lab(B, V, A, M[2], 70) : ''); }
+    if (c.quad) { const Q = c.quad.map(P); out += '<polygon points="' + Q.map((q) => nice(q[0]) + ',' + nice(q[1])).join(' ') + '" fill="rgba(110,195,244,.3)" stroke="' + C.forest + '" stroke-width="5" stroke-linejoin="round"/>'; Q.forEach((q, i) => { out += lab(q, Q[(i + 3) % 4], Q[(i + 1) % 4], M[i], 50); }); }
     if (c.r != null) out += Ln(cx, cy, cx + r, cy, 6) + T(cx + r / 2, cy - 24, 30, c.r);
     if (c.d != null) out += Ln(cx - r, cy, cx + r, cy, 6) + T(cx, cy - 24, 30, c.d);
     return svg(W, H, out + '<circle cx="' + cx + '" cy="' + cy + '" r="8" fill="' + C.forest + '"/>');

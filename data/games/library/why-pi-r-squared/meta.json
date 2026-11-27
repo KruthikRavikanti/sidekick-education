@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-GMD.A.1-1",
+  "title": "Why Pi r Squared",
+  "emoji": "🍕",
+  "premise": "Cut a circle into thin wedges and flip every other one. They line up into something very close to a rectangle.",
+  "idea": "Giving an informal argument for the formulas for the circumference and area of a circle. Memorizing with no meaning is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

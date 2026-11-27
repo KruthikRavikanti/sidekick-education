@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.A.2-2",
+  "title": "What Similar Really Means",
+  "emoji": "👯",
+  "premise": "Similar triangles are the same shape at different sizes. Their angles match exactly. Their sides are in proportion.",
+  "idea": "Explaining the meaning of similarity for triangles as equality of angles and proportionality of sides. Thinking equal sides are required is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

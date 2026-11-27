@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-GPE.B.6-1",
+  "title": "Split the Segment",
+  "emoji": "🪚",
+  "premise": "A ratio of 1 to 2 cuts a segment into 3 equal steps. The point sits 1 step from the start.",
+  "idea": "Finding the point on a directed line segment that partitions it in a given ratio. Using the ratio as a fraction of the whole (1 : 2 as one half) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.C.8-3",
+  "title": "Angle of Elevation",
+  "emoji": "🔭",
+  "premise": "Looking up at the top of something makes a right triangle: the ground, the height, and your line of sight.",
+  "idea": "Using trigonometric ratios and the Pythagorean theorem to solve applied problems. Placing the angle in another corner is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

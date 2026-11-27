@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-CO.A.4-1",
+  "title": "What Defines Each Motion",
+  "emoji": "🧭",
+  "premise": "Each rigid motion is fixed by a small set of facts. Give those and anyone can perform it exactly.",
+  "idea": "Developing definitions of rotations, reflections and translations in terms of angles, circles, perpendicular lines and parallel lines. Describing motions loosely is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.C.6-1",
+  "title": "Same Angle, Same Ratio",
+  "emoji": "📐",
+  "premise": "All right triangles with the same acute angle are similar. So the ratio of two sides depends only on the angle, not on the size.",
+  "idea": "Understanding that side ratios in right triangles are properties of the angles. Thinking bigger triangles have a bigger sine is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+sort"
+}

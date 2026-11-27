@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.C.8-1",
+  "title": "Find the Side With Trig",
+  "emoji": "🧗",
+  "premise": "Know one side and one acute angle of a right triangle and a trig ratio gives you any other side.",
+  "idea": "Using trigonometric ratios to solve right triangles. Setting up the ratio upside down is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

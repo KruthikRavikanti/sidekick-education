@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-CP.B.6-1",
+  "title": "Shrink the World",
+  "emoji": "🔍",
+  "premise": "Given B means: ignore everyone outside B. Count how many of B are also in A.",
+  "idea": "Finding the conditional probability of A given B as the fraction of B’s outcomes that also belong to A. Dividing by the whole sample space is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

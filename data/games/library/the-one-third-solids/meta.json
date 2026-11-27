@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-GMD.A.3-1",
+  "title": "The One-Third Solids",
+  "emoji": "🔺",
+  "premise": "A pyramid fills exactly one third of the prism around it. A cone fills one third of its cylinder.",
+  "idea": "Using volume formulas for cylinders, pyramids, cones and spheres. Forgetting the one third for pyramids and cones is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-CP.B.7-1",
+  "title": "Do Not Count the Overlap Twice",
+  "emoji": "♊",
+  "premise": "Add P(A) and P(B) and anything in both gets counted twice. Subtract the overlap once to fix it.",
+  "idea": "Applying the addition rule and interpreting the answer. Forgetting to subtract the overlap is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

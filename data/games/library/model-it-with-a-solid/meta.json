@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-MG.A.1-1",
+  "title": "Model It With a Solid",
+  "emoji": "🌳",
+  "premise": "Engineers treat real things as simple solids so they can estimate size. Pick the solid that keeps the key features.",
+  "idea": "Using geometric shapes, their measures and their properties to describe objects. Choosing shapes that ignore key features is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+type"
+}

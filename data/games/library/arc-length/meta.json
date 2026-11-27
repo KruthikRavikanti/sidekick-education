@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-C.B.5-1",
+  "title": "Arc Length",
+  "emoji": "🌈",
+  "premise": "An arc is a fraction of the whole circumference. The central angle tells you which fraction.",
+  "idea": "Deriving that the length of an arc is proportional to the radius. Using the diameter in place of the radius is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

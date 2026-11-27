@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.B.4-2",
+  "title": "Altitude to the Hypotenuse",
+  "emoji": "🪜",
+  "premise": "Drop a height onto the hypotenuse of a right triangle and it splits into two smaller triangles, each similar to the whole.",
+  "idea": "Proving the Pythagorean theorem using triangle similarity. Not finding the similar triangles is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

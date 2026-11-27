@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-CP.B.9-2",
+  "title": "Choose a Committee",
+  "emoji": "🤝",
+  "premise": "On a committee nobody is first or second. The same people in another order is the same committee, so divide the repeats out.",
+  "idea": "Using combinations to compute probabilities of compound events. Forgetting to divide, by the repeats or by the total outcomes, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}
