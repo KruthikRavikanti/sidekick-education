@@ -1,0 +1,404 @@
+{
+  "schemaVersion": "2.0-foundation",
+  "id": "trail_evidence",
+  "title": "Choose a trail mystery",
+  "definitionVersion": 1,
+  "componentVersion": "sidekick-program-contract-v1",
+  "intent": {
+    "targets": [
+      {
+        "skillId": "RL.3.1-1",
+        "demonstration": "Ask and answer questions, referring explicitly to the text"
+      }
+    ],
+    "observations": [
+      {
+        "id": "synthetic-observation",
+        "skillId": "RL.3.1-1",
+        "kind": "incorrect_response",
+        "source": "uploaded_work",
+        "confidence": 0.92,
+        "summary": "Selected an answer without grounding it in a supporting passage detail."
+      }
+    ],
+    "misconceptions": [
+      {
+        "skillId": "RL.3.1-1",
+        "description": "An answer was given without pointing to literal supporting text.",
+        "confidence": 0.78,
+        "observationIds": [
+          "synthetic-observation"
+        ]
+      }
+    ],
+    "successEvidence": [
+      "bridge-evidence",
+      "gate-evidence"
+    ]
+  },
+  "world": {
+    "state": [
+      {
+        "id": "bridge-selection",
+        "kind": "choice",
+        "initial": "none",
+        "options": [
+          "none",
+          "bridge-1",
+          "bridge-2",
+          "bridge-3"
+        ],
+        "mutable": true
+      },
+      {
+        "id": "gate-selection",
+        "kind": "choice",
+        "initial": "none",
+        "options": [
+          "none",
+          "gate-1",
+          "gate-2",
+          "gate-3"
+        ],
+        "mutable": true
+      }
+    ],
+    "materials": [
+      {
+        "id": "bridge-passage",
+        "kind": "passage",
+        "text": "Lina reached the stream after breakfast. Lina used stepping stones to cross the stream. A red kite rested beside the path.",
+        "items": [
+          {
+            "id": "bridge-1",
+            "text": "Lina reached the stream after breakfast."
+          },
+          {
+            "id": "bridge-2",
+            "text": "Lina used stepping stones to cross the stream."
+          },
+          {
+            "id": "bridge-3",
+            "text": "A red kite rested beside the path."
+          }
+        ],
+        "quantity": null
+      },
+      {
+        "id": "bridge-question",
+        "kind": "prompt",
+        "text": "How did Lina cross the stream? Choose the literal sentence that answers it. You may investigate this trail or the other trail.",
+        "items": [],
+        "quantity": null
+      },
+      {
+        "id": "gate-passage",
+        "kind": "passage",
+        "text": "Bram carried a blue lunch box. Bram stayed by the gate to wait for his brother. The park opened at nine o clock.",
+        "items": [
+          {
+            "id": "gate-1",
+            "text": "Bram carried a blue lunch box."
+          },
+          {
+            "id": "gate-2",
+            "text": "Bram stayed by the gate to wait for his brother."
+          },
+          {
+            "id": "gate-3",
+            "text": "The park opened at nine o clock."
+          }
+        ],
+        "quantity": null
+      },
+      {
+        "id": "gate-question",
+        "kind": "prompt",
+        "text": "Why did Bram stay by the gate? Choose the literal sentence that answers it. You may investigate this trail or the other trail.",
+        "items": [],
+        "quantity": null
+      }
+    ],
+    "objects": [
+      {
+        "id": "bridge-board",
+        "kind": "evidence_board",
+        "bindings": {
+          "selection": "bridge-selection"
+        },
+        "materialIds": [
+          "bridge-passage",
+          "bridge-question"
+        ]
+      },
+      {
+        "id": "gate-board",
+        "kind": "evidence_board",
+        "bindings": {
+          "selection": "gate-selection"
+        },
+        "materialIds": [
+          "gate-passage",
+          "gate-question"
+        ]
+      }
+    ],
+    "relationships": [],
+    "invariants": []
+  },
+  "components": [
+    {
+      "id": "bridge-clue-board",
+      "kind": "evidence_board",
+      "objectIds": [
+        "bridge-board"
+      ],
+      "spaceId": "bridge"
+    },
+    {
+      "id": "gate-clue-board",
+      "kind": "evidence_board",
+      "objectIds": [
+        "gate-board"
+      ],
+      "spaceId": "gate"
+    }
+  ],
+  "actions": [
+    {
+      "id": "bridge-place-clue",
+      "componentId": "bridge-clue-board",
+      "operation": "select_evidence",
+      "inputs": [
+        {
+          "id": "sentence",
+          "kind": "choice",
+          "options": [
+            "bridge-1",
+            "bridge-2",
+            "bridge-3"
+          ]
+        }
+      ],
+      "label": "Place a sentence on this trail board"
+    },
+    {
+      "id": "gate-place-clue",
+      "componentId": "gate-clue-board",
+      "operation": "select_evidence",
+      "inputs": [
+        {
+          "id": "sentence",
+          "kind": "choice",
+          "options": [
+            "gate-1",
+            "gate-2",
+            "gate-3"
+          ]
+        }
+      ],
+      "label": "Place a sentence on this trail board"
+    }
+  ],
+  "rules": [
+    {
+      "id": "bridge-place-literal-sentence",
+      "onAction": "bridge-place-clue",
+      "when": {
+        "kind": "always"
+      },
+      "effects": [
+        {
+          "kind": "set",
+          "target": "bridge-selection",
+          "value": {
+            "kind": "input",
+            "ref": "sentence"
+          }
+        }
+      ]
+    },
+    {
+      "id": "gate-place-literal-sentence",
+      "onAction": "gate-place-clue",
+      "when": {
+        "kind": "always"
+      },
+      "effects": [
+        {
+          "kind": "set",
+          "target": "gate-selection",
+          "value": {
+            "kind": "input",
+            "ref": "sentence"
+          }
+        }
+      ]
+    }
+  ],
+  "goals": [
+    {
+      "id": "bridge-resolved",
+      "description": "Resolve this trail question with its literal supporting sentence.",
+      "when": {
+        "kind": "compare",
+        "op": "eq",
+        "left": {
+          "kind": "state",
+          "ref": "bridge-selection"
+        },
+        "right": {
+          "kind": "literal",
+          "value": "bridge-2"
+        }
+      }
+    },
+    {
+      "id": "gate-resolved",
+      "description": "Resolve this trail question with its literal supporting sentence.",
+      "when": {
+        "kind": "compare",
+        "op": "eq",
+        "left": {
+          "kind": "state",
+          "ref": "gate-selection"
+        },
+        "right": {
+          "kind": "literal",
+          "value": "gate-2"
+        }
+      }
+    }
+  ],
+  "completion": {
+    "when": {
+      "kind": "any",
+      "conditions": [
+        {
+          "kind": "goal",
+          "goalId": "bridge-resolved"
+        },
+        {
+          "kind": "goal",
+          "goalId": "gate-resolved"
+        }
+      ]
+    },
+    "goalIds": [
+      "bridge-resolved",
+      "gate-resolved"
+    ],
+    "allowAssisted": true
+  },
+  "help": [
+    {
+      "id": "look-again",
+      "kind": "hint",
+      "text": "Read the question, then compare it with what each sentence literally says. Place the sentence that answers that question.",
+      "availableWhen": {
+        "kind": "always"
+      },
+      "actionIds": [
+        "bridge-place-clue",
+        "gate-place-clue"
+      ],
+      "maxUses": 3
+    }
+  ],
+  "evidence": [
+    {
+      "id": "bridge-evidence",
+      "skillIds": [
+        "RL.3.1-1"
+      ],
+      "actionIds": [
+        "bridge-place-clue"
+      ],
+      "stateRefs": [
+        "bridge-selection"
+      ],
+      "assessment": {
+        "kind": "automatic",
+        "when": {
+          "kind": "compare",
+          "op": "eq",
+          "left": {
+            "kind": "state",
+            "ref": "bridge-selection"
+          },
+          "right": {
+            "kind": "literal",
+            "value": "bridge-2"
+          }
+        }
+      },
+      "assistance": "server_event_history"
+    },
+    {
+      "id": "gate-evidence",
+      "skillIds": [
+        "RL.3.1-1"
+      ],
+      "actionIds": [
+        "gate-place-clue"
+      ],
+      "stateRefs": [
+        "gate-selection"
+      ],
+      "assessment": {
+        "kind": "automatic",
+        "when": {
+          "kind": "compare",
+          "op": "eq",
+          "left": {
+            "kind": "state",
+            "ref": "gate-selection"
+          },
+          "right": {
+            "kind": "literal",
+            "value": "gate-2"
+          }
+        }
+      },
+      "assistance": "server_event_history"
+    }
+  ],
+  "presentation": {
+    "entrySpace": "bridge",
+    "spaces": [
+      {
+        "id": "bridge",
+        "title": "How did Lina cross the stream?",
+        "visibleWhen": null
+      },
+      {
+        "id": "gate",
+        "title": "Why did Bram stay by the gate?",
+        "visibleWhen": null
+      }
+    ],
+    "assets": []
+  },
+  "provenance": {
+    "origin": "original_contract_fixture",
+    "author": "Sidekick",
+    "sourceRefs": [],
+    "model": null,
+    "promptVersion": null
+  },
+  "limits": {
+    "maxActions": 64,
+    "maxRulesPerAction": 4,
+    "maxEffectsPerAction": 8,
+    "maxExpressionDepth": 8,
+    "maxExpressionNodes": 64
+  },
+  "witness": [
+    {
+      "actionId": "gate-place-clue",
+      "inputs": {
+        "sentence": "gate-2"
+      }
+    }
+  ]
+}
