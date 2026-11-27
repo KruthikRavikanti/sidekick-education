@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.4.8-1",
+  "title": "Point and Evidence",
+  "emoji": "♻️",
+  "premise": "Authors back up each point with reasons and evidence. Link each piece of evidence to the point it supports.",
+  "idea": "Explaining how an author uses reasons and evidence to support particular points. Listing evidence without linking it to the point is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

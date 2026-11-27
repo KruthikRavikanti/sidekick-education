@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.4.4-1",
+  "title": "Technical Words",
+  "emoji": "🏞️",
+  "premise": "Do not skip a technical word. The text usually defines it right there, set off by commas or the word or.",
+  "idea": "Determining the meaning of general academic and domain-specific words in a text. Skipping technical words is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

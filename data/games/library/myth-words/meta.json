@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.4.4-1",
+  "title": "Myth Words",
+  "emoji": "🏛️",
+  "premise": "Some words come from old myths. Hercules was famously strong, so a Herculean task is one that takes great strength.",
+  "idea": "Determining the meaning of words and phrases, including those that allude to characters in mythology. Not seeing the allusion is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

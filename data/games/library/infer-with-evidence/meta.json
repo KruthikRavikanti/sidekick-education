@@ -1,0 +1,9 @@
+{
+  "subskillId": "RI.4.1-1",
+  "title": "Infer With Evidence",
+  "emoji": "🏘️",
+  "premise": "In nonfiction too, some conclusions are not stated. Draw them from details in the text.",
+  "idea": "Referring to details and examples when drawing inferences from an informational text. Inferring without evidence is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

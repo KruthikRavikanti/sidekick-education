@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.4.2-3",
+  "title": "Comma Before the Joiner",
+  "emoji": "🪢",
+  "premise": "When and, but, or or so joins two complete sentences, a comma goes right before it.",
+  "idea": "Using a comma before a coordinating conjunction in a compound sentence. Leaving it out is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

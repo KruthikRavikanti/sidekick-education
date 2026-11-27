@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.4.2-4",
+  "title": "Precise Word Swap",
+  "emoji": "🎯",
+  "premise": "Stuff, things and a lot are vague. Informative writing uses exact words and the special vocabulary of the topic.",
+  "idea": "Using precise language and domain-specific vocabulary to inform about a topic. Using vague words is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.4.4-3",
+  "title": "Pick the Right Entry",
+  "emoji": "⏱️",
+  "premise": "A dictionary may list several meanings, and even two ways to say a word. Choose the one that fits your sentence.",
+  "idea": "Consulting reference materials to find the pronunciation and precise meaning of key words. Picking the first definition is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

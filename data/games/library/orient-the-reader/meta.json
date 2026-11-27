@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.4.3-1",
+  "title": "Orient the Reader",
+  "emoji": "🧭",
+  "premise": "The opening of a story orients the reader: who is telling it, who is in it, and what situation they are in.",
+  "idea": "Orienting the reader by establishing a situation and introducing a narrator and characters. Starting without setup is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

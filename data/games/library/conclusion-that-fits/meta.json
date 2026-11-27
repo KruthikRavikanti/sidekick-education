@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.4.1-4",
+  "title": "Conclusion That Fits",
+  "emoji": "🎯",
+  "premise": "A conclusion ties back to your opinion. It is not the place for a brand new idea.",
+  "idea": "Providing a concluding statement related to the opinion presented. Introducing new ideas at the end is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

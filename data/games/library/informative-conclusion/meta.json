@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.4.2-5",
+  "title": "Informative Conclusion",
+  "emoji": "🔚",
+  "premise": "End an informative piece with a statement that follows from what you explained.",
+  "idea": "Providing a concluding statement related to the information or explanation presented. Having no conclusion is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

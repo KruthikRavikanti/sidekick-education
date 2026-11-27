@@ -1,0 +1,9 @@
+{
+  "subskillId": "RF.4.4-1",
+  "title": "Summary in a Sentence",
+  "emoji": "🐢",
+  "premise": "If you understood a passage, you can sum it up. A summary is short and covers the whole thing.",
+  "idea": "Reading grade-level text with purpose and understanding, shown by choosing an accurate summary. Reading without understanding is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

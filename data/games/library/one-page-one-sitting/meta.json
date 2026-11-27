@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.4.6-1",
+  "title": "One Page, One Sitting",
+  "emoji": "⌨️",
+  "premise": "Good typing habits help you finish a whole page without getting tired: home row, eyes on the screen, steady pace.",
+  "idea": "Using technology to produce and publish writing, with sufficient keyboarding to type a page in a single sitting. Very slow typing is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+row"
+}

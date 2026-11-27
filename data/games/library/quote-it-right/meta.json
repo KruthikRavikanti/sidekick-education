@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.4.2-2",
+  "title": "Quote It Right",
+  "emoji": "🗨️",
+  "premise": "Quotation marks wrap the exact words a person said or a text states. A comma sets the quote apart.",
+  "idea": "Using commas and quotation marks to mark direct speech and quotations from a text. Misplacing the quotation marks is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

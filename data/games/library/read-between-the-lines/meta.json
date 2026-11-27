@@ -1,0 +1,9 @@
+{
+  "subskillId": "RL.4.1-2",
+  "title": "Read Between the Lines",
+  "emoji": "📦",
+  "premise": "Authors do not say everything outright. An inference is a smart conclusion you draw from clues in the text.",
+  "idea": "Drawing inferences from a text, supported by details. Making guesses that the text does not support is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

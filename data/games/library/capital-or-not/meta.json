@@ -1,0 +1,9 @@
+{
+  "subskillId": "L.4.2-1",
+  "title": "Capital or Not?",
+  "emoji": "🗽",
+  "premise": "Proper nouns name one particular person, place or thing and get capitals. Common nouns like aunt, city and river do not, unless they are part of a name.",
+  "idea": "Using correct capitalization. Capitalizing common nouns is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "W.4.1-1",
+  "title": "Opinion Opening",
+  "emoji": "👔",
+  "premise": "A strong introduction names the topic, states your opinion, and hints at the reasons to come.",
+  "idea": "Introducing a topic clearly, stating an opinion and creating an organizational structure. Having no clear structure is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}
