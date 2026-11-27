@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.RP.A.3-4",
+  "title": "Percent of It",
+  "emoji": "💯",
+  "premise": "Percent means per hundred. 30% of 50 is 30 for every 100, so it is less than 30.",
+  "idea": "Finding a percent of a quantity as a rate per 100. Thinking 30% of 50 is 30 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

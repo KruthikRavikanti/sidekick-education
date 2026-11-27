@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.G.A.4-2",
+  "title": "Unfold and Add",
+  "emoji": "🎁",
+  "premise": "Surface area is the wrapping paper. Unfold the box into its six faces and add up their areas.",
+  "idea": "Using nets to find the surface area of prisms. Finding the volume instead, or missing faces, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.B.2-2",
+  "title": "Multiply to Check",
+  "emoji": "✅",
+  "premise": "Every division can be checked. Multiply the answer by the divisor and you should get back where you started.",
+  "idea": "Checking quotients with multiplication. Not checking is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

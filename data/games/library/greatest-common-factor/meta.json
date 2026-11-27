@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.B.4-1",
+  "title": "Greatest Common Factor",
+  "emoji": "🔑",
+  "premise": "A common factor divides both numbers. The greatest one is the biggest number that goes into both.",
+  "idea": "Finding the greatest common factor of two whole numbers. Confusing GCF with LCM is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+type"
+}

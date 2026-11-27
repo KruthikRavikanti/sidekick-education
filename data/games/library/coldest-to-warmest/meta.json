@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.C.7-2",
+  "title": "Coldest to Warmest",
+  "emoji": "🥶",
+  "premise": "The lower the temperature, the colder it is. A bigger number after the minus sign means colder.",
+  "idea": "Writing, interpreting and explaining statements of order for rational numbers in real-world contexts. Saying −3 degrees is colder than −7 degrees is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row"
+}

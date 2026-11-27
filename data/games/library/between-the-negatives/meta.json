@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.C.6-3",
+  "title": "Between the Negatives",
+  "emoji": "❄️",
+  "premise": "Negative numbers count leftward from zero. So −3.5 is past −3, not before it.",
+  "idea": "Finding and positioning integers and other rational numbers on a number line. Placing −3.5 between −3 and −2 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "line"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.B.7-3",
+  "title": "Story to Equation",
+  "emoji": "💵",
+  "premise": "A word problem hides an equation. Let a letter stand for the unknown, write the equation, then solve it.",
+  "idea": "Writing and solving one-step equations from real-world problems. Setting up the equation backwards is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

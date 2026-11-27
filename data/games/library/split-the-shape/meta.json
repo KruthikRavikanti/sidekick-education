@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.G.A.1-3",
+  "title": "Split the Shape",
+  "emoji": "✂️",
+  "premise": "Any polygon can be cut into rectangles and triangles. Find each piece once, then add them all.",
+  "idea": "Finding the area of parallelograms, trapezoids and polygons by decomposing. Double counting or leaving out pieces is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

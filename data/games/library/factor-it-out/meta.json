@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.B.4-3",
+  "title": "Factor It Out",
+  "emoji": "📦",
+  "premise": "A sum of two numbers can be rewritten as their common factor times a smaller sum. Both numbers get divided.",
+  "idea": "Using the distributive property to express a sum with a common factor as a multiple of a sum. Factoring from only one term is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

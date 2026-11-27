@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.A.2-1",
+  "title": "Words Into Algebra",
+  "emoji": "🔤",
+  "premise": "Phrases turn into expressions. Watch the order: 5 less than y starts from y.",
+  "idea": "Writing expressions that record operations with numbers and letters. Writing 5 − y for 5 less than y is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

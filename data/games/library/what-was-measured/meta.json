@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.SP.B.5-2",
+  "title": "What Was Measured?",
+  "emoji": "🏷️",
+  "premise": "Numbers alone mean little. A good data report says what was measured, how, and in what unit.",
+  "idea": "Describing the attribute under investigation, including how it was measured and its units. Leaving out the units is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick+sort"
+}

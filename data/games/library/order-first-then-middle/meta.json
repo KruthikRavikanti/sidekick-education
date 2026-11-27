@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.SP.B.5-3",
+  "title": "Order First, Then Middle",
+  "emoji": "🪜",
+  "premise": "The median is the middle value, but only after the data is put in order. Other measures have their own steps.",
+  "idea": "Finding the median, mean, interquartile range and mean absolute deviation. Finding the median without ordering the data is the known slip.",
+  "author": "claude-stand-in",
+  "play": "row+type"
+}

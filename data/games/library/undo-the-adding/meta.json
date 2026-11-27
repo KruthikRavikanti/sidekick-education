@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.B.7-1",
+  "title": "Undo the Adding",
+  "emoji": "⚖️",
+  "premise": "An equation is a balanced scale. To find x, undo what was added to it, on both sides.",
+  "idea": "Solving equations of the form x + p = q. Adding p to both sides instead of subtracting is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

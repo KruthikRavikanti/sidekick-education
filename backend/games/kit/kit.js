@@ -448,16 +448,18 @@
     o = o || {}; var st = this, box = h('div', 'sk-widget sk-keypad');
     box.style.setProperty('--x', o.x || 50); box.style.setProperty('--y', o.y || 0);
     var out = h('output'); box.appendChild(out);
-    var extra = o.keys === 'fraction' ? '/' : o.keys === 'decimal' ? '.' : null, maxLength = o.maxLength || (extra ? 7 : 5);
+    var extra = o.keys === 'fraction' ? '/' : o.keys === 'decimal' ? '.' : null, sign = !!o.sign, maxLength = o.maxLength || ((extra ? 7 : 5) + (sign ? 1 : 0));
     var api = { id: o.id || this._auto('keypad'), el: box, value: '',
       get number() { return parseNumber(api.value); },
-      set: function (text, silent) { api.value = String(text).slice(0, maxLength); out.textContent = api.value ? (o.prefix || '') + api.value + (o.suffix || '') : ''; if (!silent) st.changed(); return api; } };
+      set: function (text, silent) { api.value = String(text).slice(0, maxLength); out.textContent = api.value ? (o.prefix || '') + api.value.replace('-', '\u2212') + (o.suffix || '') : ''; if (!silent) st.changed(); return api; } };
     out.setAttribute('data-empty', (o.prefix || '') + '?' + (o.suffix || ''));
-    ['1', '2', '3', '4', '5', '6', '7', '8', '9', extra || '', '0', '⌫'].forEach(function (key) {
-      var b = h('button', 'sk-key' + (key === '⌫' || key === extra ? ' alt' : ''), key); b.type = 'button';
+    // `sign: true` adds a plus/minus key, so answers below zero can be keyed in
+    var keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', extra || (sign ? '-' : ''), '0', '⌫']; if (sign && extra) keys.push('-');
+    keys.forEach(function (key) {
+      var b = h('button', 'sk-key' + (key === '⌫' || key === extra || key === '-' ? ' alt' : ''), key === '-' ? '±' : key); b.type = 'button';
       if (!key) { b.style.visibility = 'hidden'; b.disabled = true; }
-      b.setAttribute('data-sk-key', key === '⌫' ? 'back' : key); if (key === '⌫') b.setAttribute('aria-label', 'Erase');
-      b.addEventListener('click', function () { if (st.locked) return; if (key === '⌫') api.set(api.value.slice(0, -1)); else if (api.value.length < maxLength) api.set(api.value + key); });
+      b.setAttribute('data-sk-key', key === '⌫' ? 'back' : key); if (key === '⌫') b.setAttribute('aria-label', 'Erase'); if (key === '-') b.setAttribute('aria-label', 'Plus or minus');
+      b.addEventListener('click', function () { if (st.locked) return; if (key === '⌫') api.set(api.value.slice(0, -1)); else if (key === '-') api.set(api.value.charAt(0) === '-' ? api.value.slice(1) : '-' + api.value); else if (api.value.length < maxLength) api.set(api.value + key); });
       box.appendChild(b);
     });
     if (o.label) box.setAttribute('aria-label', plain(o.label));

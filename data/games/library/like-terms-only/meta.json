@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.A.3-2",
+  "title": "Like Terms Only",
+  "emoji": "🍎",
+  "premise": "You can add apples to apples. Terms with the same variable combine. A plain number and an x term do not.",
+  "idea": "Combining like terms to generate equivalent expressions. Adding unlike terms (3x + 2 = 5x) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

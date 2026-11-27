@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.B.5-2",
+  "title": "Substitute and See",
+  "emoji": "🔍",
+  "premise": "To check a possible solution, put it in and compute the WHOLE left side. Then compare.",
+  "idea": "Using substitution to determine whether a given number makes an equation or inequality true. Substituting into only part of the expression is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

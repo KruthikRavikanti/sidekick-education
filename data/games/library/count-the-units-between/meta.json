@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.G.A.3-2",
+  "title": "Count the Units Between",
+  "emoji": "📏",
+  "premise": "When two corners share a coordinate, the side between them runs straight along the grid. Its length is the difference of the other coordinates.",
+  "idea": "Using coordinates to find the length of a side joining points with the same first or second coordinate. Counting points instead of units is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot+type"
+}

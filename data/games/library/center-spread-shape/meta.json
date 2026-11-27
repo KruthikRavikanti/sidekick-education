@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.SP.A.2-1",
+  "title": "Center, Spread, Shape",
+  "emoji": "📊",
+  "premise": "A set of data has a center, a spread and a shape. Describing all three tells the whole story.",
+  "idea": "Describing a distribution by its center, spread and overall shape. Describing only the highest value is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

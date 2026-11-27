@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.C.9-3",
+  "title": "Equation, Table, Graph",
+  "emoji": "🔗",
+  "premise": "An equation, a table and a graph are three views of one relationship. Each one can be made from the others.",
+  "idea": "Analyzing the relationship between variables using graphs and tables and relating these to the equation. Treating the three as unrelated is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+plot"
+}

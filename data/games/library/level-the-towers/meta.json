@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.SP.A.3-3",
+  "title": "Level the Towers",
+  "emoji": "🧱",
+  "premise": "The mean is a fair share. Move blocks from tall towers to short ones until every tower is the same height.",
+  "idea": "Finding the mean as a fair share. Adding the values but forgetting to divide is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial+type"
+}

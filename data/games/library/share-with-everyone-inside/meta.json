@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.A.3-1",
+  "title": "Share With Everyone Inside",
+  "emoji": "🎁",
+  "premise": "The number outside the parentheses multiplies every term inside, not just the first one.",
+  "idea": "Applying the distributive property to generate equivalent expressions. Distributing to the first term only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

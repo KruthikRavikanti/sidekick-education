@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.A.1-2",
+  "title": "Powers Go First",
+  "emoji": "⚡",
+  "premise": "An exponent sticks only to the number it sits on. Work out powers before you multiply or add.",
+  "idea": "Evaluating numerical expressions involving whole-number exponents. Applying the exponent after multiplying is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

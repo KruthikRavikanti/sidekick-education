@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.A.2-3",
+  "title": "Plug It In",
+  "emoji": "🔌",
+  "premise": "A letter next to a number means multiply. To evaluate, swap the letter for its value and compute.",
+  "idea": "Evaluating expressions at specific values of their variables, including formulas. Writing 3x with x = 4 as 34 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

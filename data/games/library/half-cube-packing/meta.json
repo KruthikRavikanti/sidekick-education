@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.G.A.2-1",
+  "title": "Half-Cube Packing",
+  "emoji": "🧊",
+  "premise": "When a box has fraction edges, pack it with smaller cubes. Half-unit cubes fit along any edge measured in halves.",
+  "idea": "Packing a prism with fractional unit cubes. Thinking unit cubes must be whole is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

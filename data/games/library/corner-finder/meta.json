@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.C.8-1",
+  "title": "Corner Finder",
+  "emoji": "📐",
+  "premise": "Plot corner points in all four quadrants and a shape appears. Count from the right axis each time.",
+  "idea": "Solving problems by graphing points in all four quadrants. Counting from the other axis is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

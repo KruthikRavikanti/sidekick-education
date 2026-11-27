@@ -60,6 +60,8 @@
     else if (name === 'dots') { const k = +a[0] || 0; for (let i = 0; i < 10; i++) { const x = 8 + (i % 5) * 17, y = 32 + Math.floor(i / 5) * 18; out += '<rect x="' + x + '" y="' + y + '" width="17" height="18" fill="#fff" stroke="' + FC.line + '" stroke-width="2.5"/>' + (i < k ? '<circle cx="' + (x + 8.5) + '" cy="' + (y + 9) + '" r="5.6" fill="' + FC.shade + '"/>' : ''); } }
     else if (name === 'lines') { const L = (x1, y1, x2, y2) => '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + FC.line + '" stroke-width="5" stroke-linecap="round"/>'; out += a[0] === 'par' ? L(10, 34, 90, 34) + L(10, 66, 90, 66) : a[0] === 'par2' ? L(12, 60, 70, 14) + L(30, 86, 88, 40) : a[0] === 'par3' ? L(10, 34, 90, 34) + L(34, 66, 66, 66) : a[0] === 'perp2' ? L(14, 30, 86, 70) + L(64, 14, 36, 86) + '<path d="M 60 55.6 L 55 64.6 L 46 59.6" fill="none" stroke="' + FC.shade + '" stroke-width="3"/>' : a[0] === 'x2' ? L(10, 40, 90, 52) + L(14, 84, 86, 30) : a[0] === 'perp' ? L(10, 50, 90, 50) + L(50, 10, 50, 90) + '<rect x="50" y="38" width="12" height="12" fill="none" stroke="' + FC.shade + '" stroke-width="3"/>' : L(10, 30, 90, 70) + L(12, 78, 88, 22); }
     else if (name === 'rod') { const tens = +a[0] || 0, ones = +a[1] || 0; for (let i = 0; i < tens; i++) out += '<rect x="' + (6 + i * 10) + '" y="10" width="8" height="80" fill="#b7ce63" stroke="' + FC.line + '" stroke-width="2"/>'; for (let i = 0; i < ones; i++) out += '<rect x="' + (10 + tens * 10 + Math.floor(i / 5) * 11) + '" y="' + (82 - (i % 5) * 11) + '" width="8" height="8" fill="' + FC.shade + '" stroke="' + FC.line + '" stroke-width="2"/>'; }
+    else if (name === 'ineq') { const closed = a[0] === 'c', right = a[1] !== 'l', x = 50, y = 54, tip = right ? 92 : 8; out += '<line x1="6" y1="' + y + '" x2="94" y2="' + y + '" stroke="' + FC.line + '" stroke-width="3"/><line x1="' + x + '" y1="' + y + '" x2="' + tip + '" y2="' + y + '" stroke="' + FC.shade + '" stroke-width="8" stroke-linecap="round"/><path d="M ' + tip + ' ' + y + ' l ' + (right ? -14 : 14) + ' -10 M ' + tip + ' ' + y + ' l ' + (right ? -14 : 14) + ' 10" stroke="' + FC.shade + '" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="' + x + '" cy="' + y + '" r="10" fill="' + (closed ? FC.shade : '#fff') + '" stroke="' + FC.shade + '" stroke-width="6"/>' + (a[2] != null ? '<text x="' + x + '" y="88" font-size="22" font-family="Fredoka, sans-serif" font-weight="600" fill="' + FC.line + '" text-anchor="middle">' + esc(String(a[2]).replace('-', '\u2212')) + '</text>' : ''); }
+    else if (name === 'cells') { const cells = String(a[0] || '').split(';').map((q) => q.split(',').map(Number)).filter((q) => q.length === 2 && q.every(isFinite)), mx = Math.max.apply(null, cells.map((q) => q[0])) + 1, my = Math.max.apply(null, cells.map((q) => q[1])) + 1, u = Math.min(84 / mx, 84 / my), ox = (100 - mx * u) / 2, oy = (100 - my * u) / 2; cells.forEach((q) => { out += '<rect x="' + (ox + q[0] * u).toFixed(1) + '" y="' + (oy + q[1] * u).toFixed(1) + '" width="' + u.toFixed(1) + '" height="' + u.toFixed(1) + '" fill="' + FC.fill + '" stroke="' + FC.line + '" stroke-width="3"/>'; }); }
     else if (name === 'geo') { const kind = a[0] || 'seg', dot = (x, y) => '<circle cx="' + x + '" cy="' + y + '" r="6" fill="' + FC.line + '"/>', arrow = (x, y, dx, dy) => '<path d="M ' + x + ' ' + y + ' l ' + (-dx * 12 - dy * 7) + ' ' + (-dy * 12 + dx * 7) + ' M ' + x + ' ' + y + ' l ' + (-dx * 12 + dy * 7) + ' ' + (-dy * 12 - dx * 7) + '" stroke="' + FC.line + '" stroke-width="5" fill="none" stroke-linecap="round"/>', u = [0.94, -0.34], x1 = 14, y1 = 66, x2 = 86, y2 = 40;
       if (kind === 'point') out += dot(50, 50); else { out += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + FC.line + '" stroke-width="5" stroke-linecap="round"/>'; if (kind === 'seg') out += dot(x1, y1) + dot(x2, y2); else if (kind === 'ray') out += dot(x1, y1) + arrow(x2, y2, u[0], u[1]); else out += arrow(x2, y2, u[0], u[1]) + arrow(x1, y1, -u[0], -u[1]); } }
     else if (name === 'poly') out += poly(String(a[0] || '').split(';').map((q) => q.split(',').map(Number)));
@@ -208,6 +210,16 @@
     if (c.calc && live) out += T(W / 2, 26, 34, total + (total === 1 ? ' cube' : ' cubes'));
     return svg(W, H, out);
   } };
+  // box plot: `data: [..]` drawn as dots, `line: [min, max, step]`, the box from `five` (still picture) or from three dials (Q1, median, Q3)
+  VIEWS.boxplot = { h: 40, draw(v, c, W, H) {
+    const data = (c.data || []).slice().sort((a, b) => a - b), ln = c.line || [0, 10, 1], x0 = 60, w = W - 120, X = (q) => x0 + (q - ln[0]) / (ln[1] - ln[0]) * w, yl = H - 46, yb = H * 0.46;
+    let out = Ln(x0 - 20, yl, x0 + w + 20, yl, 6); const n = Math.round((ln[1] - ln[0]) / (ln[2] || 1)), every = c.every || Math.max(1, Math.ceil(n / 12));
+    for (let i = 0; i <= n; i++) { const q = nice(ln[0] + i * (ln[2] || 1)); out += Ln(X(q), yl - 10, X(q), yl + 10, 3) + (i % every === 0 ? T(X(q), yl + 30, 24, q) : ''); }
+    const seen = {}; data.forEach((q) => { seen[q] = (seen[q] || 0) + 1; out += '<circle cx="' + nice(X(q)) + '" cy="' + nice(yl - 14 - seen[q] * 22) + '" r="9" fill="' + C.sky + '" stroke="' + C.forest + '" stroke-width="3"/>'; });
+    const five = c.five || (data.length && v.length >= 3 ? [data[0], v[0], v[1], v[2], data[data.length - 1]] : null);
+    if (five && five[1] <= five[3]) { const top = Math.max(26, yb - 70), bh = 54; out += Ln(X(five[0]), top + bh / 2, X(five[1]), top + bh / 2, 5) + Ln(X(five[3]), top + bh / 2, X(five[4]), top + bh / 2, 5) + Ln(X(five[0]), top + 10, X(five[0]), top + bh - 10, 5) + Ln(X(five[4]), top + 10, X(five[4]), top + bh - 10, 5) + R(X(five[1]), top, X(five[3]) - X(five[1]), bh, C.sun) + Ln(X(five[2]), top, X(five[2]), top + bh, 7, C.orange); }
+    return svg(W, H, out);
+  } };
   // a bar chart: `given` bars are fixed, one more bar per dial
   VIEWS.bars = { h: 46, draw(v, c, W, H, live) {
     const bars = (c.given || []).map((g) => ({ name: String(g[0]), val: g[1], col: C.sky })).concat(v.map((val, i) => ({ name: String((c.names || [])[i] || ''), val: val, col: C.orange })));
@@ -273,6 +285,7 @@
     (c.sides || []).forEach((text, i) => { if (text == null || text === '') return; const a = P[i], b = P[(i + 1) % n], mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, len = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1; let nx = (b[1] - a[1]) / len, ny = -(b[0] - a[0]) / len; if (inside(mx + nx * 6, my + ny * 6)) { nx = -nx; ny = -ny; } out += T(mx + nx * (24 + em(String(text)) * 10), my + ny * 30, 30, text); });
     (c.angles || []).forEach((text, i) => { if (text == null || text === '') return; const a = P[i], dx = cx - a[0], dy = cy - a[1], m = Math.hypot(dx, dy) || 1; out += T(a[0] + dx / m * 54, a[1] + dy / m * 46, 26, text); });
     (c.names || []).forEach((text, i) => { if (!text) return; const a = P[i], dx = a[0] - cx, dy = a[1] - cy, m = Math.hypot(dx, dy) || 1; out += T(a[0] + dx / m * 30, a[1] + dy / m * 30, 30, text); });
+    (c.dash || []).forEach((d) => { const ax = x0 + d[0] * k, ay = y0 + d[1] * k, bx = x0 + d[2] * k, by = y0 + d[3] * k; out += Ln(ax, ay, bx, by, 5, C.forest, 'stroke-dasharray="12 10"'); if (d[4] != null) out += T((ax + bx) / 2 + (Math.abs(bx - ax) < 1 ? 16 + em(String(d[4])) * 9 : 0), (ay + by) / 2 - (Math.abs(by - ay) < 1 ? 22 : 0), 28, d[4]); });
     if (c.right != null) { const a = P[c.right], b = P[(c.right + 1) % n], d = P[(c.right + n - 1) % n], u = [(b[0] - a[0]), (b[1] - a[1])], w = [(d[0] - a[0]), (d[1] - a[1])], lu = Math.hypot(u[0], u[1]), lw = Math.hypot(w[0], w[1]), s = 26; out += '<path d="M ' + nice(a[0] + u[0] / lu * s) + ' ' + nice(a[1] + u[1] / lu * s) + ' L ' + nice(a[0] + u[0] / lu * s + w[0] / lw * s) + ' ' + nice(a[1] + u[1] / lu * s + w[1] / lw * s) + ' L ' + nice(a[0] + w[0] / lw * s) + ' ' + nice(a[1] + w[1] / lw * s) + '" fill="none" stroke="' + C.forest + '" stroke-width="4"/>'; }
     return svg(W, H, out);
   } };
@@ -700,14 +713,14 @@
   // TYPE: key in a number and send it
   KINDS.type = function (o, solo, y0) {
     const ans = String(o.ans), also = [ans].concat((o.also || []).map(String)), all = also.concat(['trap', 'trap2', 'trap3'].filter((k) => o[k] != null).map((k) => String(o[k])));
-    const keys = all.some((t) => t.indexOf('/') >= 0) ? 'fraction' : all.some((t) => t.indexOf('.') >= 0) ? 'decimal' : null, maxLength = o.maxLength || (keys ? 7 : 6);
+    const keys = all.some((t) => t.indexOf('/') >= 0) ? 'fraction' : all.some((t) => t.indexOf('.') >= 0) ? 'decimal' : null, sign = !!o.signed || all.some((t) => t.charAt(0) === '-'), maxLength = o.maxLength || ((keys ? 7 : 6) + (sign ? 1 : 0));
     const num = (t) => { const p = String(t).split('/'); return p.length === 2 ? Number(p[0]) / Number(p[1]) : Number(t); };
-    all.forEach((t) => { if (!/^[0-9./]+$/.test(t) || t.length > maxLength || !isFinite(num(t))) fail('type', '"' + t + '" cannot be typed on the keypad'); });
+    all.forEach((t) => { if (!/^-?[0-9./]+$/.test(t) || t.length > maxLength || !isFinite(num(t))) fail('type', '"' + t + '" cannot be typed on the keypad'); });
     const cfg = viewCfg(o.view), vh = cfg ? viewH(cfg) : 0, is = (stage, t) => { const kp = stage.get('k'); if (!kp.value) return false; return o.exact ? kp.value === String(t) : near(kp.number, num(t)); };
     return {
-      height: y0 + Math.max(60, vh) + 3,
+      height: y0 + Math.max(sign && keys ? 71 : 60, vh) + 3,
       setup(stage) {
-        const kp = stage.keypad({ id: 'k', x: cfg ? 79 : 50, y: y0 + 30, keys: keys, prefix: o.pre, suffix: o.unit, maxLength: maxLength, label: 'Number pad' });
+        const kp = stage.keypad({ id: 'k', x: cfg ? 79 : 50, y: y0 + (sign && keys ? 35.5 : 30), keys: keys, sign: sign, prefix: o.pre, suffix: o.unit, maxLength: maxLength, label: 'Number pad' });
         if (cfg) { const paint = drawView(stage, { x: 2, y: y0 + Math.max(0, (60 - vh) / 2), w: 56, h: vh }, cfg, !solo, [0]); stage.on('change', () => paint([isFinite(kp.number) ? kp.number : 0])); }
         else if (o.icon !== '') { stage.sprite({ id: 'pal', emoji: o.icon || '🤖', size: 15, x: 13, y: y0 + 30, float: true }); stage.sprite({ id: 'pal2', emoji: o.icon2 || '✨', size: 9, x: 88, y: y0 + 14 }); }
       },

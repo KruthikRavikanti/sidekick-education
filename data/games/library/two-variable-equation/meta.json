@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.C.9-2",
+  "title": "Two Variable Equation",
+  "emoji": "🧾",
+  "premise": "An equation with two variables shows how one quantity is found from the other.",
+  "idea": "Writing an equation to express one quantity in terms of the other. Writing a one-variable expression instead is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

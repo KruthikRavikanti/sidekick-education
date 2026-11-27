@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.C.7-4",
+  "title": "Debt and Depth",
+  "emoji": "💳",
+  "premise": "A balance of −30 is LESS than a balance of −10. But a debt of 30 is MORE than a debt of 10. Order and size are different ideas.",
+  "idea": "Distinguishing comparisons of absolute value from statements about order. Thinking a balance of −30 is more than −10 because 30 > 10 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

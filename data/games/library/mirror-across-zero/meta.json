@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.C.6-1",
+  "title": "Mirror Across Zero",
+  "emoji": "🪞",
+  "premise": "Every number has an opposite the same distance from zero on the other side. The opposite of an opposite brings you back.",
+  "idea": "Recognizing opposite signs as locations on opposite sides of 0, and that the opposite of the opposite is the number itself. Thinking −(−3) = −3 is the known slip.",
+  "author": "claude-stand-in",
+  "play": "line+type"
+}

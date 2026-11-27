@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.G.A.1-2",
+  "title": "Height Not Slant",
+  "emoji": "🔺",
+  "premise": "A triangle is half of a rectangle with the same base and height. The height goes straight up, never along a slanted side.",
+  "idea": "Finding the area of any triangle with base and height. Using a slanted side as the height is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

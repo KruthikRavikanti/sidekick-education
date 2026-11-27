@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.B.3-2",
+  "title": "Count the Decimal Places",
+  "emoji": "✖️",
+  "premise": "When multiplying decimals, the answer has as many decimal places as both factors put together.",
+  "idea": "Multiplying multi-digit decimals with the standard algorithm. Placing the point by lining it up with the factors is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.C.7-3",
+  "title": "Distance From Zero",
+  "emoji": "📏",
+  "premise": "Absolute value asks one thing: how far is this number from zero? A distance is never negative.",
+  "idea": "Understanding the absolute value of a rational number as its distance from 0 on the number line. Treating absolute value as a rule with no meaning is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

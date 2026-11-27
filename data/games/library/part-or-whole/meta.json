@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.RP.A.1-2",
+  "title": "Part or Whole?",
+  "emoji": "🔵",
+  "premise": "Some ratios compare one part with another part. Others compare a part with the whole group. Read which one is asked.",
+  "idea": "Telling part-to-part from part-to-whole ratios. Using the total when the question asks part to part is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.B.2-1",
+  "title": "Zero Holds the Place",
+  "emoji": "🧮",
+  "premise": "In long division, when the divisor does not fit into a place, that place still needs a digit: zero.",
+  "idea": "Fluently dividing multi-digit numbers with the standard algorithm. Forgetting placeholder zeros in the quotient is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

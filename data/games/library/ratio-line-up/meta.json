@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.RP.A.3-2",
+  "title": "Ratio Line Up",
+  "emoji": "📈",
+  "premise": "Plot pairs from a ratio table. Equivalent ratios always fall on one straight line through the origin.",
+  "idea": "Plotting pairs of values from a ratio table on the coordinate plane. Not seeing that the points form a line through the origin is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

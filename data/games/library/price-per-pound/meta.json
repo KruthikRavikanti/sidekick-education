@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.RP.A.2-1",
+  "title": "Price Per Pound",
+  "emoji": "🍏",
+  "premise": "A unit rate tells how much for just ONE. Divide the amount by the number of units.",
+  "idea": "Finding the unit rate a/b associated with a ratio a:b. Dividing in the opposite order (b/a) is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

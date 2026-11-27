@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.G.A.2-2",
+  "title": "Fraction Box Volume",
+  "emoji": "📦",
+  "premise": "Volume is still length times width times height, even when an edge is a fraction.",
+  "idea": "Applying V = l × w × h with fractional edge lengths. Multiplying the fractions incorrectly is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

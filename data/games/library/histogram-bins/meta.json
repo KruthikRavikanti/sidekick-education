@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.SP.B.4-2",
+  "title": "Histogram Bins",
+  "emoji": "📶",
+  "premise": "A histogram groups data into bins. Every bin must be the same width, and the bars touch.",
+  "idea": "Displaying numerical data in a histogram with equal intervals. Using unequal bins or leaving spaces between bars is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+dial"
+}

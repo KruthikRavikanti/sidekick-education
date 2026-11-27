@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.RP.A.1-1",
+  "title": "Marble Ratio Words",
+  "emoji": "🔴",
+  "premise": "A ratio compares two amounts. 3 red to 2 blue means for every 3 red marbles there are 2 blue ones.",
+  "idea": "Describing a ratio relationship in words. Treating a ratio as a fraction of the whole is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

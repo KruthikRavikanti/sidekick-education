@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.SP.B.5-4",
+  "title": "Mean or Median?",
+  "emoji": "🏠",
+  "premise": "One extreme value drags the mean far from what is typical. The median stays put, so it fits lopsided data better.",
+  "idea": "Relating the choice of measures of center and variability to the shape of the data. Using the mean for skewed data with outliers is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

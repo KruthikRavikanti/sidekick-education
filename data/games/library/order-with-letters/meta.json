@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.A.2-4",
+  "title": "Order With Letters",
+  "emoji": "🪜",
+  "premise": "Once the letters become numbers, the order of operations still rules. Powers first, then multiply, then add.",
+  "idea": "Performing arithmetic operations in the conventional order when evaluating expressions, including those with exponents. Working left to right only is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

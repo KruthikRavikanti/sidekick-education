@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.RP.A.3-1",
+  "title": "Ratio Table",
+  "emoji": "🍚",
+  "premise": "Every column of a ratio table is the same recipe made bigger. Multiply both amounts by the same number.",
+  "idea": "Making tables of equivalent ratios and finding missing values. Adding the same number to both quantities instead of multiplying is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

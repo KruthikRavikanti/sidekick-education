@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.SP.A.3-1",
+  "title": "One Number for the Middle",
+  "emoji": "🎯",
+  "premise": "A measure of center sums up a whole data set with one number. The mean is the fair share, not the most common value.",
+  "idea": "Recognizing that a measure of center summarizes all values with a single number. Thinking the mean is the most common value is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.EE.B.5-1",
+  "title": "Make It True",
+  "emoji": "🗝️",
+  "premise": "A solution is a value that makes the equation or inequality a true statement. Try each one.",
+  "idea": "Understanding solving an equation or inequality as finding which values make it true. Thinking the solution is just the number on the right is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

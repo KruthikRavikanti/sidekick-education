@@ -1,0 +1,9 @@
+{
+  "subskillId": "6.NS.A.1-2",
+  "title": "Flip the Second One",
+  "emoji": "🔃",
+  "premise": "To divide by a fraction, multiply by its flip. Only the second fraction, the one you divide by, gets flipped.",
+  "idea": "Computing quotients of fractions. Flipping the first fraction or both fractions is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}
