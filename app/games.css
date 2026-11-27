@@ -212,44 +212,54 @@
   font-size: 15px;
   line-height: 1.1;
 }
-.game-review-search {
-  display: flex;
+.game-review .game-review-search {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: 8px;
+  margin: 0;
   background: #fff;
   border: 2px solid var(--border);
   border-radius: 14px;
-  padding: 0 10px;
+  padding: 0 12px;
   color: var(--muted);
 }
-.game-review-search:focus-within {
+.game-review .game-review-search:focus-within {
   border-color: var(--forest);
 }
-.game-review-search input {
-  flex: 1;
+/* The account shell styles every input as a tall bordered field. Inside the search box it is plain. */
+.game-review .game-review-search input {
+  width: 100%;
+  height: 40px;
   min-width: 0;
+  padding: 0;
   border: 0;
+  border-radius: 0;
   outline: 0;
   background: transparent;
   font: inherit;
   font-size: 14px;
   color: var(--forest);
-  padding: 9px 0;
 }
 .game-review-selects {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 6px;
 }
-.game-review-selects select {
+.game-review .game-review-selects label {
+  margin: 0;
+}
+.game-review .game-review-selects select {
   width: 100%;
+  height: 40px;
+  padding: 0 8px;
   font: inherit;
   font-size: 13px;
+  font-weight: 700;
   color: var(--forest);
   background: #fff;
   border: 2px solid var(--border);
   border-radius: 12px;
-  padding: 8px;
 }
 .game-review-count {
   color: var(--muted);

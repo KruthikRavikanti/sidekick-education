@@ -10,7 +10,7 @@ import {
   Search,
   X,
 } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { api, APIError, errorMessage } from "@/lib/account-api";
 import type { GameReviewDetail, GameReviewList } from "@/lib/game-types";
 import { RequireMode } from "./account-session";
@@ -321,10 +321,14 @@ function ReviewContent() {
   const [query, setQuery] = useState("");
   const [offset, setOffset] = useState(0);
 
-  // Search as you type, a moment after the last key.
+  // Search as you type, a moment after the last key. Only a changed search goes back to the first page.
+  const applied = useRef("");
   useEffect(() => {
+    const next = search.trim();
+    if (next === applied.current) return;
     const timer = window.setTimeout(() => {
-      setQuery(search.trim());
+      applied.current = next;
+      setQuery(next);
       setOffset(0);
     }, 300);
     return () => window.clearTimeout(timer);

@@ -103,10 +103,12 @@ def seed_examples(db, now, *, robot=run_robot, approve=False, workers=1, only=No
         if progress:
             progress(entry)
 
-    for item in prompts.load_library():
-        with db.transaction() as conn:
-            subskill = get_subskill(conn, item['subskillId'])
-            known = conn.execute('SELECT id,status FROM game_versions WHERE source_sha256=?', (source_hash(item['code'], item['css']),)).fetchone()
+    items = [item for item in prompts.load_library() if not only or item['slug'] in only]
+    with db.transaction() as conn:
+        # One read for the whole pass: the library has a game for every skill.
+        looked = [(item, get_subskill(conn, item['subskillId']),
+                   conn.execute('SELECT id,status FROM game_versions WHERE source_sha256=?', (source_hash(item['code'], item['css']),)).fetchone()) for item in items]
+    for item, subskill, known in looked:
         if not _wanted(item, subskill, only, subject, grades):
             continue
         if not subskill or not subskill['active']:
