@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-VM.A.2-1",
+  "title": "Tip Minus Tail",
+  "emoji": "➡️",
+  "premise": "A vector’s components say how far it moves across and up. Subtract where it starts from where it ends.",
+  "idea": "Finding the components of a vector by subtracting the initial point from the terminal point. Subtracting in the reverse order is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

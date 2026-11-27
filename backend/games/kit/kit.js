@@ -33,7 +33,7 @@
   function rich(text) {
     return esc(text == null ? '' : text)
       .replace(/\{\s*([^{}\/]{1,12}?)\s*\/\s*([^{}\/]{1,12}?)\s*\}/g, '<span class="sk-frac"><span>$1</span><span>$2</span></span>')
-      .replace(/\^\{([^{}]{1,12})\}/g, '<sup>$1</sup>').replace(/\^\(([^()<>]{1,14})\)/g, '<sup>$1</sup>').replace(/\^(−?-?[0-9A-Za-z]{1,3})/g, '<sup>$1</sup>')
+      .replace(/\^\{([^{}]{1,12})\}/g, '<sup>$1</sup>').replace(/\^\(([^()<>]{1,14})\)/g, '<sup>$1</sup>').replace(/\^(−?-?(?:[0-9]{1,3}|[A-Za-z]))/g, '<sup>$1</sup>')
       .replace(/\n/g, '<br>');
   }
   function plain(text) { return String(text == null ? '' : text).replace(/\{\s*([^{}\/]+?)\s*\/\s*([^{}\/]+?)\s*\}/g, '$1/$2'); }

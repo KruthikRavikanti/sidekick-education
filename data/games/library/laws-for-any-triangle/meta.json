@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.D.10-1",
+  "title": "Laws for Any Triangle",
+  "emoji": "⚖️",
+  "premise": "SOH-CAH-TOA needs a right angle. The Law of Sines and the Law of Cosines work in every triangle.",
+  "idea": "Proving the Laws of Sines and Cosines and using them to solve problems. Applying them only to right triangles is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

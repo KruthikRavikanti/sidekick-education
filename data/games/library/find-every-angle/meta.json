@@ -1,0 +1,9 @@
+{
+  "subskillId": "F-TF.B.7-1",
+  "title": "Find Every Angle",
+  "emoji": "🎯",
+  "premise": "A trig equation usually has more than one solution in a full turn. The calculator gives one. Symmetry gives the other.",
+  "idea": "Using inverse functions to solve trigonometric equations and interpreting the solutions. Giving one solution in the period is the known slip.",
+  "author": "claude-stand-in",
+  "play": "pick"
+}

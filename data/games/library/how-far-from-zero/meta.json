@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-CN.A.3-2",
+  "title": "How Far From Zero",
+  "emoji": "📏",
+  "premise": "The modulus of a complex number is its distance from 0 on the complex plane. The two parts are the legs of a right triangle.",
+  "idea": "Finding the modulus of a complex number. Adding the parts in place of the root of the sum of squares is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

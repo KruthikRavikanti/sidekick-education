@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-MD.A.1-1",
+  "title": "Give Each Outcome a Number",
+  "emoji": "🪙",
+  "premise": "A random variable turns each outcome into a number. Flip two coins and let X count the heads: X can be 0, 1 or 2.",
+  "idea": "Defining a random variable and graphing its probability distribution. Confusing outcomes with values is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+dial+type"
+}

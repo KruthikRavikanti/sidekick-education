@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-VM.C.12-1",
+  "title": "How Much Area Grows",
+  "emoji": "🟪",
+  "premise": "A 2 by 2 matrix reshapes the plane. Its determinant tells how many times bigger every area becomes.",
+  "idea": "Working with 2 × 2 matrices as transformations and interpreting the determinant as area. Not connecting matrices to geometry is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

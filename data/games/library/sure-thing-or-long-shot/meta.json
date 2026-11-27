@@ -1,0 +1,9 @@
+{
+  "subskillId": "S-MD.B.5-2",
+  "title": "Sure Thing or Long Shot",
+  "emoji": "🤔",
+  "premise": "A giant prize can be a poor choice if it rarely comes. Compare options by their expected values, not their biggest numbers.",
+  "idea": "Evaluating and comparing strategies on the basis of expected values. Picking the option with the largest single prize is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+sort"
+}

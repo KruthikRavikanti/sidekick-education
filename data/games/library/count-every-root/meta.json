@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-CN.C.9-1",
+  "title": "Count Every Root",
+  "emoji": "🌳",
+  "premise": "The Fundamental Theorem of Algebra: a polynomial of degree n has exactly n complex roots, when repeats are counted.",
+  "idea": "Knowing the Fundamental Theorem of Algebra. Counting only the real roots is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

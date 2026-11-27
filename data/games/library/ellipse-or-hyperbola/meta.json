@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-GPE.A.3-1",
+  "title": "Ellipse or Hyperbola",
+  "emoji": "🥚",
+  "premise": "An ellipse keeps the sum of its two focus distances constant. A hyperbola keeps the difference constant. One sign tells them apart.",
+  "idea": "Deriving the equations of ellipses and hyperbolas given the foci. Confusing the ellipse and hyperbola forms is the known slip.",
+  "author": "claude-stand-in",
+  "play": "sort+fill"
+}

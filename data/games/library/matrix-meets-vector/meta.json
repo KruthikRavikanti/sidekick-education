@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-VM.C.11-1",
+  "title": "Matrix Meets Vector",
+  "emoji": "🎯",
+  "premise": "A matrix can act on a vector and turn it into a new vector. Each row of the matrix makes one entry of the answer.",
+  "idea": "Multiplying a vector by a matrix of suitable dimensions. Mismatching rows and entries is the known slip.",
+  "author": "claude-stand-in",
+  "play": "dial"
+}

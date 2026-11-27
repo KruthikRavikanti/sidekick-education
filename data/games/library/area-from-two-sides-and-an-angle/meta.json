@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.D.9-1",
+  "title": "Area From Two Sides and an Angle",
+  "emoji": "📐",
+  "premise": "You do not need the height to find a triangle’s area. Two sides and the angle between them are enough.",
+  "idea": "Deriving and using the formula A = ½ab sin C. Using a side that is not next to the angle is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

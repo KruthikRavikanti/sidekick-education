@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-VM.C.6-1",
+  "title": "Rows and Columns",
+  "emoji": "🗄️",
+  "premise": "A matrix is a grid of numbers. Rows go across. Columns go down. Each position means something.",
+  "idea": "Using matrices to represent and manipulate data. Mixing up rows and columns is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+type"
+}

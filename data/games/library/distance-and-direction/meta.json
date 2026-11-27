@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-CN.B.4-2",
+  "title": "Distance and Direction",
+  "emoji": "🧭",
+  "premise": "Polar form describes a complex number by how far it is from 0 and which way it points.",
+  "idea": "Converting between rectangular and polar forms of complex numbers. Using an angle from another quadrant is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

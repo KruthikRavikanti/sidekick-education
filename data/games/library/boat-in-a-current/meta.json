@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-VM.A.3-1",
+  "title": "Boat in a Current",
+  "emoji": "⛵",
+  "premise": "A boat heads east while the current pushes north. Its real path is the diagonal, and its real speed is the length of that diagonal.",
+  "idea": "Solving problems involving velocity and other quantities represented by vectors. Adding the magnitudes in place of the vectors is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

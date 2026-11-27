@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-VM.B.4-1",
+  "title": "Tip to Tail",
+  "emoji": "🔗",
+  "premise": "To add two vectors, walk along the first, then along the second from where you stopped. Or just add the components.",
+  "idea": "Adding vectors end to end, component-wise, and by the parallelogram rule. Adding only the magnitudes is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

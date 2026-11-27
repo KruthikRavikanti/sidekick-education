@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-VM.C.10-1",
+  "title": "The Do-Nothing Matrices",
+  "emoji": "🪞",
+  "premise": "The zero matrix acts like 0 in addition. The identity matrix acts like 1 in multiplication. It has 1s only on the diagonal.",
+  "idea": "Understanding that the zero and identity matrices play roles like 0 and 1. Thinking the identity matrix is all 1s is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+sort"
+}

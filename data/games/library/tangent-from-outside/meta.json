@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-C.A.4-1",
+  "title": "Tangent From Outside",
+  "emoji": "🧷",
+  "premise": "From a point outside a circle you can draw a line that just grazes it. That tangent meets the radius at a right angle.",
+  "idea": "Constructing a tangent line from a point outside a circle to the circle. Drawing a line that crosses the circle is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill+row+type"
+}

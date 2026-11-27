@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-CN.B.5-2",
+  "title": "Times i Is a Quarter Turn",
+  "emoji": "🔄",
+  "premise": "Multiply any complex number by i and it swings a quarter turn counterclockwise around 0, keeping its distance.",
+  "idea": "Understanding multiplication by i as a rotation on the complex plane. Not seeing multiplication as rotation is the known slip.",
+  "author": "claude-stand-in",
+  "play": "plot"
+}

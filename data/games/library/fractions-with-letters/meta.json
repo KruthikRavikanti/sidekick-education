@@ -1,0 +1,9 @@
+{
+  "subskillId": "A-APR.D.7-1",
+  "title": "Fractions With Letters",
+  "emoji": "🧮",
+  "premise": "Rational expressions follow the same rules as number fractions. To add them you need a common denominator.",
+  "idea": "Adding, subtracting, multiplying and dividing rational expressions. Adding the denominators is the known slip.",
+  "author": "claude-stand-in",
+  "play": "fill"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-VM.C.8-2",
+  "title": "Row Times Column",
+  "emoji": "✖️",
+  "premise": "Matrix multiplication is not entry by entry. Each answer comes from a whole row of the first times a whole column of the second.",
+  "idea": "Multiplying matrices of appropriate dimensions. Multiplying entry by entry is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}

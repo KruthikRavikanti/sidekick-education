@@ -1,0 +1,9 @@
+{
+  "subskillId": "N-VM.C.10-2",
+  "title": "Determinant Check",
+  "emoji": "🔐",
+  "premise": "The determinant of a 2 by 2 matrix is one number: ad − bc. If it is zero, the matrix cannot be undone.",
+  "idea": "Knowing that a square matrix has a multiplicative inverse if and only if its determinant is nonzero. Ignoring the determinant is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type+sort"
+}

@@ -1,0 +1,9 @@
+{
+  "subskillId": "G-SRT.D.11-1",
+  "title": "Solve Any Triangle",
+  "emoji": "🔺",
+  "premise": "With the two laws you can find missing sides in triangles that have no right angle at all.",
+  "idea": "Applying the Law of Sines and the Law of Cosines to find unknown measurements. Leaving out a term, or missing a second possible triangle, is the known slip.",
+  "author": "claude-stand-in",
+  "play": "type"
+}
