@@ -25,6 +25,7 @@ from backend.gap.catalog import get_subskill
 
 from . import library, prompts
 from .checks import static_issues
+from .config import GameSettings
 from .frame import build_document
 from .robot import failures, run_robot
 
@@ -180,12 +181,14 @@ async def _generate(args, database):
             if args.subject:
                 marks += ' AND s.subject=?'
                 values.append('Math' if args.subject == 'math' else 'Reading/ELA')
-            # A skill with a game shipped in data/games counts as covered even before `seed` has run.
+            # A skill with a game shipped in data/games counts as covered even before `seed` has run,
+            # unless the shipped games are switched off: then only games the model wrote count.
             # The shipped set is filtered here, not in SQL: it is far larger than a query's parameter limit on older SQLite.
-            shipped = {game['subskillId'] for game in prompts.load_library()}
+            premade = GameSettings.from_env().premade
+            shipped = {game['subskillId'] for game in prompts.load_library()} if premade else set()
             targets = [row[0] for row in conn.execute(
                 f"""SELECT s.id FROM catalog_subskills s WHERE s.active=1{marks}
-                    AND NOT EXISTS (SELECT 1 FROM game_versions v WHERE v.subskill_id=s.id AND v.status!='retired')
+                    AND NOT EXISTS (SELECT 1 FROM game_versions v WHERE v.subskill_id=s.id AND v.status!='retired'{library.origin_filter(premade, 'v.origin')})
                     ORDER BY s.grade, s.id""", values) if row[0] not in shipped][:max(0, args.limit)]
             print(len(targets), 'skills to build', flush=True)
     clock = _Clock()

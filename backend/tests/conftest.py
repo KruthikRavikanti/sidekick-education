@@ -51,6 +51,15 @@ def security_context(database_path, clock, monkeypatch):
     return context
 
 
+@pytest.fixture(autouse=True)
+def game_settings_from_code_only(monkeypatch):
+    # Importing the app loads the developer's own backend/.env. Its game switches must not steer a test,
+    # so every test starts from the defaults in backend/games/config.py and sets what it needs itself.
+    for name in ('SIDEKICK_GAMES_ENABLED', 'SIDEKICK_GAMES_REQUIRE_APPROVAL', 'SIDEKICK_GAMES_AUTOGENERATE', 'SIDEKICK_GAMES_PREMADE', 'SIDEKICK_GAMES_NEW_EVERY_UPLOAD',
+                 'SIDEKICK_GAMES_PLAYGROUND', 'SIDEKICK_GAME_REVIEWERS', 'GAMES_MODEL', 'GAMES_TIMEOUT_SECONDS'):
+        monkeypatch.delenv(name, raising=False)
+
+
 @pytest.fixture
 def client_factory(security_context):
     clients = []

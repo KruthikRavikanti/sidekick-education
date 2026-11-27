@@ -301,7 +301,9 @@ function PlaygroundContent() {
                   ? `Showing ${first.toLocaleString()} to ${last.toLocaleString()} of ${list.total.toLocaleString()}`
                   : subject || grade || query
                     ? "No games match these filters."
-                    : "No games are loaded yet."}
+                    : list.premade
+                      ? "No games are loaded yet."
+                      : "No model-written games yet."}
               </p>
               {games.map((game) => (
                 <button
@@ -354,7 +356,9 @@ function PlaygroundContent() {
                       ? "Pick a game to play."
                       : subject || grade || query
                         ? "Try a different search, subject or grade."
-                        : "Run npm run games:seed to load the games that ship with the app."}
+                        : list.premade
+                          ? "Run npm run games:seed to load the games that ship with the app."
+                          : "Pre-made games are switched off, so this lists only games the model has written. Set SIDEKICK_GAMES_PREMADE=true in backend/.env to bring the pre-made ones back."}
                   </p>
                 </div>
               )}

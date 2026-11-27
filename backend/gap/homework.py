@@ -111,6 +111,14 @@ def _existing_upload(connection,kid_id,digest,idempotency_key):
     return connection.execute("SELECT * FROM homework_uploads WHERE kid_id=? AND content_hash=?",(kid_id,digest)).fetchone()
 
 
+def _note_request(connection,kid_id,upload_id,digest,key,now):
+    """Record that this work was sent in. The same page sent again is the same upload, and a new request.
+
+    A caller without a request key gets a private one, so "when was this last sent in" always has an answer.
+    """
+    connection.execute("INSERT OR IGNORE INTO homework_upload_requests VALUES(?,?,?,?,?)",(kid_id,key or "auto-"+secrets.token_hex(16),upload_id,digest,now))
+
+
 async def persist_ingest(security, kid_id: str, data: bytes, mime: str, *, extractor: Callable, expected_session=None, adapter=None, source="live", filename=None, idempotency_key=None, prepared_image=None, raise_extraction_errors=False, defer_processing=False):
     """Validate/store once, then resume checkpoints. Ownership never follows a changed profile."""
     if idempotency_key is not None and (len(idempotency_key) > 120 or not idempotency_key.strip()):
@@ -124,8 +132,8 @@ async def persist_ingest(security, kid_id: str, data: bytes, mime: str, *, extra
         if existing and existing["mime"] != mime:
             raise ExtractionError("invalid_image","The file contents do not match the selected file type.",400)
         existing_id = existing["id"] if existing else None
-        if existing_id and idempotency_key:
-            connection.execute("INSERT OR IGNORE INTO homework_upload_requests VALUES(?,?,?,?,?)",(kid_id,idempotency_key,existing_id,digest,security.clock.now()))
+        if existing_id:
+            _note_request(connection,kid_id,existing_id,digest,idempotency_key,security.clock.now())
     if existing_id:
         if defer_processing:
             return upload_view(security,kid_id,existing_id,expected_session=expected_session)
@@ -147,8 +155,7 @@ async def persist_ingest(security, kid_id: str, data: bytes, mime: str, *, extra
                 upload_id = existing["id"]
             else:
                 connection.execute("INSERT INTO homework_uploads(id,kid_id,content_hash,idempotency_key,file_ref,mime,pages_json,source,state,stage,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", (upload_id,kid_id,digest,idempotency_key,references[0],mime,_json(references[1:]),source,"pending","extraction",now,now))
-            if idempotency_key:
-                connection.execute("INSERT OR IGNORE INTO homework_upload_requests VALUES(?,?,?,?,?)",(kid_id,idempotency_key,upload_id,digest,now))
+            _note_request(connection,kid_id,upload_id,digest,idempotency_key,now)
         if existing:
             cleanup_references(security, references)
         references = []

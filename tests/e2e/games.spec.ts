@@ -172,6 +172,23 @@ async function playToTheEnd(page: Page) {
   return rounds.length;
 }
 
+test("the card changes to the game by itself once the game is approved", async ({ page, context }) => {
+  test.setTimeout(90_000);
+  const family = await createFamily(context);
+  const uploadId = await uploadWork(page, "game-ela-work.png");
+  const loaded = await readAndLoadGame(family.kid.id, uploadId, "waiting");
+  expect(loaded.statuses).toEqual(["verified"]);
+  const soon = page.getByRole("region", { name: "A game is on the way", exact: true });
+  await expect(soon).toBeVisible({ timeout: 20_000 });
+  await expect(soon.getByRole("heading", { name: "A new game is waiting for a grown-up to try it." })).toBeVisible();
+  // A reviewer approves it while the child's page stays open. Nobody reloads anything.
+  await readAndLoadGame(family.kid.id, uploadId, "approved");
+  const card = page.getByRole("region", { name: "A game for this skill", exact: true });
+  await expect(card).toBeVisible({ timeout: 30_000 });
+  await expect(card.getByRole("heading", { name: loaded.title, exact: true })).toBeVisible();
+  await expect(soon).toHaveCount(0);
+});
+
 test("a waiting game stays hidden until a parent approves it, then the child plays it to the end and the parent sees it", async ({
   page,
   context,

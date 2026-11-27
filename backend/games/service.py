@@ -29,44 +29,58 @@ def game_view(version):
     return dict(id=version['id'], title=version['title'], premise=version['premise'], emoji=version['emoji'])
 
 
+def _new_every_upload(settings):
+    """Testing mode: every upload gets its own newly written game. It needs a model that can write one."""
+    return settings.new_every_upload and settings.autogenerate and model_configured()
+
+
 def _pick(conn, security, kid_id, upload_id, active, settings):
-    """The skill on this upload to play, preferring one that already has a game."""
+    """The skill on this upload to play, preferring one that already has a game.
+
+    Returns (skill, game, reason, since). `since` is None except in new-every-upload mode, where it is the
+    time the upload was sent in: only a game written from then on counts for it.
+    """
     # Games exist for every grade in the skill map, high school included.
     candidates, reason = targets.candidates(conn, security, kid_id, upload_id, active, grade_of=library.grade_number)
     if not candidates:
-        return None, None, reason or 'no_supported_skill'
+        return None, None, reason or 'no_supported_skill', None
+    since = library.submitted_at(conn, kid_id, upload_id) if _new_every_upload(settings) else None
     ranked = []
     for priority, target, _ in candidates:
-        version = library.playable(conn, target['subskill_id'], settings.require_approval)
+        version = library.playable(conn, target['subskill_id'], settings.require_approval, settings.premade, since)
         ranked.append((0 if version else 1, priority, target, version))
     _, _, target, version = min(ranked, key=lambda item: item[:2])
-    return target, version, None
+    return target, version, None, since
 
 
 def suggestion(security, kid_id, upload_id, active):
     settings = GameSettings.from_env()
-    off = dict(enabled=False, state='off', reason=None, targetSkill=None, game=None, canRequest=False, runId=None)
+    # `approval` tells the card whether a person still has to look before a new game appears.
+    off = dict(enabled=False, state='off', reason=None, targetSkill=None, game=None, canRequest=False, runId=None, approval=settings.require_approval)
     if not settings.enabled:
         with security.db.transaction() as conn:
             authorize(security, conn, kid_id, active, 'kid')
         return off
     with security.db.transaction() as conn:
-        target, version, reason = _pick(conn, security, kid_id, upload_id, active, settings)
+        target, version, reason, since = _pick(conn, security, kid_id, upload_id, active, settings)
         if not target:
             return {**off, 'enabled': True, 'state': 'none', 'reason': reason}
-        now = security.clock.now()
-        run = conn.execute("SELECT id FROM game_runs WHERE kid_id=? AND upload_id=? AND status='in_progress' ORDER BY started_at DESC LIMIT 1", (kid_id, upload_id)).fetchone()
+        now, skill = security.clock.now(), target['subskill_id']
+        # Only a run of the game on offer can be picked up again.
+        run = conn.execute("SELECT id FROM game_runs WHERE kid_id=? AND upload_id=? AND game_version_id=? AND status='in_progress' ORDER BY started_at DESC LIMIT 1",
+                           (kid_id, upload_id, version['id'])).fetchone() if version else None
         if version:
             state = 'ready'
-        elif library.open_job(conn, target['subskill_id'], now):
+        elif library.open_job(conn, skill, now):
             state = 'building'
-        elif library.waiting_for_review(conn, target['subskill_id']):
+        elif library.waiting_for_review(conn, skill, settings.premade, since):
             state = 'in_review'
         else:
             state = 'none'
-        can_request = state == 'none' and settings.autogenerate and model_configured() and not library.recently_failed(conn, target['subskill_id'], now)
-        return dict(enabled=True, state=state, reason=None, targetSkill=skill_view(target), game=game_view(version) if version else None,
-                    canRequest=can_request, runId=run['id'] if run and version else None)
+        writes = settings.autogenerate and model_configured()
+        failed = state == 'none' and writes and library.recently_failed(conn, skill, now, since)
+        return dict(enabled=True, state=state, reason='build_failed' if failed else None, targetSkill=skill_view(target), game=game_view(version) if version else None,
+                    canRequest=state == 'none' and writes and not failed, runId=run['id'] if run else None, approval=settings.require_approval)
 
 
 def request_build(security, kid_id, upload_id, active):
@@ -77,15 +91,15 @@ def request_build(security, kid_id, upload_id, active):
             authorize(security, conn, kid_id, active, 'kid')
         return dict(queued=False, state='off')
     with security.db.transaction() as conn:
-        target, version, _ = _pick(conn, security, kid_id, upload_id, active, settings)
+        target, version, _, since = _pick(conn, security, kid_id, upload_id, active, settings)
         if not target:
             return dict(queued=False, state='none')
         if version:
             return dict(queued=False, state='ready')
-        if library.waiting_for_review(conn, target['subskill_id']):
+        if library.waiting_for_review(conn, target['subskill_id'], settings.premade, since):
             return dict(queued=False, state='in_review')
         # The job names a skill only. Nothing about the child or the upload reaches the model.
-        job_id = library.enqueue(conn, target['subskill_id'], security.clock.now())
+        job_id = library.enqueue(conn, target['subskill_id'], security.clock.now(), since)
         building = bool(job_id or library.open_job(conn, target['subskill_id'], security.clock.now()))
         return dict(queued=bool(job_id), state='building' if building else 'none')
 
@@ -114,7 +128,7 @@ def start(security, kid_id, body, active):
         earlier = conn.execute('SELECT run_id FROM game_start_requests WHERE kid_id=? AND request_key=?', (kid_id, body.idempotencyKey)).fetchone()
         if earlier:
             return _run_view(conn, conn.execute('SELECT * FROM game_runs WHERE id=?', (earlier['run_id'],)).fetchone())
-        target, version, _ = _pick(conn, security, kid_id, body.uploadId, active, settings)
+        target, version, _, _ = _pick(conn, security, kid_id, body.uploadId, active, settings)
         if not target or not version:
             raise AccountError('no_game_ready', 'No game is ready for this skill yet.', 409)
         now, run_id = security.clock.now(), library.uid()
@@ -192,7 +206,7 @@ def is_reviewer(security, active):
             if error.code != 'reviewer_required':
                 raise
             return dict(reviewer=False, enabled=GameSettings.from_env().enabled)
-        waiting = conn.execute("SELECT COUNT(*) FROM game_versions WHERE status='verified'").fetchone()[0]
+        waiting = conn.execute("SELECT COUNT(*) FROM game_versions WHERE status='verified'" + library.origin_filter(settings.premade)).fetchone()[0]
         return dict(reviewer=True, enabled=settings.enabled, waiting=waiting, requireApproval=settings.require_approval, playground=settings.playground)
 
 
@@ -242,31 +256,39 @@ def review_list(security, active, *, status='waiting', subject=None, grade=None,
         like = '%' + text.replace('\\', '\\\\').replace('%', '\\%').replace('_', '\\_') + '%'
         where.append("(v.title LIKE ? ESCAPE '\\' OR v.subskill_id LIKE ? ESCAPE '\\' OR s.name LIKE ? ESCAPE '\\')")
         values += [like, like, like]
-    clause = (' WHERE ' + ' AND '.join(where)) if where else ''
     source = 'FROM game_versions v JOIN catalog_subskills s ON s.id=v.subskill_id'
     with security.db.transaction() as conn:
         settings = _reviewer(security, conn, active)
+        # With the shipped games switched off, reviewers see only what the model wrote, in every list and count.
+        scope = library.origin_filter(settings.premade, 'v.origin')
+        clause = ' WHERE 1=1' + scope + ''.join(' AND ' + item for item in where)
         total = conn.execute(f'SELECT COUNT(*) {source}{clause}', values).fetchone()[0]
         rows = conn.execute(f"""SELECT v.* {source}{clause}
             ORDER BY CASE v.status WHEN 'verified' THEN 0 WHEN 'approved' THEN 1 ELSE 2 END, v.subject DESC, v.grade, s.grade, v.subskill_id, v.created_at DESC
             LIMIT ? OFFSET ?""", (*values, limit, offset)).fetchall()
-        counts = {row[0]: row[1] for row in conn.execute('SELECT status,COUNT(*) FROM game_versions GROUP BY status')}
+        counts = {row[0]: row[1] for row in conn.execute(f'SELECT v.status,COUNT(*) FROM game_versions v WHERE 1=1{scope} GROUP BY v.status')}
         grades = [dict(subject=row['subject'], grade=row['label'], waiting=row['waiting'], total=row['total']) for row in conn.execute(
             f"""SELECT v.subject AS subject, s.grade AS label, MIN(v.grade) AS number, SUM(v.status='verified') AS waiting, COUNT(*) AS total
-                {source} GROUP BY v.subject, s.grade ORDER BY v.subject DESC, number, s.grade""")]
+                {source} WHERE 1=1{scope} GROUP BY v.subject, s.grade ORDER BY v.subject DESC, number, s.grade""")]
         jobs = conn.execute("SELECT j.*, s.name AS skill_name FROM game_jobs j JOIN catalog_subskills s ON s.id=j.subskill_id WHERE j.status!='done' ORDER BY j.updated_at DESC LIMIT 30").fetchall()
-        return dict(enabled=settings.enabled, requireApproval=settings.require_approval, autogenerate=settings.autogenerate, modelConfigured=model_configured(),
+        return dict(enabled=settings.enabled, requireApproval=settings.require_approval, autogenerate=settings.autogenerate, premade=settings.premade, modelConfigured=model_configured(),
                     games=[_review_row(conn, row) for row in rows], total=total, offset=offset, limit=limit,
                     counts=dict(verified=counts.get('verified', 0), approved=counts.get('approved', 0), retired=counts.get('retired', 0)), grades=grades,
                     jobs=[dict(id=j['id'], status=j['status'], skill=dict(id=j['subskill_id'], name=j['skill_name']), updatedAt=j['updated_at'],
                                failure=_failure_view(library.decode(j['failure_json']))) for j in jobs])
 
 
+_STAGE_NAMES = {'static': 'the safety check', 'robot': 'the robot player', 'review': 'the model reviewer'}
+
+
 def _failure_view(failure):
+    """Why a build stopped: the last thing that turned the game down, in words a reviewer can read."""
     if not failure:
         return None
     history = failure.get('history') or []
-    return dict(code=str(failure.get('code'))[:60], problems=[str(p)[:300] for p in (history[-1].get('problems', []) if history else [])][:8])
+    last = history[-1] if history else {}
+    return dict(code=str(failure.get('code'))[:60], stoppedBy=_STAGE_NAMES.get(last.get('stage')), tries=len(history),
+                problems=[str(p)[:300] for p in last.get('problems', [])][:8])
 
 
 def _version(conn, version_id):

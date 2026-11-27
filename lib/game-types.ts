@@ -17,6 +17,8 @@ export type GameSuggestionData = {
   game: GameCard | null;
   canRequest: boolean;
   runId: string | null;
+  // True when a person still has to approve a new game before it appears.
+  approval?: boolean;
 };
 export type GameSolo = {
   solved: boolean;
@@ -84,7 +86,8 @@ export type GameReviewDetail = GameReviewItem & {
   promptVersion: string;
   decisionNote: string | null;
   robotChecks: { name: string; ok: boolean; detail: string }[];
-  modelReview: (Record<string, boolean> & { issues?: string[] }) | null;
+  // The six answers are the model reviewer's opinion. `issues` are its notes for the person who reviews.
+  modelReview: (Record<string, boolean> & { issues?: string[]; blockers?: string[] }) | null;
   rounds: {
     id: string;
     phase: "guided" | "solo";
@@ -98,6 +101,8 @@ export type GameReviewList = {
   enabled: boolean;
   requireApproval: boolean;
   autogenerate: boolean;
+  // False when the games that ship with the app are switched off: the lists then hold only model-written games.
+  premade: boolean;
   modelConfigured: boolean;
   // One page of games that match the filters, and how many match in all.
   games: GameReviewItem[];
@@ -111,6 +116,7 @@ export type GameReviewList = {
     status: "queued" | "running" | "failed";
     skill: { id: string; name: string };
     updatedAt: number;
-    failure: { code: string; problems: string[] } | null;
+    // Why the build stopped: what turned the game down last, after how many tries, and what it said.
+    failure: { code: string; stoppedBy: string | null; tries: number; problems: string[] } | null;
   }[];
 };

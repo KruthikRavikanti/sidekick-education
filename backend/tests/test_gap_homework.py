@@ -434,6 +434,17 @@ def test_stale_processing_retry_schedules_existing_checkpoint(homework_context,k
     assert completed['state'] == 'completed' and adapter.calls['map'] == 1
 
 
+def test_every_submission_is_recorded_even_without_a_request_key(homework_context):
+    security = homework_context[0]
+    first = ingest(homework_context, False)
+    again = ingest(homework_context, False)
+    assert again['id'] == first['id']
+    with security.db.transaction() as conn:
+        rows = conn.execute('SELECT request_key FROM homework_upload_requests WHERE upload_id=?', (first['id'],)).fetchall()
+    # The same page sent twice is one upload and two requests, each under its own private key.
+    assert len(rows) == 2 and len({row['request_key'] for row in rows}) == 2 and all(row['request_key'].startswith('auto-') for row in rows)
+
+
 def test_duplicate_upload_reserves_each_idempotency_key(homework_context):
     first=ingest(homework_context,False,key='original')
     aliased=ingest(homework_context,False,key='alias')

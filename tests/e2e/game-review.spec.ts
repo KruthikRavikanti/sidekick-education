@@ -87,3 +87,30 @@ test("the review page filters, searches and pages a large game library, and appr
   await list.getByRole("button", { name: /^Waiting/ }).click();
   await expect(status).toHaveText(`Showing 1 to 50 of ${(seeded.waiting - 1).toLocaleString()}`);
 });
+
+test("a model-written game shows the model reviewer's notes, and a build that stopped says why", async ({ page, context }) => {
+  await createFamily(context);
+  const database = process.env.SIDEKICK_E2E_DATABASE_URL;
+  const { stdout } = await execute("backend/.venv/bin/python", ["tests/e2e/game_review_fixture.py", database!, "model"]);
+  const made = JSON.parse(stdout) as { title: string; skill: string; stoppedSkill: string };
+  await mutate(context.request, "/api/session/picker");
+  await enterParent(page);
+  await page.getByRole("button", { name: "Games", exact: true }).click();
+  await page.getByRole("link", { name: /^Review games \(\d+\)$/ }).click();
+  const list = page.getByRole("navigation", { name: "Games" });
+
+  // The game waits for a person. Its page carries the model reviewer's opinion and its notes, which did not stop it.
+  await list.getByLabel("Search games").fill(made.skill);
+  await list.getByRole("button", { name: new RegExp(made.title) }).click();
+  await expect(page.getByRole("heading", { name: made.title, level: 2 })).toBeVisible();
+  await expect(page.getByText("Waiting for you")).toBeVisible();
+  await expect(page.getByText("None of these stopped the game", { exact: false })).toBeVisible();
+  await expect(page.getByText("The last round plays like a quiz.", { exact: true })).toBeVisible();
+  await expect(page.getByText("The second hint gives a lot away.", { exact: true })).toBeVisible();
+
+  // A build that did not make it lists who stopped it, after how many tries, and every reason from the last try.
+  const stopped = list.locator(".game-review-job", { hasText: made.stoppedSkill });
+  await expect(stopped.getByText("Stopped by the model reviewer after 2 tries:")).toBeVisible();
+  await expect(stopped.getByText("Round 2 still says the x-axis runs up and down.", { exact: true })).toBeVisible();
+  await expect(stopped.getByText("The last round shows the answer on the sign.", { exact: true })).toBeVisible();
+});

@@ -22,6 +22,7 @@ function GameSuggestionContent({ uploadId }: { uploadId: string }) {
     controller.current = request;
     let timeout: ReturnType<typeof setTimeout> | undefined;
     let polls = 0;
+    let waits = 0;
     async function load() {
       try {
         let result = await api<GameSuggestionData>(
@@ -44,6 +45,11 @@ function GameSuggestionContent({ uploadId }: { uploadId: string }) {
         setSuggestion(result);
         if (result.reason === "analysis_pending" && polls++ < 60)
           timeout = setTimeout(() => void load(), 3000);
+        // A game being built or waiting for a grown-up can become ready while the page is open.
+        // Look again now and then, so the card changes by itself: often while one is being
+        // written (a few minutes), less often while one waits for a person.
+        else if ((result.state === "building" || result.state === "in_review") && waits++ < 240)
+          timeout = setTimeout(() => void load(), result.state === "building" ? 5000 : 15000);
       } catch {
         // The game card is an extra. If it cannot load, the page works without it.
         if (!request.signal.aborted) setSuggestion(null);
@@ -120,11 +126,41 @@ function GameSuggestionContent({ uploadId }: { uploadId: string }) {
         </span>
         <div className="game-suggestion-copy">
           <p className="account-eyebrow">A NEW GAME IS ON THE WAY</p>
-          <h2>Sidekick is inventing a game for this skill.</h2>
-          <p>
-            A grown-up on the Sidekick team plays every new game first. It will
-            show up here when it is ready.
-          </p>
+          {suggestion.state === "building" ? (
+            <>
+              <h2>Sidekick is inventing a game for this skill.</h2>
+              <p>
+                {suggestion.approval === false
+                  ? "It takes a few minutes. It will show up here when it is ready."
+                  : "It takes a few minutes. A grown-up on the Sidekick team plays every new game first. It will show up here when it is ready."}
+              </p>
+            </>
+          ) : (
+            <>
+              <h2>A new game is waiting for a grown-up to try it.</h2>
+              <p>
+                A grown-up on the Sidekick team plays every new game first. It will
+                show up here when it is ready.
+              </p>
+            </>
+          )}
+          {suggestion.targetSkill ? (
+            <p className="game-suggestion-skill">{suggestion.targetSkill.name}</p>
+          ) : null}
+        </div>
+      </section>
+    );
+  // A game was tried for this skill and did not pass its checks. Say so instead of showing nothing.
+  if (suggestion.reason === "build_failed")
+    return (
+      <section className="game-suggestion game-suggestion-soon" aria-label="No game this time">
+        <span className="game-suggestion-art" aria-hidden="true">
+          🧩
+        </span>
+        <div className="game-suggestion-copy">
+          <p className="account-eyebrow">NO GAME THIS TIME</p>
+          <h2>Sidekick tried to invent a game, and it was not good enough to show.</h2>
+          <p>Upload more work to try again.</p>
           {suggestion.targetSkill ? (
             <p className="game-suggestion-skill">{suggestion.targetSkill.name}</p>
           ) : null}

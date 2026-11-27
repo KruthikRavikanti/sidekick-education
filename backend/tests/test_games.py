@@ -36,27 +36,28 @@ def draft(code=FROG, title="Froggy's Bridge"):
                      premise='Build a bridge that stops right at the berry.', idea='The gap is one whole and planks are unit fractions.', code=code, css='')
 
 
-def review(ok=True):
-    return GameReview(conceptIsTheRule=ok, playNotQuiz=True, contentCorrect=True, kidAppropriate=True, soloIsFresh=True, mistakeIsRealistic=True,
-                      issues=[] if ok else ['The skill is not what wins the round.'])
+def review(ok=True, notes=()):
+    """A review with no defect, or with one. Notes ride along either way and never stop a game."""
+    return GameReview(conceptIsTheRule=ok, playNotQuiz=True, contentCorrect=ok, kidAppropriate=True, soloIsFresh=True, mistakeIsRealistic=True,
+                      blockers=[] if ok else ['Round 2 says three fourths is three planks of any size.'], issues=list(notes))
 
 
 class FakeAdapter:
     model = 'fake-model'
 
     def __init__(self, drafts, reviews=None):
-        self.drafts, self.reviews, self.calls, self.seen = list(drafts), list(reviews or [review()]), [], []
+        self.drafts, self.reviews, self.calls, self.seen, self.stages, self.earlier = list(drafts), list(reviews or [review()]), [], [], [], []
 
     async def draft(self, subskill, examples, context=None):
         self.calls.append('draft'); self.seen.append(prompts.draft_user(subskill, context))
         return self.drafts.pop(0)
 
-    async def repair(self, subskill, examples, current, problems):
-        self.calls.append('repair'); self.seen.append(prompts.repair_user(subskill, current, problems))
+    async def repair(self, subskill, examples, current, problems, stage='robot'):
+        self.calls.append('repair'); self.seen.append(prompts.repair_user(subskill, current, problems)); self.stages.append(stage)
         return self.drafts.pop(0)
 
-    async def review(self, subskill, current, manifest):
-        self.calls.append('review')
+    async def review(self, subskill, current, manifest, earlier=None):
+        self.calls.append('review'); self.earlier.append(list(earlier or []))
         return self.reviews.pop(0)
 
 
@@ -68,6 +69,7 @@ def games_on(monkeypatch):
     monkeypatch.setenv('SIDEKICK_GAMES_ENABLED', 'true')
     monkeypatch.setenv('SIDEKICK_GAMES_REQUIRE_APPROVAL', 'true')
     monkeypatch.setenv('SIDEKICK_GAMES_AUTOGENERATE', 'false')
+    monkeypatch.setenv('SIDEKICK_GAMES_PREMADE', 'true')
     monkeypatch.delenv('SIDEKICK_GAME_REVIEWERS', raising=False)
 
 
@@ -88,11 +90,11 @@ def upload(security, child, subskill='3.NF.A.1-2'):
     return upload_id
 
 
-def store(security, *, status='verified', code=FROG, subskill='3.NF.A.1-2'):
+def store(security, *, status='verified', code=FROG, subskill='3.NF.A.1-2', origin='seed_example'):
     from backend.gap.catalog import get_subskill
     with security.db.transaction() as conn:
         version_id, _ = library.save_version(conn, security.clock.now(), get_subskill(conn, subskill), title="Froggy's Bridge", emoji='🐸', premise='Build a bridge to the berry.',
-                                             idea='Planks are unit fractions.', code=code, css='', report=PASSING, review=None, origin='seed_example', model='test', status=status)
+                                             idea='Planks are unit fractions.', code=code, css='', report=PASSING, review=None, origin=origin, model='test', status=status)
     return version_id
 
 
@@ -112,6 +114,20 @@ def test_reference_games_pass_static_checks_and_bad_source_is_named():
     }
     for snippet, reason in bad.items():
         assert reason in checks.static_issues('Sidekick.game({});\n' + snippet), snippet
+    # Ordinary code and ordinary sentences are left alone. Each of these once stopped a good game.
+    fine = ['for (let i = 0; i < a; i++) {}', 'if (ones < base) {}', 'for(let i=0;i<a;i++){}', 'if (count < select.value) {}',
+            'items.forEach(function (x) { return x; });', "say: 'Stack the blocks to the top. Then jump.'",
+            "say: 'It is the tallest tower in history.'", "read: 'Some countries import fruit from far away.'"]
+    for snippet in fine:
+        assert checks.static_issues('Sidekick.game({});\n' + snippet) == [], snippet
+    still_bad = {'Function("a")()': 'dynamic_code', 'import x from "y"': 'dynamic_code', 'top.hacked = 1': 'navigation', 'const d = top.document;': 'navigation',
+                 'top["x"] = 1': 'navigation', 'history.back()': 'navigation', 'el.innerHTML = "<a>"': 'markup', 'el.innerHTML = "<textarea>"': 'free_text_input'}
+    for snippet, reason in still_bad.items():
+        assert reason in checks.static_issues('Sidekick.game({});\n' + snippet), snippet
+    # The writer is told what a reason means and what tripped it, so one repair can fix it.
+    told = checks.explain("Sidekick.game({});\nsay: 'Drag the flag to the right location.'")
+    assert len(told) == 1 and told[0].startswith('static_checks: navigation.') and '"spot"' in told[0] and 'right location' in told[0]
+    assert checks.explain(FROG) == []
     assert checks.static_issues('var x = 1;') == ['must_call_sidekick_game_once']
     assert checks.static_issues('Sidekick.game({}); Sidekick.game({});') == ['must_call_sidekick_game_once']
     assert 'code_too_large' in checks.static_issues('Sidekick.game({});' + ' ' * 70_000)
@@ -168,20 +184,49 @@ def test_pipeline_repairs_from_the_robot_report_then_reviews():
 
 def test_pipeline_never_runs_source_that_fails_static_checks():
     ran = []
-    adapter = FakeAdapter([draft(FROG + "\nfetch('/api/session');"), draft(FROG + '\neval("1");'), draft(FROG + '\nalert(1);')])
+    adapter = FakeAdapter([draft(FROG + "\nfetch('/api/session');"), draft(FROG + '\neval("1");'), draft(FROG + '\nfetch(1);'), draft(FROG + '\nalert(1);')])
     result = asyncio.run(build_game(SKILL, adapter, examples=[], robot=lambda code, css: ran.append(code) or PASSING))
-    assert not result.ok and ran == [] and adapter.calls == ['draft', 'repair', 'repair']
-    assert result.reasons() == ['static_checks: dialog'] and [item['stage'] for item in result.history] == ['static'] * 3
+    assert not result.ok and ran == [] and adapter.calls == ['draft', 'repair', 'repair', 'repair']
+    assert result.reasons() == ['static_checks: dialog'] and [item['stage'] for item in result.history] == ['static'] * 4
+    # The writer hears what the reason means. The stored history keeps only the reason code.
+    assert adapter.seen[1]['problems'][0].startswith('static_checks: network. Games have no network.')
 
 
-def test_pipeline_stops_after_bounded_repairs_and_one_review_rewrite():
-    adapter = FakeAdapter([draft(), draft(), draft()])
+def test_pipeline_stops_after_bounded_repairs_and_bounded_rewrites():
+    adapter = FakeAdapter([draft()] * 4)
     result = asyncio.run(build_game(SKILL, adapter, examples=[], robot=lambda code, css: failing('fits_phone')))
-    assert not result.ok and adapter.calls == ['draft', 'repair', 'repair'] and result.robot_runs == 3
-    adapter = FakeAdapter([draft(), draft()], [review(False), review(False)])
+    assert not result.ok and adapter.calls == ['draft', 'repair', 'repair', 'repair'] and result.robot_runs == 4
+    adapter = FakeAdapter([draft()] * 3, [review(False)] * 3)
     result = asyncio.run(build_game(SKILL, adapter, examples=[], robot=lambda code, css: PASSING))
-    assert not result.ok and adapter.calls == ['draft', 'review', 'repair', 'review']
-    assert result.reasons() == ['review: The skill is not what wins the round.']
+    assert not result.ok and adapter.calls == ['draft', 'review', 'repair', 'review', 'repair', 'review'] and adapter.stages == ['review', 'review']
+    assert result.reasons() == ['review: Round 2 says three fourths is three planks of any size.']
+    # A robot repair and a reviewer rewrite draw on separate budgets.
+    reports = [failing('fits_phone'), PASSING, PASSING]
+    adapter = FakeAdapter([draft()] * 3, [review(False), review()])
+    result = asyncio.run(build_game(SKILL, adapter, examples=[], robot=lambda code, css: reports.pop(0)))
+    assert result.ok and adapter.calls == ['draft', 'repair', 'review', 'repair', 'review'] and adapter.stages == ['robot', 'review']
+
+
+def test_reviewer_stops_defects_only_and_checks_its_own_earlier_ones():
+    # Notes are for the person who reviews. They ride along and never stop a game.
+    quiz_like = GameReview(conceptIsTheRule=False, playNotQuiz=False, contentCorrect=True, kidAppropriate=True, soloIsFresh=False, mistakeIsRealistic=False,
+                           issues=['Plays like a quiz.', 'The last round reuses 3/4.'])
+    assert quiz_like.passed()
+    adapter = FakeAdapter([draft()], [quiz_like])
+    result = asyncio.run(build_game(SKILL, adapter, examples=[], robot=lambda code, css: PASSING))
+    assert result.ok and adapter.calls == ['draft', 'review'] and result.review.issues == ['Plays like a quiz.', 'The last round reuses 3/4.']
+    # Something false stops it, with or without a written blocker.
+    assert not GameReview(conceptIsTheRule=True, playNotQuiz=True, contentCorrect=False, kidAppropriate=True, soloIsFresh=True, mistakeIsRealistic=True).passed()
+    assert not GameReview(conceptIsTheRule=True, playNotQuiz=True, contentCorrect=True, kidAppropriate=False, soloIsFresh=True, mistakeIsRealistic=True).passed()
+    # After a rewrite the reviewer is handed what it asked for, so it checks the fix instead of starting over.
+    adapter = FakeAdapter([draft(), draft()], [review(False, notes=['A note.']), review()])
+    result = asyncio.run(build_game(SKILL, adapter, examples=[], robot=lambda code, css: PASSING))
+    assert result.ok and adapter.calls == ['draft', 'review', 'repair', 'review']
+    assert adapter.earlier == [[], ['Round 2 says three fourths is three planks of any size.']]
+    # The rewrite is asked to fix the defect, not the notes.
+    assert adapter.seen[1]['problems'] == ['review: Round 2 says three fourths is three planks of any size.']
+    assert 'earlierBlockers' not in prompts.review_user(SKILL, draft(), PASSING['manifest'])
+    assert prompts.review_user(SKILL, draft(), PASSING['manifest'], ['Fix round 2.'])['earlierBlockers'] == ['Fix round 2.']
 
 
 def test_only_robot_passed_games_can_be_stored(family, security_context):
@@ -296,10 +341,10 @@ def test_review_list_filters_searches_pages_and_counts(family, security_context,
 # ------------------------------------------------------------------ play, privacy and the review gate
 
 def test_games_are_on_unless_switched_off_and_approval_stays_required(family, security_context, monkeypatch):
-    for name in ('SIDEKICK_GAMES_ENABLED', 'SIDEKICK_GAMES_REQUIRE_APPROVAL', 'SIDEKICK_GAMES_AUTOGENERATE'):
+    for name in ('SIDEKICK_GAMES_ENABLED', 'SIDEKICK_GAMES_REQUIRE_APPROVAL', 'SIDEKICK_GAMES_AUTOGENERATE', 'SIDEKICK_GAMES_PREMADE'):
         monkeypatch.delenv(name, raising=False)
     settings = service.GameSettings.from_env()
-    assert settings.enabled and settings.require_approval and not settings.autogenerate
+    assert settings.enabled and settings.require_approval and not settings.autogenerate and settings.premade
     child, client = family
     upload_id = upload(security_context, child)
     version_id = store(security_context)
@@ -345,6 +390,42 @@ def test_a_game_reaches_a_child_only_after_a_person_approves_it(family, security
     assert mutate(client, 'POST', f'/api/games/review/{version_id}/decision', json={'decision': 'approve'}).status_code == 409
     select_child(client, child['id'])
     assert client.get('/api/games/kid/suggestion', params={'uploadId': upload_id}).json()['state'] == 'none'
+
+
+def test_premade_games_can_be_switched_off_everywhere_and_come_straight_back(family, security_context, games_on, monkeypatch):
+    child, client = family
+    upload_id = upload(security_context, child)
+    shipped = store(security_context, status='approved')
+    suggestion = lambda: client.get('/api/games/kid/suggestion', params={'uploadId': upload_id}).json()  # noqa: E731
+    assert service.GameSettings.from_env().premade is True and suggestion()['state'] == 'ready'
+    monkeypatch.delenv('SIDEKICK_GAMES_PREMADE', raising=False); assert service.GameSettings.from_env().premade is True   # on unless switched off
+    # Off: the shipped game is not offered, and it does not hold the skill as "waiting for review" either.
+    monkeypatch.setenv('SIDEKICK_GAMES_PREMADE', 'false')
+    view = suggestion()
+    assert view['state'] == 'none' and view['game'] is None
+    assert mutate(client, 'POST', '/api/games/kid/start', json={'uploadId': upload_id, 'idempotencyKey': key()}).status_code == 409
+    # So a model-written game can be asked for, even though a shipped one exists for the same skill.
+    monkeypatch.setenv('SIDEKICK_GAMES_AUTOGENERATE', 'true'); monkeypatch.setenv('VISION_API_KEY', 'k'); monkeypatch.setenv('VISION_MODEL', 'm')
+    assert suggestion()['canRequest'] is True
+    monkeypatch.setitem(main.app.state._state, 'game_adapter', FakeAdapter([draft(FROG + '\n// written by the model')]))
+    monkeypatch.setitem(main.app.state._state, 'game_robot', lambda code, css: PASSING)
+    assert mutate(client, 'POST', '/api/games/kid/request', json={'uploadId': upload_id}).json() == {'queued': True, 'state': 'building'}
+    assert suggestion()['state'] == 'in_review'
+    # Reviewers see only what the model wrote, in the list and in every count.
+    picker(client); unlock(client)
+    page = client.get('/api/games/review', params={'status': 'all'}).json()
+    assert page['premade'] is False and [game['origin'] for game in page['games']] == ['model_generated'] and page['total'] == 1
+    assert page['counts'] == {'verified': 1, 'approved': 0, 'retired': 0} and [item['total'] for item in page['grades']] == [1]
+    assert client.get('/api/games/review/me').json()['waiting'] == 1
+    written = page['games'][0]['id']
+    assert mutate(client, 'POST', f'/api/games/review/{written}/decision', json={'decision': 'approve'}).status_code == 200
+    select_child(client, child['id'])
+    assert suggestion()['game']['id'] == written
+    # On again: nothing was deleted, so the shipped game is back at once, beside the model's.
+    monkeypatch.setenv('SIDEKICK_GAMES_PREMADE', 'true')
+    picker(client); unlock(client)
+    page = client.get('/api/games/review', params={'status': 'all'}).json()
+    assert page['premade'] is True and {game['id'] for game in page['games']} == {shipped, written}
 
 
 def test_production_review_needs_a_listed_reviewer(family, security_context, games_on, monkeypatch):
@@ -441,6 +522,7 @@ def test_background_build_is_queued_once_names_only_the_skill_and_waits_for_revi
     child, client = family
     upload_id = upload(security_context, child)
     monkeypatch.setenv('SIDEKICK_GAMES_AUTOGENERATE', 'true')
+    monkeypatch.delenv('VISION_API_KEY', raising=False)   # a key in a developer's own backend/.env must not count here
     assert client.get('/api/games/kid/suggestion', params={'uploadId': upload_id}).json()['canRequest'] is False   # no model configured
     assert mutate(client, 'POST', '/api/games/kid/request', json={'uploadId': upload_id}).json() == {'queued': False, 'state': 'off'}
     monkeypatch.setenv('VISION_API_KEY', 'test-key'); monkeypatch.setenv('VISION_MODEL', 'test-model')
@@ -467,7 +549,7 @@ def test_failed_build_is_recorded_and_not_retried_right_away(family, security_co
     child, client = family
     upload_id = upload(security_context, child)
     monkeypatch.setenv('SIDEKICK_GAMES_AUTOGENERATE', 'true'); monkeypatch.setenv('VISION_API_KEY', 'k'); monkeypatch.setenv('VISION_MODEL', 'm')
-    monkeypatch.setitem(main.app.state._state, 'game_adapter', FakeAdapter([draft(), draft(), draft()]))
+    monkeypatch.setitem(main.app.state._state, 'game_adapter', FakeAdapter([draft()] * 4))
     monkeypatch.setitem(main.app.state._state, 'game_robot', lambda code, css: failing('round_2_mistake_adds_rejected', 'the game accepted a known mistake as a win'))
     assert mutate(client, 'POST', '/api/games/kid/request', json={'uploadId': upload_id}).json()['queued'] is True
     view = client.get('/api/games/kid/suggestion', params={'uploadId': upload_id}).json()
@@ -476,8 +558,146 @@ def test_failed_build_is_recorded_and_not_retried_right_away(family, security_co
     picker(client); unlock(client)
     job = client.get('/api/games/review').json()['jobs'][0]
     assert job['status'] == 'failed' and job['failure']['code'] == 'not_verified' and 'accepted a known mistake' in job['failure']['problems'][0]
+    assert job['failure']['stoppedBy'] == 'the robot player' and job['failure']['tries'] == 4
     with security_context.db.transaction() as conn:
         assert conn.execute('SELECT COUNT(*) FROM game_versions').fetchone()[0] == 0
+
+
+def test_new_every_upload_mode_writes_a_new_game_for_each_upload(family, security_context, games_on, monkeypatch):
+    child, client = family
+    shipped = store(security_context, status='approved')            # a game for the skill already exists
+    security_context.clock.advance(60)
+    first = upload(security_context, child)
+    for name, value in (('SIDEKICK_GAMES_AUTOGENERATE', 'true'), ('SIDEKICK_GAMES_REQUIRE_APPROVAL', 'false'), ('VISION_API_KEY', 'k'), ('VISION_MODEL', 'm')):
+        monkeypatch.setenv(name, value)
+    suggestion = lambda upload_id: client.get('/api/games/kid/suggestion', params={'uploadId': upload_id}).json()  # noqa: E731
+    request = lambda upload_id: mutate(client, 'POST', '/api/games/kid/request', json={'uploadId': upload_id}).json()  # noqa: E731
+    # Without the mode, the game that exists is the one on offer and nothing is written.
+    assert suggestion(first)['game']['id'] == shipped and suggestion(first)['canRequest'] is False
+    # The mode alone does nothing unless a game can be written: it needs AUTOGENERATE and a model.
+    monkeypatch.setenv('SIDEKICK_GAMES_NEW_EVERY_UPLOAD', 'true'); monkeypatch.setenv('SIDEKICK_GAMES_AUTOGENERATE', 'false')
+    assert suggestion(first)['game']['id'] == shipped
+    monkeypatch.setenv('SIDEKICK_GAMES_AUTOGENERATE', 'true')
+
+    adapter = FakeAdapter([draft(FROG + '\n// one'), draft(FROG + '\n// two'), draft(FROG + '\n// three')], [review(), review(), review()])
+    monkeypatch.setitem(main.app.state._state, 'game_adapter', adapter)
+    monkeypatch.setitem(main.app.state._state, 'game_robot', lambda code, css: PASSING)
+    # With it, a game written before this upload does not count, so a new one is asked for.
+    view = suggestion(first)
+    assert view['state'] == 'none' and view['game'] is None and view['canRequest'] is True and view['approval'] is False
+    assert request(first) == {'queued': True, 'state': 'building'}
+    one = suggestion(first)
+    assert one['state'] == 'ready' and one['game']['id'] != shipped and one['canRequest'] is False
+    # The writer was told what exists for the skill, so it makes something different. Game data only.
+    assert [item['title'] for item in adapter.seen[0]['alreadyMade']] == ["Froggy's Bridge"] and 'different game' in adapter.seen[0]['task']
+    assert child['id'] not in str(adapter.seen) and first not in str(adapter.seen)
+    run = mutate(client, 'POST', '/api/games/kid/start', json={'uploadId': first, 'idempotencyKey': key()}).json()
+    assert run['game']['id'] == one['game']['id'] and suggestion(first)['runId'] == run['id']
+
+    # More work on the same skill gets its own game. The earlier upload keeps the one written for it.
+    security_context.clock.advance(60)
+    second = upload(security_context, child)
+    assert suggestion(second)['state'] == 'none' and suggestion(second)['canRequest'] is True
+    assert request(second)['queued'] is True
+    two = suggestion(second)
+    assert two['state'] == 'ready' and two['game']['id'] not in {shipped, one['game']['id']} and two['runId'] is None
+    assert suggestion(first)['game']['id'] == one['game']['id']
+    assert len(adapter.seen[1]['alreadyMade']) == 2   # the shipped game and the one just written
+
+    # Sending the same page in again is the same upload and a new request, so it also gets a new game.
+    security_context.clock.advance(60)
+    with security_context.db.transaction() as conn:
+        conn.execute('INSERT INTO homework_upload_requests VALUES(?,?,?,?,?)', (child['id'], 'auto-' + key(), first, 'digest', security_context.clock.now()))
+    again = suggestion(first)
+    assert again['state'] == 'none' and again['canRequest'] is True and again['runId'] is None
+    assert request(first)['queued'] is True
+    three = suggestion(first)
+    assert three['state'] == 'ready' and three['game']['id'] not in {shipped, one['game']['id'], two['game']['id']}
+    with security_context.db.transaction() as conn:
+        assert conn.execute("SELECT COUNT(*) FROM game_versions WHERE origin='model_generated'").fetchone()[0] == 3
+    # Switched off again, the usual rule is back: the approved game for the skill.
+    monkeypatch.setenv('SIDEKICK_GAMES_NEW_EVERY_UPLOAD', 'false')
+    assert suggestion(first)['game']['id'] == shipped
+
+
+def test_new_every_upload_mode_says_when_a_build_failed_and_lets_the_next_upload_try(family, security_context, games_on, monkeypatch):
+    child, client = family
+    for name, value in (('SIDEKICK_GAMES_AUTOGENERATE', 'true'), ('SIDEKICK_GAMES_REQUIRE_APPROVAL', 'false'), ('SIDEKICK_GAMES_NEW_EVERY_UPLOAD', 'true'),
+                        ('VISION_API_KEY', 'k'), ('VISION_MODEL', 'm')):
+        monkeypatch.setenv(name, value)
+    suggestion = lambda upload_id: client.get('/api/games/kid/suggestion', params={'uploadId': upload_id}).json()  # noqa: E731
+    first = upload(security_context, child)
+    monkeypatch.setitem(main.app.state._state, 'game_adapter', FakeAdapter([draft()] * 4))
+    monkeypatch.setitem(main.app.state._state, 'game_robot', lambda code, css: failing('fits_phone'))
+    assert mutate(client, 'POST', '/api/games/kid/request', json={'uploadId': first}).json()['queued'] is True
+    # The build for this upload failed. The card is told, and it does not ask again for the same upload.
+    view = suggestion(first)
+    assert view['state'] == 'none' and view['reason'] == 'build_failed' and view['canRequest'] is False
+    assert mutate(client, 'POST', '/api/games/kid/request', json={'uploadId': first}).json()['queued'] is False
+    # New work on the same skill is not shut out by that failure.
+    security_context.clock.advance(60)
+    second = upload(security_context, child)
+    view = suggestion(second)
+    assert view['reason'] is None and view['canRequest'] is True
+    monkeypatch.setitem(main.app.state._state, 'game_adapter', FakeAdapter([draft()]))
+    monkeypatch.setitem(main.app.state._state, 'game_robot', lambda code, css: PASSING)
+    assert mutate(client, 'POST', '/api/games/kid/request', json={'uploadId': second}).json()['queued'] is True
+    assert suggestion(second)['state'] == 'ready'
+
+
+def test_a_build_the_model_could_not_start_may_try_again_soon(family, security_context, games_on, monkeypatch):
+    from backend.provider import ExtractionError
+
+    class Unreachable(FakeAdapter):
+        async def draft(self, subskill, examples, context=None):
+            raise ExtractionError('provider_timeout', 'Reading took too long. Please retry.', 504)
+
+    child, client = family
+    upload_id = upload(security_context, child)
+    monkeypatch.setenv('SIDEKICK_GAMES_AUTOGENERATE', 'true'); monkeypatch.setenv('VISION_API_KEY', 'k'); monkeypatch.setenv('VISION_MODEL', 'm')
+    monkeypatch.setitem(main.app.state._state, 'game_adapter', Unreachable([]))
+    monkeypatch.setitem(main.app.state._state, 'game_robot', lambda code, css: PASSING)
+    suggestion = lambda: client.get('/api/games/kid/suggestion', params={'uploadId': upload_id}).json()  # noqa: E731
+    assert mutate(client, 'POST', '/api/games/kid/request', json={'uploadId': upload_id}).json()['queued'] is True
+    with security_context.db.transaction() as conn:
+        job = conn.execute('SELECT status,failure_json FROM game_jobs').fetchone()
+    assert job['status'] == 'failed' and json.loads(job['failure_json']) == {'code': 'provider_timeout'}
+    # No game was turned down, so the skill is not shut out for a day: only for a few minutes.
+    assert suggestion()['canRequest'] is False
+    security_context.clock.advance(library.UNAVAILABLE_RETRY_SECONDS + 1)
+    assert suggestion()['canRequest'] is True
+    monkeypatch.setitem(main.app.state._state, 'game_adapter', FakeAdapter([draft()]))
+    assert mutate(client, 'POST', '/api/games/kid/request', json={'uploadId': upload_id}).json() == {'queued': True, 'state': 'building'}
+    assert suggestion()['state'] == 'in_review'
+
+
+def test_model_call_is_tried_once_more_after_a_malformed_answer_but_not_after_a_timeout(monkeypatch):
+    from backend.games.pipeline import ModelGameAdapter
+    from backend.gap import vision
+    from backend.provider import ExtractionError
+    monkeypatch.setenv('VISION_API_KEY', 'k'); monkeypatch.setenv('VISION_MODEL', 'm')
+    outcomes, calls = [], []
+
+    async def fake_call(response_model, **kwargs):
+        calls.append(kwargs['task'])
+        outcome = outcomes.pop(0)
+        if isinstance(outcome, Exception):
+            raise outcome
+        return outcome
+
+    monkeypatch.setattr(vision, 'structured_call', fake_call)
+    adapter = ModelGameAdapter()
+    outcomes[:] = [ExtractionError('invalid_extraction', 'incomplete'), review()]
+    assert asyncio.run(adapter.review(SKILL, draft(), PASSING['manifest'])).passed() and calls == ['review_game', 'review_game']
+    calls.clear(); outcomes[:] = [ExtractionError('provider_timeout', 'slow', 504)]
+    with pytest.raises(ExtractionError):
+        asyncio.run(adapter.review(SKILL, draft(), PASSING['manifest']))
+    assert calls == ['review_game']
+    # A second malformed answer is the end of it.
+    calls.clear(); outcomes[:] = [ExtractionError('invalid_extraction', 'incomplete'), ExtractionError('invalid_extraction', 'incomplete')]
+    with pytest.raises(ExtractionError):
+        asyncio.run(adapter.review(SKILL, draft(), PASSING['manifest']))
+    assert calls == ['review_game', 'review_game']
 
 
 def test_child_deletion_removes_runs_but_keeps_the_library(family, security_context, games_on):
