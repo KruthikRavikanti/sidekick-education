@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/account-api";
+import type { KidProfile } from "@/lib/account-types";
 import type { GameHistoryItem } from "@/lib/game-types";
 
 function day(value: number) {
@@ -12,7 +13,7 @@ function day(value: number) {
     : date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
 }
 
-function outcome(item: GameHistoryItem) {
+export function outcome(item: GameHistoryItem) {
   if (item.status !== "completed" || !item.solo) return "Started, not finished yet";
   if (item.solo.firstTry) return "Got the last round on the first try";
   if (item.solo.solved)
@@ -20,7 +21,14 @@ function outcome(item: GameHistoryItem) {
   return "Tried the last round, not there yet";
 }
 
-export function ParentGameHistory({ kidId }: { kidId: string }) {
+export function ParentGameHistory({
+  kidId,
+  profile,
+}: {
+  kidId: string;
+  // With the child's profile, the page opens with a banner for that child, like the other portal pages.
+  profile?: KidProfile;
+}) {
   const [runs, setRuns] = useState<GameHistoryItem[] | null>(null);
   const [enabled, setEnabled] = useState(false);
   const [review, setReview] = useState<{
@@ -65,58 +73,88 @@ export function ParentGameHistory({ kidId }: { kidId: string }) {
         </div>
       </section>
     );
+  const finished = runs.filter((item) => item.status === "completed").length;
+  const firstTry = runs.filter((item) => item.solo?.firstTry).length;
   return (
-    <section className="dashboard-section game-history">
-      <div className="section-heading">
-        <div>
-          <h2>Games played.</h2>
-          <p>
-            Games are practice. They show how play went and do not change the skill
-            picture, which still comes from uploaded work.
-          </p>
-        </div>
-        {/* Temporary: the playground link shows only while SIDEKICK_GAMES_PLAYGROUND is on. */}
-        {review?.reviewer && review.playground ? (
-          <Link
-            className="button secondary"
-            href="/parent/playground"
-            prefetch={false}
-            style={{ marginLeft: "auto" }}
-          >
-            Game playground
-          </Link>
-        ) : null}
-        {review?.reviewer ? (
-          <Link className="button secondary" href="/parent/games" prefetch={false}>
-            Review games{review.waiting ? ` (${review.waiting})` : ""}
-          </Link>
-        ) : null}
-      </div>
-      {runs.length === 0 ? (
-        <p className="game-history-note">No games played yet.</p>
-      ) : (
-        <ul className="game-history-list">
-          {runs.map((item) => (
-            <li key={item.id}>
-              <span className="game-history-emoji" aria-hidden="true">
-                {item.emoji}
-              </span>
-              <div>
-                <strong>{item.title}</strong>
-                <span>{item.targetSkill?.name}</span>
-                <span>
-                  {outcome(item)}
-                  {item.hints ? ` · ${item.hints} ${item.hints === 1 ? "hint" : "hints"}` : ""}
-                  {item.solo?.mistakes.length
-                    ? ` · tried: ${item.solo.mistakes.map((tag) => tag.replaceAll("_", " ")).join(", ")}`
-                    : ""}
-                </span>
-              </div>
-              <time>{day(item.startedAt)}</time>
-            </li>
-          ))}
-        </ul>
+    <>
+      {profile && (
+        <section className="portal-hero portal-hero-sun">
+          <div>
+            <p className="portal-eyebrow">
+              {profile.firstName} · {profile.grade === "K" ? "Kindergarten" : `Grade ${profile.grade}`}
+            </p>
+            <h1>{profile.firstName}’s games.</h1>
+            <p>
+              Games are practice. They show how play went and do not change the skill
+              picture, which still comes from uploaded work.
+            </p>
+          </div>
+          <dl className="portal-stats" aria-label="Games so far">
+            <div className="portal-stat">
+              <dt>{finished === 1 ? "game finished" : "games finished"}</dt>
+              <dd>{finished}</dd>
+            </div>
+            <div className="portal-stat">
+              <dt>last round on the first try</dt>
+              <dd>{firstTry}</dd>
+            </div>
+          </dl>
+        </section>
       )}
-    </section>
+      <section className="dashboard-section game-history">
+        <div className="section-heading">
+          <div>
+            <h2>Games played.</h2>
+            {!profile && (
+              <p>
+                Games are practice. They show how play went and do not change the skill
+                picture, which still comes from uploaded work.
+              </p>
+            )}
+          </div>
+          {/* Temporary: the playground link shows only while SIDEKICK_GAMES_PLAYGROUND is on. */}
+          {review?.reviewer && review.playground ? (
+            <Link
+              className="button secondary"
+              href="/parent/playground"
+              prefetch={false}
+              style={{ marginLeft: "auto" }}
+            >
+              Game playground
+            </Link>
+          ) : null}
+          {review?.reviewer ? (
+            <Link className="button secondary" href="/parent/games" prefetch={false}>
+              Review games{review.waiting ? ` (${review.waiting})` : ""}
+            </Link>
+          ) : null}
+        </div>
+        {runs.length === 0 ? (
+          <p className="game-history-note">No games played yet.</p>
+        ) : (
+          <ul className="game-history-list">
+            {runs.map((item) => (
+              <li key={item.id}>
+                <span className="game-history-emoji" aria-hidden="true">
+                  {item.emoji}
+                </span>
+                <div>
+                  <strong>{item.title}</strong>
+                  <span>{item.targetSkill?.name}</span>
+                  <span>
+                    {outcome(item)}
+                    {item.hints ? ` · ${item.hints} ${item.hints === 1 ? "hint" : "hints"}` : ""}
+                    {item.solo?.mistakes.length
+                      ? ` · tried: ${item.solo.mistakes.map((tag) => tag.replaceAll("_", " ")).join(", ")}`
+                      : ""}
+                  </span>
+                </div>
+                <time>{day(item.startedAt)}</time>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </>
   );
 }

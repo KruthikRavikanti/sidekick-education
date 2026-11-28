@@ -26,6 +26,7 @@ export interface Skill {
   commonCoreCode: string;
   status: "unassessed" | "on_track" | "needs_support";
   subskillId?: string;
+  area?: string;
   parentExplanation?: string;
   observedPattern?: string;
   homeTip?: string;

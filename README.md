@@ -74,7 +74,20 @@ Candidate retrieval uses the same subject and grades up to one above the child's
 
 Persistent uploads checkpoint extraction, grading, mapping, signatures, and evidence. Request keys, child-scoped file hashes, and problem fingerprints suppress recognized retries and duplicates. A stopped process can resume through **Retry** after its processing lease expires; this prototype uses in-process background tasks rather than a durable job worker. Authorization is rechecked after provider work and before returning profile-scoped results.
 
-The parent Skills view summarizes eligible student work evidence:
+## Parent portal
+
+The parent portal is built around a **skill map**: one dot for every skill in the child's grade, grouped into a few plainly named areas (Fractions, Place value, Reading stories, and so on; see [`backend/gap/areas.py`](backend/gap/areas.py)). A dot lights up only when the child's own uploaded work shows that skill. A side panel (a strip at the top on a phone) switches between children and between four pages:
+
+| Page | What it shows |
+| --- | --- |
+| **Skill map** | The dots, a count of skills that need support, are on track, or have too little evidence, and a search by skill name or Common Core code. Picking an area lists its skills: what was noticed in the work, something to try at home, the game played for that skill, and the uploaded evidence. |
+| **Work** | Questions read, correct answers, and questions not graded yet, followed by every upload in order with its private original. |
+| **Games** | Games finished and how the last round went. Reviewers also get a **Review games** link here and in the side panel. |
+| **Family and settings** | Child profiles, the parent PIN, the password, and log out. |
+
+The map draws a dot in one of four ways: needs support, on track, seen in uploaded work but not enough to say yet, and not seen yet. The first three come from the statuses below; the last two are both `unassessed`, told apart by whether any uploaded question pointed at the skill.
+
+The skill map summarizes eligible student work evidence:
 
 | Status | Meaning |
 | --- | --- |
@@ -86,7 +99,7 @@ The parent Skills view summarizes eligible student work evidence:
 
 A repeated upload of the same question does not create a second observation. Ungraded or unmapped outcomes remain available for review without affecting skill states. The dashboard includes the source student work and any observed error pattern, parent explanation, and home tip. It does not initiate diagnostic checks, prerequisite quizzes, practice sessions, or scheduled rechecks. Student work alone does not award mastery.
 
-The parent Analytics view currently shows **Questions read**, **Correct answers**, and **Not graded yet** from stored student work problems. Questions are deduplicated by child-scoped problem fingerprint. Each distinct question uses its first usable correct/incorrect grade in chronological order; if it has no usable grade, it stays ungraded. Mapping eligibility determines skill observations separately, so an unmapped but confidently graded problem can still count as a correct answer. Session counts, time spent, and retired practice totals are not presented as progress. Games have their own parent history. Server timestamps and the configured application timezone, **`America/New_York`**, are retained. Conversation history remains empty until a future chat milestone.
+The top of the parent Work page shows **Questions read**, **Correct answers**, and **Not graded yet** from stored student work problems. Questions are deduplicated by child-scoped problem fingerprint. Each distinct question uses its first usable correct/incorrect grade in chronological order; if it has no usable grade, it stays ungraded. Mapping eligibility determines skill observations separately, so an unmapped but confidently graded problem can still count as a correct answer. Session counts, time spent, and retired practice totals are not presented as progress. Games have their own parent history. Server timestamps and the configured application timezone, **`America/New_York`**, are retained. Conversation history remains empty until a future chat milestone, so the portal has no page for it yet.
 
 The former Practice URL redirects to the child's home. Authenticated calls to retired check/practice/adult-review endpoints return `410 feature_removed` after the existing mode, ownership, and CSRF checks. Old pending work is retired by migration; historical records are retained privately and cannot continue generating evidence through those endpoints.
 
@@ -205,7 +218,7 @@ The student-work API adds:
 | `GET /kid/uploads`, `GET /kid/uploads/{id}` | Resume list and processing/extraction results |
 | `POST /kid/uploads/{id}/retry`, `GET /kid/uploads/{id}/file` | Resume processing or authorized original retrieval |
 | `/parent/{kidId}/uploads` and `/{id}` variants | Equivalent explicitly selected-child parent operations; `DELETE .../{id}` deletes |
-| `GET /parent/{kidId}/dashboard` | Skill observations and analytics from uploaded student work |
+| `GET /parent/{kidId}/dashboard` | Skill observations (each with its parent-facing `area`) and analytics from uploaded student work |
 | Former `/kid/next`, `/kid/submit`, `/kid/session/{id}/activity`, and parent adult/extra-practice routes | Retired; authorized requests return `410 feature_removed` |
 
 Kid responses contain extraction; detailed mapping, grading, signatures, and learning states belong to authorized parent routes. API errors retain `{ "error": { "code": "...", "message": "..." } }`, use safe messages, and responses are `Cache-Control: no-store`.

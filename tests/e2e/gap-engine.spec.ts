@@ -55,9 +55,25 @@ test("one incorrect student work response suggests support without assigning a d
     })
     .first();
   await expect(card.getByText("Needs support", { exact: true })).toBeVisible();
-  await card.getByText("See work observations", { exact: true }).click();
+  await expect(card.getByText("Try at home", { exact: true })).toBeVisible();
+  await card.getByText("Uploaded evidence (1)", { exact: true }).click();
+  await expect(card.locator(".gap-details p")).toHaveCount(1);
+  // The map opens on the area that needs support and counts it in the banner.
+  await page.getByRole("searchbox", { name: "Find a skill" }).fill("");
   await expect(
-    card.getByText("Uploaded evidence (1)", { exact: true }),
+    page.getByLabel("Skill picture").locator("dd").first(),
+  ).toHaveText("1");
+  await expect(page.locator(".skill-dots .skill-dot-needs_support")).toHaveCount(
+    1,
+  );
+  const area = page.locator(".skill-area-needs");
+  await expect(area).toHaveCount(1);
+  await expect(area).toHaveAttribute("aria-pressed", "true");
+  await expect(area).toContainText("1 needs support");
+  await expect(
+    page
+      .locator(".skill-map-panel")
+      .getByRole("heading", { name: fixture.name, exact: true }),
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Send extra practice", exact: true }),
@@ -161,7 +177,7 @@ test("parent uploads show saved processing progress, authorize the private origi
   const family = await createFamily(context);
   await mutate(context.request, "/api/session/picker");
   await enterParent(page);
-  await page.getByRole("button", { name: "Student work", exact: true }).click();
+  await page.getByRole("button", { name: "Work", exact: true }).click();
   const base = `/api/learning/parent/${family.kid.id}/uploads`;
   const saved = page.waitForResponse(
     (response) =>
@@ -190,9 +206,8 @@ test("parent uploads show saved processing progress, authorize the private origi
   expect(original.status()).toBe(200);
   expect(original.headers()["cache-control"]).toContain("no-store");
   expect(original.headers()["content-type"]).toContain("image/png");
-  await page.getByRole("button", { name: "Analytics", exact: true }).click();
-  await expect(page.locator(".metric-card strong")).toHaveText(["4", "0", "4"]);
-  await page.getByRole("button", { name: "Student work", exact: true }).click();
+  // The counts sit at the top of the same page and catch up once the work has been read.
+  await expect(page.locator(".portal-stat dd")).toHaveText(["4", "0", "4"]);
   await expect(
     page.getByRole("button", { name: "Delete upload", exact: true }),
   ).toBeVisible();

@@ -17,7 +17,9 @@ async function addChild(
   grade: string,
   avatar: string,
 ) {
-  await page.getByRole("button", { name: "Children", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Family and settings", exact: true })
+    .click();
   await page.getByRole("button", { name: "Add child", exact: true }).click();
   await page.getByLabel("First name or nickname").fill(name);
   await page.getByLabel("Grade", { exact: true }).selectOption(grade);
@@ -64,34 +66,70 @@ test("parent signs up, sets a PIN, adds two children, and explores real learning
   await expect(page.getByText("Parent mode", { exact: true })).toBeVisible();
   await addChild(page, "Alex", "3", "Fox");
   await addChild(page, "Maya", "1", "Owl");
-  await page.getByRole("button", { name: "Skills", exact: true }).click();
-  await page
-    .getByRole("combobox", { name: "Choose child", exact: true })
-    .selectOption({ label: "Alex" });
+  // The skill map is the first page of the portal. Each child has a button in the side panel.
+  await page.getByRole("button", { name: "Skill map", exact: true }).click();
+  const children = page.getByRole("group", { name: "Children" });
+  await expect(children.getByRole("button")).toHaveCount(2);
+  await children.getByRole("button", { name: /Alex/ }).click();
+  await expect(children.getByRole("button", { name: /Alex/ })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
   await expect(
-    page.getByText("Learning activity", { exact: true }),
+    page.getByRole("heading", { name: "One dot for every skill.", level: 1 }),
   ).toBeVisible();
-  await expect(page.locator(".skill-card").first()).toBeVisible();
+  // Nothing has been uploaded, so every dot is still waiting and nothing is called a strength or a gap.
+  const picture = page.getByLabel("Skill picture");
+  await expect(picture.locator("dd").first()).toHaveText("0");
+  await expect(picture.locator("dd").nth(1)).toHaveText("0");
+  const total = Number(await picture.locator("dd").nth(2).innerText());
+  expect(total).toBeGreaterThan(100);
+  await expect(page.locator(".skill-dots .skill-dot")).toHaveCount(total);
+  await expect(page.locator(".skill-dots .skill-dot-unseen")).toHaveCount(
+    total,
+  );
   await expect(
-    page.locator(".skill-card:not(.skill-card-unassessed)"),
-  ).toHaveCount(0);
+    page.getByRole("heading", { name: "Nothing has shown up yet." }),
+  ).toBeVisible();
   await expect(
     page
       .getByLabel("Skill status legend")
-      .getByText("Not enough evidence", { exact: true }),
+      .getByText("Not seen yet", { exact: true }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Analytics", exact: true }).click();
+  // Tapping an area lists what is in it without calling anything a gap.
+  const fractions = page.getByRole("button", { name: /^Fractions/ });
+  await fractions.click();
+  await expect(fractions).toHaveAttribute("aria-pressed", "true");
+  const panel = page.locator(".skill-map-panel");
+  await expect(
+    panel.getByRole("heading", { name: "Fractions", exact: true }),
+  ).toBeVisible();
+  await expect(panel.getByText("0 of 10 seen", { exact: false })).toBeVisible();
+  await expect(panel.locator(".skill-rest li")).toHaveCount(10);
+  await expect(page.locator(".skill-card")).toHaveCount(0);
+  // The Work page carries the counts that used to sit under Analytics.
+  await page.getByRole("button", { name: "Work", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Alex’s work.", level: 1 }),
+  ).toBeVisible();
   for (const label of ["Questions read", "Correct answers", "Not graded yet"])
     await expect(page.getByText(label, { exact: true })).toBeVisible();
-  await expect(page.locator(".metric-card strong")).toHaveText(["0", "0", "0"]);
-  await page
-    .getByRole("button", { name: "Conversations", exact: true })
-    .click();
+  await expect(page.locator(".portal-stat dd")).toHaveText(["0", "0", "0"]);
+  // The other child has her own pages.
+  await children.getByRole("button", { name: /Maya/ }).click();
   await expect(
-    page.getByText("No learning conversations yet.", {
-      exact: true,
-    }),
+    page.getByRole("heading", { name: "Maya’s work.", level: 1 }),
   ).toBeVisible();
+  await page.getByRole("button", { name: "Games", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Maya’s games.", level: 1 }),
+  ).toBeVisible();
+  await expect(page.getByText("No games played yet.")).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
   await page
     .getByRole("button", { name: "Switch profile", exact: true })
     .click();
@@ -238,7 +276,9 @@ test("PIN lockout can be recovered through account-password reset; password chan
     .getByRole("button", { name: "Enter parent mode", exact: true })
     .click();
   await expect(page.getByText("Parent mode", { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Settings", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Family and settings", exact: true })
+    .click();
   await page.getByLabel("Current password", { exact: true }).fill(PASSWORD);
   await page
     .getByLabel("New password", { exact: true })
@@ -327,7 +367,9 @@ test("profile management enforces six children, edits names, and confirms deleti
   await mutate(context.request, "/api/session/picker");
   await page.goto("/profiles");
   await enterParent(page);
-  await page.getByRole("button", { name: "Children", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Family and settings", exact: true })
+    .click();
   await expect(
     page.getByRole("button", { name: "Add child", exact: true }),
   ).toBeDisabled();

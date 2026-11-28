@@ -1,57 +1,30 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
 import {
   Check,
-  ChevronLeft,
-  Clock3,
   KeyRound,
-  MessageCircle,
   Pencil,
   Plus,
   ShieldCheck,
-  Target,
   Trash2,
   Users,
 } from "lucide-react";
 import { api, errorMessage } from "@/lib/account-api";
 import type {
   AvatarKey,
-  Conversation,
   DashboardData,
   Grade,
   KidProfile,
   SessionView,
 } from "@/lib/account-types";
+import type { GameHistoryItem } from "@/lib/game-types";
 import { RequireMode, useAccountSession } from "./account-session";
-import { GapInsights } from "./gap-insights";
 import { HomeworkUploads } from "./homework-uploads";
 import { ParentGameHistory } from "./game-history";
-import {
-  AccountShell,
-  AVATARS,
-  Avatar,
-  FormError,
-  LogoutButton,
-} from "./account-ui";
-
-type Tab =
-  | "skills"
-  | "analytics"
-  | "conversations"
-  | "profiles"
-  | "settings"
-  | "homework"
-  | "games";
-const tabs: { key: Tab; label: string }[] = [
-  { key: "skills", label: "Skills" },
-  { key: "analytics", label: "Analytics" },
-  { key: "conversations", label: "Conversations" },
-  { key: "homework", label: "Student work" },
-  { key: "games", label: "Games" },
-  { key: "profiles", label: "Children" },
-  { key: "settings", label: "Settings" },
-];
+import { SkillMap } from "./skill-map";
+import { AVATARS, Avatar, FormError, LogoutButton } from "./account-ui";
 
 function ChildEditor({
   profile,
@@ -441,159 +414,61 @@ function ParentSettings() {
   );
 }
 
-function LearningViews({ data, tab }: { data: DashboardData; tab: Tab }) {
-  const [transcript, setTranscript] = useState<Conversation | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const request = useRef<AbortController | null>(null);
-  useEffect(() => () => request.current?.abort(), []);
-  async function viewConversation(id: string) {
-    request.current?.abort();
-    const controller = new AbortController();
-    request.current = controller;
-    setLoading(true);
-    setError(null);
-    try {
-      const next = await api<Conversation>(
-        `/api/parent/conversations/${data.profile.id}/${id}`,
-        { signal: controller.signal },
-      );
-      if (!controller.signal.aborted) setTranscript(next);
-    } catch (caught) {
-      if (!controller.signal.aborted) setError(errorMessage(caught));
-    } finally {
-      if (!controller.signal.aborted) setLoading(false);
-    }
-  }
-  if (tab === "skills") return <GapInsights skills={data.skills} />;
-  if (tab === "analytics") {
-    const metrics = [
-      {
-        title: "Questions read",
-        value: data.analytics.problemsAttempted,
-        icon: <Target size={20} />,
-      },
-      {
-        title: "Correct answers",
-        value: data.analytics.problemsCorrect,
-        icon: <Check size={20} />,
-      },
-      {
-        title: "Not graded yet",
-        value: data.analytics.problemsUngraded ?? 0,
-        icon: <Clock3 size={20} />,
-      },
-    ];
-    return (
-      <section className="dashboard-section">
-        <div className="section-heading">
-          <div>
-            <h2>Your uploaded work.</h2>
-            <p>
-              {data.profile.firstName}’s uploaded work, with each distinct
-              question counted once. Blank or unclear responses stay ungraded.
-            </p>
+type View = "map" | "work" | "games" | "family";
+const views: { key: View; label: string }[] = [
+  { key: "map", label: "Skill map" },
+  { key: "work", label: "Work" },
+  { key: "games", label: "Games" },
+  { key: "family", label: "Family and settings" },
+];
+
+function gradeLabel(grade: Grade) {
+  return grade === "K" ? "Kindergarten" : `Grade ${grade}`;
+}
+
+function WorkSummary({ data }: { data: DashboardData }) {
+  const name = data.profile.firstName;
+  const stats = [
+    { label: "Questions read", value: data.analytics.problemsAttempted },
+    { label: "Correct answers", value: data.analytics.problemsCorrect },
+    { label: "Not graded yet", value: data.analytics.problemsUngraded ?? 0 },
+  ];
+  return (
+    <section className="portal-hero portal-hero-lime">
+      <div>
+        <p className="portal-eyebrow">
+          {name} · {gradeLabel(data.profile.grade)}
+        </p>
+        <h1>{name}’s work.</h1>
+        <p>
+          Each distinct question is counted once. Blank or unclear responses
+          stay ungraded and never count for or against a skill.
+        </p>
+      </div>
+      <dl className="portal-stats" aria-label="Uploaded work so far">
+        {stats.map((stat) => (
+          <div className="portal-stat" key={stat.label}>
+            <dt>{stat.label}</dt>
+            <dd>{stat.value}</dd>
           </div>
-        </div>
-        <div className="analytics-grid">
-          {metrics.map((metric) => (
-            <article key={metric.title} className="metric-card">
-              <span aria-hidden="true">{metric.icon}</span>
-              <strong>{metric.value}</strong>
-              <p>{metric.title}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-    );
-  }
-  if (tab === "conversations")
-    return (
-      <section className="dashboard-section">
-        <div className="section-heading">
-          <div>
-            <h2>Learning conversations</h2>
-            <p>
-              Uploads don’t create tutoring chat. Conversations will appear when
-              that milestone is available.
-            </p>
-          </div>
-        </div>
-        {data.conversations.length === 0 && (
-          <p>No learning conversations yet.</p>
-        )}
-        <FormError message={error} />
-        {transcript ? (
-          <div className="transcript">
-            <button className="text-button" onClick={() => setTranscript(null)}>
-              <ChevronLeft size={15} aria-hidden="true" />
-              All conversations
-            </button>
-            <h3>{transcript.title}</h3>
-            <p className="conversation-time">
-              {new Date(transcript.startedAt * 1000).toLocaleString()}
-            </p>
-            <div className="transcript-messages">
-              {transcript.messages.map((message, index) => (
-                <div
-                  key={index}
-                  className={`transcript-message message-${message.role}`}
-                >
-                  <strong>
-                    {message.role === "student"
-                      ? data.profile.firstName
-                      : "Sidekick"}
-                  </strong>
-                  <p>{message.text}</p>
-                  <time>
-                    {new Date(message.timestamp * 1000).toLocaleTimeString([], {
-                      hour: "numeric",
-                      minute: "2-digit",
-                    })}
-                  </time>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="conversation-list">
-            {data.conversations.map((conversation) => (
-              <article className="conversation-card" key={conversation.id}>
-                <span className="conversation-icon">
-                  <MessageCircle size={21} aria-hidden="true" />
-                </span>
-                <div>
-                  <h3>{conversation.title}</h3>
-                  <time>
-                    {new Date(conversation.startedAt * 1000).toLocaleString()}
-                  </time>
-                  <p>{conversation.preview}</p>
-                  <button
-                    className="text-button"
-                    disabled={loading}
-                    onClick={() => void viewConversation(conversation.id)}
-                  >
-                    View transcript
-                    <span className="visually-hidden">
-                      : {conversation.title}
-                    </span>
-                  </button>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
-      </section>
-    );
-  return null;
+        ))}
+      </dl>
+    </section>
+  );
 }
 
 function ParentContent() {
-  const { session, accept, activity } = useAccountSession();
+  const { session, accept, activity, toPicker } = useAccountSession();
   const [profiles, setProfiles] = useState<KidProfile[]>([]);
   const [selected, setSelected] = useState("");
-  const [tab, setTab] = useState<Tab>("skills");
+  const [view, setView] = useState<View>("map");
   const [data, setData] = useState<DashboardData | null>(null);
+  const [games, setGames] = useState<GameHistoryItem[]>([]);
+  const [review, setReview] = useState<{
+    reviewer: boolean;
+    waiting?: number;
+  } | null>(null);
+  const [stamp, setStamp] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const reload = useCallback(async (id?: string) => {
@@ -608,6 +483,7 @@ function ParentContent() {
     );
     setLoaded(true);
   }, []);
+  const refresh = useCallback(() => setStamp((value) => value + 1), []);
   useEffect(() => {
     let active = true;
     const controller = new AbortController();
@@ -618,23 +494,33 @@ function ParentContent() {
         if (active) {
           setProfiles(next.profiles);
           setSelected(next.profiles[0]?.id || "");
-          if (!next.profiles.length) setTab("profiles");
+          if (!next.profiles.length) setView("family");
           setLoaded(true);
         }
       })
       .catch((caught) => {
         if (active) setError(errorMessage(caught));
       });
+    // Reviewers get a way into the review page from every screen of the portal.
+    api<{ reviewer: boolean; waiting?: number }>("/api/games/review/me", {
+      signal: controller.signal,
+    })
+      .then((next) => {
+        if (active) setReview(next);
+      })
+      .catch(() => undefined);
     return () => {
       active = false;
       controller.abort();
     };
   }, [session?.version]);
+  // Read the child's picture again whenever the child or the page changes, and after an upload changes.
   useEffect(() => {
     setData(null);
     setError(null);
-    if (!selected || !["skills", "analytics", "conversations"].includes(tab))
-      return;
+  }, [selected, view]);
+  useEffect(() => {
+    if (!selected || (view !== "map" && view !== "work")) return;
     let active = true;
     const controller = new AbortController();
     api<DashboardData>(`/api/parent/dashboard/${selected}`, {
@@ -650,99 +536,159 @@ function ParentContent() {
       active = false;
       controller.abort();
     };
-  }, [selected, tab, session?.version]);
-  const effectiveTab =
-    loaded && profiles.length === 0 && tab !== "settings" ? "profiles" : tab;
+  }, [selected, view, stamp, session?.version]);
+  useEffect(() => {
+    setGames([]);
+    if (!selected || view !== "map") return;
+    const controller = new AbortController();
+    // The map shows which game was played for a skill. Without it the map still works.
+    api<{ runs: GameHistoryItem[] }>(
+      `/api/games/parent/${encodeURIComponent(selected)}/history`,
+      { signal: controller.signal },
+    )
+      .then((next) => {
+        if (!controller.signal.aborted) setGames(next.runs);
+      })
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, [selected, view, session?.version]);
+  const shown: View = loaded && profiles.length === 0 ? "family" : view;
+  const loading = !error && (
+    <p className="dashboard-loading" role="status">
+      Gathering the little details…
+    </p>
+  );
   return (
-    <AccountShell kind="parent">
-      <div
-        onPointerDown={(event) => {
-          if (event.isTrusted) activity();
-        }}
-        onKeyDown={(event) => {
-          if (event.isTrusted) activity();
-        }}
-      >
-        <section className="dashboard-intro">
-          <div>
-            <p className="account-eyebrow">
-              THEIR LITTLE STEPS. YOUR BIG PICTURE.
-            </p>
-            <h1>
-              Your family’s learning,
-              <br />a little clearer.
-            </h1>
-            <p>A place to notice progress and find the next bit of support.</p>
-          </div>
-          {profiles.length > 0 && (
-            <label className="child-selector">
-              Choose child
-              <select
-                value={selected}
-                onChange={(event) => setSelected(event.target.value)}
+    <div
+      className="account-shell shell-parent portal"
+      onPointerDown={(event) => {
+        if (event.isTrusted) activity();
+      }}
+      onKeyDown={(event) => {
+        if (event.isTrusted) activity();
+      }}
+    >
+      <aside className="portal-side">
+        <Link
+          className="portal-logo"
+          href="/profiles"
+          prefetch={false}
+          aria-label="Sidekick home"
+        >
+          <img
+            src="/sidekick-logo.svg"
+            width="164"
+            height="49"
+            alt="Sidekick"
+          />
+        </Link>
+        {profiles.length > 0 && (
+          <div className="portal-children" role="group" aria-label="Children">
+            <p className="portal-label">Children</p>
+            {profiles.map((profile) => (
+              <button
+                type="button"
+                key={profile.id}
+                className="portal-child"
+                aria-pressed={profile.id === selected}
+                onClick={() => setSelected(profile.id)}
               >
-                {profiles.map((profile) => (
-                  <option key={profile.id} value={profile.id}>
-                    {profile.firstName}
-                  </option>
-                ))}
-              </select>
-            </label>
-          )}
-        </section>
-        <nav className="dashboard-tabs" aria-label="Parent dashboard views">
-          {tabs.map((item) => (
+                <span aria-hidden="true">
+                  <Avatar avatar={profile.avatarKey} size="small" />
+                </span>
+                <span>
+                  {profile.firstName}
+                  <small>{gradeLabel(profile.grade)}</small>
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
+        <nav className="portal-nav" aria-label="Parent portal">
+          {views.map((item) => (
             <button
+              type="button"
               key={item.key}
-              className={effectiveTab === item.key ? "selected" : ""}
-              aria-current={effectiveTab === item.key ? "page" : undefined}
-              onClick={() => setTab(item.key)}
+              className={shown === item.key ? "selected" : ""}
+              aria-current={shown === item.key ? "page" : undefined}
+              onClick={() => setView(item.key)}
             >
               {item.label}
             </button>
           ))}
         </nav>
-        <FormError message={error} />
-        {effectiveTab === "profiles" ? (
-          <ProfileManagement
-            profiles={profiles}
-            reload={async (id) => {
-              if (session) accept(session);
-              await reload(id);
-            }}
-          />
-        ) : effectiveTab === "settings" ? (
-          <ParentSettings />
-        ) : effectiveTab === "homework" ? (
-          selected ? (
-            <HomeworkUploads key={selected} kidId={selected} />
-          ) : null
-        ) : effectiveTab === "games" ? (
-          selected ? (
-            <ParentGameHistory key={`games:${selected}`} kidId={selected} />
-          ) : null
-        ) : (
-          <>
-            <div className="sample-insights-label">
-              <span>Learning activity</span>
-              <p>
-                Based on uploaded work. Skills without enough reliable evidence
-                are marked “Not enough evidence.”
-              </p>
-            </div>
-            {data ? (
-              <LearningViews key={`${selected}:${tab}`} data={data} tab={tab} />
-            ) : (
-              !error && (
-                <p className="dashboard-loading" role="status">
-                  Gathering the little details…
-                </p>
-              )
-            )}
-          </>
+        {review?.reviewer && (
+          <Link className="portal-review" href="/parent/games" prefetch={false}>
+            Review games
+            <small>
+              {review.waiting
+                ? `${review.waiting} waiting for you`
+                : "Nothing waiting right now"}
+            </small>
+          </Link>
         )}
-      </div>
-    </AccountShell>
+        <div className="portal-session">
+          <span className="parent-mode-label">
+            <ShieldCheck size={15} aria-hidden="true" />
+            Parent mode
+          </span>
+          <button
+            type="button"
+            className="text-button"
+            onClick={() =>
+              void toPicker().catch((caught) => setError(errorMessage(caught)))
+            }
+          >
+            <Users size={16} aria-hidden="true" />
+            Switch profile
+          </button>
+        </div>
+      </aside>
+      <main className="portal-main">
+        <FormError message={error} />
+        {shown === "family" ? (
+          <>
+            <ProfileManagement
+              profiles={profiles}
+              reload={async (id) => {
+                if (session) accept(session);
+                await reload(id);
+              }}
+            />
+            <ParentSettings />
+          </>
+        ) : shown === "games" ? (
+          selected ? (
+            <ParentGameHistory
+              key={`games:${selected}`}
+              kidId={selected}
+              profile={profiles.find((profile) => profile.id === selected)}
+            />
+          ) : null
+        ) : shown === "work" ? (
+          selected ? (
+            <>
+              {data ? <WorkSummary data={data} /> : loading}
+              <HomeworkUploads
+                key={selected}
+                kidId={selected}
+                onChange={refresh}
+              />
+            </>
+          ) : null
+        ) : data ? (
+          <SkillMap
+            key={selected}
+            profile={data.profile}
+            skills={data.skills}
+            games={games}
+            onUpload={() => setView("work")}
+          />
+        ) : (
+          loading
+        )}
+      </main>
+    </div>
   );
 }
 

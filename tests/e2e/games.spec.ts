@@ -262,6 +262,20 @@ test("a waiting game stays hidden until a parent approves it, then the child pla
   await expect(history.getByText("Froggy's Bridge", { exact: true })).toBeVisible();
   await expect(history.getByText("Got the last round on the first try")).toBeVisible();
   await expect(history.getByRole("link", { name: "Review games" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Alex’s games.", level: 1 })).toBeVisible();
+  await expect(page.getByLabel("Games so far").locator("dd")).toHaveText(["1", "1"]);
+
+  // The skill map ties it together: the skill the page showed, what was noticed, and the game played for it.
+  await page.getByRole("button", { name: "Skill map", exact: true }).click();
+  const area = page.getByRole("button", { name: /^Fractions/ });
+  await expect(area).toHaveAttribute("aria-pressed", "true");
+  await expect(area).toContainText("1 needs support");
+  const skill = page.locator(".skill-map-panel .skill-card").first();
+  await expect(skill.getByRole("heading", { name: "Know a/b is a copies of 1/b", exact: true })).toBeVisible();
+  await expect(skill.getByText("Needs support", { exact: true })).toBeVisible();
+  await expect(skill.locator(".skill-story-played")).toHaveText(/Froggy's Bridge\. Got the last round on the first try\./);
+  // Playing well did not move the skill: the picture still comes from the uploaded page.
+  await expect(page.getByLabel("Skill picture").locator("dd")).toHaveText(["1", "0", /^\d+$/]);
   expect(pageErrors).toEqual([]);
 });
 
