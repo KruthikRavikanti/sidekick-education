@@ -24,7 +24,13 @@ import { RequireMode, useAccountSession } from "./account-session";
 import { HomeworkUploads } from "./homework-uploads";
 import { ParentGameHistory } from "./game-history";
 import { SkillMap } from "./skill-map";
-import { AVATARS, Avatar, FormError, LogoutButton } from "./account-ui";
+import {
+  AccountShell,
+  AVATARS,
+  Avatar,
+  FormError,
+  LogoutButton,
+} from "./account-ui";
 
 function ChildEditor({
   profile,
@@ -458,7 +464,7 @@ function WorkSummary({ data }: { data: DashboardData }) {
 }
 
 function ParentContent() {
-  const { session, accept, activity, toPicker } = useAccountSession();
+  const { session, accept, activity } = useAccountSession();
   const [profiles, setProfiles] = useState<KidProfile[]>([]);
   const [selected, setSelected] = useState("");
   const [view, setView] = useState<View>("map");
@@ -559,136 +565,114 @@ function ParentContent() {
     </p>
   );
   return (
-    <div
-      className="account-shell shell-parent portal"
-      onPointerDown={(event) => {
-        if (event.isTrusted) activity();
-      }}
-      onKeyDown={(event) => {
-        if (event.isTrusted) activity();
-      }}
-    >
-      <aside className="portal-side">
-        <Link
-          className="portal-logo"
-          href="/profiles"
-          prefetch={false}
-          aria-label="Sidekick home"
-        >
-          <img
-            src="/sidekick-logo.svg"
-            width="164"
-            height="49"
-            alt="Sidekick"
-          />
-        </Link>
-        {profiles.length > 0 && (
-          <div className="portal-children" role="group" aria-label="Children">
-            <p className="portal-label">Children</p>
-            {profiles.map((profile) => (
+    // The top bar is the one every child screen has, so the logo and Switch profile never move.
+    <AccountShell kind="parent">
+      <div
+        className="portal"
+        onPointerDown={(event) => {
+          if (event.isTrusted) activity();
+        }}
+        onKeyDown={(event) => {
+          if (event.isTrusted) activity();
+        }}
+      >
+        <aside className="portal-side">
+          {profiles.length > 0 && (
+            <div className="portal-children" role="group" aria-label="Children">
+              <p className="portal-label">Children</p>
+              {profiles.map((profile) => (
+                <button
+                  type="button"
+                  key={profile.id}
+                  className="portal-child"
+                  aria-pressed={profile.id === selected}
+                  onClick={() => setSelected(profile.id)}
+                >
+                  <span aria-hidden="true">
+                    <Avatar avatar={profile.avatarKey} size="small" />
+                  </span>
+                  <span>
+                    {profile.firstName}
+                    <small>{gradeLabel(profile.grade)}</small>
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+          <nav className="portal-nav" aria-label="Parent portal">
+            {views.map((item) => (
               <button
                 type="button"
-                key={profile.id}
-                className="portal-child"
-                aria-pressed={profile.id === selected}
-                onClick={() => setSelected(profile.id)}
+                key={item.key}
+                className={shown === item.key ? "selected" : ""}
+                aria-current={shown === item.key ? "page" : undefined}
+                onClick={() => setView(item.key)}
               >
-                <span aria-hidden="true">
-                  <Avatar avatar={profile.avatarKey} size="small" />
-                </span>
-                <span>
-                  {profile.firstName}
-                  <small>{gradeLabel(profile.grade)}</small>
-                </span>
+                {item.label}
               </button>
             ))}
-          </div>
-        )}
-        <nav className="portal-nav" aria-label="Parent portal">
-          {views.map((item) => (
-            <button
-              type="button"
-              key={item.key}
-              className={shown === item.key ? "selected" : ""}
-              aria-current={shown === item.key ? "page" : undefined}
-              onClick={() => setView(item.key)}
+          </nav>
+          {review?.reviewer && (
+            <Link
+              className="portal-review"
+              href="/parent/games"
+              prefetch={false}
             >
-              {item.label}
-            </button>
-          ))}
-        </nav>
-        {review?.reviewer && (
-          <Link className="portal-review" href="/parent/games" prefetch={false}>
-            Review games
-            <small>
-              {review.waiting
-                ? `${review.waiting} waiting for you`
-                : "Nothing waiting right now"}
-            </small>
-          </Link>
-        )}
-        <div className="portal-session">
-          <span className="parent-mode-label">
-            <ShieldCheck size={15} aria-hidden="true" />
-            Parent mode
-          </span>
-          <button
-            type="button"
-            className="text-button"
-            onClick={() =>
-              void toPicker().catch((caught) => setError(errorMessage(caught)))
-            }
-          >
-            <Users size={16} aria-hidden="true" />
-            Switch profile
-          </button>
-        </div>
-      </aside>
-      <main className="portal-main">
-        <FormError message={error} />
-        {shown === "family" ? (
-          <>
-            <ProfileManagement
-              profiles={profiles}
-              reload={async (id) => {
-                if (session) accept(session);
-                await reload(id);
-              }}
-            />
-            <ParentSettings />
-          </>
-        ) : shown === "games" ? (
-          selected ? (
-            <ParentGameHistory
-              key={`games:${selected}`}
-              kidId={selected}
-              profile={profiles.find((profile) => profile.id === selected)}
-            />
-          ) : null
-        ) : shown === "work" ? (
-          selected ? (
+              Review games
+              <small>
+                {review.waiting
+                  ? `${review.waiting} waiting for you`
+                  : "Nothing waiting right now"}
+              </small>
+            </Link>
+          )}
+        </aside>
+        <div className="portal-main">
+          <FormError message={error} />
+          {shown === "family" ? (
             <>
-              {data ? <WorkSummary data={data} /> : loading}
-              <HomeworkUploads
-                key={selected}
-                kidId={selected}
-                onChange={refresh}
+              <ProfileManagement
+                profiles={profiles}
+                reload={async (id) => {
+                  if (session) accept(session);
+                  await reload(id);
+                }}
               />
+              <ParentSettings />
             </>
-          ) : null
-        ) : data ? (
-          <SkillMap
-            key={selected}
-            profile={data.profile}
-            skills={data.skills}
-            games={games}
-            onUpload={() => setView("work")}
-          />
-        ) : (
-          loading
-        )}
-      </main>
-    </div>
+          ) : shown === "games" ? (
+            selected ? (
+              <ParentGameHistory
+                key={`games:${selected}`}
+                kidId={selected}
+                profile={profiles.find((profile) => profile.id === selected)}
+              />
+            ) : null
+          ) : shown === "work" ? (
+            selected ? (
+              <>
+                {data ? <WorkSummary data={data} /> : loading}
+                <HomeworkUploads
+                  key={selected}
+                  kidId={selected}
+                  onChange={refresh}
+                />
+              </>
+            ) : null
+          ) : data ? (
+            <SkillMap
+              key={selected}
+              profile={data.profile}
+              skills={data.skills}
+              games={games}
+              onUpload={() => setView("work")}
+            />
+          ) : (
+            loading
+          )}
+        </div>
+      </div>
+    </AccountShell>
   );
 }
 
