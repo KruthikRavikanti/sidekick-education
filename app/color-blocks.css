@@ -118,14 +118,7 @@ section.kid-chat-placeholder input[disabled]::placeholder { color: var(--on-fore
 .problem-card { border: 0; border-radius: 28px; background: #fff; }
 
 /* ---------- parent dashboard ---------- */
-.dashboard-intro { background: var(--forest); border-radius: var(--block-radius); padding: 40px 44px; margin-bottom: 20px; align-items: center; }
-.dashboard-intro h1 { color: var(--cream); font-size: clamp(34px, 4vw, 52px); line-height: 1.02; letter-spacing: -0.5px; }
-.dashboard-intro :is(p, span, small, label, div), .dashboard-intro .account-eyebrow { color: var(--on-forest) !important; }
-.dashboard-intro select { border: 0; border-radius: 999px; min-height: 50px; background: var(--cream); color: var(--forest); font-weight: 800; }
-.dashboard-tabs { border-bottom: 0; gap: 8px; padding-bottom: 4px; }
-.dashboard-tabs button { background: var(--sand); color: var(--forest); min-height: 46px; padding: 10px 22px; font-size: 15px; font-family: Fredoka, Nunito, sans-serif; font-weight: 600; }
-.dashboard-tabs button:hover:not(.selected) { background: var(--sand-deep); }
-.dashboard-tabs button.selected { background: var(--forest); color: var(--cream); }
+
 .dashboard-section h2 { font-size: 32px; line-height: 1.05; }
 .skill-card { border: 0; border-radius: 24px; padding: 24px; background: var(--sand); }
 .skill-card.skill-card-needs_support { background: var(--orange-tint); }
@@ -134,9 +127,9 @@ section.kid-chat-placeholder input[disabled]::placeholder { color: var(--on-fore
    The base styles used a dozen pale greens for tints, tags and selected states. Each maps to the main palette here:
    quiet surfaces and notes are sand, "picked" and small accents are sun,
    and "done, correct, on track" is solid lime. */
-.demo-notice, .sample-insights-label, .empty-family, .dashboard-empty,
-.worksheet-preview, .pdf-preview, .transcript-message, .status-blank, .sample-button, .account-shell input:disabled { background: var(--sand); }
-.demo-notice, .sample-insights-label, .sample-button, .account-success { border: 0; }
+.demo-notice, .empty-family, .dashboard-empty,
+.worksheet-preview, .pdf-preview, .status-blank, .sample-button, .account-shell input:disabled { background: var(--sand); }
+.demo-notice, .sample-button, .account-success { border: 0; }
 .dashboard-empty, .child-editor, .problem-number, .learning-filter input, .account-shell input, .account-shell select { border-color: var(--line); }
 .student-work { border-top-color: var(--line); }
 .card-topline { border-bottom-color: var(--line); }
@@ -147,8 +140,6 @@ section.kid-chat-placeholder input[disabled]::placeholder { color: var(--on-fore
 .subject-tag, .grade-tag { background: #fff; }
 .status-answered, .skill-status.skill-on_track, .game-status-approved, .account-success { background: var(--lime); color: var(--forest); }
 .avatar-lime { background: var(--lime); }
-
-.metric-card > span { background: var(--sun); }
 
 .avatar-options button[aria-checked="true"] { background: var(--sun); }
 
@@ -207,7 +198,7 @@ body:has(.auth-layout, .picker-intro, .pin-card, .narrow-card, .kid-welcome, .ma
   .kid-welcome { padding: 32px 28px; min-height: 0; }
   .kid-welcome::after { display: none; }
   .kid-action-card { min-height: 0; padding: 30px 28px; }
-  .auth-story, .upload-intro, .picker-intro, .results-intro, .dashboard-intro { padding: 30px 26px; }
+  .auth-story, .upload-intro, .picker-intro, .results-intro { padding: 30px 26px; }
   .account-card { padding: 28px 24px; }
   .intro-mascot { display: none; }
   .profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }

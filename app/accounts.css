@@ -375,83 +375,6 @@ html[data-session-paused="true"] body {
 .pin-input {
   letter-spacing: 8px;
 }
-.dashboard-intro {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 25px;
-  padding: 8px 0 30px;
-}
-.dashboard-intro h1 {
-  font-size: 42px;
-  line-height: 1.08;
-  letter-spacing: -0.6px;
-  margin: 13px 0 16px;
-}
-.dashboard-intro p:not(.account-eyebrow) {
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.7;
-}
-.child-selector {
-  min-width: 180px;
-  font-size: 11px !important;
-  margin: 0 !important;
-}
-.child-selector select {
-  display: block;
-  margin-top: 7px;
-  min-width: 180px;
-}
-.dashboard-tabs {
-  display: flex;
-  gap: 6px;
-  border-bottom: 1.5px solid var(--border);
-  padding-bottom: 11px;
-  margin-bottom: 24px;
-  overflow-x: auto;
-}
-.dashboard-tabs button {
-  background: transparent;
-  color: var(--muted);
-  border: 0;
-  border-radius: 25px;
-  min-height: 39px;
-  padding: 9px 18px;
-  font-size: 13px;
-  font-weight: 900;
-  white-space: nowrap;
-}
-.dashboard-tabs button.selected {
-  background: var(--forest);
-  color: white;
-}
-.dashboard-tabs button:hover:not(.selected) {
-  background: #edf2df;
-}
-.sample-insights-label {
-  display: flex;
-  gap: 13px;
-  align-items: center;
-  padding: 14px 17px;
-  background: #edf2df;
-  border: 1px solid #d9e3c3;
-  border-radius: 12px;
-  margin-bottom: 27px;
-}
-.sample-insights-label > span {
-  background: white;
-  border-radius: 15px;
-  padding: 4px 8px;
-  font-size: 10px;
-  font-weight: 900;
-  white-space: nowrap;
-}
-.sample-insights-label > p {
-  font-size: 11px;
-  color: var(--muted);
-  line-height: 1.7;
-}
 .dashboard-section {
   padding: 6px 0 20px;
 }
@@ -512,23 +435,6 @@ html[data-session-paused="true"] body {
   background: #e8e9e7;
   color: #626961;
 }
-.subject-skills {
-  margin-top: 26px;
-}
-.subject-skills > h3 {
-  font-family: Nunito, sans-serif;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 16px;
-  font-weight: 900;
-  margin-bottom: 14px;
-}
-.skill-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-}
 .skill-card {
   background: white;
   border: 1.5px solid var(--border);
@@ -562,131 +468,6 @@ html[data-session-paused="true"] body {
   text-align: center;
   padding: 50px 20px;
   font-size: 14px;
-}
-.analytics-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-}
-.metric-card {
-  padding: 24px;
-  background: white;
-  border: 1.5px solid var(--border);
-  border-radius: 19px;
-}
-.metric-card > span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  color: var(--forest);
-  background: #edf2df;
-  margin-bottom: 19px;
-}
-.metric-card strong {
-  display: block;
-  font:
-    500 35px Fredoka,
-    sans-serif;
-  white-space: nowrap;
-}
-.metric-card > p {
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.6;
-  margin-top: 8px;
-}
-.conversation-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.conversation-card {
-  display: flex;
-  gap: 17px;
-  background: white;
-  border: 1.5px solid var(--border);
-  padding: 23px;
-  border-radius: 18px;
-}
-.conversation-icon {
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  background: #f7e8dd;
-  border-radius: 14px;
-}
-.conversation-card h3 {
-  font-family: Nunito, sans-serif;
-  font-size: 16px;
-  font-weight: 900;
-  margin-bottom: 6px;
-}
-.conversation-card time,
-.conversation-time {
-  color: var(--muted);
-  font-size: 10px;
-}
-.conversation-card p {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.8;
-  margin-top: 10px;
-}
-.conversation-card button {
-  padding-left: 0;
-  margin-top: 7px;
-  font-size: 11px;
-}
-.transcript {
-  max-width: 720px;
-  background: white;
-  border: 1.5px solid var(--border);
-  border-radius: 18px;
-  padding: 25px;
-}
-.transcript > .text-button {
-  padding-left: 0;
-  margin-bottom: 14px;
-}
-.transcript > h3 {
-  font-size: 24px;
-  margin-bottom: 8px;
-}
-.transcript-messages {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 25px;
-}
-.transcript-message {
-  max-width: 90%;
-  padding: 15px 18px;
-  border-radius: 15px;
-  background: #f2f6e8;
-  align-self: flex-start;
-}
-.transcript-message.message-student {
-  align-self: flex-end;
-  background: #fff0e4;
-}
-.transcript-message strong {
-  font-size: 11px;
-}
-.transcript-message p {
-  font-size: 13px;
-  line-height: 1.8;
-  color: var(--night);
-  white-space: pre-wrap;
-  margin: 5px 0 7px;
-}
-.transcript-message time {
-  font-size: 9px;
-  color: var(--muted);
 }
 .managed-profiles {
   display: flex;
@@ -963,20 +744,11 @@ html[data-session-paused="true"] body {
   .profile-grid {
     gap: 17px;
   }
-  .skill-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .analytics-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
   .settings-form {
     padding: 23px;
   }
   .settings-form h3 {
     font-size: 21px;
-  }
-  .dashboard-intro h1 {
-    font-size: 37px;
   }
 }
 @media (max-width: 700px) {
@@ -1117,47 +889,6 @@ html[data-session-paused="true"] body {
     font-size: 11px;
     margin-bottom: 23px;
   }
-  .dashboard-intro {
-    display: block;
-    padding: 0 0 24px;
-  }
-  .dashboard-intro h1 {
-    font-size: 35px;
-    margin: 14px 0;
-  }
-  .dashboard-intro p:not(.account-eyebrow) {
-    font-size: 12px;
-    max-width: 300px;
-  }
-  .child-selector {
-    display: block;
-    margin-top: 24px !important;
-  }
-  .child-selector select {
-    width: 100%;
-    margin-top: 6px;
-  }
-  .dashboard-tabs {
-    gap: 3px;
-    margin-left: -2px;
-    margin-right: -2px;
-    margin-bottom: 19px;
-    padding-bottom: 10px;
-  }
-  .dashboard-tabs button {
-    font-size: 11px;
-    padding: 9px 13px;
-    min-height: 37px;
-  }
-  .sample-insights-label {
-    display: block;
-    padding: 13px;
-    margin-bottom: 24px;
-  }
-  .sample-insights-label > p {
-    font-size: 10px;
-    margin-top: 8px;
-  }
   .section-heading {
     align-items: flex-start;
     gap: 12px;
@@ -1175,10 +906,6 @@ html[data-session-paused="true"] body {
     gap: 4px;
     min-height: 38px;
   }
-  .skill-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 11px;
-  }
   .skill-card {
     padding: 16px 13px;
     border-radius: 15px;
@@ -1193,58 +920,8 @@ html[data-session-paused="true"] body {
   .skill-status {
     font-size: 9px;
   }
-  .subject-skills {
-    margin-top: 24px;
-  }
-  .subject-skills > h3 {
-    font-size: 15px;
-  }
   .skill-legend {
     gap: 5px;
-  }
-  .analytics-grid {
-    gap: 12px;
-  }
-  .metric-card {
-    padding: 21px 18px;
-    border-radius: 17px;
-  }
-  .metric-card strong {
-    font-size: 31px;
-  }
-  .metric-card > p {
-    font-size: 10px;
-  }
-  .conversation-card {
-    padding: 18px 15px;
-    gap: 12px;
-  }
-  .conversation-icon {
-    width: 35px;
-    height: 35px;
-    border-radius: 11px;
-  }
-  .conversation-icon svg {
-    width: 17px;
-  }
-  .conversation-card h3 {
-    font-size: 14px;
-  }
-  .conversation-card p {
-    font-size: 12px;
-  }
-  .transcript {
-    padding: 20px 16px;
-  }
-  .transcript > h3 {
-    font-size: 23px;
-  }
-  .transcript-message {
-    padding: 13px 14px;
-    max-width: 94%;
-  }
-  .transcript-message p {
-    font-size: 12px;
   }
   .managed-profile {
     padding: 15px 12px;
@@ -1385,8 +1062,5 @@ html[data-session-paused="true"] body {
     width: 35px;
     height: 35px;
     font-size: 23px;
-  }
-  .skill-grid {
-    grid-template-columns: 1fr;
   }
 }

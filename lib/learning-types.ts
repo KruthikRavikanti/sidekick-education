@@ -6,6 +6,8 @@ export interface LearningSkill {
   commonCoreCode: string;
   status: LearningStatus;
   subskillId?: string;
+  // The part of the grade this skill sits in, in a parent's words ("Fractions").
+  area?: string;
   parentExplanation?: string;
   observedPattern?: string;
   homeTip?: string;

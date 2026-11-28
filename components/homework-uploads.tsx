@@ -1,18 +1,51 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { api, apiFetch, errorMessage } from "@/lib/account-api";
 import type { UploadRecord } from "@/lib/learning-types";
 import { normalizeUploadFile, WORK_ACCEPT } from "@/lib/upload-files";
 import { FormError } from "./account-ui";
 import { ExtractionResults } from "./extraction-results";
 
-export function HomeworkUploads({ kidId }: { kidId: string }) {
+const STATES: Record<string, string> = {
+  completed: "read",
+  processing: "reading now",
+  pending: "waiting to be read",
+  failed: "could not be read",
+};
+function uploadedAt(seconds?: number) {
+  if (!seconds) return "Uploaded work";
+  return new Date(seconds * 1000).toLocaleString(undefined, {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+function pageCount(item: UploadRecord) {
+  const pages = item.pageCount ?? item.pages ?? 0;
+  return `${pages} ${pages === 1 ? "page" : "pages"}`;
+}
+
+export function HomeworkUploads({
+  kidId,
+  onChange,
+}: {
+  kidId: string;
+  // Called whenever the list of uploads is read again, so a page around it can refresh its own numbers.
+  onChange?: () => void;
+}) {
   const [uploads, setUploads] = useState<UploadRecord[]>([]);
   const [selected, setSelected] = useState<UploadRecord | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
   const base = `/api/learning/parent/${kidId}/uploads`;
+  // Kept in a ref so a new callback from the page never restarts loading.
+  const changed = useRef(onChange);
+  useEffect(() => {
+    changed.current = onChange;
+  });
   const selectedId = selected?.id;
   const sampleAnalysis =
     selected?.stage === "analysis_pending" &&
@@ -26,8 +59,9 @@ export function HomeworkUploads({ kidId }: { kidId: string }) {
         `/api/learning/parent/${kidId}/uploads`,
         { signal },
       );
-      if (!signal?.aborted)
-        setUploads(Array.isArray(result) ? result : result.uploads);
+      if (signal?.aborted) return;
+      setUploads(Array.isArray(result) ? result : result.uploads);
+      changed.current?.();
     },
     [kidId],
   );
@@ -154,13 +188,9 @@ export function HomeworkUploads({ kidId }: { kidId: string }) {
         {uploads.map((item) => (
           <article key={item.id}>
             <div>
-              <strong>
-                {item.createdAt
-                  ? new Date(item.createdAt * 1000).toLocaleString()
-                  : "Uploaded work"}
-              </strong>
+              <strong>{uploadedAt(item.createdAt)}</strong>
               <p>
-                {item.pageCount ?? item.pages ?? 0} pages · {item.state}
+                {pageCount(item)} · {STATES[item.state] ?? item.state}
               </p>
             </div>
             <button className="text-button" onClick={() => void show(item.id)}>

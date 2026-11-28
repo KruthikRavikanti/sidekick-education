@@ -1,0 +1,257 @@
+/* The parent portal.
+   A side panel holds the family and the pages. The page sits beside it and stacks under it on a phone.
+   The skill map shows one dot for every skill, grouped by area, with the picked area's skills beside it.
+   Colors, type and block shapes come from the Color Blocks theme. */
+
+.portal {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 24px 72px;
+}
+/* The clouds would sit behind the side panel. */
+body:has(.portal)::before { display: none; }
+
+/* ---------- the side panel ---------- */
+.portal-side {
+  flex: 1 1 230px;
+  max-width: 100%;
+  background: var(--sand);
+  border-radius: var(--block-radius);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.portal-logo { display: flex; align-self: flex-start; }
+.portal-logo img { width: 150px; height: auto; display: block; }
+.portal-label, .portal-eyebrow {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--forest);
+}
+.portal-eyebrow { font-size: 13px; }
+.portal-children { display: flex; flex-direction: column; gap: 8px; }
+.portal-child {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 0;
+  background: var(--cream);
+  color: var(--forest);
+  border-radius: 999px;
+  padding: 6px 18px 6px 6px;
+  min-height: 52px;
+  font: inherit;
+  font-weight: 800;
+  text-align: left;
+  cursor: pointer;
+}
+.portal-child:hover { background: #fff; }
+.portal-child[aria-pressed="true"] { background: var(--forest); color: var(--cream); }
+.portal-child small { display: block; font-size: 12px; font-weight: 600; opacity: 0.85; }
+.portal-child .kid-avatar { width: 40px; height: 40px; font-size: 24px; border-radius: 50%; border: 0; }
+.portal-nav { display: flex; flex-direction: column; gap: 4px; }
+.portal-nav button {
+  border: 0;
+  background: transparent;
+  color: var(--forest);
+  text-align: left;
+  font: 600 18px Fredoka, Nunito, sans-serif;
+  min-height: 48px;
+  padding: 10px 18px;
+  border-radius: 18px;
+  cursor: pointer;
+}
+.portal-nav button:hover:not(.selected) { background: var(--sand-deep); }
+.portal-nav button.selected { background: var(--sun); }
+.portal-review {
+  background: var(--forest);
+  color: var(--cream);
+  text-decoration: none;
+  font-weight: 800;
+  line-height: 1.25;
+  padding: 14px 18px;
+  border-radius: 22px;
+}
+.portal-review:hover { background: var(--forest-soft); }
+.portal-review small { display: block; font-size: 13px; font-weight: 600; color: var(--on-forest); }
+.portal-session {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+}
+.portal-session .parent-mode-label { color: var(--forest); }
+.portal :is(.portal-child, .portal-nav button, .skill-area, .portal-review):focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+}
+
+/* ---------- the page ---------- */
+.portal-main { flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+.portal-hero {
+  border-radius: var(--block-radius);
+  padding: 36px 40px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+.portal-hero > div:first-child { flex: 1 1 320px; min-width: 0; }
+.portal-hero h1 { margin: 10px 0 0; font-size: clamp(34px, 4.4vw, 54px); line-height: 1.02; letter-spacing: -0.5px; }
+.portal-hero p:not(.portal-eyebrow) { margin: 12px 0 0; font-size: 16px; line-height: 1.45; max-width: 480px; }
+.portal-hero-forest { background: var(--forest); }
+.portal-hero-forest h1 { color: var(--cream); }
+.portal-hero-forest .portal-eyebrow { color: var(--lime); }
+.portal-hero-forest p:not(.portal-eyebrow), .portal-hero-forest .portal-stat dt { color: var(--on-forest); }
+.portal-hero-forest .portal-stat dd { color: var(--cream); }
+.portal-hero-forest .portal-stat-needs dd { color: var(--orange); }
+.portal-hero-forest .portal-stat-track dd { color: var(--lime); }
+.portal-hero-lime { background: var(--lime); }
+.portal-hero-sun { background: var(--sun); }
+.portal-main a.button { text-decoration: none; }
+.portal-stats { display: flex; flex-wrap: wrap; gap: 26px; margin: 0; }
+.portal-stat { display: flex; flex-direction: column-reverse; }
+.portal-stat dd { margin: 0; font: 600 52px/1 Fredoka, Nunito, sans-serif; }
+.portal-stat dt { font-weight: 700; font-size: 15px; line-height: 1.25; max-width: 130px; margin-top: 4px; }
+
+/* Sections on the Work, Games and Family pages sit in their own block. */
+.portal-main > .dashboard-section {
+  background: var(--sand);
+  border-radius: var(--block-radius);
+  padding: 32px;
+}
+.portal-main > .dashboard-section .section-heading { flex-wrap: wrap; }
+.portal-main > .dashboard-section .section-heading p { font-size: 14px; line-height: 1.5; margin-top: 6px; }
+.portal-main .homework-history > article,
+.portal-main .game-history-list > li,
+.portal-main .managed-profile,
+.portal-main .settings-form,
+.portal-main .child-editor,
+.portal-main .dashboard-empty { background: var(--cream); border: 0; }
+.portal-main .homework-history strong { font-size: 16px; }
+.portal-main .homework-history p { font-size: 14px; }
+.portal-main .dashboard-loading { padding: 40px; }
+
+/* ---------- the skill map ---------- */
+.skill-map { display: flex; flex-direction: column; gap: 20px; }
+.skill-map-body { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 20px; }
+.skill-map-areas { flex: 3 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.skill-map-areas .learning-filter { margin: 0; max-width: none; font-size: 14px; }
+.skill-map-areas .learning-filter input { border-radius: 999px; padding: 12px 18px; min-height: 48px; }
+.skill-map-subject h2 { font-size: 24px; margin: 6px 0 12px; }
+.skill-area-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 12px; }
+.skill-area {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 0;
+  border-radius: 26px;
+  padding: 20px;
+  background: #fff;
+  box-shadow: inset 0 0 0 2px var(--line);
+  color: var(--forest);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.skill-area:hover { box-shadow: inset 0 0 0 2px var(--forest); }
+.skill-area-needs { background: var(--orange-tint); box-shadow: none; }
+.skill-area[aria-pressed="true"] { box-shadow: inset 0 0 0 4px var(--forest); }
+.skill-area-name { font: 600 19px/1.15 Fredoka, Nunito, sans-serif; }
+.skill-dots { display: flex; flex-wrap: wrap; gap: 6px; }
+.skill-dot {
+  flex: none;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #d9cdb0;
+}
+.skill-dot-needs_support { background: #e2581c; }
+.skill-dot-on_track { background: var(--forest); }
+.skill-dot-seen { background: transparent; box-shadow: inset 0 0 0 3px #8a7a55; }
+.skill-area-note { font-size: 14px; font-weight: 700; }
+.portal .skill-legend {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 4px 0 0;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+.portal .skill-legend li { display: flex; align-items: center; gap: 8px; }
+
+.skill-map-panel {
+  flex: 2 1 300px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--sand);
+  border-radius: var(--block-radius);
+  padding: 28px;
+}
+.skill-map-panel h3 { margin: 0; font-size: 30px; line-height: 1.08; }
+.skill-map-panel > p:not(.portal-eyebrow) { margin: 0; line-height: 1.5; }
+.skill-map-panel > .button { align-self: flex-start; margin-top: 4px; }
+.skill-list { display: flex; flex-direction: column; gap: 10px; }
+.skill-list:empty { display: none; }
+.skill-map-panel .skill-card { background: var(--cream); border-radius: 22px; padding: 18px; }
+.skill-map-panel .skill-card.skill-card-needs_support { background: var(--orange-tint); }
+.skill-map-panel .skill-card h4 { margin: 10px 0 4px; font-size: 17px; line-height: 1.3; }
+.skill-map-panel .skill-card code { font-size: 12px; }
+.skill-map-panel .skill-status { font-size: 12px; padding: 5px 12px; }
+.skill-map-panel .skill-status.skill-needs_support { background: var(--orange); color: var(--forest); }
+.skill-story { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.skill-story-block { background: var(--cream); border-radius: 18px; padding: 14px 16px; }
+.skill-story-block h5 {
+  margin: 0 0 4px;
+  font: 800 12px Nunito, sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.skill-story-block p { margin: 0; font-size: 15px; line-height: 1.45; }
+.skill-story-try { background: var(--sun); }
+.skill-story-played { background: var(--lime); }
+.skill-story-try p, .skill-story-played p { font-weight: 700; }
+.skill-about { margin: 0; font-size: 14px; line-height: 1.5; }
+.skill-story .gap-details { margin-top: 0; font-size: 14px; }
+.skill-story .gap-details p { margin: 8px 0 0; line-height: 1.5; }
+.skill-rest { font-size: 15px; }
+.skill-rest summary { font-weight: 800; cursor: pointer; min-height: 44px; display: flex; align-items: center; }
+.skill-rest ul { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.skill-rest li { background: var(--cream); border-radius: 14px; padding: 10px 14px; line-height: 1.35; }
+.skill-rest code { display: block; margin-top: 2px; color: var(--muted); font: 600 12px Nunito, sans-serif; }
+
+/* ---------- narrow screens: the side panel becomes a strip on top ---------- */
+@media (max-width: 860px) {
+  .portal { padding: 16px 16px 56px; gap: 16px; }
+  .portal-side { padding: 20px; gap: 16px; }
+  .portal-children, .portal-nav { flex-direction: row; flex-wrap: wrap; }
+  .portal-label { width: 100%; }
+  .portal-nav button { background: var(--cream); border-radius: 999px; font-size: 16px; }
+  .portal-session { margin-top: 0; }
+  .portal-hero { padding: 28px 26px; }
+  .portal-stats { gap: 20px; }
+  .portal-stat dd { font-size: 42px; }
+  .portal-main > .dashboard-section { padding: 24px 20px; }
+  .skill-map-panel { padding: 22px; scroll-margin-top: 12px; }
+  .skill-area-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .skill-area { padding: 16px; border-radius: 22px; }
+  .skill-area-name { font-size: 17px; }
+}

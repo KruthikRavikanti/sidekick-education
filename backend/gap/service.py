@@ -7,6 +7,7 @@ import uuid
 from backend.accounts.security import AccountError, kid_view
 from .config import CONFIG
 from .reducer import initial_state, reduce_state
+from .areas import area_for
 
 
 def uid():
@@ -155,6 +156,7 @@ def parent_dashboard(security, account_id, kid_id, *, expected_session=None):
                     pattern = signature.get('explanation') or signature.get('status')
                 evidence.append(dict(id=str(event['id']), problemId=event['source_ref'], question=event['question'], correctness=event['correctness'], eligible=bool(event['eligible']), createdAt=event['created_at']))
             skills.append(dict(id=row['id'], subskillId=row['id'], name=raw.get('subskill') or row['name'], subject='math' if row['subject'] == 'Math' else 'ela', commonCoreCode=raw.get('ccss_substandard') or row['skill_id'], status=state['status'],
+                               area=area_for(raw, row['id'], row['subject']),
                                parentExplanation=raw.get('parent_explain'), observedPattern=pattern, homeTip=raw.get('home_tip'), evidence=evidence,
                                traceback=[], stopReason=None, currentPracticeTarget=None, teacherSuggestion=None))
         priority = {'needs_support': 0, 'on_track': 1, 'unassessed': 2}

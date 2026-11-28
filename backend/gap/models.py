@@ -15,6 +15,8 @@ class ParentSkill(Input):
     subject: Literal['math', 'ela']
     commonCoreCode: str
     status: Literal['unassessed', 'on_track', 'needs_support']
+    # The part of the grade this skill sits in, in a parent's words ("Fractions").
+    area: str = ''
     parentExplanation: str | None = None
     observedPattern: str | None = None
     homeTip: str | None = None
