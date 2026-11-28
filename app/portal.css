@@ -1,20 +1,19 @@
 /* The parent portal.
-   A side panel holds the family and the pages. The page sits beside it and stacks under it on a phone.
+   The top bar is the one every screen shares (logo on the left, Switch profile on the right), so the frame
+   does not move when a parent comes in. Under it, a side panel holds the family and the pages. The page
+   sits beside the panel and stacks under it on a phone.
    The skill map shows one dot for every skill, grouped by area, with the picked area's skills beside it.
    Colors, type and block shapes come from the Color Blocks theme. */
 
 .portal {
-  flex-direction: row;
+  display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   gap: 20px;
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 24px 24px 72px;
 }
-/* The clouds would sit behind the side panel. */
-body:has(.portal)::before { display: none; }
+/* The cloud by the top bar stays, as on every other screen. The one on the left would sit behind
+   the side panel, which is the same color, so it is left out here. */
+body:has(.portal)::before { background-size: 0 0, 170px 68px; }
 
 /* ---------- the side panel ---------- */
 .portal-side {
@@ -27,8 +26,6 @@ body:has(.portal)::before { display: none; }
   flex-direction: column;
   gap: 22px;
 }
-.portal-logo { display: flex; align-self: flex-start; }
-.portal-logo img { width: 150px; height: auto; display: block; }
 .portal-label, .portal-eyebrow {
   margin: 0;
   font-size: 12px;
@@ -83,15 +80,6 @@ body:has(.portal)::before { display: none; }
 }
 .portal-review:hover { background: var(--forest-soft); }
 .portal-review small { display: block; font-size: 13px; font-weight: 600; color: var(--on-forest); }
-.portal-session {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: auto;
-}
-.portal-session .parent-mode-label { color: var(--forest); }
 .portal :is(.portal-child, .portal-nav button, .skill-area, .portal-review):focus-visible {
   outline: 3px solid var(--orange);
   outline-offset: 3px;
@@ -240,12 +228,11 @@ body:has(.portal)::before { display: none; }
 
 /* ---------- narrow screens: the side panel becomes a strip on top ---------- */
 @media (max-width: 860px) {
-  .portal { padding: 16px 16px 56px; gap: 16px; }
+  .portal { gap: 16px; }
   .portal-side { padding: 20px; gap: 16px; }
   .portal-children, .portal-nav { flex-direction: row; flex-wrap: wrap; }
   .portal-label { width: 100%; }
   .portal-nav button { background: var(--cream); border-radius: 999px; font-size: 16px; }
-  .portal-session { margin-top: 0; }
   .portal-hero { padding: 28px 26px; }
   .portal-stats { gap: 20px; }
   .portal-stat dd { font-size: 42px; }

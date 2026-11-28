@@ -138,9 +138,7 @@ test("parent signs up, sets a PIN, adds two children, and explores real learning
   ).toBeVisible();
   await page.getByRole("button", { name: /Alex.*Let’s learn/ }).click();
   await expect(page).toHaveURL(/\/kid$/);
-  await expect(
-    page.getByRole("link", { name: /Upload work/ }),
-  ).toBeVisible();
+  await expect(page.getByRole("link", { name: /Upload work/ })).toBeVisible();
   await expect(page.getByText("Parent mode", { exact: true })).toHaveCount(0);
   expect((await page.request.get("/api/parent/settings")).status()).toBe(403);
   expect(
@@ -148,6 +146,46 @@ test("parent signs up, sets a PIN, adds two children, and explores real learning
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBeTruthy();
+});
+
+test("the top bar stays in the same place when a parent comes in", async ({
+  page,
+  context,
+}) => {
+  await createFamily(context);
+  const frame = async () => ({
+    logo: await page.getByRole("link", { name: "Sidekick home" }).boundingBox(),
+    switcher: await page
+      .getByRole("button", { name: "Switch profile", exact: true })
+      .boundingBox(),
+  });
+  await page.goto("/kid");
+  await expect(page.getByRole("heading", { name: "Hey, Alex!" })).toBeVisible();
+  const child = await frame();
+  const childPanel = await page.locator(".kid-welcome").boundingBox();
+  await mutate(context.request, "/api/session/picker");
+  await page.goto("/profiles");
+  await enterParent(page);
+  await expect(page.locator(".skill-map")).toBeVisible();
+  // The logo and Switch profile sit exactly where the child has them.
+  const parent = await frame();
+  expect(parent.logo).toEqual(child.logo);
+  expect(parent.switcher).toEqual(child.switcher);
+  // The parent's panel starts where the child's first panel does, and carries no second logo or switch.
+  const panel = page.locator(".portal-side");
+  const box = await panel.boundingBox();
+  expect(box!.x).toBe(childPanel!.x);
+  expect(box!.y).toBe(childPanel!.y);
+  await expect(
+    panel.getByRole("button", { name: "Switch profile" }),
+  ).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Sidekick home" })).toHaveCount(
+    1,
+  );
+  await expect(page.getByText("Parent mode", { exact: true })).toHaveCount(1);
+  await expect(
+    page.getByRole("button", { name: "Switch profile", exact: true }),
+  ).toHaveCount(1);
 });
 
 test("kid parent URLs go to PIN gate before loading parent data; siblings and foreign IDs are refused", async ({
@@ -440,9 +478,7 @@ test("switching children in another tab clears the old photo and delayed results
     finished();
   });
   await page.getByRole("button", { name: "Fractions", exact: true }).click();
-  await page
-    .getByRole("button", { name: "Read my work", exact: true })
-    .click();
+  await page.getByRole("button", { name: "Read my work", exact: true }).click();
   await responseReady;
   await expect(
     page.getByRole("heading", { name: "Reading your work…" }),

@@ -76,7 +76,7 @@ Persistent uploads checkpoint extraction, grading, mapping, signatures, and evid
 
 ## Parent portal
 
-The parent portal is built around a **skill map**: one dot for every skill in the child's grade, grouped into a few plainly named areas (Fractions, Place value, Reading stories, and so on; see [`backend/gap/areas.py`](backend/gap/areas.py)). A dot lights up only when the child's own uploaded work shows that skill. A side panel (a strip at the top on a phone) switches between children and between four pages:
+The parent portal is built around a **skill map**: one dot for every skill in the child's grade, grouped into a few plainly named areas (Fractions, Place value, Reading stories, and so on; see [`backend/gap/areas.py`](backend/gap/areas.py)). A dot lights up only when the child's own uploaded work shows that skill. The top bar is the one every child screen has (logo on the left, **Switch profile** on the right, plus a **Parent mode** label), so the frame does not move when a parent comes in. Under it, a side panel (a strip at the top on a phone) switches between children and between four pages:
 
 | Page | What it shows |
 | --- | --- |
